@@ -9,6 +9,4 @@ cd libstdc-
 sudo sh install-Xcode_12.sh 
 
 
-
-
 export XCODE_XCCONFIG_FILE=$PWD/tmp.xcconfig
