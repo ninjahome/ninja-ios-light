@@ -39,7 +39,9 @@ class WebsocketSrv:NSObject{
                         return NJError.msg(err.localizedDescription)
                 }
                 
-                
+            print("cliMsg\(cliMsg)")
+            print("cliMsg.to\(cliMsg.to)")
+            print("\(JSON(data))")
                 IosLib.IosLibWriteMessage(cliMsg.to, data, &error)
                 if error != nil{
                         return NJError.msg(error!.localizedDescription)
@@ -59,7 +61,7 @@ extension WebsocketSrv:IosLibAppCallBackProtocol{
         func immediateMessage(_ from: String?, to: String?, payload: Data?, time: Int64) throws {
                 
                 let owner = Wallet.shared.Addr!
-                if owner != to{
+                if owner != to {
                         throw NJError.msg("this im is not for me")
                 }
                 

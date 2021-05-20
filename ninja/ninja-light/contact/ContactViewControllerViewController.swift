@@ -15,7 +15,6 @@ class ContactViewController: UIViewController{
         @IBOutlet weak var tableview: UITableView!
         override func viewDidLoad() {
                 super.viewDidLoad()
-                
                 NotificationCenter.default.addObserver(self, selector:#selector(notifiAction(notification:)),
                                                                name: NotifyContactChanged, object: nil)
                 
@@ -36,12 +35,20 @@ class ContactViewController: UIViewController{
                         vc.delegate = self
                 }else if segue.identifier == "ShowContactDetailSeg"{
                         let vc : ContactDetailsViewController = segue.destination as! ContactDetailsViewController
-                        guard let idx = self.selectedRow else{
-                                vc.itemUID = self.NewCodeStr
-                                return
+                        guard let itemid = self.NewCodeStr else {
+                            let idx = self.selectedRow!
+                            let item = ContactItem.CacheArray()[idx]
+                            vc.itemData = item
+                            return
                         }
-                        let item = ContactItem.CacheArray()[idx]
-                        vc.itemData = item
+                        
+                        vc.itemUID = itemid
+//                        guard let idx = self.selectedRow else{
+//                                vc.itemUID = self.NewCodeStr
+//                                return
+//                        }
+//                        let item = ContactItem.CacheArray()[idx]
+//                        vc.itemData = item
                 }
         }
         
@@ -86,7 +93,7 @@ extension ContactViewController:ScannerViewControllerDelegate{
         
         func codeDetected(code: String) {
                 NSLog("\(code)")
-                if !ContactItem.IsValidContactID(code){
+                if !ContactItem.IsValidContactID(code) {
                         self.toastMessage(title: "invalid ninja address")
                         return
                 }

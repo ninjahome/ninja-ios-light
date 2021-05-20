@@ -14,6 +14,7 @@ class AuthorViewController: UIViewController {
         
         override func viewDidLoad() {
                 super.viewDidLoad()
+                self.hideKeyboardWhenTappedAround()
                 if #available(iOS 13.0, *) {
                         self.isModalInPresentation = true
                 }
@@ -30,6 +31,7 @@ class AuthorViewController: UIViewController {
                         guard let err = Wallet.shared.Active(pwd) else{
                                 DispatchQueue.main.async {
                                         self.hideIndicator()
+                                        self.hideKeyboardWhenTappedAround()
                                         self.dismiss(animated: true)
                                 }
                                 return
@@ -37,6 +39,7 @@ class AuthorViewController: UIViewController {
                         DispatchQueue.main.async {
                                 self.tips.text = err.localizedDescription
                                 self.hideIndicator()
+                                self.hideKeyboardWhenTappedAround()
                         }
                 }
         }

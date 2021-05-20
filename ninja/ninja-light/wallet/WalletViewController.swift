@@ -8,15 +8,16 @@
 import UIKit
 
 class WalletViewController: UIViewController {
-
-        
         @IBOutlet weak var nickName: UILabel!
         @IBOutlet weak var avatarImg: UIImageView!
         @IBOutlet weak var address: UILabel!
         
         override func viewDidLoad() {
                 super.viewDidLoad()
+    
                 address.text = Wallet.shared.Addr
+                nickName.text = Wallet.shared.nickName
+            
         }
     
         @IBAction func QRCodeShow(_ sender: Any) {
@@ -32,15 +33,16 @@ class WalletViewController: UIViewController {
         }
         
         @IBAction func ChangeNickName(_ sender: UIButton) {
+//            self.performSegue(withIdentifier: "EditNicknameSEG", sender: self)
         }
         
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            if segue.identifier == "EditNicknameSEG", let vc = segue.destination as? NickEditViewController {
+                    vc.nick = nickName.text
+                vc.returnHost = {[weak self] res in
+                    self?.nickName.text = res
+                }
+            }
+        }
+        
 }

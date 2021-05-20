@@ -14,6 +14,7 @@ class Wallet:NSObject{
         var obj:CDWallet?
         var Addr:String?
         var wJson:String?
+        var nickName:String?
         
         public static let shared = Wallet()
         private override init() {
@@ -40,6 +41,7 @@ class Wallet:NSObject{
                 self.Addr = a.Addr
                 self.wJson = a.wJson
                 self.obj = a.obj
+                self.nickName = a.nickName
         }
         
         func New(_ password:String) throws {
@@ -60,11 +62,28 @@ class Wallet:NSObject{
                 return IosLib.IosLibWalletIsOpen()
         }
         
-        func Active(_ password:String)-> Error?{
+        func Active(_ password:String)-> Error? {
                 var error:NSError? = nil
                 IosLib.IosLibActiveWallet(self.wJson, password, &error)
                 return error
         }
+    
+        func Import(cipher walletJson: String, auth password: String) -> Error? {
+                var error: NSError? = nil
+                IosLib.IosLibActiveWallet(walletJson, password, &error)
+                return error
+        }
+    
+        func UpdateNick(by nick: String) -> NJError? {
+                self.nickName = nick
+                do {
+                        try CDManager.shared.UpdateOrAddOne(entity: "CDWallet", m: self, predicate: NSPredicate(format: "address == %@ AND jsonStr == %@", self.Addr!, self.wJson!))
+                } catch let err {
+                        return NJError.wallet(err.localizedDescription)
+                }
+                return nil
+        }
+    
 }
 
 extension Wallet:ModelObj{
@@ -75,6 +94,7 @@ extension Wallet:ModelObj{
                 }
                 wObj.address = self.Addr
                 wObj.jsonStr = self.wJson
+                wObj.nick = self.nickName
                 self.obj = wObj
         }
         
@@ -86,5 +106,6 @@ extension Wallet:ModelObj{
                 self.obj = wObj
                 self.Addr = wObj.address
                 self.wJson = wObj.jsonStr
+                self.nickName = wObj.nick
         }
 }

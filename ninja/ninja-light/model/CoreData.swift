@@ -121,12 +121,11 @@ extension CDManager{
                 fetchRequest.fetchLimit = 1
                 let objArr = try managedContext.fetch(fetchRequest)
                 
-                if objArr.count == 0{
+                if objArr.count == 0 {
                         try self.AddEntity(entity: entity, m: m)
                         return
                 }
                 let object = objArr.first!
-                
                 try m.fullFillObj(obj: object)
                 
                 try managedContext.save()

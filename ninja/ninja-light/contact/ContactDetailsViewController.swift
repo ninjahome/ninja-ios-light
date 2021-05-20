@@ -22,8 +22,12 @@ class ContactDetailsViewController: UIViewController {
         
         override func viewDidLoad() {
                 super.viewDidLoad()
+            
                 self.hideKeyboardWhenTappedAround()
                 self.populateView()
+            
+//                self.view.layer.contents = UIImage(named: "user_backg_img")?.cgImage
+//                self.view.contentMode = .scaleAspectFill
         }
         
         private func populateView(){

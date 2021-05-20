@@ -9,6 +9,7 @@ import UIKit
 
 class MesasgeItemTableViewCell: UITableViewCell {
 
+        @IBOutlet weak var unreadView: UIView!
         @IBOutlet weak var unread: UILabel!
         @IBOutlet weak var avatarImg: UIImageView!
         @IBOutlet weak var nickName: UILabel!
@@ -32,9 +33,9 @@ class MesasgeItemTableViewCell: UITableViewCell {
                 self.LastMsg.text = details.LastMsg
                 if details.unreadNo > 0{
                         self.unread.text = "\(details.unreadNo)"
-                        self.unread.isHidden = false
+                        self.unreadView.isHidden = false
                 }else{
-                        self.unread.isHidden = true
+                        self.unreadView.isHidden = true
                         self.unread.text = ""
                 }
                 

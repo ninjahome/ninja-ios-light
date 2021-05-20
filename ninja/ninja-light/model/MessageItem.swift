@@ -61,6 +61,14 @@ class MessageItem: NSObject {
                                         predicate: NSPredicate(format: "owner == %@ AND (from == %@ OR to == %@)",
                                                                owner, uid, uid))
         }
+    
+        public static func removeAllRead() {
+            cache.removeAll()
+            let owner = Wallet.shared.Addr!
+            try? CDManager.shared.Delete(entity: "CDUnread",
+                                    predicate: NSPredicate(format: "owner == %@", owner))
+            
+        }
         
         func coinvertToLastMsg() -> String{
                 switch self.typ {

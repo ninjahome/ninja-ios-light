@@ -47,5 +47,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         func applicationDidBecomeActive(_ application: UIApplication) {
                 _ = WebsocketSrv.shared.Online()
         }
+    
+        func applicationWillTerminate(_ application: UIApplication) {
+            MessageItem.removeAllRead()
+        }
 }
 

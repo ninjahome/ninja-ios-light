@@ -45,7 +45,7 @@ class ContactItem:NSObject{
                         )
                         
                         cache[contact.uid!] = contact
-                }catch let err{
+                }catch let err {
                         return NJError.contact(err.localizedDescription)
                 }
                 return nil
