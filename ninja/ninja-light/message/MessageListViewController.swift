@@ -20,6 +20,7 @@ class MessageListViewController: UIViewController {
                 super.viewDidLoad()
                 
                 tableView.rowHeight = 80
+                tableView.tableFooterView = UIView()
                 refreshControl.addTarget(self, action: #selector(self.reloadChatRoom(_:)), for: .valueChanged)
                 tableView.addSubview(refreshControl)
                 self.reloadChatRoom(nil)
@@ -67,23 +68,29 @@ class MessageListViewController: UIViewController {
                 super.viewWillAppear(animated)
                 self.hideErrorTips()
                 
-                guard Wallet.shared.loaded else{
+                guard Wallet.shared.loaded else {
                         self.performSegue(withIdentifier: "CreateNewAccountSeg", sender: self)
                         return
                 }
                 
-                guard Wallet.shared.IsActive() else{
+                guard Wallet.shared.IsActive() else {
                         self.performSegue(withIdentifier: "ShowAutherSEG", sender: self)
                         return
                 }
-                
+                print("wallet is active")
+        
                 guard WebsocketSrv.shared.IsOnline() else {
+                    
+                    print("connecting")
                         guard let err = WebsocketSrv.shared.Online() else{
                                 return
                         }
-                        showErrorTips(err: err)
+                        self.showErrorTips(err: err)
                         return
                 }
+                print("connected")
+                self.reloadChatRoom(nil)
+
         }
         private func showErrorTips(err:Error){
                 DispatchQueue.main.async{

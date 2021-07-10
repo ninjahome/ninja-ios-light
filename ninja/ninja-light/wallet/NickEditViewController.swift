@@ -2,7 +2,7 @@
 //  NickEditViewController.swift
 //  ninja-light
 //
-//  Created by 郭晓芙 on 2021/5/17.
+//  Created by akatuki on 2021/5/17.
 //
 
 import UIKit
@@ -14,6 +14,7 @@ class NickEditViewController: UIViewController {
     var returnHost: editHost!
 
     @IBOutlet weak var nickText: UITextField!
+    @IBOutlet weak var avatar: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +22,12 @@ class NickEditViewController: UIViewController {
         if nick != nil {
             nickText.text = nick
         }
+        
+        let avaText = Wallet.GenAvatarText()
+        avatar.setTitle(avaText, for: .normal)
+        
+        let hex = Wallet.GenAvatarColor()
+        avatar.backgroundColor = UIColor.init(hex: hex)
         
         self.hideKeyboardWhenTappedAround()
     }

@@ -6,10 +6,88 @@
 //
 
 import UIKit
+import UserNotifications
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
         var window: UIWindow?
+        var reach:Reachability?
+    
+        func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+            self.reach = Reachability.forInternetConnection()
+            self.reach?.reachableOnWWAN = false
+            
+            NotificationCenter.default.addObserver(
+                    self,
+                    selector: #selector(reachabilityChanged),
+                    name: NSNotification.Name.reachabilityChanged,
+                    object: nil
+                )
+            self.reach!.startNotifier()
+            
+            let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+            print("token \(token)")
+            print("deviceToken \(deviceToken)")
+            Wallet.shared.setDeviceToken(token)
+//            let bundleID = Bundle.main.bundleIdentifier
+//            print("bundleID \(String(describing: bundleID))")
+            
+            if Wallet.shared.Addr == nil {
+                let url = URL(string: "https://baidu.com")
+                let task = URLSession.shared.dataTask(with: url!) {(data: Data?, response: URLResponse?, error: Error?) in
+                        guard let data = data else { return }
+                        print(String(data: data, encoding: .utf8)!)
+                    }
+                task.resume()
+            }
+            
+        }
+    
+        @objc func reachabilityChanged(notification: NSNotification) {
+            if self.reach!.isReachableViaWiFi() || self.reach!.isReachableViaWWAN() {
+                print("Service available!!!")
+            } else {
+                print("No service available!!!")
+            }
+        }
+    
+        func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+            print("failed to register remote noti\(error.localizedDescription)")
+        }
+    
+        func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+            completionHandler([.alert, .sound])
+        }
+        
+        func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+            defer {
+                completionHandler()
+            }
+            
+            guard response.actionIdentifier == UNNotificationDefaultActionIdentifier else {
+                return
+            }
+            
+            let content = response.notification.request.content
+            print("title: \(content.title)")
+            print("body: \(content.body)")
+            
+            if let userInfo = content.userInfo as? [String: Any],
+               let aps = userInfo["aps"] as? [String: Any] {
+                print("aps: \(aps)")
+            }
+            
+        }
+    
+    func getNotificationSettings() {
+      UNUserNotificationCenter.current().getNotificationSettings { settings in
+        guard settings.authorizationStatus == .authorized else { return }
+        DispatchQueue.main.sync {
+            UIApplication.shared.registerForRemoteNotifications()
+        }
+        print("Notification settings: \(settings)")
+      }
+    }
         
         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
                 
@@ -20,7 +98,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }else{
                         window?.rootViewController = instantiateViewController(vcID: "NinjaNewWalletVC")
                 }
-                    window?.makeKeyAndVisible()
+                window?.makeKeyAndVisible()
+            
+                UNUserNotificationCenter.current().delegate = self
+            
+                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound, .provisional]) { (granted, error) in
+                    print("granted \(granted)")
+                    guard granted else { return }
+                    self.getNotificationSettings()
+                }
+            
                 return true
         }
 
@@ -49,7 +136,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     
         func applicationWillTerminate(_ application: UIApplication) {
-            MessageItem.removeAllRead()
+                MessageItem.removeAllRead()
+                AudioFilesManager.deleteAllRecordingFiles()
         }
 }
 

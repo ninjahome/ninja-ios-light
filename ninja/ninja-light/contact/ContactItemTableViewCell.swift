@@ -10,9 +10,10 @@ import UIKit
 class ContactItemTableViewCell: UITableViewCell {
 
         @IBOutlet weak var nickName: UILabel!
-        @IBOutlet weak var avatar: UIImageView!
+        @IBOutlet weak var avatar: UIButton!
+    
         override func awakeFromNib() {
-        super.awakeFromNib()
+            super.awakeFromNib()
                 // Initialization code
         }
 
@@ -21,9 +22,16 @@ class ContactItemTableViewCell: UITableViewCell {
         }
 
         func initWith(details:ContactItem, idx: Int){
-                if details.avatar != nil{
-                        self.avatar.image = UIImage.init(data: details.avatar!)
-                }
+//                if details.avatar != nil{
+//                        self.avatar.image = UIImage.init(data: details.avatar!)
+//                }
                 self.nickName.text = details.nickName
+
+            let avaName = ContactItem.GetAvatarText(by: details.uid!)
+            avatar.setTitle(avaName, for: .normal)
+            let hex = ContactItem.GetAvatarColor(by: details.uid!)
+            avatar.backgroundColor = UIColor.init(hex: hex)
+           
         }
+    
 }

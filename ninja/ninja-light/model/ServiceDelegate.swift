@@ -22,4 +22,9 @@ class ServiceDelegate: NSObject {
                 MessageItem.loadUnread()
                 dateFormatterGet.timeStyle = .medium
         }
+    
+        public static func InitConfig() {
+            IosLib.IosLibConfigApp("", WebsocketSrv.shared)
+        }
+    
 }

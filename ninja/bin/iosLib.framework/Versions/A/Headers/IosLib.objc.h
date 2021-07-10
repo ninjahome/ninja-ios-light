@@ -16,8 +16,10 @@
 @class IosLibAppCallBack;
 
 @protocol IosLibAppCallBack <NSObject>
-- (BOOL)immediateMessage:(NSString* _Nullable)from to:(NSString* _Nullable)to payload:(NSData* _Nullable)payload time:(int64_t)time error:(NSError* _Nullable* _Nullable)error;
-- (BOOL)unreadMsg:(NSData* _Nullable)jsonData error:(NSError* _Nullable* _Nullable)error;
+- (BOOL)imageMessage:(NSString* _Nullable)from to:(NSString* _Nullable)to payload:(NSData* _Nullable)payload time:(int64_t)time error:(NSError* _Nullable* _Nullable)error;
+- (BOOL)locationMessage:(NSString* _Nullable)from to:(NSString* _Nullable)to l:(float)l a:(float)a name:(NSString* _Nullable)name time:(int64_t)time error:(NSError* _Nullable* _Nullable)error;
+- (BOOL)textMessage:(NSString* _Nullable)from to:(NSString* _Nullable)to payload:(NSString* _Nullable)payload time:(int64_t)time error:(NSError* _Nullable* _Nullable)error;
+- (BOOL)voiceMessage:(NSString* _Nullable)from to:(NSString* _Nullable)to payload:(NSData* _Nullable)payload length:(long)length time:(int64_t)time error:(NSError* _Nullable* _Nullable)error;
 - (void)webSocketClosed;
 @end
 
@@ -37,9 +39,11 @@
 
 FOUNDATION_EXPORT NSString* _Nonnull IosLibActiveAddress(void);
 
-FOUNDATION_EXPORT BOOL IosLibActiveWallet(NSString* _Nullable cipherTxt, NSString* _Nullable auth, NSError* _Nullable* _Nullable error);
+FOUNDATION_EXPORT BOOL IosLibActiveWallet(NSString* _Nullable cipherTxt, NSString* _Nullable auth, NSString* _Nullable devToken, NSError* _Nullable* _Nullable error);
 
 FOUNDATION_EXPORT void IosLibConfigApp(NSString* _Nullable addr, id<IosLibAppCallBack> _Nullable callback);
+
+FOUNDATION_EXPORT int64_t IosLibIconIndex(NSString* _Nullable id_, long mod);
 
 FOUNDATION_EXPORT BOOL IosLibIsValidNinjaAddr(NSString* _Nullable addr);
 
@@ -55,7 +59,13 @@ FOUNDATION_EXPORT BOOL IosLibWSOnline(NSError* _Nullable* _Nullable error);
 
 FOUNDATION_EXPORT BOOL IosLibWalletIsOpen(void);
 
-FOUNDATION_EXPORT BOOL IosLibWriteMessage(NSString* _Nullable to, NSData* _Nullable payload, NSError* _Nullable* _Nullable error);
+FOUNDATION_EXPORT BOOL IosLibWriteImageMessage(NSString* _Nullable to, NSData* _Nullable payload, NSError* _Nullable* _Nullable error);
+
+FOUNDATION_EXPORT BOOL IosLibWriteLocationMessage(NSString* _Nullable to, float longitude, float latitude, NSString* _Nullable name, NSError* _Nullable* _Nullable error);
+
+FOUNDATION_EXPORT BOOL IosLibWriteMessage(NSString* _Nullable to, NSString* _Nullable plainTxt, NSError* _Nullable* _Nullable error);
+
+FOUNDATION_EXPORT BOOL IosLibWriteVoiceMessage(NSString* _Nullable to, NSData* _Nullable payload, long len, NSError* _Nullable* _Nullable error);
 
 @class IosLibAppCallBack;
 
@@ -64,8 +74,10 @@ FOUNDATION_EXPORT BOOL IosLibWriteMessage(NSString* _Nullable to, NSData* _Nulla
 @property(strong, readonly) _Nonnull id _ref;
 
 - (nonnull instancetype)initWithRef:(_Nonnull id)ref;
-- (BOOL)immediateMessage:(NSString* _Nullable)from to:(NSString* _Nullable)to payload:(NSData* _Nullable)payload time:(int64_t)time error:(NSError* _Nullable* _Nullable)error;
-- (BOOL)unreadMsg:(NSData* _Nullable)jsonData error:(NSError* _Nullable* _Nullable)error;
+- (BOOL)imageMessage:(NSString* _Nullable)from to:(NSString* _Nullable)to payload:(NSData* _Nullable)payload time:(int64_t)time error:(NSError* _Nullable* _Nullable)error;
+- (BOOL)locationMessage:(NSString* _Nullable)from to:(NSString* _Nullable)to l:(float)l a:(float)a name:(NSString* _Nullable)name time:(int64_t)time error:(NSError* _Nullable* _Nullable)error;
+- (BOOL)textMessage:(NSString* _Nullable)from to:(NSString* _Nullable)to payload:(NSString* _Nullable)payload time:(int64_t)time error:(NSError* _Nullable* _Nullable)error;
+- (BOOL)voiceMessage:(NSString* _Nullable)from to:(NSString* _Nullable)to payload:(NSData* _Nullable)payload length:(long)length time:(int64_t)time error:(NSError* _Nullable* _Nullable)error;
 - (void)webSocketClosed;
 @end
 

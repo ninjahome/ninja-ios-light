@@ -11,10 +11,18 @@ class NewWalletViewController: UIViewController {
 
         @IBOutlet weak var password2: UITextField!
         @IBOutlet weak var password1: UITextField!
-        
+    
+        @IBOutlet weak var importtext: UILabel!
+        @IBOutlet weak var importbtn: UIButton!
+    
+            
         override func viewDidLoad() {
                 super.viewDidLoad()
                 self.hideKeyboardWhenTappedAround()
+            if Wallet.shared.Addr != nil {
+                importtext.isHidden = true
+                importbtn.isHidden = true
+            }
         }
     
         @IBAction func CreateWallet(_ sender: UIButton) {
@@ -26,33 +34,73 @@ class NewWalletViewController: UIViewController {
                         self.toastMessage(title: "2 passwords are not same")
                         return
                 }
+            
+                if Wallet.shared.Addr != nil {
+                    cleanAllData()
+                }
                 
                 do {
                         try Wallet.shared.New(password)
+                        
                         ServiceDelegate.InitService()
                         _ = Wallet.shared.Active(password)
-                        
-                        if #available(iOS 13.0, *) {
-                                let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
-                                sceneDelegate.window!.rootViewController =  instantiateViewController(vcID: "NinjaHomeTabVC")
-                        } else {
-                                let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                                appDelegate.window?.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
-                                appDelegate.window?.makeKeyAndVisible()
-                        }
-                        
-                }catch let err as NSError{
+
+                        afterWallet()
+                                                    
+                } catch let err as NSError{
                         self.toastMessage(title: err.localizedDescription)
                 }
         }
         
-    /*
-    // MARK: - Navigation
+        func afterWallet() {
+            if #available(iOS 13.0, *) {
+                    let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
+                    sceneDelegate.window!.rootViewController =  instantiateViewController(vcID: "NinjaHomeTabVC")
+            } else {
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    appDelegate.window?.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
+                    appDelegate.window?.makeKeyAndVisible()
+            }
+        }
+        
+        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            if segue.identifier == "ImportScannerID" {
+                let vc : ScannerViewController = segue.destination as! ScannerViewController
+                vc.delegate = self
+            }
+        }
+        
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+}
+
+
+extension NewWalletViewController: ScannerViewControllerDelegate {
+    func codeDetected(code: String) {
+        NSLog("New wallet code\(code)")
+        guard let addr = Wallet.shared.serializeWalletJson(cipher: code) else {
+            self.toastMessage(title: "invaild ninja wallet address")
+            return
+        }
+        if Wallet.shared.Addr == nil {
+            self.showPwdInput(title: "请输入密码导入账号", placeHolder: "请输入密码") { (auth, isOK) in
+                if let pwd = auth, isOK {
+                    do {
+                        
+                        WebsocketSrv.shared.Offline()
+                        ServiceDelegate.InitConfig()
+                        
+                        try Wallet.shared.Import(cipher: code, addr: addr, auth: pwd)
+                        
+                        self.afterWallet()
+                        
+                        print("new wallet \(String(describing: Wallet.shared.Addr))")
+                        
+                    } catch let err as NSError {
+                        self.toastMessage(title: err.localizedDescription)
+                    }
+                }
+            }
+            
+        }
     }
-    */
 }

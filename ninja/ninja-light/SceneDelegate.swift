@@ -6,11 +6,20 @@
 //
 
 import UIKit
+import UserNotifications
 
 @available(iOS 13.0, *)
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCenterDelegate {
 
         var window: UIWindow?
+        
+        func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+            completionHandler()
+        }
+    
+        func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+            completionHandler([.alert, .sound])
+        }
 
 
         func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -26,6 +35,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                         window?.rootViewController = instantiateViewController(vcID: "NinjaNewWalletVC")
                 }
                     window?.makeKeyAndVisible()
+            
+                UNUserNotificationCenter.current().delegate = self
+            
+                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound, .provisional]) { (granted, error) in
+                    print("granted\(granted)")
+                }
+            
+                UIApplication.shared.registerForRemoteNotifications()
         }
 
         func sceneDidDisconnect(_ scene: UIScene) {
@@ -41,7 +58,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
                 
         }
-
+    
         func sceneWillResignActive(_ scene: UIScene) {
                 // Called when the scene will move from an active state to an inactive state.
                 // This may occur due to temporary interruptions (ex. an incoming phone call).
@@ -60,8 +77,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 // to restore the scene back to its current state.
 
                 // Save changes in the application's managed object context when the application transitions to the background.
+                UIApplication.shared.applicationIconBadgeNumber = 0
                 CDManager.shared.saveContext()
                 WebsocketSrv.shared.Offline()
+                AudioFilesManager.deleteAllRecordingFiles()
         }
     
 }

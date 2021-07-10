@@ -19,7 +19,7 @@ class MessageItem: NSObject {
         var from:String?
         var to:String?
         var typ:CMT = .plainTxt
-        var payload:String?
+        var payload:Any?
         var isOut:Bool = false
         
         public static var cache:[String:MessageList] = [:]
@@ -28,8 +28,9 @@ class MessageItem: NSObject {
         }
         
         public static func loadUnread(){
-                
-                let owner = Wallet.shared.Addr!
+                guard let owner = Wallet.shared.Addr else {
+                    return
+                }
                 var result:[MessageItem]?
                 result = try? CDManager.shared.Get(entity: "CDUnread",
                                                    predicate: NSPredicate(format: "owner == %@", owner))
@@ -52,6 +53,7 @@ class MessageItem: NSObject {
                         
                         cache[peerUid]?.append(msg)
                 }
+            
         }
         
         public static func removeRead(_ uid:String){
@@ -77,48 +79,96 @@ class MessageItem: NSObject {
                         return dateFormatterGet.string(from: time)
                 case .voice:
                         return "[Voice Message]"
+                case .video:
+                        return "[Video Message]"
                 case .location:
                         return "[Location]"
                 case .contact:
                         return "[Contact]"
+                case .image:
+                        return "[Image]"
                 }
         }
         
-        init(json:JSON, out:Bool){
-                
-                self.from = json["From"].string
-                self.to = json["To"].string
-                self.timeStamp = json["UnixTime"].int64 ?? 0
-                self.isOut = out
-                
-                let payStr = json["PayLoad"].string
-                if let data = IosLib.IosLibUnmarshalGoByte(payStr){
-                        let cliMsg = try? CliMessage.FromNinjaPayload(data, to: self.to!)
-                        self.typ = cliMsg!.type
-                        self.payload = cliMsg?.data
-                }
-        }
+//        init(json:JSON, out:Bool){
+//
+//                self.from = json["From"].string
+//                self.to = json["To"].string
+//                self.timeStamp = json["UnixTime"].int64 ?? 0
+//                self.isOut = out
+//
+//                let payStr = json["PayLoad"].string
+//                if let data = IosLib.IosLibUnmarshalGoByte(payStr){
+//                        let cliMsg = try? CliMessage.FromNinjaPayload(data, to: self.to!)
+//                        self.typ = cliMsg!.type
+//
+//                        switch self.typ {
+//                        case .plainTxt:
+//                            self.payload = cliMsg?.textData
+//                        case .image:
+//
+//                            self.payload = cliMsg?.imgData
+//                        case .voice:
+//                            self.payload = cliMsg?.audioData
+//                        default:
+//                            print("init MESSAGE error: undefined type")
+//                        }
+//                }
+//        }
         
-        init(cliMsg:CliMessage, from: String, time: Int64, out:Bool){
+        init(cliMsg:CliMessage, from: String, time: Int64, out:Bool) {
                 super.init()
                 self.from = from
                 self.timeStamp = time
                 self.to = cliMsg.to
                 self.typ = cliMsg.type
-                self.payload = cliMsg.data
+            
+                switch self.typ {
+                case .plainTxt:
+                    self.payload = cliMsg.textData
+                case .image:
+                    self.payload = cliMsg.imgData
+                case .voice:
+                    self.payload = cliMsg.audioData
+//                    if let ad = cliMsg.audioData {
+//                        if let url = AudioFilesManager.saveWavData(ad, fileName: String(time)) {
+//                            self.payload = url.path
+//                        }
+//                    }
+                default:
+                    print("init MESSAGE error: undefined type")
+                }
+
                 self.isOut = out
         }
         
-        public static func addSentIM(cliMsg:CliMessage)->MessageItem{
+        public static func addSentIM(cliMsg:CliMessage) -> MessageItem{
                 
                 let sender = Wallet.shared.Addr!
                 let msg = MessageItem.init()
                 msg.from = sender
                 msg.to = cliMsg.to
                 msg.typ = cliMsg.type
-                msg.payload = cliMsg.data
                 msg.timeStamp = Int64(NSDate().timeIntervalSince1970)
                 msg.isOut = true
+//                msg.payload = cliMsg.data
+                switch msg.typ {
+                case .plainTxt:
+                    msg.payload = cliMsg.textData
+                case .image:
+                    msg.payload = cliMsg.imgData
+                case .voice:
+                    msg.payload = cliMsg.audioData
+//                    if let ad = cliMsg.audioData {
+//                        if let url = AudioFilesManager.saveWavData(ad, fileName: String(msg.timeStamp)) {
+//                            msg.payload = url.path
+//                        }
+//                    }
+//                    msg.payload = cliMsg.audioData
+                default:
+                    print("init MESSAGE error: undefined type")
+                }
+                
                 if cache[msg.to!] == nil{
                         cache[msg.to!] = []
                 }
@@ -147,28 +197,55 @@ class MessageItem: NSObject {
         }
 }
 
-extension MessageItem:ModelObj{
+extension MessageItem: ModelObj {
         
         func fullFillObj(obj: NSManagedObject) throws {
                 guard let uObj = obj as? CDUnread else {
                         throw NJError.coreData("cast to unread item obj failed")
                 }
                 let owner = Wallet.shared.Addr!
+                uObj.type = Int16(self.typ.rawValue)
                 uObj.from = self.from
                 uObj.isOut = self.isOut
-                uObj.message = self.payload
+                
+                switch self.typ {
+                case .plainTxt:
+                    uObj.message = self.payload as? String
+                case .image:
+                    uObj.image = self.payload as? Data
+                case .voice:
+                    uObj.media = self.payload as? NSObject
+                default:
+                    print("full fill msg: no such type")
+                }
+//                uObj.message = self.payload as? String
                 uObj.owner = owner
                 uObj.to = self.to
                 uObj.unixTime = self.timeStamp
+            
         }
         
         func initByObj(obj: NSManagedObject) throws {
                 guard let uObj = obj as? CDUnread else {
                         throw NJError.coreData("cast to unread item obj failed")
                 }
+                self.typ = CMT(rawValue: Int(uObj.type))!
+            
                 self.from = uObj.from
                 self.isOut = uObj.isOut
-                self.payload = uObj.message
+            
+                switch self.typ {
+                case .plainTxt:
+                    self.payload = uObj.message
+                case .image:
+                    self.payload = uObj.image
+                case .voice:
+                    self.payload = uObj.media as? audioMsg
+                default:
+                    print("init by msg obj: no such type")
+                }
+            
+//                self.payload = uObj.message
                 self.to = uObj.to
                 self.timeStamp = uObj.unixTime
         }
@@ -192,6 +269,10 @@ extension MessageList{
                                 str += "Voice TODO::\r\n"
                         case .location://TODO::
                                 str += "Location TODO::\r\n"
+                        case .image:
+                                str += "Image TODO::\r\n"
+                        case .video:
+                            str += "Video TODO::\r\n"
                         }
                 }
                 return str

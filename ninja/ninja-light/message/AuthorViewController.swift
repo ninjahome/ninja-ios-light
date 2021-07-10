@@ -18,6 +18,16 @@ class AuthorViewController: UIViewController {
                 if #available(iOS 13.0, *) {
                         self.isModalInPresentation = true
                 }
+            
+                if Wallet.shared.useFaceID {
+                    biometryUsage { (success) in
+                        if success, let pwd = KeychainWrapper.standard.string(forKey: "AUTHKey") {
+                            self.unlock(auth: pwd)
+                        } else {
+                            return
+                        }
+                    }
+                }
         }
         
         @IBAction func Auth(_ sender: Any) {
@@ -25,34 +35,28 @@ class AuthorViewController: UIViewController {
                         tips.text = "please input your password"
                         return
                 }
-                self.showIndicator(withTitle: "", and: "opening")
-               
-                DispatchQueue.global().async {
-                        guard let err = Wallet.shared.Active(pwd) else{
-                                DispatchQueue.main.async {
-                                        self.hideIndicator()
-                                        self.hideKeyboardWhenTappedAround()
-                                        self.dismiss(animated: true)
-                                }
-                                return
-                        }
-                        DispatchQueue.main.async {
-                                self.tips.text = err.localizedDescription
-                                self.hideIndicator()
-                                self.hideKeyboardWhenTappedAround()
-                        }
-                }
+            
+                unlock(auth: pwd)
+        }
+    
+        func unlock(auth pwd: String) {
+            self.showIndicator(withTitle: "", and: "opening")
+            
+            DispatchQueue.global().async {
+                    guard let err = Wallet.shared.Active(pwd) else{
+                            DispatchQueue.main.async {
+                                    self.hideIndicator()
+                                    self.hideKeyboardWhenTappedAround()
+                                    self.dismiss(animated: true)
+                            }
+                            return
+                    }
+                    DispatchQueue.main.async {
+                            self.tips.text = err.localizedDescription
+                            self.hideIndicator()
+                            self.hideKeyboardWhenTappedAround()
+                    }
+            }
         }
         
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

@@ -17,6 +17,7 @@ class ContactItem:NSObject{
         var avatar:Data?
         var remark:String?
         var owner:String?
+        var avacolor:String?
         
         override init() {
                 super.init()
@@ -36,6 +37,9 @@ class ContactItem:NSObject{
         
         public static func UpdateContact(_ contact:ContactItem) -> NJError?{
                 contact.owner = Wallet.shared.Addr!
+                if !(IosLib.IosLibIsValidNinjaAddr(contact.uid)) {
+                    return NJError.contact("invalid ninja address")
+                }
                 do {
                         try CDManager.shared.UpdateOrAddOne(entity: "CDContact",
                                                             m: contact,
@@ -66,7 +70,7 @@ class ContactItem:NSObject{
                 return nil
         }
         
-        public static func LocalSavedContact(){
+        public static func LocalSavedContact() {
                 guard let owner = Wallet.shared.Addr else{
                         return
                 }
@@ -77,6 +81,7 @@ class ContactItem:NSObject{
                 guard let arr = result else {
                         return
                 }
+          
                 for obj in arr{
                         cache[obj.uid!] = obj
                 }
@@ -85,9 +90,53 @@ class ContactItem:NSObject{
         public static func IsValidContactID(_ uid:String)->Bool{
                 return IosLib.IosLibIsValidNinjaAddr(uid)
         }
+
         public static func CacheArray() -> [ContactItem]{
                 return Array(cache.values)
         }
+    
+        public static func GetAvatarColor(by uid: String) -> String {
+            
+            var obj:ContactItem?
+            let owner = Wallet.shared.Addr!
+            obj = try? CDManager.shared.GetOne(entity: "CDContact",
+                                               predicate:NSPredicate(format: "uid == %@ AND owner == %@",
+                                                                     uid, owner))
+            guard let bobj = obj else {
+                return AvatarColors[12]
+            }
+            guard let color = bobj.avacolor else {
+                let colorNum = IosLib.IosLibIconIndex(uid, 12)
+                let genColor = AvatarColors[Int(colorNum)]
+                obj?.avacolor = genColor
+                _ = UpdateContact(obj!)
+                return genColor
+            }
+            return color
+        
+        }
+    
+    public static func GetAvatarText(by uid: String) -> String {
+        var obj:ContactItem?
+        let owner = Wallet.shared.Addr!
+        obj = try? CDManager.shared.GetOne(entity: "CDContact",
+                                           predicate:NSPredicate(format: "uid == %@ AND owner == %@",
+                                                                 uid, owner))
+        let addrCut = uid.prefix(2)
+        
+        guard let bobj = obj else {
+            return String(addrCut)
+        }
+        
+        guard let nick = bobj.nickName, nick != "" else {
+            return String(addrCut)
+        }
+        
+        let nickcut = nick.prefix(2)
+        return String(nickcut)
+
+    }
+    
 }
 
 extension ContactItem:ModelObj{
@@ -101,6 +150,8 @@ extension ContactItem:ModelObj{
                 cObj.remark = self.remark
                 cObj.avatar = self.avatar
                 cObj.owner = self.owner
+                cObj.avaColor = self.avacolor
+            
         }
         
         func initByObj(obj: NSManagedObject) throws {
@@ -112,5 +163,6 @@ extension ContactItem:ModelObj{
                 self.avatar = cObj.avatar
                 self.remark = cObj.remark
                 self.owner = cObj.owner
+                self.avacolor = cObj.avaColor
         }
 }
