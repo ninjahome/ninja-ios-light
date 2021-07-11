@@ -43,6 +43,7 @@ class WebsocketSrv:NSObject{
             print("cliMsg\(cliMsg)")
             print("cliMsg.to\(String(describing: cliMsg.to))")
 //            print("\(JSON(data))")
+            let msg = MessageItem.addSentIM(cliMsg: cliMsg)
             
                 switch cliMsg.type {
                 case .plainTxt:
@@ -54,14 +55,11 @@ class WebsocketSrv:NSObject{
                 default:
                     print("send msg: no such type")
                 }
-//                IosLib.IosLibWriteMessage(cliMsg.to, cliMsg.textData, &error)
-//                IosLib.IosLibWriteMessage(cliMsg.to, data, &error)
                 if error != nil{
                     print("wirte msg error \(String(describing: error?.localizedDescription))")
-                        return NJError.msg(error!.localizedDescription)
+                    return NJError.msg(error!.localizedDescription)
                 }
                 
-                let msg = MessageItem.addSentIM(cliMsg: cliMsg)
                 ChatItem.updateLastMsg(peerUid: cliMsg.to!,
                                        msg: msg.coinvertToLastMsg(),
                                        time: Int64(Date().timeIntervalSince1970),

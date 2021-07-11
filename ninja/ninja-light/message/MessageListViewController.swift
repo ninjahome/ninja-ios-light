@@ -23,6 +23,7 @@ class MessageListViewController: UIViewController {
                 tableView.tableFooterView = UIView()
                 refreshControl.addTarget(self, action: #selector(self.reloadChatRoom(_:)), for: .valueChanged)
                 tableView.addSubview(refreshControl)
+            
                 self.reloadChatRoom(nil)
                 
                 
@@ -56,11 +57,14 @@ class MessageListViewController: UIViewController {
         @objc func reloadChatRoom(_ sender: Any?){
                 ServiceDelegate.workQueue.async { [self] in
                         ChatItem.ReloadChatRoom()
-                        sortedArray = ChatItem.SortedArra()
+                    print("\(sortedArray)")
+                    self.sortedArray = ChatItem.SortedArra()
+                    print("\(sortedArray)")
                         DispatchQueue.main.async {
                                 self.refreshControl.endRefreshing()
                                 self.tableView.reloadData()
                         }
+                    
                 }
         }
         
@@ -128,6 +132,7 @@ class MessageListViewController: UIViewController {
 extension MessageListViewController: UITableViewDelegate ,  UITableViewDataSource {
         
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            print("table zuizhong\(sortedArray)")
                 return sortedArray.count
         }
         

@@ -87,7 +87,7 @@ class AudioRecordManager:NSObject {
         self.isFinishRecord = true
         self.endTimer = CACurrentMediaTime()
         
-        if (self.endTimer - self.startTime) < 0.5 {
+        if (self.endTimer - self.startTime) < 0.1 {
             NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(AudioRecordManager.readyStartRecord), object: self)
             
             dispatch_async_safely_to_main_queue({ () -> () in
@@ -97,7 +97,7 @@ class AudioRecordManager:NSObject {
             self.audioTimeInterval = NSNumber(value: NSNumber(value: self.recorder.currentTime as Double).int32Value as Int32)
             
             if self.audioTimeInterval.int32Value < 1 {
-                self.perform(#selector(AudioRecordManager.readyStopRecord), with: self, afterDelay: 0.4)
+                self.perform(#selector(AudioRecordManager.readyStopRecord), with: self, afterDelay: 0.1)
             } else {
                 self.readyStopRecord()
             }
@@ -182,12 +182,12 @@ extension AudioRecordManager: AVAudioRecorderDelegate {
                 self.delegate?.audioRecordFailed()
                 return
             }
-            let fileName = String(data: wavAudioData, encoding: String.Encoding.utf8)
+//            let fileName = String(data: wavAudioData, encoding: String.Encoding.utf8)
            
-            let wavDestinationURL = AudioFilesManager.wavPathWithName(fileName ?? "")
-            AudioFilesManager.renameFile(TempWavRecordPath, destinationPath: wavDestinationURL)
+//            let wavDestinationURL = AudioFilesManager.wavPathWithName(fileName ?? "")
+//            AudioFilesManager.renameFile(TempWavRecordPath, destinationPath: wavDestinationURL)
             
-            self.delegate?.audioRecordWavFinish(wavAudioData, recordTime: self.audioTimeInterval.floatValue, fileHash: fileName ?? "")
+            self.delegate?.audioRecordWavFinish(wavAudioData, recordTime: self.audioTimeInterval.floatValue, fileHash: "")
             
         } else {
             self.delegate?.audioRecordFailed()

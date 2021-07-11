@@ -23,7 +23,7 @@ class ChatItem:NSObject{
                 super.init()
         }
         
-        public static func ReloadChatRoom(){
+        public static func ReloadChatRoom() {
                 var result:[ChatItem]?
                 let owner = Wallet.shared.Addr!
                 result = try? CDManager.shared.Get(entity: "CDChatItem",
@@ -51,9 +51,10 @@ class ChatItem:NSObject{
                 if let contact = ContactItem.cache[peerUid]{
                         chat!.NickName = contact.nickName
                         chat!.ImageData = contact.avatar
+                        chat?.updateTime = time
                 }
                 
-                if chat!.updateTime > time{
+                if chat!.updateTime > time {
                         return
                 }
                 
@@ -61,7 +62,7 @@ class ChatItem:NSObject{
                 chat!.LastMsg = msg
                 chat!.cObj?.unreadNo = Int32(chat!.unreadNo)
                 chat!.cObj?.lastMsg = chat!.LastMsg
-                
+            try? CDManager.shared.UpdateOrAddOne(entity: "CDChatItem", m: chat!)
                 NotificationCenter.default.post(name:NotifyMsgSumChanged,
                                                 object: self, userInfo:nil)
         }
@@ -93,8 +94,9 @@ class ChatItem:NSObject{
                         sortedArray.append(item)
                 }
                 sortedArray.sort { (a, b) -> Bool in
-                        return a.updateTime < b.updateTime
+                        return a.updateTime > b.updateTime
                 }
+                
                 return sortedArray
         }
         

@@ -15,7 +15,7 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     @IBOutlet weak var recordBtn: UIButton!
     
     @IBOutlet weak var mutiMsgType: UIView!
-    
+
 //    @IBOutlet weak var receiver: UITextView!
     @IBOutlet weak var peerNickName: UINavigationItem!
     var peerUid:String = ""
@@ -68,7 +68,7 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 guard let msges = MessageItem.cache[self.peerUid] else{
                         return
                 }
-        
+                
                 audioRecorder.delegate = self
         
                 senderBar.layer.shadowOpacity = 0.1
@@ -247,7 +247,7 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
 
             UIView.animate(withDuration: duration!) {
                 self.view.setNeedsLayout()
-                self.scrollToBottom()
+//                self.scrollToBottom()
                 
             }
         }
@@ -317,8 +317,9 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             if messages != nil && messages.count > 1 {
                 let index = IndexPath(row: messages.count-1, section: 0)
                 self.messageTableView.scrollToRow(at: index, at: .bottom, animated: animated)
-   
             }
+            
+            
         }
     
         //MARK: - TableViewDelegates
@@ -377,23 +378,24 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
         
         let cliMsg = CliMessage.init(to: peerUid, imgData: imagedata!)
         
-        
         DispatchQueue.global().async {
+            print("+++发送消息")
             guard let err = WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg) else {
                 if let msges = MessageItem.cache[self.peerUid] {
-//                    DispatchQueue.main.async {
+                    print("+++发送消息成功")
+                    DispatchQueue.main.async {
+                        print("+++发送成功 更新table view")
                         self.messages = msges
-                        print("+++发送消息")
-//                    }
+                        self.messageTableView.reloadData()
+                        self.scrollToBottom()
+                        
+                    }
                 }
                 return
             }
             DispatchQueue.main.async {
-                print("+++发送成功 更新table view")
-                    self.messageTableView.reloadData()
-                    self.scrollToBottom()
-                    self.toastMessage(title: err.localizedDescription)
-
+                print("+++发送失败")
+                self.toastMessage(title: err.localizedDescription)
             }
             
         }
@@ -446,7 +448,7 @@ extension MsgViewController: UITextViewDelegate {
 
 extension MsgViewController: RecordAudioDelegate {
     func audioRecordUpdateMetra(_ metra: Float) {
-        print("...update metra")
+        print("...update metra \(metra)")
     }
     
     func audioRecordTooShort() {
