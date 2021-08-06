@@ -21,7 +21,6 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     var peerUid:String = ""
     var contactData:ContactItem?
     
-    
     @IBOutlet weak var recordSeconds: UILabel!
     @IBOutlet weak var recordingPoint: UIView!
     @IBOutlet weak var recordingTip: UILabel!
@@ -35,6 +34,11 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     var messages: [MessageItem]!
     var isTextType = true
+//    var locationMessage: locationMsg?
+    var selectedRow: Int?
+    var isLocalMsg:Bool?
+    
+    var keyboardIsHide: Bool = true
     
     let audioRecorder = AudioRecordManager.shared
     fileprivate var finishRecording = true
@@ -64,6 +68,16 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                                                    selector: #selector(keyboardWillHide(notification:)),
                                                    name: UIResponder.keyboardWillHideNotification,
                                                    object: nil)
+                NotificationCenter.default.addObserver(self,
+                                                       selector: #selector(keyboardDidShow(notification: )),
+                                                       name: UIResponder.keyboardDidShowNotification,
+                                                       object: nil)
+                NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardDidHide(notification:)),
+                                               name: UIResponder.keyboardDidHideNotification,
+                                               object: nil)
+        
+                
                 
                 guard let msges = MessageItem.cache[self.peerUid] else{
                         return
@@ -73,29 +87,12 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         
                 senderBar.layer.shadowOpacity = 0.1
                 self.messages = msges
-//                self.receiver.text = msges.toString()
                 self.messageTableView.reloadData()
                 DispatchQueue.main.async {
                     self.scrollToBottom()
                 }
                 
         }
-    
-    
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//
-//        guard WebsocketSrv.shared.IsOnline() else {
-//
-//            print("Msg connecting")
-//                guard let err = WebsocketSrv.shared.Online() else{
-//                        return
-//                }
-//                return
-//        }
-//        print("Msg connected")
-//
-//    }
         
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -127,12 +124,14 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         vc.sourceType = .photoLibrary
         vc.delegate = self
         vc.allowsEditing = true
+        
         present(vc, animated: true, completion: nil)
     }
     
     @IBAction func location(_ sender: UIButton) {
+        self.isLocalMsg = false
+        self.performSegue(withIdentifier: "ShowMapSeg", sender: self)
     }
-    
     
     @IBAction func cancelRecord(_ sender: Any) {
         
@@ -187,7 +186,6 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         self.recordingTip.text = "上滑取消"
     }
     
-    
     func beganRecord() {
         finishRecording = true
 //        print("began. finishRecording \(finishRecording)")
@@ -214,6 +212,11 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         }
     
         @objc func keyboardWillShow(notification:NSNotification) {
+            
+            if !keyboardIsHide {
+                return
+            }
+            
             guard let userInfo = notification.userInfo else { return }
             guard let keyboardRect = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else{return}
             var duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
@@ -227,8 +230,8 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
 //            self.msgTableConstrain.constant = keyboardTopYPosition+30
             
             UIView.animate(withDuration: duration!) {
-                self.view.setNeedsLayout()
-                self.scrollToBottom()
+//                self.view.setNeedsLayout()
+//                self.scrollToBottom()
             }
             messageTableView.setContentOffset(CGPoint(x: 0, y: CGFloat.greatestFiniteMagnitude), animated: true)
             
@@ -246,10 +249,24 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
 //            self.msgTableConstrain.constant = 90.0
 
             UIView.animate(withDuration: duration!) {
-                self.view.setNeedsLayout()
+//                self.view.setNeedsLayout()
 //                self.scrollToBottom()
                 
             }
+        }
+    
+        @objc func keyboardDidShow(notification:NSNotification) {
+            guard let _ = notification.userInfo else {
+                return
+            }
+            self.keyboardIsHide = false
+        }
+
+        @objc func keyboardDidHide(notification:NSNotification) {
+            guard let _ = notification.userInfo else {
+                return
+            }
+            self.keyboardIsHide = true
         }
 
         @objc func contactUpdate(notification:NSNotification){
@@ -279,7 +296,20 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 }
         }
         @IBAction func EditContactInfo(_ sender: UIBarButtonItem) {
+            
+            if isInContact() {
                 self.performSegue(withIdentifier: "EditContactDetailsSEG", sender: self)
+            } else {
+                self.performSegue(withIdentifier: "ShowStrangerDetailSeg", sender: self)
+            }
+        }
+        
+        private func isInContact() -> Bool {
+            
+            if ContactItem.GetContact(peerUid) != nil {
+                return true
+            }
+            return false
         }
         
         @IBAction func voiceBtn(_ sender: UIButton) {
@@ -297,19 +327,47 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             }
             
         }
-    
-    
+
         private func populateView(){
                 contactData = ContactItem.cache[peerUid]
                 self.peerNickName.title = contactData?.nickName ?? peerUid
         }
     
+        @IBAction func locationBtn(_ sender: UIButton) {
+            if let cell = sender.superview?.superview?.superview as? UITableViewCell {
+                self.selectedRow = self.messageTableView.indexPath(for: cell)?.row
+                self.isLocalMsg = true
+            }
+            
+            self.performSegue(withIdentifier: "ShowMapSeg", sender: self)
+        }
+    
         // MARK: - Navigation
         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
                 if segue.identifier == "EditContactDetailsSEG"{
-                        let vc : ContactDetailsViewController = segue.destination as! ContactDetailsViewController
-                        vc.itemUID = peerUid
+                    let vc : ContactDetailsViewController = segue.destination as! ContactDetailsViewController
+                    vc.itemUID = peerUid
                 }
+                if segue.identifier == "ShowStrangerDetailSeg" {
+                    let vc:SearchDetailViewController = segue.destination as! SearchDetailViewController
+                    vc.uid = peerUid
+                }
+
+                if segue.identifier == "ShowMapSeg" {
+                    let vc: MapViewController = segue.destination as! MapViewController
+                    vc.delegate = self
+                    
+                    if isLocalMsg!, let idx = self.selectedRow {
+                        vc.isMsg = true
+                        
+                        let msg:MessageItem = messages[idx]
+                        vc.sendMsg = msg
+                    } else {
+                        vc.isMsg = false
+                    }
+                    
+                }
+        
         }
     
         func scrollToBottom(animated: Bool = false) {
@@ -318,8 +376,7 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 let index = IndexPath(row: messages.count-1, section: 0)
                 self.messageTableView.scrollToRow(at: index, at: .bottom, animated: animated)
             }
-            
-            
+        
         }
     
         //MARK: - TableViewDelegates
@@ -347,6 +404,10 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! ImageTableViewCell
                 cell.updateMessageCell(by: messages[indexPath.row])
                 return cell
+            case .location:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "locationCell", for: indexPath) as! LocationTableViewCell
+                cell.updateMessageCell(by: messages[indexPath.row])
+                return cell
             default:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "messageCell", for: indexPath) as! MessageTableViewCell
                 cell.updateMessageCell(by: messages[indexPath.row])
@@ -367,7 +428,9 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
 extension MsgViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true, completion: nil)
-        let img = info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerOriginalImage")] as! UIImage
+//        let img = info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerOriginalImage")] as! UIImage
+        let img = info[.originalImage] as! UIImage
+
         var imagedata:Data?
         
         if img.jpeg != nil {
@@ -414,6 +477,23 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
 //            self.toastMessage(title: err.localizedDescription)
 //        }
 
+    }
+}
+
+extension MsgViewController: MapViewControllerDelegate {
+    func sendLocation(location: locationMsg) {
+        print("send location msg:\(location.la)\(location.lo)\(location.str)")
+        let cliMsg = CliMessage.init(to: peerUid, locationData: location)
+        guard let err = WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg) else {
+            if let msges = MessageItem.cache[self.peerUid] {
+                messages = msges
+                messageTableView.reloadData()
+                scrollToBottom()
+            }
+            return
+        }
+        
+        self.toastMessage(title: err.localizedDescription)
     }
 }
 
@@ -480,6 +560,11 @@ extension MsgViewController: RecordAudioDelegate {
     }
     
     func audioRecordWavFinish(_ uploadWavData: Data, recordTime: Float, fileHash: String) {
+        if recordTime < 1 {
+            self.toastMessage(title: "Record too short")
+            return
+        }
+        
         let cliMsg = CliMessage.init(to: peerUid, audioD: uploadWavData, length: Int(recordTime))
         guard let err = WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg) else {
             if let msges = MessageItem.cache[self.peerUid] {

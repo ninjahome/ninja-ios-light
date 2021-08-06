@@ -27,12 +27,15 @@ class WalletViewController: UIViewController {
         override func viewDidLoad() {
                 super.viewDidLoad()
            
-            let avaText = Wallet.GenAvatarText()
-            avatar.setTitle(avaText, for: .normal)
-            
+            setAvatext()
             let hex = Wallet.GenAvatarColor()
             avatar.backgroundColor = UIColor.init(hex: hex)
         }
+    
+    func setAvatext() {
+        let avaText = Wallet.GenAvatarText()
+        avatar.setTitle(avaText, for: .normal)
+    }
     
         @IBAction func QRCodeShow(_ sender: Any) {
                 guard let addr = self.address.text else {
@@ -82,6 +85,7 @@ class WalletViewController: UIViewController {
                     vc.nick = nickName.text
                 vc.returnHost = {[weak self] res in
                     self?.nickName.text = res
+                    self?.setAvatext()
                 }
             }
         }

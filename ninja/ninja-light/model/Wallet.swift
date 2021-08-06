@@ -7,7 +7,7 @@
 
 import Foundation
 import CoreData
-import IosLib
+import ChatLib
 import SwiftyJSON
 
 class Wallet:NSObject{
@@ -48,32 +48,33 @@ class Wallet:NSObject{
         }
         
         func New(_ password:String) throws {
-                let walletJson =  IosLib.IosLibNewWallet(password)
-                if walletJson == ""{
-                        throw NJError.wallet("Create Wallet Failed")
-                }
-                let addr = IosLib.IosLibActiveAddress()
-                if addr == ""{
-                        throw NJError.wallet("Create Wallet Failed")
-                }
-                self.Addr = addr
-                self.wJson = walletJson
-                self.loaded = true
-                self.useFaceID = false
-                self.nickName = ""
-                try CDManager.shared.Delete(entity: "CDWallet")
-                try CDManager.shared.AddEntity(entity: "CDWallet", m: self)
+
+            let walletJson =  ChatLib.ChatLibNewWallet(password)
+            if walletJson == ""{
+                    throw NJError.wallet("Create Wallet Failed")
+            }
+            let addr = ChatLib.ChatLibActiveAddress()
+            if addr == ""{
+                    throw NJError.wallet("Create Wallet Failed")
+            }
+            self.Addr = addr
+            self.wJson = walletJson
+            self.loaded = true
+            self.useFaceID = false
+            self.nickName = ""
+            try CDManager.shared.Delete(entity: "CDWallet")
+            try CDManager.shared.AddEntity(entity: "CDWallet", m: self)
         }
     
         func IsActive()->Bool{
-                return IosLib.IosLibWalletIsOpen()
+            return ChatLib.ChatLibWalletIsOpen()
         }
             
         func Active(_ password:String)-> Error? {
-                var error:NSError? = nil
+            var error:NSError? = nil
 //                IosLib.IosLibActiveWallet(self.wJson, password, &error)
-                IosLib.IosLibActiveWallet(self.wJson, password, self.deviceToken, &error)
-                return error
+            ChatLib.ChatLibActiveWallet(self.wJson, password, self.deviceToken, &error)
+            return error
         }
     
         func serializeWalletJson(cipher walletJson: String) -> String? {
@@ -86,26 +87,26 @@ class Wallet:NSObject{
         }
     
         func Import(cipher walletJson: String, addr: String, auth password: String) throws {
-                var error: NSError? = nil
+            var error: NSError? = nil
 //                IosLib.IosLibActiveWallet(walletJson, password, &error)
-                IosLib.IosLibActiveWallet(walletJson, password, self.deviceToken, &error)
-                if error != nil {
-                    print("Import Failed\(String(describing: error?.localizedDescription))")
-                }
-                print("Import address \(addr)")
-                if addr != "" {
-                    self.Addr = addr
-                    self.wJson = walletJson
-                    self.nickName = ""
-                    self.loaded = true
-                    self.useFaceID = false
-    //                try CDManager.shared.AddEntity(entity: "CDWallet", m: self)
-                    try CDManager.shared.Delete(entity: "CDWallet")
-                    try CDManager.shared.UpdateOrAddOne(entity: "CDWallet", m: self)
+            ChatLib.ChatLibActiveWallet(walletJson, password, self.deviceToken, &error)
+            if error != nil {
+                print("Import Failed\(String(describing: error?.localizedDescription))")
+            }
+            print("Import address \(addr)")
+            if addr != "" {
+                self.Addr = addr
+                self.wJson = walletJson
+                self.nickName = ""
+                self.loaded = true
+                self.useFaceID = false
+//                try CDManager.shared.AddEntity(entity: "CDWallet", m: self)
+                try CDManager.shared.Delete(entity: "CDWallet")
+                try CDManager.shared.UpdateOrAddOne(entity: "CDWallet", m: self)
 
-                } else {
-                    throw NJError.wallet("Import Wallet Init Failed")
-                }
+            } else {
+                throw NJError.wallet("Import Wallet Init Failed")
+            }
             
         }
     
@@ -160,7 +161,7 @@ class Wallet:NSObject{
             guard let addr = Wallet.shared.Addr else {
                 return AvatarColors[12]
             }
-            let idx = IosLib.IosLibIconIndex(addr, 12)
+            let idx = ChatLib.ChatLibIconIndex(addr, 12)
             return AvatarColors[Int(idx)]
         }
     

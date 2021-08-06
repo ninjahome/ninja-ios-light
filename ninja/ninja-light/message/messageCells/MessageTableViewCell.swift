@@ -10,8 +10,9 @@ import UIKit
 class MessageTableViewCell: UITableViewCell {
 
     @IBOutlet weak var msgBackgroundView: UIImageView!
-    @IBOutlet weak var msgLabel: UILabel!
+//    @IBOutlet weak var msgLabel: UILabel!
     
+    @IBOutlet weak var msgLabel: UITextView!
     var trailingConstrain: NSLayoutConstraint!
     var leadingConstrain:NSLayoutConstraint!
     
@@ -39,7 +40,10 @@ class MessageTableViewCell: UITableViewCell {
         
         trailingConstrain = msgBackgroundView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20)
         leadingConstrain = msgBackgroundView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20)
-        msgLabel.text = message.payload as? String
+        
+        if let msgText = message.payload as? String {
+            msgLabel.text = msgText
+        }
         
         //message bubble
         if message.isOut {

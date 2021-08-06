@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import IosLib
 import SwiftyJSON
+import ChatLib
 
 class WebsocketSrv:NSObject{
         public static var shared = WebsocketSrv()
@@ -16,19 +16,18 @@ class WebsocketSrv:NSObject{
         }
         
         func IsOnline() -> Bool {
-                
-                return IosLib.IosLibWSIsOnline()
+            return ChatLib.ChatLibWSIsOnline()
         }
         
         func Online()->Error?{
                 var err:NSError? = nil
-                IosLib.IosLibWSOnline(&err)
-            print("online err \(String(describing: err?.localizedDescription))")
+                ChatLib.ChatLibWSOnline(&err)
+                print("online err \(String(describing: err?.localizedDescription))")
                 return err
         }
         
         func Offline() {
-                IosLib.IosLibWSOffline()
+            ChatLib.ChatLibWSOffline()
         }
         
         func SendIMMsg(cliMsg:CliMessage) -> NJError?{
@@ -47,11 +46,13 @@ class WebsocketSrv:NSObject{
             
                 switch cliMsg.type {
                 case .plainTxt:
-                    IosLib.IosLibWriteMessage(cliMsg.to, cliMsg.textData, &error)
+                    ChatLib.ChatLibWriteMessage(cliMsg.to, cliMsg.textData, &error)
                 case .image:
-                    IosLib.IosLibWriteImageMessage(cliMsg.to, cliMsg.imgData, &error)
+                    ChatLib.ChatLibWriteImageMessage(cliMsg.to, cliMsg.imgData, &error)
                 case .voice:
-                    IosLib.IosLibWriteVoiceMessage(cliMsg.to, cliMsg.audioData?.content, cliMsg.audioData!.duration, &error)
+                    ChatLib.ChatLibWriteVoiceMessage(cliMsg.to, cliMsg.audioData?.content, cliMsg.audioData!.duration, &error)
+                case .location:
+                    ChatLib.ChatLibWriteLocationMessage(cliMsg.to, cliMsg.locationData!.lo, cliMsg.locationData!.la, cliMsg.locationData!.str, &error)
                 default:
                     print("send msg: no such type")
                 }
@@ -59,10 +60,10 @@ class WebsocketSrv:NSObject{
                     print("wirte msg error \(String(describing: error?.localizedDescription))")
                     return NJError.msg(error!.localizedDescription)
                 }
-                
+
                 ChatItem.updateLastMsg(peerUid: cliMsg.to!,
                                        msg: msg.coinvertToLastMsg(),
-                                       time: Int64(Date().timeIntervalSince1970),
+                                       time: msg.timeStamp,
                                        unread: 0)
                 return nil
         }
@@ -70,11 +71,15 @@ class WebsocketSrv:NSObject{
     
 }
 
-extension WebsocketSrv: IosLibAppCallBackProtocol {
+extension WebsocketSrv: ChatLibUnicastCallBackProtocol {
+    func fileMessage(_ from: String?, to: String?, payload: Data?, size: Int, name: String?) throws {
+        print("file msg size\(size)")
+    }
+    
     func imageMessage(_ from: String?, to: String?, payload: Data?, time: Int64) throws {
         let owner = Wallet.shared.Addr!
         if owner != to {
-            throw NJError.msg("this txt im is not for me")
+            throw NJError.msg("this image im is not for me")
         }
         let cliMsg = CliMessage.init(to: to!, imgData: payload!)
         let msg = MessageItem.init(cliMsg: cliMsg, from: from!, time: time, out: false)
@@ -84,13 +89,27 @@ extension WebsocketSrv: IosLibAppCallBackProtocol {
     }
     
     func locationMessage(_ from: String?, to: String?, l: Float, a: Float, name: String?, time: Int64) throws {
+        let owner = Wallet.shared.Addr!
+        if owner != to {
+            throw NJError.msg("this location im is not for me")
+        }
+        let localMsg = locationMsg()
+        localMsg.la = a
+        localMsg.lo = l
+        localMsg.str = name ?? "[]"
+        let cliMsg = CliMessage.init(to: to!, locationData: localMsg)
+    
+//        let cliMsg = CliMessage.init(to: to!, la: a, lo: l, describe: name!)
+        let msg = MessageItem.init(cliMsg: cliMsg, from: from!, time: time, out: false)
+        MessageItem.receivedIM(msg: msg)
+        ChatItem.updateLastMsg(peerUid: from!, msg: msg.coinvertToLastMsg(), time: time, unread: 1)
         print("location msg received")
     }
     
     func voiceMessage(_ from: String?, to: String?, payload: Data?, length: Int, time: Int64) throws {
         let owner = Wallet.shared.Addr!
         if owner != to {
-            throw NJError.msg("this txt im is not for me")
+            throw NJError.msg("this voice im is not for me")
         }
         let cliMsg = CliMessage.init(to: to!, audioD: payload!, length: length)
         let msg = MessageItem.init(cliMsg: cliMsg, from: from!, time: time, out: false)
@@ -111,10 +130,13 @@ extension WebsocketSrv: IosLibAppCallBackProtocol {
     }
     
     func webSocketClosed() {
+        NSLog("======> websocket is closed")
         NotificationCenter.default.post(name:NotifyWebsocketOffline,
                                         object: self,
                                         userInfo:nil)
     }
+    
+    
     
 }
 

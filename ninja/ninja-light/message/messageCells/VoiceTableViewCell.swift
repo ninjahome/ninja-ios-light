@@ -65,19 +65,18 @@ class VoiceTableViewCell: UITableViewCell {
     
     func setBtn(isOut: Bool, data: Data, long: Int) {
         playBtn.backgroundColor = .clear
-        
-//        print("audio duration\(long)")
-        let rawImg = UIImage(named: "voice_00019")!
-        
+        let rawImg = UIImage(named: "voice_00009")!
+        let flipImgH = filpImageH(rawImg)
+    
         playBtn.setTitle("\(long)", for: .normal)
         //voice message bubble
+//        let space = 20*long/60 + 20
+        let space = 20
         if isOut {
-            let flipImgH = filpImageH(rawImg)
-            playBtn.imagePosition(at: .right, space: 18)
+            playBtn.imagePosition(at: .right, space: CGFloat(space))
             playBtn.setImage(flipImgH, for: .normal)
-
         } else {
-            playBtn.imagePosition(at: .left, space: 18)
+            playBtn.imagePosition(at: .left, space: CGFloat(space))
             playBtn.setImage(rawImg, for: .normal)
         }
         
@@ -95,59 +94,82 @@ class VoiceTableViewCell: UITableViewCell {
         return flipImage
     }
     
+    fileprivate func getFilpAnimatedImg() -> [UIImage] {
+        var imgs:[UIImage] = []
+        for x in 0...9 {
+            let name = "voice_0000" + String(x)
+            let img = self.filpImageH(UIImage(named: name)!)
+            imgs.append(img)
+        }
+        return imgs
+    }
+    
+    
     @objc func playAudioBtnAction() {
         if let data = self.audioData {
             AudioPlayManager.sharedInstance.playMusic(file: data)
             
-//            let time = TimeInterval(self.long)
-//            let img = UIImage.animatedImageNamed("voice_0000", duration: time)!
-//            if self.isOut! {
-//                let rimg = self.filpImageH(img)
-//                self.playBtn.setImage(rimg, for: .normal)
-//            } else {
-//                self.playBtn.setImage(img, for: .normal)
-//            }
+            let time = TimeInterval(self.long)
+            
+            let imgs = getFilpAnimatedImg()
+            
+            let rimg = UIImage.animatedImage(with: imgs, duration: 2)
+            let img = UIImage.animatedImageNamed("voice_0000", duration: 2)!
+            if self.isOut! {
+                self.playBtn.setImage(rimg, for: .normal)
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+time) {
+                    let rawImg = UIImage(named: "voice_00009")!
+                    let flipImgH = self.filpImageH(rawImg)
+                    self.playBtn.setImage(flipImgH, for: .normal)
+                }
+            } else {
+                self.playBtn.setImage(img, for: .normal)
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+time) {
+                    let rawImg = UIImage(named: "voice_00009")!
+                    self.playBtn.setImage(rawImg, for: .normal)
+                }
+            }
             
         }
     }
 
-    
-    private func setup(_ flip:Bool) {
-            DispatchQueue.global().async {
-                var arr = Array<UIImage>.init()
-                for e in 0...20 {
-                    let str = "voice_000" + String.init(format: "%02d", e)
-                    let path = Bundle.main.path(forResource: str, ofType: nil)
-                    if let path = path {
-                        if let image = UIImage.init(named: path) {
-                            if flip {
-                                let flipimg = self.filpImageH(image)
-                                arr.append(flipimg)
-                            } else {
-                                arr.append(image)
-                            }
-
-                        }
-                    }
-                }
-                DispatchQueue.main.async {
-                    let imageView = UIImageView()
-                    
-                    self.addSubview(imageView)
-                    
-                    imageView.contentMode = .scaleAspectFill
-                    imageView.clipsToBounds = true
-                    imageView.animationImages = arr
-//                    imageView.animationDuration = self.aniamtionTime
-                    imageView.animationDuration = 2
-                    
-                    imageView.animationRepeatCount = 1
-                    imageView.startAnimating()
-//                    self.gifView = imageView
-//                    self.playBtn.imageView = imageView
-                }
-            }
-        }
-
+//
+//    private func setup(_ flip:Bool) {
+//            DispatchQueue.global().async {
+//                var arr = Array<UIImage>.init()
+//                for e in 0...20 {
+//                    let str = "voice_000" + String.init(format: "%02d", e)
+//                    let path = Bundle.main.path(forResource: str, ofType: nil)
+//                    if let path = path {
+//                        if let image = UIImage.init(named: path) {
+//                            if flip {
+//                                let flipimg = self.filpImageH(image)
+//                                arr.append(flipimg)
+//                            } else {
+//                                arr.append(image)
+//                            }
+//
+//                        }
+//                    }
+//                }
+//                DispatchQueue.main.async {
+//                    let imageView = UIImageView()
+//
+//                    self.addSubview(imageView)
+//
+//                    imageView.contentMode = .scaleAspectFill
+//                    imageView.clipsToBounds = true
+//                    imageView.animationImages = arr
+////                    imageView.animationDuration = self.aniamtionTime
+//                    imageView.animationDuration = 2
+//
+//                    imageView.animationRepeatCount = 1
+//                    imageView.startAnimating()
+////                    self.gifView = imageView
+////                    self.playBtn.imageView = imageView
+//                }
+//            }
+//        }
+//
 
 }

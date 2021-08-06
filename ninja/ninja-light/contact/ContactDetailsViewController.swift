@@ -61,10 +61,11 @@ class ContactDetailsViewController: UIViewController {
     }
     
     @objc func notifiAction(notification:NSNotification){
-            let data = notification.object as! ContactItem
+        if let data = notification.object as? ContactItem {
             self.itemData = data
             self.populateView()
             self.setAvatar()
+        }
     }
     
     

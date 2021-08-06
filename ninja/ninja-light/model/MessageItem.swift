@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 import SwiftyJSON
-import IosLib
+import ChatLib
 
 typealias MessageList = [MessageItem]
 
@@ -73,10 +73,13 @@ class MessageItem: NSObject {
         }
         
         func coinvertToLastMsg() -> String{
-                switch self.typ {
+            switch self.typ {
                 case .plainTxt:
-                        let time = Date.init(timeIntervalSince1970: TimeInterval(self.timeStamp))
-                        return dateFormatterGet.string(from: time)
+//                        let time = Date.init(timeIntervalSince1970: TimeInterval(self.timeStamp))
+//                    dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                    
+//                        return dateFormatterGet.string(from: time)
+                    return "[Text Message]"
                 case .voice:
                         return "[Voice Message]"
                 case .video:
@@ -87,7 +90,7 @@ class MessageItem: NSObject {
                         return "[Contact]"
                 case .image:
                         return "[Image]"
-                }
+            }
         }
         
 //        init(json:JSON, out:Bool){
@@ -130,6 +133,8 @@ class MessageItem: NSObject {
                     self.payload = cliMsg.imgData
                 case .voice:
                     self.payload = cliMsg.audioData
+                case .location:
+                    self.payload = cliMsg.locationData
 //                    if let ad = cliMsg.audioData {
 //                        if let url = AudioFilesManager.saveWavData(ad, fileName: String(time)) {
 //                            self.payload = url.path
@@ -142,14 +147,14 @@ class MessageItem: NSObject {
                 self.isOut = out
         }
         
-        public static func addSentIM(cliMsg:CliMessage) -> MessageItem{
+        public static func addSentIM(cliMsg:CliMessage) -> MessageItem {
                 
                 let sender = Wallet.shared.Addr!
                 let msg = MessageItem.init()
                 msg.from = sender
                 msg.to = cliMsg.to
                 msg.typ = cliMsg.type
-                msg.timeStamp = Int64(NSDate().timeIntervalSince1970)
+                msg.timeStamp = Int64(Date().timeIntervalSince1970)
                 msg.isOut = true
 //                msg.payload = cliMsg.data
                 switch msg.typ {
@@ -159,6 +164,8 @@ class MessageItem: NSObject {
                     msg.payload = cliMsg.imgData
                 case .voice:
                     msg.payload = cliMsg.audioData
+                case .location:
+                    msg.payload = cliMsg.locationData
 //                    if let ad = cliMsg.audioData {
 //                        if let url = AudioFilesManager.saveWavData(ad, fileName: String(msg.timeStamp)) {
 //                            msg.payload = url.path
@@ -215,6 +222,8 @@ extension MessageItem: ModelObj {
                     uObj.image = self.payload as? Data
                 case .voice:
                     uObj.media = self.payload as? NSObject
+                case .location:
+                    uObj.media = self.payload as? NSObject
                 default:
                     print("full fill msg: no such type")
                 }
@@ -241,6 +250,8 @@ extension MessageItem: ModelObj {
                     self.payload = uObj.image
                 case .voice:
                     self.payload = uObj.media as? audioMsg
+                case .location:
+                    self.payload = uObj.media as? locationMsg
                 default:
                     print("init by msg obj: no such type")
                 }
@@ -251,7 +262,7 @@ extension MessageItem: ModelObj {
         }
 }
 
-extension MessageList{
+extension MessageList {
         
         func toString() -> String {
                 

@@ -39,6 +39,7 @@ class ChatItem:NSObject{
         }
         
         public static func updateLastMsg(peerUid:String, msg:String, time:Int64, unread no:Int){
+//                let formatTime = formatTimeStamp(by: time)
                 var chat = CachedChats[peerUid]
                 if chat == nil{
                         chat = ChatItem.init()
@@ -51,21 +52,28 @@ class ChatItem:NSObject{
                 if let contact = ContactItem.cache[peerUid]{
                         chat!.NickName = contact.nickName
                         chat!.ImageData = contact.avatar
-                        chat?.updateTime = time
+                        
                 }
                 
                 if chat!.updateTime > time {
                         return
                 }
+                chat!.updateTime = time
                 
                 chat!.unreadNo += no
                 chat!.LastMsg = msg
+//            print("update last msg\()")
                 chat!.cObj?.unreadNo = Int32(chat!.unreadNo)
                 chat!.cObj?.lastMsg = chat!.LastMsg
-            try? CDManager.shared.UpdateOrAddOne(entity: "CDChatItem", m: chat!)
+            CachedChats[peerUid] = chat
+//            try? CDManager.shared.UpdateOrAddOne(entity: "CDChatItem", m: chat!)
+            
+            let owner = Wallet.shared.Addr!
+            try? CDManager.shared.UpdateOrAddOne(entity: "CDChatItem", m: chat!, predicate: NSPredicate(format: "uid == %@ AND owner == %@", peerUid, owner))
                 NotificationCenter.default.post(name:NotifyMsgSumChanged,
                                                 object: self, userInfo:nil)
         }
+    
         
         public static func updateAllLastMsg(msg:[String:ChatItem])throws {
                 
@@ -83,7 +91,7 @@ class ChatItem:NSObject{
                                                 object: self, userInfo:nil)
         }
         
-        public static func SortedArra() -> [ChatItem]{
+        public static func SortedArra() -> [ChatItem] {
                 var sortedArray:[ChatItem] = []
                 
                 guard CachedChats.count > 0 else {
@@ -96,6 +104,10 @@ class ChatItem:NSObject{
                 sortedArray.sort { (a, b) -> Bool in
                         return a.updateTime > b.updateTime
                 }
+            
+//            for item in sortedArray {
+//                print("#$$$$sorted chat item array\(String(describing: item.NickName))...\(Date.init(timeIntervalSince1970: TimeInterval(item.updateTime)))...\(item.updateTime)")
+//            }
                 
                 return sortedArray
         }

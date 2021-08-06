@@ -33,12 +33,80 @@ func dispatch_async_safely_to_queue(_ queue: DispatchQueue, _ block: @escaping (
     }
 }
 
+public func formatTimeStamp(by timeStamp: Int64) -> String {
+        let time = Date.init(timeIntervalSince1970: TimeInterval(timeStamp))
+        dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
+
+        return dateFormatterGet.string(from: time)
+}
+
 public struct AlertPayload {
         var title:String!
         var placeholderTxt:String?
         var securityShow:Bool = true
         var keyType:UIKeyboardType = .default
         var action:((String?, Bool)->Void)!
+}
+
+extension String {
+    func isIncludeChinese() -> Bool {
+        for ch in self.unicodeScalars {
+            if (0x4e00 < ch.value  && ch.value < 0x9fff) { return true } // 中文字符范围：0x4e00 ~ 0x9fff
+        }
+        return false
+    }
+    
+    func transformToPinyin(hasBlank: Bool = false) -> String {
+        
+        let stringRef = NSMutableString(string: self) as CFMutableString
+        CFStringTransform(stringRef,nil, kCFStringTransformToLatin, false) // 转换为带音标的拼音
+        CFStringTransform(stringRef, nil, kCFStringTransformStripCombiningMarks, false) // 去掉音标
+        let pinyin = stringRef as String
+        return hasBlank ? pinyin : pinyin.replacingOccurrences(of: " ", with: "")
+    }
+    
+    func transformToPinyinHead(lowercased: Bool = false) -> String {
+        let pinyin = self.transformToPinyin(hasBlank: true).capitalized // 字符串转换为首字母大写
+        var headPinyinStr = ""
+        for ch in pinyin {
+            if ch <= "Z" && ch >= "A" {
+                headPinyinStr.append(ch) // 获取所有大写字母
+            }
+        }
+        return lowercased ? headPinyinStr.lowercased() : headPinyinStr
+    }
+    
+    func transformToCapitalized() -> String {
+        let str = self.capitalized
+        var selectStr = ""
+        for ch in str {
+            if ch <= "Z" && ch >= "A" {
+                selectStr.append(ch)
+            }
+        }
+        return selectStr
+    }
+    
+}
+
+extension Array {
+    
+    /// 数组内中文按拼音字母排序
+    ///
+    /// - Parameter ascending: 是否升序（默认升序）
+    func sortedByPinyin(ascending: Bool = true) -> Array<ContactItem>? {
+        if self is Array<ContactItem> {
+            return (self as! Array<ContactItem>).sorted { (value1, value2) -> Bool in
+                guard let pinyin1 = value1.sortPinyin, let pinyin2 = value2.sortPinyin else {
+                    return false
+                }
+                
+//                let pinyin2 = value2.sortPinyin!
+                return pinyin1.compare(pinyin2) == (ascending ? .orderedAscending : .orderedDescending)
+            }
+        }
+        return nil
+    }
 }
 
 extension UIImage {
@@ -73,15 +141,17 @@ extension UIViewController {
                 return Indicator
         }
         
-        func toastMessage(title:String) ->Void {DispatchQueue.main.async {
+        func toastMessage(title:String) ->Void {
+//            DispatchQueue.main.async {
                 let hud : MBProgressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
                 hud.mode = MBProgressHUDMode.text
                 hud.detailsLabel.text = title
                 hud.removeFromSuperViewOnHide = true
                 hud.margin = 10
                 hud.offset.y = 250.0
-                hud.hide(animated: true, afterDelay: 5)
-        }}
+                hud.hide(animated: true, afterDelay: 3)
+//            }
+        }
         
         func CustomerAlert(name:String){ DispatchQueue.main.async {
                 

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import IosLib
+import ChatLib
 
 class ServiceDelegate: NSObject {
         public static let workQueue = DispatchQueue.init(label: "Serivce Queue", qos: .utility)
@@ -17,14 +17,15 @@ class ServiceDelegate: NSObject {
         
         public static func InitService(){
                 //TODO:: more system configs
-                IosLib.IosLibConfigApp("", WebsocketSrv.shared)
+//                IosLib.IosLibConfigApp("", WebsocketSrv.shared)
+                ChatLib.ChatLibConfigApp("", WebsocketSrv.shared, nil)
                 ContactItem.LocalSavedContact()
                 MessageItem.loadUnread()
                 dateFormatterGet.timeStyle = .medium
         }
     
         public static func InitConfig() {
-            IosLib.IosLibConfigApp("", WebsocketSrv.shared)
+            ChatLib.ChatLibConfigApp("", WebsocketSrv.shared, nil)
         }
     
 }

@@ -41,9 +41,11 @@ extension ShowImageDetail {
 //    }
 
     
-    guard let window = UIApplication.shared.keyWindow else {
+        guard let window = UIApplication.shared.keyWindow else {
             return
         }
+    
+        window.endEditing(true)
     
         originalFrame = CGRect()
 //    let oldFrame = imageV.convert(imageV.bounds, to: window)
@@ -69,7 +71,7 @@ extension ShowImageDetail {
         let tap2 = UITapGestureRecognizer(target: self, action: #selector(ShowImageDetail.showOriginal(sender:)))
         backgroundView.addGestureRecognizer(tap2)
     
-    let longTap = UILongPressGestureRecognizer(target: self, action:    #selector(ShowImageDetail.longPress(sender:)))
+        let longTap = UILongPressGestureRecognizer(target: self, action:    #selector(ShowImageDetail.longPress(sender:)))
         backgroundView.addGestureRecognizer(longTap)
     }
     

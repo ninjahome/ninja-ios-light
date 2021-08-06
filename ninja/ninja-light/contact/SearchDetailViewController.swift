@@ -42,4 +42,51 @@ class SearchDetailViewController: UIViewController {
     @IBAction func backBtn(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    @IBAction func saveToContact(_ sender: Any) {
+        
+        let contact = ContactItem.init()
+        contact.uid = self.uid
+        //                contact.nickName = self.nickName.text
+        //                contact.remark = remarks.text
+        //                contact.avatar = self.avatar.image?.pngData()//TODO::Load avatar from netework
+        guard let err = ContactItem.UpdateContact(contact) else{
+                NotificationCenter.default.post(name:NotifyContactChanged,
+                                                object: nil, userInfo:nil)
+                return
+        }
+
+        self.toastMessage(title: err.localizedDescription)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "SaveNewContactSeg" {
+
+            let contact = ContactItem.init()
+            contact.uid = self.uid
+
+            let vc = segue.destination as! ContactDetailsViewController
+            vc.itemUID = self.uid
+            vc.itemData = contact
+
+        }
+        
+        if segue.identifier == "StrangerMessageDetailSeg" {
+            guard let id = self.uid else {
+                return
+            }
+            let vc : MsgViewController = segue.destination as! MsgViewController
+            vc.peerUid = id
+        }
+    }
+    
+    @IBAction func chatWith(_ sender: Any) {
+        guard self.uid != nil else {
+                return
+        }
+//        self.performSegue(withIdentifier: "ShowMessageDetailsSEG", sender: self)
+
+    }
+    
+    
 }

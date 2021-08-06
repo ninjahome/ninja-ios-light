@@ -17,8 +17,9 @@ class NewWalletViewController: UIViewController {
     
             
         override func viewDidLoad() {
-                super.viewDidLoad()
-                self.hideKeyboardWhenTappedAround()
+            super.viewDidLoad()
+            self.hideKeyboardWhenTappedAround()
+            
             if Wallet.shared.Addr != nil {
                 importtext.isHidden = true
                 importbtn.isHidden = true

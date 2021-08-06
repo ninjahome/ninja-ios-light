@@ -9,7 +9,6 @@ import UIKit
 
 class ContactAddViewController: UIViewController {
     
-    
     @IBOutlet weak var searchAddr: UITextField!
     
     var contactItem: ContactItem?
@@ -19,7 +18,7 @@ class ContactAddViewController: UIViewController {
         
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
-        
+
     override func viewDidLoad() {
         super.viewDidLoad()
         searchAddr.delegate = self
@@ -60,7 +59,6 @@ class ContactAddViewController: UIViewController {
     
 }
 
-
 extension ContactAddViewController: ScannerViewControllerDelegate {
         
         func codeDetected(code: String) {
@@ -70,6 +68,7 @@ extension ContactAddViewController: ScannerViewControllerDelegate {
                         self.contactItem = item
                         self.performSegue(withIdentifier: "SearchExistSegue", sender: self)
                     } else {
+                        self.searchAddr.text = code
                         self.performSegue(withIdentifier: "SearchNewSegue", sender: self)
                     }
                 } else {
@@ -79,7 +78,6 @@ extension ContactAddViewController: ScannerViewControllerDelegate {
 
         }
 }
-
 
 extension ContactAddViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

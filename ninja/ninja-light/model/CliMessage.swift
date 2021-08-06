@@ -17,7 +17,7 @@ enum CMT:Int {
     case video = 4
     case contact = 5
 }
-
+//
 //struct audioMsg:Codable {
 //    var content: Data = Data()
 //    var duration: Int = 0
@@ -31,17 +31,41 @@ class audioMsg: NSObject, NSCoding {
         coder.encode(content, forKey: "content")
         coder.encode(duration, forKey: "duration")
     }
-    
+
     required init?(coder: NSCoder) {
         self.content = coder.decodeObject(forKey: "content") as! Data
         self.duration = coder.decodeInteger(forKey: "duration")
-        
+
+    }
+
+    override init() {
+        super.init()
+    }
+
+}
+
+class locationMsg: NSObject, NSCoding {
+    
+    var lo: Float = 0
+    var la: Float = 0
+    var str: String = ""
+    
+    func encode(with coder: NSCoder) {
+        coder.encode(lo, forKey: "lo")
+        coder.encode(la, forKey: "la")
+        coder.encode(str, forKey: "str")
+    }
+    
+    required init?(coder: NSCoder) {
+        self.la = coder.decodeFloat(forKey: "la")
+        self.lo = coder.decodeFloat(forKey: "lo")
+        self.str = coder.decodeObject(forKey: "str") as! String
     }
     
     override init() {
         super.init()
     }
-    
+
 }
 
 class CliMessage: NSObject {
@@ -50,6 +74,7 @@ class CliMessage: NSObject {
         var textData: String?
         var audioData: audioMsg?
         var imgData: Data?
+        var locationData: locationMsg?
     
         override init(){
                 super.init()
@@ -77,41 +102,63 @@ class CliMessage: NSObject {
             self.type = .image
             self.imgData = imgData
         }
-        
-        func ToNinjaPayload() throws -> Data {
-            var jObj:JSON = [:]
-            jObj["type"].int = self.type.rawValue
-//                jObj["data"] = self.data
-            switch self.type {
-            case .plainTxt:
-                jObj["data"].string = self.textData
-            case .image:
-                jObj["data"] = JSON(self.imgData as Any)
-            case .voice:
-                jObj["data"] = JSON(self.audioData as Any)
-            default:
-                break
-            }
-                return try jObj.rawData()
+    
+        init(to: String, locationData: locationMsg) {
+            self.to = to
+            self.type = .location
+            self.locationData = locationData
         }
-        
-        static func FromNinjaPayload(_ data:Data, to:String)throws -> CliMessage {
-            let cliMsg = CliMessage.init()
+     
+        init(to: String, la: Float, lo: Float, describe: String) {
+            self.to = to
+            self.type = .location
             
-            let json = try JSON(data: data)
-            cliMsg.type = CMT(rawValue: json["type"].int!) ?? .plainTxt
-            cliMsg.to = to
-        
-            switch cliMsg.type {
-            case .plainTxt:
-                cliMsg.textData = json["data"].string!
-            case .voice:
-                cliMsg.audioData!.content = try json["data"].rawData()
-            case .image:
-                cliMsg.imgData = try json["data"].rawData()
-            default:
-                break
-            }
-            return cliMsg
+            let loca = locationMsg.init()
+            loca.la = la
+            loca.lo = lo
+            loca.str = describe
+            
+            self.locationData = loca
         }
+        
+//        func ToNinjaPayload() throws -> Data {
+//            var jObj:JSON = [:]
+//            jObj["type"].int = self.type.rawValue
+////                jObj["data"] = self.data
+//            switch self.type {
+//            case .plainTxt:
+//                jObj["data"].string = self.textData
+//            case .image:
+//                jObj["data"] = JSON(self.imgData as Any)
+//            case .voice:
+//                jObj["data"] = JSON(self.audioData as Any)
+//            case .location:
+//                jObj["data"] = JSON(self.locationData as Any)
+//            default:
+//                break
+//            }
+//                return try jObj.rawData()
+//        }
+//        
+//        static func FromNinjaPayload(_ data:Data, to:String)throws -> CliMessage {
+//            let cliMsg = CliMessage.init()
+//
+//            let json = try JSON(data: data)
+//            cliMsg.type = CMT(rawValue: json["type"].int!) ?? .plainTxt
+//            cliMsg.to = to
+//
+//            switch cliMsg.type {
+//            case .plainTxt:
+//                cliMsg.textData = json["data"].string!
+//            case .voice:
+//                cliMsg.audioData!.content = try json["data"].rawData()
+//            case .image:
+//                cliMsg.imgData = try json["data"].rawData()
+////            case .location:
+////                cliMsg.locationData = try json["data"].rawData()
+//            default:
+//                break
+//            }
+//            return cliMsg
+//        }
 }

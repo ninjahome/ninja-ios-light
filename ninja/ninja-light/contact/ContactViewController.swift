@@ -125,6 +125,7 @@ extension ContactViewController:UITableViewDelegate, UITableViewDataSource{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ContactItemTableViewCell", for: indexPath)
                 if let c = cell as? ContactItemTableViewCell{
                         let item = ContactItem.CacheArray()[indexPath.row]
+                    print("contact item \(String(describing: item.sortPinyin))")
                         c.initWith(details:item, idx: indexPath.row)
                         return c
                 }

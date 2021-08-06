@@ -7,7 +7,7 @@
 
 import Foundation
 import CoreData
-import IosLib
+import ChatLib
 
 class ContactItem:NSObject{
         public static var cache:[String:ContactItem]=[:]
@@ -18,12 +18,27 @@ class ContactItem:NSObject{
         var remark:String?
         var owner:String?
         var avacolor:String?
+    
+        var sortPinyin:String?
         
         override init() {
                 super.init()
         }
+    
+        func getSortPinyin() -> String? {
+            guard let nick = self.nickName, nick != "" else {
+                return self.uid?.transformToCapitalized()
+            }
+            
+            if nick.isIncludeChinese() {
+                return nick.transformToPinyinHead()
+                
+            } else {
+                return self.nickName?.transformToCapitalized()
+            }
+        }
         
-        public static func GetContact(_ uid:String) -> ContactItem?{
+        public static func GetContact(_ uid:String) -> ContactItem? {
                 var obj:ContactItem?
                 let owner = Wallet.shared.Addr!
                 obj = try? CDManager.shared.GetOne(entity: "CDContact",
@@ -37,7 +52,7 @@ class ContactItem:NSObject{
         
         public static func UpdateContact(_ contact:ContactItem) -> NJError?{
                 contact.owner = Wallet.shared.Addr!
-                if !(IosLib.IosLibIsValidNinjaAddr(contact.uid)) {
+                if !(ChatLib.ChatLibIsValidNinjaAddr(contact.uid)) {
                     return NJError.contact("invalid ninja address")
                 }
                 do {
@@ -83,16 +98,17 @@ class ContactItem:NSObject{
                 }
           
                 for obj in arr{
+                        obj.sortPinyin = obj.getSortPinyin()
                         cache[obj.uid!] = obj
                 }
         }
         
-        public static func IsValidContactID(_ uid:String)->Bool{
-                return IosLib.IosLibIsValidNinjaAddr(uid)
+        public static func IsValidContactID(_ uid:String) -> Bool {
+                return ChatLib.ChatLibIsValidNinjaAddr(uid)
         }
 
-        public static func CacheArray() -> [ContactItem]{
-                return Array(cache.values)
+        public static func CacheArray() -> [ContactItem] {
+            return Array(cache.values).sortedByPinyin()!
         }
     
         public static func GetAvatarColor(by uid: String) -> String {
@@ -106,7 +122,7 @@ class ContactItem:NSObject{
                 return AvatarColors[12]
             }
             guard let color = bobj.avacolor else {
-                let colorNum = IosLib.IosLibIconIndex(uid, 12)
+                let colorNum = ChatLib.ChatLibIconIndex(uid, 12)
                 let genColor = AvatarColors[Int(colorNum)]
                 obj?.avacolor = genColor
                 _ = UpdateContact(obj!)
@@ -116,26 +132,26 @@ class ContactItem:NSObject{
         
         }
     
-    public static func GetAvatarText(by uid: String) -> String {
-        var obj:ContactItem?
-        let owner = Wallet.shared.Addr!
-        obj = try? CDManager.shared.GetOne(entity: "CDContact",
-                                           predicate:NSPredicate(format: "uid == %@ AND owner == %@",
-                                                                 uid, owner))
-        let addrCut = uid.prefix(2)
-        
-        guard let bobj = obj else {
-            return String(addrCut)
-        }
-        
-        guard let nick = bobj.nickName, nick != "" else {
-            return String(addrCut)
-        }
-        
-        let nickcut = nick.prefix(2)
-        return String(nickcut)
+        public static func GetAvatarText(by uid: String) -> String {
+            var obj:ContactItem?
+            let owner = Wallet.shared.Addr!
+            obj = try? CDManager.shared.GetOne(entity: "CDContact",
+                                               predicate:NSPredicate(format: "uid == %@ AND owner == %@",
+                                                                     uid, owner))
+            let addrCut = uid.prefix(2)
+            
+            guard let bobj = obj else {
+                return String(addrCut)
+            }
+            
+            guard let nick = bobj.nickName, nick != "" else {
+                return String(addrCut)
+            }
+            
+            let nickcut = nick.prefix(2)
+            return String(nickcut)
 
-    }
+        }
     
 }
 
