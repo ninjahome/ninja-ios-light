@@ -10,6 +10,37 @@ import UIKit
 import MBProgressHUD
 import LocalAuthentication
 
+public func instantiateViewController(storyboardName: String, viewControllerIdentifier: String) -> UIViewController {
+    let storyboard = UIStoryboard(name: storyboardName, bundle: Bundle.main);
+    return storyboard.instantiateViewController(withIdentifier: viewControllerIdentifier);
+}
+
+
+public func getJSONStringFromDictionary(dictionary: NSDictionary) -> String {
+    if !JSONSerialization.isValidJSONObject(dictionary) {
+        return ""
+    }
+    
+    let data = try? JSONSerialization.data(withJSONObject: dictionary, options: []) as Data
+    
+    let JSONString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+    
+    return JSONString! as String
+}
+
+public func getDictionaryFromJSONString(jsonString: String) -> NSDictionary {
+    let jsonData = jsonString.data(using: .utf8)!
+    
+    let dict = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers)
+    
+    if dict != nil {
+        return dict as! NSDictionary
+    }
+    
+    return NSDictionary()
+    
+}
+
 public func instantiateViewController(vcID: String) -> UIViewController {
     let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main);
     return storyboard.instantiateViewController(withIdentifier: vcID);
@@ -34,10 +65,10 @@ func dispatch_async_safely_to_queue(_ queue: DispatchQueue, _ block: @escaping (
 }
 
 public func formatTimeStamp(by timeStamp: Int64) -> String {
-        let time = Date.init(timeIntervalSince1970: TimeInterval(timeStamp))
-        dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
+    let time = Date.init(timeIntervalSince1970: TimeInterval(timeStamp))
+    dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
 
-        return dateFormatterGet.string(from: time)
+    return dateFormatterGet.string(from: time)
 }
 
 public struct AlertPayload {
@@ -87,6 +118,26 @@ extension String {
         return selectStr
     }
     
+    func toArray() -> NSArray? {
+        if let jsonData: Data = self.data(using: .utf8) {
+            let array = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers)
+            if array != nil {
+                return array as? NSArray
+            }
+        }
+        return nil
+    }
+    
+}
+
+extension NSArray {
+    
+    func delArray(by arr: NSArray) -> NSArray {
+        return self.compactMap { item in
+            return !arr.contains(item) ? item : nil
+        } as NSArray
+    }
+    
 }
 
 extension Array {
@@ -107,6 +158,15 @@ extension Array {
         }
         return nil
     }
+    
+    func toString() -> String? {
+        if let data = try? JSONSerialization.data(withJSONObject: self, options: []),
+           let str = String(data: data, encoding: .utf8) {
+                return str
+        }
+        return nil
+    }
+    
 }
 
 extension UIImage {
@@ -115,152 +175,230 @@ extension UIImage {
 }
 
 extension UIViewController {
-        func hideKeyboardWhenTappedAround() {
-                let tap = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
-                tap.cancelsTouchesInView = false
-                view.addGestureRecognizer(tap)
+    
+    private class var sharedApplication: UIApplication? {
+        let selector = NSSelectorFromString("sharedApplication")
+        return UIApplication.perform(selector)?.takeUnretainedValue() as? UIApplication
+    }
+
+    /// Returns the current application's top most view controller.
+    open class var topMost: UIViewController? {
+        guard let currentWindows = self.sharedApplication?.windows else { return nil }
+        var rootViewController: UIViewController?
+        for window in currentWindows {
+            if let windowRootViewController = window.rootViewController, window.isKeyWindow {
+                rootViewController = windowRootViewController
+                break
+            }
+        }
+        return self.topMost(of: rootViewController)
+    }
+
+    /// Returns the top most view controller from given view controller's stack.
+    open class func topMost(of viewController: UIViewController?) -> UIViewController? {
+        // presented view controller
+        if let presentedViewController = viewController?.presentedViewController {
+            return self.topMost(of: presentedViewController)
         }
 
-        @objc func dismissKeyboard() {
-                view.endEditing(true)
+        // UITabBarController
+        if let tabBarController = viewController as? UITabBarController,
+           let selectedViewController = tabBarController.selectedViewController {
+            return self.topMost(of: selectedViewController)
         }
-        
-        func showIndicator(withTitle title: String, and Description:String) {DispatchQueue.main.async {
-                let Indicator = MBProgressHUD.showAdded(to: self.view, animated: true)
-                Indicator.label.text = title
-                Indicator.isUserInteractionEnabled = false
-                Indicator.detailsLabel.text = Description
-                Indicator.show(animated: true)
-        }}
-        
-        func createIndicator(withTitle title: String, and Description:String) -> MBProgressHUD{
-                let Indicator = MBProgressHUD.showAdded(to: self.view, animated: true)
-                Indicator.label.text = title
-                Indicator.isUserInteractionEnabled = false
-                Indicator.detailsLabel.text = Description
-                return Indicator
+
+        // UINavigationController
+        if let navigationController = viewController as? UINavigationController,
+           let visibleViewController = navigationController.visibleViewController {
+            return self.topMost(of: visibleViewController)
         }
+
+        // UIPageController
+        if let pageViewController = viewController as? UIPageViewController,
+           pageViewController.viewControllers?.count == 1 {
+            return self.topMost(of: pageViewController.viewControllers?.first)
+        }
+
+        // child view controller
+        for subview in viewController?.view?.subviews ?? [] {
+            if let childViewController = subview.next as? UIViewController {
+                return self.topMost(of: childViewController)
+            }
+        }
+
+        return viewController
+    }
+    
+    func showInputDialog(title: String,
+                         message: String,
+                         textPlaceholder: String,
+                         actionText: String,
+                         cancelText: String,
+                         cancelHandler: ((UIAlertAction) -> Void)?,
+                         actionHandler: ((_ text: String?) -> Void)?
+                         ) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addTextField { (textField: UITextField) in
+            textField.placeholder = textPlaceholder
+        }
+        alert.addAction(UIAlertAction(title: cancelText, style: .cancel, handler: cancelHandler))
+        alert.addAction(UIAlertAction(title: actionText, style: .destructive, handler: { (action: UIAlertAction) in
+            guard let textField = alert.textFields?.first else {
+                actionHandler?(nil)
+                return
+            }
+            actionHandler?(textField.text)
+        }))
         
-        func toastMessage(title:String) ->Void {
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    func hideKeyboardWhenTappedAround() {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+            tap.cancelsTouchesInView = false
+            view.addGestureRecognizer(tap)
+    }
+
+    @objc func dismissKeyboard() {
+            view.endEditing(true)
+    }
+    
+    func showIndicator(withTitle title: String, and Description:String) {DispatchQueue.main.async {
+            let Indicator = MBProgressHUD.showAdded(to: self.view, animated: true)
+            Indicator.label.text = title
+            Indicator.isUserInteractionEnabled = false
+            Indicator.detailsLabel.text = Description
+            Indicator.show(animated: true)
+    }}
+    
+    func createIndicator(withTitle title: String, and Description:String) -> MBProgressHUD{
+            let Indicator = MBProgressHUD.showAdded(to: self.view, animated: true)
+            Indicator.label.text = title
+            Indicator.isUserInteractionEnabled = false
+            Indicator.detailsLabel.text = Description
+            return Indicator
+    }
+    
+    func toastMessage(title:String) ->Void {
 //            DispatchQueue.main.async {
-                let hud : MBProgressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
-                hud.mode = MBProgressHUDMode.text
-                hud.detailsLabel.text = title
-                hud.removeFromSuperViewOnHide = true
-                hud.margin = 10
-                hud.offset.y = 250.0
-                hud.hide(animated: true, afterDelay: 3)
+            let hud : MBProgressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
+            hud.mode = MBProgressHUDMode.text
+            hud.detailsLabel.text = title
+            hud.removeFromSuperViewOnHide = true
+            hud.margin = 10
+            hud.offset.y = 250.0
+            hud.hide(animated: true, afterDelay: 3)
 //            }
+    }
+    
+    func CustomerAlert(name:String){ DispatchQueue.main.async {
+            
+            let alertVC = instantiateViewController(vcID:name)
+            
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert);
+            alertController.setValue(alertVC, forKey: "contentViewController");
+            self.present(alertController, animated: true, completion: nil);
+            }
+    }
+    
+    func hideIndicator() {DispatchQueue.main.async {
+            MBProgressHUD.hide(for: self.view, animated: true)
+    }}
+    
+    func ShowTips(msg:String){
+            DispatchQueue.main.async {
+                    let ac = UIAlertController(title: "Tips!", message: msg, preferredStyle: .alert)
+                    ac.addAction(UIAlertAction(title: "OK", style: .default))
+                    self.present(ac, animated: true)
+            }
+    }
+
+    func showPwdInput(title: String, placeHolder:String?, securityShow:Bool = false, type:UIKeyboardType = .default, nextAction:((String?, Bool)->Void)?) {
+        let ap = AlertPayload(title: title,
+                              placeholderTxt: placeHolder,
+                              securityShow: securityShow,
+                              keyType: type,
+                              action: nextAction)
+        LoadAlertFromStoryBoard(payload: ap)
+    }
+    
+    func LoadAlertFromStoryBoard(payload:AlertPayload){ DispatchQueue.main.async {
+            guard let alertVC = instantiateViewController(vcID: "PasswordViewControllerID")
+                as? PasswordViewController else{
+                return
+            }
+                    
+            alertVC.payload = payload;
+
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert);
+            alertController.setValue(alertVC, forKey: "contentViewController");
+            self.present(alertController, animated: true, completion: nil);
+        }
+    }
+    
+    func ShowQRAlertView(image:UIImage?){
+        guard let alertVC = instantiateViewController(vcID: "QRCodeShowViewControllerSID")
+            as? QRCodeShowViewController else{
+            return
+        }
+        alertVC.QRImage = image;
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert);
+        alertController.setValue(alertVC, forKey: "contentViewController");
+        self.present(alertController, animated: true, completion: nil);
+    }
+    
+    func ShowQRAlertView(data:String){
+        guard let image = generateQRCode(from: data) else { return }
+        self.ShowQRAlertView(image: image)
+    }
+        
+    func generateQRCode(from message: String) -> UIImage? {
+            
+        guard let data = message.data(using: .utf8) else{
+                return nil
         }
         
-        func CustomerAlert(name:String){ DispatchQueue.main.async {
-                
-                let alertVC = instantiateViewController(vcID:name)
-                
-                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert);
-                alertController.setValue(alertVC, forKey: "contentViewController");
-                self.present(alertController, animated: true, completion: nil);
-                }
+        guard let qr = CIFilter(name: "CIQRCodeGenerator",
+                                parameters: ["inputMessage":
+                                        data, "inputCorrectionLevel":"M"]) else{
+                return nil
         }
         
-        func hideIndicator() {DispatchQueue.main.async {
-                MBProgressHUD.hide(for: self.view, animated: true)
-        }}
+        guard let qrImage = qr.outputImage?.transformed(by: CGAffineTransform(scaleX: 5, y: 5)) else{
+                return nil
+        }
+        let context = CIContext()
+        let cgImage = context.createCGImage(qrImage, from: qrImage.extent)
+        let uiImage = UIImage(cgImage: cgImage!)
+        return uiImage
+    }
+    
+    func generateViewImg(info: UIView) -> UIImage? {
+        var img: UIImage?
+        UIGraphicsBeginImageContextWithOptions(info.bounds.size, false, 0.0)
+        info.layer.render(in: UIGraphicsGetCurrentContext()!)
+        img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
         
-        func ShowTips(msg:String){
+        return img
+        
+    }
+    
+    func biometryUsage(onCompletion: @escaping(Bool) -> Void) {
+        let context = LAContext()
+        var error: NSError?
+        
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            let reason = "是否允许App使用您的\(context.biometryType)"
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { (success, authError) in
                 DispatchQueue.main.async {
-                        let ac = UIAlertController(title: "Tips!", message: msg, preferredStyle: .alert)
-                        ac.addAction(UIAlertAction(title: "OK", style: .default))
-                        self.present(ac, animated: true)
+                    onCompletion(success)
                 }
-        }
-    
-        func showPwdInput(title: String, placeHolder:String?, securityShow:Bool = false, type:UIKeyboardType = .default, nextAction:((String?, Bool)->Void)?) {
-            let ap = AlertPayload(title: title,
-                                  placeholderTxt: placeHolder,
-                                  securityShow: securityShow,
-                                  keyType: type,
-                                  action: nextAction)
-            LoadAlertFromStoryBoard(payload: ap)
-        }
-        
-        func LoadAlertFromStoryBoard(payload:AlertPayload){ DispatchQueue.main.async {
-                guard let alertVC = instantiateViewController(vcID: "PasswordViewControllerID")
-                            as? PasswordViewController else{
-                            return
-                        }
-                        
-                        alertVC.payload = payload;
-            
-                        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert);
-                        alertController.setValue(alertVC, forKey: "contentViewController");
-                        self.present(alertController, animated: true, completion: nil);
             }
+        } else {
+            self.toastMessage(title: "加载\(context.biometryType.rawValue)失败")
         }
-        
-        func ShowQRAlertView(image:UIImage?){
-                guard let alertVC = instantiateViewController(vcID: "QRCodeShowViewControllerSID")
-                    as? QRCodeShowViewController else{
-                    return
-                }
-                alertVC.QRImage = image;
-                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert);
-                alertController.setValue(alertVC, forKey: "contentViewController");
-                self.present(alertController, animated: true, completion: nil);
-        }
-        
-        func ShowQRAlertView(data:String){
-                guard let image = generateQRCode(from: data) else { return }
-                self.ShowQRAlertView(image: image)
-        }
-        
-        func generateQRCode(from message: String) -> UIImage? {
-                
-                guard let data = message.data(using: .utf8) else{
-                        return nil
-                }
-                
-                guard let qr = CIFilter(name: "CIQRCodeGenerator",
-                                        parameters: ["inputMessage":
-                                                data, "inputCorrectionLevel":"M"]) else{
-                        return nil
-                }
-                
-                guard let qrImage = qr.outputImage?.transformed(by: CGAffineTransform(scaleX: 5, y: 5)) else{
-                        return nil
-                }
-                let context = CIContext()
-                let cgImage = context.createCGImage(qrImage, from: qrImage.extent)
-                let uiImage = UIImage(cgImage: cgImage!)
-                return uiImage
-        }
-        
-        func generateViewImg(info: UIView) -> UIImage? {
-            var img: UIImage?
-            UIGraphicsBeginImageContextWithOptions(info.bounds.size, false, 0.0)
-            info.layer.render(in: UIGraphicsGetCurrentContext()!)
-            img = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            
-            return img
-            
-        }
-    
-        func biometryUsage(onCompletion: @escaping(Bool) -> Void) {
-            let context = LAContext()
-            var error: NSError?
-            
-            if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-                let reason = "是否允许App使用您的\(context.biometryType)"
-                context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { (success, authError) in
-                    DispatchQueue.main.async {
-                        onCompletion(success)
-                    }
-                }
-            } else {
-                self.toastMessage(title: "加载\(context.biometryType.rawValue)失败")
-            }
-        }
+    }
 }
 
 func cleanAllData() {
@@ -271,11 +409,11 @@ func cleanAllData() {
 
 extension MBProgressHUD{
         
-        func setDetailText(msg:String) {
-                 DispatchQueue.main.async {
-                        self.detailsLabel.text = msg
-                }
+    func setDetailText(msg:String) {
+         DispatchQueue.main.async {
+            self.detailsLabel.text = msg
         }
+    }
 }
 
 extension FileManager {
@@ -315,7 +453,7 @@ extension UIColor {
         )
     }
 
-convenience init(hex: String) {
+    convenience init(hex: String) {
         let scanner = Scanner(string: hex)
         scanner.scanLocation = 0
         
@@ -380,3 +518,4 @@ extension UIButton {
         self.imageEdgeInsets = imageEdgeInsets
     }
 }
+

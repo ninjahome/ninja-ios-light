@@ -12,13 +12,12 @@ class ImageTableViewCell: UITableViewCell {
     @IBOutlet weak var msgBackgroundView: UIImageView!
     @IBOutlet weak var imageMsg: UIImageView!
     
-    var trailingConstrain: NSLayoutConstraint!
-    var leadingConstrain:NSLayoutConstraint!
+    @IBOutlet weak var avatar: AvatarButton!
+    @IBOutlet weak var nickname: UILabel!
+    @IBOutlet weak var time: UILabel!
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        leadingConstrain.isActive = false
-        trailingConstrain.isActive = false
     }
     
     override func awakeFromNib() {
@@ -33,12 +32,14 @@ class ImageTableViewCell: UITableViewCell {
     }
     
     func updateMessageCell (by message: MessageItem) {
+
         msgBackgroundView.layer.cornerRadius = 8
         msgBackgroundView.clipsToBounds = true
         
-        trailingConstrain = msgBackgroundView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20)
-        leadingConstrain = msgBackgroundView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20)
-        
+        guard let from = message.from else {
+            return
+        }
+
         imageMsg.image = UIImage(data: message.payload as! Data)
         
         imageMsg.contentMode = .scaleAspectFill
@@ -53,20 +54,34 @@ class ImageTableViewCell: UITableViewCell {
         //message bubble
         if message.isOut {
 
-            let img = UIImage(named: "white")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
-                msgBackgroundView.image = img
-            trailingConstrain.isActive = true
+//            let img = UIImage(named: "white")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
+//            msgBackgroundView.image = img
+            
+//            avatar.setTitle(Wallet.GenAvatarText(), for: .normal)
+//            avatar.backgroundColor = UIColor.init(hex: Wallet.GenAvatarColor())
+            avatar.type = AvatarButtonType.wallet
+            avatar.avaInfo = nil
+            
+            nickname.text = Wallet.GenAvatarText()
+
         } else {
-            let img = UIImage(named: "babycolor")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
-            msgBackgroundView.image = img
-            leadingConstrain.isActive = true
+//            let img = UIImage(named: "babycolor")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
+//            msgBackgroundView.image = img
+            
+//            let avaName = ContactItem.GetAvatarText(by: from)
+//            avatar.setTitle(ContactItem.GetAvatarText(by: avaName), for: .normal)
+//            let hex = ContactItem.GetAvatarColor(by: from)
+//            avatar.backgroundColor = UIColor.init(hex: hex)
+            
+            avatar.type = AvatarButtonType.contact
+            avatar.avaInfo = AvatarInfo.init(id: from)
+            
+            let contactData = ContactItem.cache[from]
+            nickname.text = contactData?.nickName ?? ContactItem.GetAvatarText(by: from)
+
         }
+        
+        time.text = formatTimeStamp(by: message.timeStamp)
     }
-//
-//    @objc func showBigPicture() {
-//        print("show big picture")
-//
-//        ShowImageDetail.show(imageView: imageMsg)
-//    }
 
 }

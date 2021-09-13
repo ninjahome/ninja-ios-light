@@ -18,8 +18,10 @@ class ServiceDelegate: NSObject {
         public static func InitService(){
                 //TODO:: more system configs
 //                IosLib.IosLibConfigApp("", WebsocketSrv.shared)
-                ChatLib.ChatLibConfigApp("", WebsocketSrv.shared, nil)
+            
+            ChatLib.ChatLibConfigApp("", WebsocketSrv.shared, WebsocketSrv.shared)
                 ContactItem.LocalSavedContact()
+                GroupItem.LocalSavedGroup()
                 MessageItem.loadUnread()
                 dateFormatterGet.timeStyle = .medium
         }

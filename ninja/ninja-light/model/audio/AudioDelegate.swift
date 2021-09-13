@@ -28,13 +28,13 @@ protocol RecordAudioDelegate: AnyObject {
 
 }
 
-protocol PlayAudioDelegate: AnyObject {
+@objc protocol PlayAudioDelegate: AnyObject {
     
-    func audioPlayStart()
+    @objc optional func audioPlayStart()
     
-    func audioPlayFinished()
+    @objc optional func audioPlayFinished()
     
-    func audioPlayFailed()
+    @objc optional func audioPlayFailed()
     
-    func audioPlayInterruption()
+    @objc optional func audioPlayInterruption()
 }

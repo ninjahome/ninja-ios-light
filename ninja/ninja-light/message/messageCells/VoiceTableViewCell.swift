@@ -12,14 +12,14 @@ class VoiceTableViewCell: UITableViewCell {
     @IBOutlet weak var msgBackgroundView: UIImageView!
     @IBOutlet weak var playBtn: UIButton!
     
-    var trailingConstrain: NSLayoutConstraint!
-    var leadingConstrain:NSLayoutConstraint!
+    @IBOutlet weak var avatar: AvatarButton!
+    @IBOutlet weak var nickname: UILabel!
+    @IBOutlet weak var time: UILabel!
+
     
     var audioData:Data?
     var isOut: Bool?
     var long:Int = 2
-    
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -35,32 +35,53 @@ class VoiceTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         isOut = false
-        leadingConstrain.isActive = false
-        trailingConstrain.isActive = false
+        playBtn.setImage(nil, for: .normal)
     }
-
     
     func updateMessageCell (by message: MessageItem) {
-        msgBackgroundView.layer.cornerRadius = 8
-        msgBackgroundView.clipsToBounds = true
         
-        trailingConstrain = msgBackgroundView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20)
-        leadingConstrain = msgBackgroundView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20)
+        guard let voice = message.payload as? audioMsg else {
+            return
+        }
         
-        let voice = message.payload as! audioMsg
+        guard let from = message.from else {
+            return
+        }
+
         setBtn(isOut: message.isOut, data: voice.content, long: voice.duration)
         self.isOut = message.isOut
         self.long = voice.duration
         //message bubble
         if message.isOut {
             let img = UIImage(named: "white")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
-                msgBackgroundView.image = img
-            trailingConstrain.isActive = true
+            msgBackgroundView.image = img
+            
+            avatar.type = AvatarButtonType.wallet
+            avatar.avaInfo = nil
+//            avatar.setTitle(Wallet.GenAvatarText(), for: .normal)
+//            avatar.backgroundColor = UIColor.init(hex: Wallet.GenAvatarColor())
+            
+            nickname.text = Wallet.GenAvatarText()
+
         } else {
             let img = UIImage(named: "babycolor")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
             msgBackgroundView.image = img
-            leadingConstrain.isActive = true
+            
+//            let avaName = ContactItem.GetAvatarText(by: from)
+//            avatar.setTitle(ContactItem.GetAvatarText(by: avaName), for: .normal)
+//            let hex = ContactItem.GetAvatarColor(by: from)
+//            avatar.backgroundColor = UIColor.init(hex: hex)
+            avatar.type = AvatarButtonType.contact
+            avatar.avaInfo = AvatarInfo.init(id: from)
+            
+            let contactData = ContactItem.cache[from]
+            nickname.text = contactData?.nickName ?? ContactItem.GetAvatarText(by: from)
+
         }
+        
+        time.text = formatTimeStamp(by: message.timeStamp)
+        
+        
     }
     
     func setBtn(isOut: Bool, data: Data, long: Int) {
@@ -84,26 +105,6 @@ class VoiceTableViewCell: UITableViewCell {
         playBtn.addTarget(self, action: #selector(playAudioBtnAction), for: .touchUpInside)
         self.msgBackgroundView.addSubview(playBtn)
     }
-    
-    fileprivate func filpImageH(_ data: UIImage) -> UIImage {
-        let flipImageOrientation = (data.imageOrientation.rawValue + 4) % 8
-        let flipImage =  UIImage(cgImage:data.cgImage!,
-            scale:data.scale,
-            orientation:UIImage.Orientation(rawValue: flipImageOrientation)!
-        )
-        return flipImage
-    }
-    
-    fileprivate func getFilpAnimatedImg() -> [UIImage] {
-        var imgs:[UIImage] = []
-        for x in 0...9 {
-            let name = "voice_0000" + String(x)
-            let img = self.filpImageH(UIImage(named: name)!)
-            imgs.append(img)
-        }
-        return imgs
-    }
-    
     
     @objc func playAudioBtnAction() {
         if let data = self.audioData {
@@ -132,44 +133,27 @@ class VoiceTableViewCell: UITableViewCell {
             
         }
     }
+    
+    fileprivate func getFilpAnimatedImg() -> [UIImage] {
+        var imgs:[UIImage] = []
+        for x in 0...9 {
+            let name = "voice_0000" + String(x)
+            let img = self.filpImageH(UIImage(named: name)!)
+            imgs.append(img)
+        }
+        return imgs
+    }
+    
+    
+    fileprivate func filpImageH(_ data: UIImage) -> UIImage {
+        let flipImageOrientation = (data.imageOrientation.rawValue + 4) % 8
+        let flipImage =  UIImage(cgImage:data.cgImage!,
+            scale:data.scale,
+            orientation:UIImage.Orientation(rawValue: flipImageOrientation)!
+        )
+        return flipImage
+    }
 
-//
-//    private func setup(_ flip:Bool) {
-//            DispatchQueue.global().async {
-//                var arr = Array<UIImage>.init()
-//                for e in 0...20 {
-//                    let str = "voice_000" + String.init(format: "%02d", e)
-//                    let path = Bundle.main.path(forResource: str, ofType: nil)
-//                    if let path = path {
-//                        if let image = UIImage.init(named: path) {
-//                            if flip {
-//                                let flipimg = self.filpImageH(image)
-//                                arr.append(flipimg)
-//                            } else {
-//                                arr.append(image)
-//                            }
-//
-//                        }
-//                    }
-//                }
-//                DispatchQueue.main.async {
-//                    let imageView = UIImageView()
-//
-//                    self.addSubview(imageView)
-//
-//                    imageView.contentMode = .scaleAspectFill
-//                    imageView.clipsToBounds = true
-//                    imageView.animationImages = arr
-////                    imageView.animationDuration = self.aniamtionTime
-//                    imageView.animationDuration = 2
-//
-//                    imageView.animationRepeatCount = 1
-//                    imageView.startAnimating()
-////                    self.gifView = imageView
-////                    self.playBtn.imageView = imageView
-//                }
-//            }
-//        }
-//
+
 
 }

@@ -11,7 +11,7 @@ import UserNotifications
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
         var window: UIWindow?
-        var reach:Reachability?
+        var reach: Reachability?
     
         func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
             self.reach = Reachability.forInternetConnection()
@@ -138,6 +138,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         func applicationWillTerminate(_ application: UIApplication) {
                 MessageItem.removeAllRead()
                 AudioFilesManager.deleteAllRecordingFiles()
+            
         }
 }
 

@@ -17,7 +17,7 @@ class ContactDetailsViewController: UIViewController {
 //        @IBOutlet weak var delBarBtn: UIBarButtonItem!
         
     @IBOutlet weak var backContent: UIView!
-    @IBOutlet weak var avator: UIButton!
+    @IBOutlet weak var avator: AvatarButton!
     @IBOutlet weak var nickName: UILabel!
     @IBOutlet weak var uid: UILabel!
     @IBOutlet weak var deleteBtn: UIButton!
@@ -38,8 +38,7 @@ class ContactDetailsViewController: UIViewController {
         super.viewWillDisappear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
-
-        
+  
     override func viewDidLoad() {
         super.viewDidLoad()
     
@@ -70,16 +69,12 @@ class ContactDetailsViewController: UIViewController {
     
     
     private func setAvatar() {
-        
-        let avaName = ContactItem.GetAvatarText(by: uid.text!)
-        self.avator.setTitle(avaName, for: .normal)
-        
         guard let uid = itemData?.uid else {
             return
         }
-        let hex = ContactItem.GetAvatarColor(by: uid)
         
-        self.avator.backgroundColor = UIColor.init(hex: hex)
+        avator.type = AvatarButtonType.chatContact
+        avator.avaInfo = AvatarInfo.init(id: uid)
     }
     
     @IBAction func backBtn(_ sender: UIButton) {
@@ -98,14 +93,14 @@ class ContactDetailsViewController: UIViewController {
     
     @IBAction func deleteContact(_ sender: UIButton) {
         guard let uid = self.uid.text else{
-                return
+            return
         }
         
         guard let err = ContactItem.DelContact(uid) else{
-                NotificationCenter.default.post(name:NotifyContactChanged,
-                                                object: nil, userInfo:nil)
-                self.closeWindow()
-                return
+            NotificationCenter.default.post(name:NotifyContactChanged,
+                                            object: nil, userInfo:nil)
+            self.closeWindow()
+            return
         }
         
         self.toastMessage(title: err.localizedDescription)
@@ -113,37 +108,37 @@ class ContactDetailsViewController: UIViewController {
     
     private func populateView(){
             
-            if let newUid = self.itemUID {
-                    if let obj = ContactItem.GetContact(newUid){
-                            self.itemData = obj
-                    }else{
-                            self.uid.text = newUid
+        if let newUid = self.itemUID {
+            if let obj = ContactItem.GetContact(newUid){
+                self.itemData = obj
+            }else{
+                self.uid.text = newUid
 //                                self.uid.isEditable = false
-                    }
             }
-            
-            guard let data = self.itemData else {
-                    return
-            }
-            
+        }
+        
+        guard let data = self.itemData else {
+            return
+        }
+        
 //                self.chatBtn.isHidden = false
 //                self.delBarBtn.isEnabled = true
 //                self.uid.isEditable = false
-            self.uid.text = data.uid
-            self.nickName.text = data.nickName
-            self.memo.text = data.nickName
-        
-        
+        self.uid.text = data.uid
+        self.nickName.text = data.nickName
+        self.memo.text = data.nickName
+    
+    
 //                self.remarks.text = data.remark
 //            if data.avatar != nil{
 //                        self.avatar.image = UIImage.init(data: data.avatar!)
 //            }
-        }
+    }
     
-        private func closeWindow(){
-                self.dismiss(animated: true)
-                self.navigationController?.popViewController(animated: true)
-        }
+    private func closeWindow(){
+        self.dismiss(animated: true)
+        self.navigationController?.popViewController(animated: true)
+    }
 //
 //        @IBAction func SaveContact(_ sender: UIButton) {
 //                let contact = ContactItem.init()
@@ -177,26 +172,26 @@ class ContactDetailsViewController: UIViewController {
 //        }
         
         
-        @IBAction func StartChat(_ sender: UIButton) {
-                guard self.uid.text != nil else{
-                        return
-                }
-                self.performSegue(withIdentifier: "ShowMessageDetailsSEG", sender: self)
+    @IBAction func StartChat(_ sender: UIButton) {
+        guard self.uid.text != nil else{
+            return
         }
-        
-        
-        /**/
-        // MARK: - Navigation
-        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-                
-                if segue.identifier == "ShowMessageDetailsSEG"{
-                        let vc : MsgViewController = segue.destination as! MsgViewController
-                        vc.peerUid = self.uid.text!
-                }
+        self.performSegue(withIdentifier: "ShowMessageDetailsSEG", sender: self)
+    }
+    
+    
+    /**/
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
             
-            if segue.identifier == "EditContactSegue" {
-                let vc: ContactEditViewController = segue.destination as! ContactEditViewController
-                vc.itemData = self.itemData
-            }
+        if segue.identifier == "ShowMessageDetailsSEG"{
+            let vc : MsgViewController = segue.destination as! MsgViewController
+            vc.peerUid = self.uid.text!
         }
+        
+        if segue.identifier == "EditContactSegue" {
+            let vc: ContactEditViewController = segue.destination as! ContactEditViewController
+            vc.itemData = self.itemData
+        }
+    }
 }

@@ -10,7 +10,7 @@ import UIKit
 class ContactItemTableViewCell: UITableViewCell {
 
         @IBOutlet weak var nickName: UILabel!
-        @IBOutlet weak var avatar: UIButton!
+        @IBOutlet weak var avatar: AvatarButton!
     
         override func awakeFromNib() {
             super.awakeFromNib()
@@ -27,10 +27,16 @@ class ContactItemTableViewCell: UITableViewCell {
 //                }
                 self.nickName.text = details.nickName
 
-            let avaName = ContactItem.GetAvatarText(by: details.uid!)
-            avatar.setTitle(avaName, for: .normal)
-            let hex = ContactItem.GetAvatarColor(by: details.uid!)
-            avatar.backgroundColor = UIColor.init(hex: hex)
+//            let avaName = ContactItem.GetAvatarText(by: details.uid!)
+//            avatar.setTitle(avaName, for: .normal)
+//            let hex = ContactItem.GetAvatarColor(by: details.uid!)
+//            avatar.backgroundColor = UIColor.init(hex: hex)
+//            
+            guard let uid = details.uid else {
+                return
+            }
+            avatar.type = AvatarButtonType.contact
+            avatar.avaInfo = AvatarInfo.init(id: uid)
            
         }
     

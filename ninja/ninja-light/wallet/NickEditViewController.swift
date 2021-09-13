@@ -14,7 +14,7 @@ class NickEditViewController: UIViewController {
     var returnHost: editHost!
 
     @IBOutlet weak var nickText: UITextField!
-    @IBOutlet weak var avatar: UIButton!
+    @IBOutlet weak var avatar: AvatarButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,11 +23,13 @@ class NickEditViewController: UIViewController {
             nickText.text = nick
         }
         
-        let avaText = Wallet.GenAvatarText()
-        avatar.setTitle(avaText, for: .normal)
-        
-        let hex = Wallet.GenAvatarColor()
-        avatar.backgroundColor = UIColor.init(hex: hex)
+        avatar.type = AvatarButtonType.wallet
+        avatar.avaInfo = nil
+//        let avaText = Wallet.GenAvatarText()
+//        avatar.setTitle(avaText, for: .normal)
+//
+//        let hex = Wallet.GenAvatarColor()
+//        avatar.backgroundColor = UIColor.init(hex: hex)
         
         self.hideKeyboardWhenTappedAround()
     }
@@ -46,8 +48,8 @@ class NickEditViewController: UIViewController {
     }
     
     private func closeWindow() {
-            self.dismiss(animated: true)
-            self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
 
     

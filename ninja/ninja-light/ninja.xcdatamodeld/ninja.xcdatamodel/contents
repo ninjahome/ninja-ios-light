@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CDChatItem" representedClassName="CDChatItem" syncable="YES" codeGenerationType="class">
+        <attribute name="groupId" optional="YES" attributeType="String"/>
         <attribute name="lastMsg" optional="YES" attributeType="String"/>
         <attribute name="owner" optional="YES" attributeType="String"/>
         <attribute name="uid" optional="YES" attributeType="String"/>
@@ -15,8 +16,19 @@
         <attribute name="remark" optional="YES" attributeType="String"/>
         <attribute name="uid" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="CDGroup" representedClassName="CDGroup" syncable="YES" codeGenerationType="class">
+        <attribute name="banTalked" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="gid" optional="YES" attributeType="String"/>
+        <attribute name="groupName" optional="YES" attributeType="String"/>
+        <attribute name="leader" optional="YES" attributeType="String"/>
+        <attribute name="memberIds" optional="YES" attributeType="Transformable"/>
+        <attribute name="memberNicks" optional="YES" attributeType="Transformable"/>
+        <attribute name="owner" optional="YES" attributeType="String"/>
+        <attribute name="unixTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
     <entity name="CDUnread" representedClassName="CDUnread" syncable="YES" codeGenerationType="class">
         <attribute name="from" optional="YES" attributeType="String"/>
+        <attribute name="groupId" optional="YES" attributeType="String"/>
         <attribute name="image" optional="YES" attributeType="Binary"/>
         <attribute name="isOut" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="media" optional="YES" attributeType="Transformable"/>
@@ -33,9 +45,10 @@
         <attribute name="useFaceID" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </entity>
     <elements>
-        <element name="CDChatItem" positionX="-45" positionY="27" width="128" height="104"/>
+        <element name="CDChatItem" positionX="-45" positionY="27" width="128" height="119"/>
         <element name="CDContact" positionX="-36" positionY="18" width="128" height="119"/>
-        <element name="CDUnread" positionX="-54" positionY="9" width="128" height="164"/>
+        <element name="CDUnread" positionX="-54" positionY="9" width="128" height="179"/>
         <element name="CDWallet" positionX="-63" positionY="-18" width="128" height="89"/>
+        <element name="CDGroup" positionX="-45" positionY="72" width="128" height="149"/>
     </elements>
 </model>

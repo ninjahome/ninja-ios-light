@@ -11,6 +11,8 @@
 #include "Universe.objc.h"
 
 
+@class ChatLibChatLicense;
+@class ChatLibChatLicenseContent;
 @class ChatLibGroupInfo;
 @class ChatLibMobileAPP;
 @protocol ChatLibMulticastCallBack;
@@ -19,12 +21,12 @@
 @class ChatLibUnicastCallBack;
 
 @protocol ChatLibMulticastCallBack <NSObject>
-- (BOOL)banTalking:(NSString* _Nullable)groupId error:(NSError* _Nullable* _Nullable)error;
+- (BOOL)banTalking:(NSString* _Nullable)groupId banned:(BOOL)banned error:(NSError* _Nullable* _Nullable)error;
 - (BOOL)createGroup:(NSString* _Nullable)groupId groupName:(NSString* _Nullable)groupName owner:(NSString* _Nullable)owner memberIdList:(NSString* _Nullable)memberIdList memberNickNameList:(NSString* _Nullable)memberNickNameList error:(NSError* _Nullable* _Nullable)error;
 - (BOOL)dismisGroup:(NSString* _Nullable)groupId error:(NSError* _Nullable* _Nullable)error;
 - (BOOL)fileMessage:(NSString* _Nullable)from groupId:(NSString* _Nullable)groupId payload:(NSData* _Nullable)payload size:(long)size name:(NSString* _Nullable)name error:(NSError* _Nullable* _Nullable)error;
 - (BOOL)imageMessage:(NSString* _Nullable)from groupId:(NSString* _Nullable)groupId payload:(NSData* _Nullable)payload time:(int64_t)time error:(NSError* _Nullable* _Nullable)error;
-- (BOOL)joinGroup:(NSString* _Nullable)from groupId:(NSString* _Nullable)groupId groupName:(NSString* _Nullable)groupName owner:(NSString* _Nullable)owner memberIdList:(NSString* _Nullable)memberIdList memberNickNameList:(NSString* _Nullable)memberNickNameList newIdList:(NSString* _Nullable)newIdList error:(NSError* _Nullable* _Nullable)error;
+- (BOOL)joinGroup:(NSString* _Nullable)from groupId:(NSString* _Nullable)groupId groupName:(NSString* _Nullable)groupName owner:(NSString* _Nullable)owner memberIdList:(NSString* _Nullable)memberIdList memberNickNameList:(NSString* _Nullable)memberNickNameList newIdList:(NSString* _Nullable)newIdList banTalkding:(BOOL)banTalkding error:(NSError* _Nullable* _Nullable)error;
 - (BOOL)kickOutUser:(NSString* _Nullable)from groupId:(NSString* _Nullable)groupId kickId:(NSString* _Nullable)kickId error:(NSError* _Nullable* _Nullable)error;
 - (BOOL)locationMessage:(NSString* _Nullable)from groupId:(NSString* _Nullable)groupId l:(float)l a:(float)a name:(NSString* _Nullable)name time:(int64_t)time error:(NSError* _Nullable* _Nullable)error;
 - (BOOL)quitGroup:(NSString* _Nullable)from groupId:(NSString* _Nullable)groupId quitId:(NSString* _Nullable)quitId error:(NSError* _Nullable* _Nullable)error;
@@ -41,6 +43,27 @@
 - (BOOL)textMessage:(NSString* _Nullable)from to:(NSString* _Nullable)to payload:(NSString* _Nullable)payload time:(int64_t)time error:(NSError* _Nullable* _Nullable)error;
 - (BOOL)voiceMessage:(NSString* _Nullable)from to:(NSString* _Nullable)to payload:(NSData* _Nullable)payload length:(long)length time:(int64_t)time error:(NSError* _Nullable* _Nullable)error;
 - (void)webSocketClosed;
+@end
+
+@interface ChatLibChatLicense : NSObject <goSeqRefInterface> {
+}
+@property(strong, readonly) _Nonnull id _ref;
+
+- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
+- (nonnull instancetype)init;
+@property (nonatomic) ChatLibChatLicenseContent* _Nullable content;
+@property (nonatomic) NSString* _Nonnull signature;
+@end
+
+@interface ChatLibChatLicenseContent : NSObject <goSeqRefInterface> {
+}
+@property(strong, readonly) _Nonnull id _ref;
+
+- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
+- (nonnull instancetype)init;
+@property (nonatomic) NSString* _Nonnull issueAddr;
+@property (nonatomic) NSString* _Nonnull randomId;
+@property (nonatomic) long nDays;
 @end
 
 @interface ChatLibGroupInfo : NSObject <goSeqRefInterface> {
@@ -73,23 +96,40 @@
 - (void)webSocketClosed;
 @end
 
+FOUNDATION_EXPORT const int64_t ChatLibCallContractErr;
+FOUNDATION_EXPORT const int64_t ChatLibConnectionErr;
+FOUNDATION_EXPORT const int64_t ChatLibContractErr;
+FOUNDATION_EXPORT const int64_t ChatLibDecodeLicenseErr;
+FOUNDATION_EXPORT const int64_t ChatLibValidFalse;
+FOUNDATION_EXPORT const int64_t ChatLibValidTrue;
+
 FOUNDATION_EXPORT NSString* _Nonnull ChatLibActiveAddress(void);
 
 FOUNDATION_EXPORT BOOL ChatLibActiveWallet(NSString* _Nullable cipherTxt, NSString* _Nullable auth, NSString* _Nullable devtoken, NSError* _Nullable* _Nullable error);
 
-FOUNDATION_EXPORT BOOL ChatLibBanTalking(NSString* _Nullable to, NSString* _Nullable owner, NSString* _Nullable groupId, NSError* _Nullable* _Nullable error);
+FOUNDATION_EXPORT BOOL ChatLibBanTalking(NSString* _Nullable to, NSString* _Nullable owner, NSString* _Nullable groupId, BOOL banned, NSError* _Nullable* _Nullable error);
 
 FOUNDATION_EXPORT void ChatLibConfigApp(NSString* _Nullable addr, id<ChatLibUnicastCallBack> _Nullable unicast, id<ChatLibMulticastCallBack> _Nullable multicast);
 
 FOUNDATION_EXPORT BOOL ChatLibCreateGroup(NSString* _Nullable to, NSString* _Nullable nickNames, NSString* _Nullable groupId, NSString* _Nullable groupName, NSError* _Nullable* _Nullable error);
 
+FOUNDATION_EXPORT NSString* _Nonnull ChatLibDecodeLicense(NSString* _Nullable licenseB58);
+
 FOUNDATION_EXPORT BOOL ChatLibDismisGroup(NSString* _Nullable to, NSString* _Nullable owner, NSString* _Nullable groupId, NSError* _Nullable* _Nullable error);
+
+FOUNDATION_EXPORT int64_t ChatLibGetExpireTime(void);
 
 FOUNDATION_EXPORT int64_t ChatLibIconIndex(NSString* _Nullable id_, long mod);
 
+FOUNDATION_EXPORT NSString* _Nonnull ChatLibImportLicense(NSString* _Nullable licenseB58);
+
+FOUNDATION_EXPORT BOOL ChatLibInitEth(NSError* _Nullable* _Nullable error);
+
+FOUNDATION_EXPORT long ChatLibIsValidLicense(NSString* _Nullable licenseB58);
+
 FOUNDATION_EXPORT BOOL ChatLibIsValidNinjaAddr(NSString* _Nullable addr);
 
-FOUNDATION_EXPORT BOOL ChatLibJoinGroup(NSString* _Nullable to, NSString* _Nullable nickNames, NSString* _Nullable groupId, NSString* _Nullable groupName, NSString* _Nullable groupOwner, NSString* _Nullable newIds, NSError* _Nullable* _Nullable error);
+FOUNDATION_EXPORT BOOL ChatLibJoinGroup(NSString* _Nullable to, NSString* _Nullable nickNames, NSString* _Nullable groupId, NSString* _Nullable groupName, NSString* _Nullable groupOwner, BOOL banTalking, NSString* _Nullable newIds, NSError* _Nullable* _Nullable error);
 
 FOUNDATION_EXPORT BOOL ChatLibKickOutUser(NSString* _Nullable to, NSString* _Nullable groupId, NSString* _Nullable owner, NSString* _Nullable kickUserId, NSError* _Nullable* _Nullable error);
 
@@ -97,9 +137,16 @@ FOUNDATION_EXPORT NSString* _Nonnull ChatLibNewGroupId(void);
 
 FOUNDATION_EXPORT NSString* _Nonnull ChatLibNewWallet(NSString* _Nullable auth);
 
+FOUNDATION_EXPORT NSString* _Nonnull ChatLibNinjaAddr2LicenseAddr(NSString* _Nullable addr);
+
 FOUNDATION_EXPORT BOOL ChatLibQuitGroup(NSString* _Nullable to, NSString* _Nullable groupId, NSError* _Nullable* _Nullable error);
 
+// skipped function RandomSrvList with unsupported parameter or return types
+
+
 FOUNDATION_EXPORT BOOL ChatLibSyncGroup(NSString* _Nullable to, NSString* _Nullable groupId, NSError* _Nullable* _Nullable error);
+
+FOUNDATION_EXPORT NSString* _Nonnull ChatLibTransferLicense(NSString* _Nullable toAddr, long nDays);
 
 FOUNDATION_EXPORT NSData* _Nullable ChatLibUnmarshalGoByte(NSString* _Nullable s);
 
@@ -140,12 +187,12 @@ FOUNDATION_EXPORT BOOL ChatLibWriteVoiceMessage(NSString* _Nullable to, NSData* 
 @property(strong, readonly) _Nonnull id _ref;
 
 - (nonnull instancetype)initWithRef:(_Nonnull id)ref;
-- (BOOL)banTalking:(NSString* _Nullable)groupId error:(NSError* _Nullable* _Nullable)error;
+- (BOOL)banTalking:(NSString* _Nullable)groupId banned:(BOOL)banned error:(NSError* _Nullable* _Nullable)error;
 - (BOOL)createGroup:(NSString* _Nullable)groupId groupName:(NSString* _Nullable)groupName owner:(NSString* _Nullable)owner memberIdList:(NSString* _Nullable)memberIdList memberNickNameList:(NSString* _Nullable)memberNickNameList error:(NSError* _Nullable* _Nullable)error;
 - (BOOL)dismisGroup:(NSString* _Nullable)groupId error:(NSError* _Nullable* _Nullable)error;
 - (BOOL)fileMessage:(NSString* _Nullable)from groupId:(NSString* _Nullable)groupId payload:(NSData* _Nullable)payload size:(long)size name:(NSString* _Nullable)name error:(NSError* _Nullable* _Nullable)error;
 - (BOOL)imageMessage:(NSString* _Nullable)from groupId:(NSString* _Nullable)groupId payload:(NSData* _Nullable)payload time:(int64_t)time error:(NSError* _Nullable* _Nullable)error;
-- (BOOL)joinGroup:(NSString* _Nullable)from groupId:(NSString* _Nullable)groupId groupName:(NSString* _Nullable)groupName owner:(NSString* _Nullable)owner memberIdList:(NSString* _Nullable)memberIdList memberNickNameList:(NSString* _Nullable)memberNickNameList newIdList:(NSString* _Nullable)newIdList error:(NSError* _Nullable* _Nullable)error;
+- (BOOL)joinGroup:(NSString* _Nullable)from groupId:(NSString* _Nullable)groupId groupName:(NSString* _Nullable)groupName owner:(NSString* _Nullable)owner memberIdList:(NSString* _Nullable)memberIdList memberNickNameList:(NSString* _Nullable)memberNickNameList newIdList:(NSString* _Nullable)newIdList banTalkding:(BOOL)banTalkding error:(NSError* _Nullable* _Nullable)error;
 - (BOOL)kickOutUser:(NSString* _Nullable)from groupId:(NSString* _Nullable)groupId kickId:(NSString* _Nullable)kickId error:(NSError* _Nullable* _Nullable)error;
 - (BOOL)locationMessage:(NSString* _Nullable)from groupId:(NSString* _Nullable)groupId l:(float)l a:(float)a name:(NSString* _Nullable)name time:(int64_t)time error:(NSError* _Nullable* _Nullable)error;
 - (BOOL)quitGroup:(NSString* _Nullable)from groupId:(NSString* _Nullable)groupId quitId:(NSString* _Nullable)quitId error:(NSError* _Nullable* _Nullable)error;

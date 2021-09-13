@@ -9,47 +9,51 @@ import UIKit
 
 class MesasgeItemTableViewCell: UITableViewCell {
 
-        @IBOutlet weak var unreadView: UIView!
-        @IBOutlet weak var unread: UILabel!
+    @IBOutlet weak var unreadView: UIView!
+    @IBOutlet weak var unread: UILabel!
 //        @IBOutlet weak var avatarImg: UIImageView!
+
+    @IBOutlet weak var avatar: AvatarButton!
+    @IBOutlet weak var nickName: UILabel!
+    @IBOutlet weak var LastMsg: UILabel!
+    @IBOutlet weak var lastMsgTime: UILabel!
     
-        @IBOutlet weak var avatar: UIButton!
-        @IBOutlet weak var nickName: UILabel!
-        @IBOutlet weak var LastMsg: UILabel!
-        @IBOutlet weak var lastMsgTime: UILabel!
-    
-        override func awakeFromNib() {
-                super.awakeFromNib()
-        }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        avatar.setBackgroundImage(nil, for: .normal)
+    }
 
-        override func setSelected(_ selected: Bool, animated: Bool) {
-                super.setSelected(selected, animated: animated)
-        }
+    override func awakeFromNib() {
+            super.awakeFromNib()
+    }
 
-        func initWith(details:ChatItem, idx:Int){
-//                if details.ImageData != nil{
-//                        self.avatarImg.image = UIImage.init(data: details.ImageData!)
-//                }else{
-                        //Deault image associate with account id
-//                }
+    override func setSelected(_ selected: Bool, animated: Bool) {
+            super.setSelected(selected, animated: animated)
+    }
 
-            let avaName = ContactItem.GetAvatarText(by: details.ItemID!)
-            self.avatar.setTitle(avaName, for: .normal)
-            
-            let hex = ContactItem.GetAvatarColor(by: details.ItemID!)
-            self.avatar.backgroundColor = UIColor.init(hex: hex)
-            
-            self.nickName.text = details.NickName
-            self.LastMsg.text = details.LastMsg
-            self.lastMsgTime.text = formatTimeStamp(by: details.updateTime)
-            
-            if details.unreadNo > 0{
-                    self.unread.text = "\(details.unreadNo)"
-                    self.unreadView.isHidden = false
-            }else{
-                    self.unreadView.isHidden = true
-                    self.unread.text = ""
-            }
-                
+    func initWith(details:ChatItem, idx:Int){
+        
+        let itemId = details.ItemID!
+        
+        if details.isGroup {
+            avatar.type = AvatarButtonType.chatGroup
+        } else {
+            avatar.type = AvatarButtonType.chatContact
         }
+        
+        avatar.avaInfo = AvatarInfo.init(id: itemId)
+        self.nickName.text = details.NickName
+        self.LastMsg.text = details.LastMsg
+        self.lastMsgTime.text = formatTimeStamp(by: details.updateTime)
+        
+        if details.unreadNo > 0 {
+            self.unread.text = "\(details.unreadNo)"
+            self.unreadView.isHidden = false
+        }else {
+            self.unreadView.isHidden = true
+            self.unread.text = ""
+        }
+            
+    }
 }

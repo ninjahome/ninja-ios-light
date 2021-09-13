@@ -1,0 +1,47 @@
+//
+//  AgentButton.swift
+//  ninja-light
+//
+//  Created by 郭晓芙 on 2021/9/1.
+//
+
+import UIKit
+
+enum AgentStatus {
+    case initial, activated, almostExpire
+}
+
+extension AgentStatus {
+    
+    var color: UIColor {
+        switch self {
+        case .initial, .almostExpire:
+            return UIColor.init(hex: "EE674C")
+        case .activated:
+            return UIColor.init(hex: "3B877F")
+        }
+    }
+    
+    var handleText: [String] {
+        switch self {
+        case .initial:
+            return ["激活", "未激活"]
+        case .activated:
+            return ["续费", "账号已激活"]
+        case .almostExpire:
+            return ["续费", "激活失效还剩"]
+        }
+    }
+    
+}
+
+class AgentButton: UIButton {
+    
+    var currentStatus: AgentStatus = .initial {
+        didSet {
+            self.backgroundColor = self.currentStatus.color
+            self.setTitle(self.currentStatus.handleText[0], for: .normal)
+        }
+    }
+
+}

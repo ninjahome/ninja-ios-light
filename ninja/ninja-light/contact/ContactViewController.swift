@@ -9,58 +9,59 @@ import UIKit
 
 class ContactViewController: UIViewController{
 
-        var selectedRow:Int?
-        var NewCodeStr:String?
-        
-        @IBOutlet weak var tableview: UITableView!
+    var selectedRow:Int?
+    var NewCodeStr:String?
 
-        override func viewDidLoad() {
-                super.viewDidLoad()
-                NotificationCenter.default.addObserver(self, selector:#selector(notifiAction(notification:)),
-                                                               name: NotifyContactChanged, object: nil)
-                
-                self.tableview.rowHeight = 60
-                self.tableview.tableFooterView = UIView()
-                self.reload()
-        }
     
-        override func viewWillAppear(_ animated: Bool) {
-            super.viewWillAppear(animated)
-            self.reload()
-        }
-            
-        deinit {
-            NotificationCenter.default.removeObserver(self)
-        }
-        @objc func notifiAction(notification:NSNotification){
-                self.reload()
-        }
+    @IBOutlet weak var tableview: UITableView!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector:#selector(notifiAction(notification:)),
+                                                       name: NotifyContactChanged, object: nil)
         
-        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        self.tableview.rowHeight = 60
+        self.tableview.tableFooterView = UIView()
+        self.reload()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.reload()
+    }
+        
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    @objc func notifiAction(notification:NSNotification){
+        self.reload()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 //                if segue.identifier == "ShowQRScanerID"{
 //                        let vc : ScannerViewController = segue.destination as! ScannerViewController
 //                        vc.delegate = self
 //                }else
-                if segue.identifier == "ShowContactDetailSeg"{
-                        let vc : ContactDetailsViewController = segue.destination as! ContactDetailsViewController
-                        guard let itemid = self.NewCodeStr else {
-                            if let idx = self.selectedRow {
-                                let item = ContactItem.CacheArray()[idx]
-                                vc.itemData = item
-                            }
-                            return
-                        }
-                        
-                        vc.itemUID = itemid
+        if segue.identifier == "ShowContactDetailSeg"{
+            let vc : ContactDetailsViewController = segue.destination as! ContactDetailsViewController
+            guard let itemid = self.NewCodeStr else {
+                if let idx = self.selectedRow {
+                    let item = ContactItem.CacheArray()[idx]
+                    vc.itemData = item
+                }
+                return
+            }
+            
+            vc.itemUID = itemid
 //                        guard let idx = self.selectedRow else{
 //                                vc.itemUID = self.NewCodeStr
 //                                return
 //                        }
 //                        let item = ContactItem.CacheArray()[idx]
 //                        vc.itemData = item
-                }
         }
-        
+    }
+    
 //        @IBAction func NewContact(_ sender: UIBarButtonItem) {
 //
 //                let alertController = UIAlertController(title: nil, message: "Alert message.", preferredStyle: .actionSheet)
@@ -88,13 +89,13 @@ class ContactViewController: UIViewController{
 //
 //                self.present(alertController, animated: true, completion: nil)
 //        }
-        
-        private func reload(){
-                ContactItem.LocalSavedContact()
-                DispatchQueue.main.async {
-                        self.tableview.reloadData()
-                }
+    
+    private func reload(){
+        ContactItem.LocalSavedContact()
+        DispatchQueue.main.async {
+            self.tableview.reloadData()
         }
+    }
 }
 //
 //extension ContactViewController:ScannerViewControllerDelegate{
@@ -125,7 +126,7 @@ extension ContactViewController:UITableViewDelegate, UITableViewDataSource{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ContactItemTableViewCell", for: indexPath)
                 if let c = cell as? ContactItemTableViewCell{
                         let item = ContactItem.CacheArray()[indexPath.row]
-                    print("contact item \(String(describing: item.sortPinyin))")
+//                    print("contact item \(String(describing: item.sortPinyin))")
                         c.initWith(details:item, idx: indexPath.row)
                         return c
                 }
