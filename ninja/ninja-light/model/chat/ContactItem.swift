@@ -76,6 +76,7 @@ class ContactItem:NSObject{
     }
     
     public static func LocalSavedContact() {
+        cache = [:]
         guard let owner = Wallet.shared.Addr else{
             return
         }

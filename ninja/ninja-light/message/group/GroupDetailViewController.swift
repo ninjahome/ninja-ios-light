@@ -28,6 +28,8 @@ class GroupDetailViewController: UIViewController {
     @IBOutlet weak var deleteMemberLabel: UILabel!
     @IBOutlet weak var deleteMemberBtn: UIButton!
     
+    @IBOutlet weak var groupNameBtn: UIButton!
+    @IBOutlet weak var selfNickBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +43,9 @@ class GroupDetailViewController: UIViewController {
             deleteMemberBtn.isHidden = true
             deleteMemberLabel.isHidden = true
         }
+        
+        groupNameBtn.setTitle(groupItem?.groupName, for: .normal)
+        selfNickBtn.setTitle(groupItem?.memberInfos[Wallet.shared.Addr!], for: .normal)
     }
     
 //    func prepareView() {

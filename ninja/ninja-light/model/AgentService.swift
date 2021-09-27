@@ -55,8 +55,9 @@ class AgentService {
         self.isActive = true
         
         let expStamp = expireTime - currentTime
+        expireDays = Int(expStamp / 86400)
+        
         if expStamp < 604800 {
-            expireDays = Int(expStamp / 86400)
             return AgentStatus.almostExpire
         }
         
@@ -93,6 +94,16 @@ class AgentService {
         default:
             throw NJError.agent(dict["result_message"] as! String)
         }
+    }
+    
+    func transferLicense(to addr: String, days: Int) -> Bool {
+        let ret = ChatLib.ChatLibTransferLicense(addr, days)
+        
+        if ret == "" {
+            return false
+        }
+        
+        return true
     }
         
 }

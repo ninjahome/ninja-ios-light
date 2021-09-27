@@ -21,7 +21,7 @@ class AuthorViewController: UIViewController {
     
         if Wallet.shared.useFaceID {
             biometryUsage { (success) in
-                if success, let pwd = KeychainWrapper.standard.string(forKey: "AUTHKey") {
+                if success, let pwd = DeriveAesKey() {
                     self.unlock(auth: pwd)
                 } else {
                     return
@@ -35,15 +35,49 @@ class AuthorViewController: UIViewController {
             tips.text = "please input your password"
             return
         }
+        
+        if Wallet.shared.useDestroy,
+           pwd == DeriveDestroyKey() {
+            destroy(auth: pwd)
+            
+            return
+        }
     
         unlock(auth: pwd)
+    }
+    
+    func destroy(auth: String) {
+        self.showIndicator(withTitle: "", and: "opening")
+        
+        DispatchQueue.global().async {
+            do {
+                try Wallet.shared.New(auth)
+                ServiceDelegate.InitService()
+                _ = Wallet.shared.Active(auth)
+                
+                ChatItem.ReloadChatRoom()
+                ContactItem.LocalSavedContact()
+
+                DispatchQueue.main.async {
+//                    afterWallet()
+                    self.dismiss(animated: true, completion: nil)
+                }
+                
+            } catch let err {
+                DispatchQueue.main.async {
+                    self.hideIndicator()
+                    self.tips.text = err.localizedDescription
+                    self.hideKeyboardWhenTappedAround()
+                }
+            }
+        }
     }
 
     func unlock(auth pwd: String) {
         self.showIndicator(withTitle: "", and: "opening")
         
         DispatchQueue.global().async {
-            guard let err = Wallet.shared.Active(pwd) else{
+            guard let err = Wallet.shared.Active(pwd) else {
                 DispatchQueue.main.async {
                     self.hideIndicator()
                     self.hideKeyboardWhenTappedAround()

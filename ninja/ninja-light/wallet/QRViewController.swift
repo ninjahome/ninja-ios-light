@@ -38,7 +38,6 @@ class QRViewController: UIViewController {
         self.toastMessage(title: "Copy Success")
     }
     
-    
     @IBAction func downloadQR(_ sender: UIButton) {
         
         if let exportImg = generateViewImg(info: infoView) {
@@ -52,8 +51,15 @@ class QRViewController: UIViewController {
     }
         
     @IBAction func shareQR(_ sender: UIButton) {
-        self.toastMessage(title: "Waiting...")
+        guard let exportImg = generateViewImg(info: infoView) else {
+            return
+        }
+        let activityViewCtrl = UIActivityViewController(activityItems: [exportImg], applicationActivities: nil)
+        activityViewCtrl.excludedActivityTypes = [.copyToPasteboard, .postToVimeo, .postToFacebook,
+                                                  .postToTencentWeibo, .postToTwitter, .postToWeibo]
+        self.present(activityViewCtrl, animated: true, completion: nil)
+        
+//        self.toastMessage(title: "Waiting...")
     }
-    
     
 }

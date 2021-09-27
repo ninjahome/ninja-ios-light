@@ -92,9 +92,9 @@ class ContactViewController: UIViewController{
     
     private func reload(){
         ContactItem.LocalSavedContact()
-        DispatchQueue.main.async {
+//        DispatchQueue.main.async {
             self.tableview.reloadData()
-        }
+//        }
     }
 }
 //

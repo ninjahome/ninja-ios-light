@@ -9,6 +9,7 @@ import UIKit
 
 class MessageListViewController: UIViewController {
     
+    @IBOutlet weak var navTitle: UINavigationItem!
     @IBOutlet weak var errorTips: UILabel!
     @IBOutlet weak var tableTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
@@ -31,6 +32,8 @@ class MessageListViewController: UIViewController {
         tableView.addSubview(refreshControl)
         
         reloadChat()
+        
+        
         NotificationCenter.default.addObserver(self,
                                                selector:#selector(notifiAction(notification:)),
                                                name: NotifyMsgSumChanged,
@@ -71,38 +74,59 @@ class MessageListViewController: UIViewController {
     }
     
     //MARK: - object c
-    @objc func wsOffline(notification:NSNotification){
+    @objc func wsOffline(notification:NSNotification) {
         //TODO::
 //        showErrorTips(err: "offline, please pull to online again" as! Error)
+        connNetwork()
     }
     
-    @objc func notifiAction(notification:NSNotification){
+    @objc func notifiAction(notification:NSNotification) {
         reloadChat()
     }
    
-    @objc func reloadChatRoom(_ sender: Any?){
+    @objc func reloadChatRoom(_ sender: Any?) {
 
         reloadChat()
+        connNetwork()
         
         self.refreshControl.endRefreshing()
     }
     
     func reloadChat() {
-        ServiceDelegate.workQueue.async { [self] in
-            ChatItem.ReloadChatRoom()
+        ChatItem.ReloadChatRoom()
         
-            self.sortedArray = ChatItem.SortedArra()
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-            
+        self.sortedArray = ChatItem.SortedArra()
+        
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
+        
+//        ServiceDelegate.workQueue.async { [self] in
+//
+//            DispatchQueue.main.async {
+//
+//            }
+//        }
+    }
+    
+    func connNetwork() {
+        guard WebsocketSrv.shared.IsOnline() else {
+            navTitle.title = "连接中..."
+            print("connecting")
+            guard let err = WebsocketSrv.shared.Online() else {
+                navTitle.title = "消息"
+                return
+            }
+            self.showErrorTips(err: err)
+            return
+        }
+        print("connected")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.hideErrorTips()
-        
+        reloadChat()
         guard Wallet.shared.loaded else {
             self.performSegue(withIdentifier: "CreateNewAccountSeg", sender: self)
             return
@@ -113,30 +137,19 @@ class MessageListViewController: UIViewController {
             return
         }
         print("wallet is active")
-
-        guard WebsocketSrv.shared.IsOnline() else {
-            
-            print("connecting")
-            guard let err = WebsocketSrv.shared.Online() else{
-                return
-            }
-            self.showErrorTips(err: err)
-            return
-        }
-        print("connected")
-
+        connNetwork()
     }
     
-    private func showErrorTips(err:Error){
-        DispatchQueue.main.async{
+    private func showErrorTips(err:Error) {
+        DispatchQueue.main.async {
             self.tableTopConstraint.constant = 30
             self.errorTips.isHidden = false
             self.errorTips.text = err.localizedDescription
         }
     }
     
-    private func hideErrorTips(){
-        DispatchQueue.main.async{
+    private func hideErrorTips() {
+        DispatchQueue.main.async {
             self.tableTopConstraint.constant = 0
             self.errorTips.isHidden = true
             self.errorTips.text = ""
@@ -146,10 +159,10 @@ class MessageListViewController: UIViewController {
 // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowMessageDetailsSEG"{
-            guard let idx = self.SelectedRowID else{
+            guard let idx = self.SelectedRowID else {
                 return
             }
-            guard let vc = segue.destination as? MsgViewController else{
+            guard let vc = segue.destination as? MsgViewController else {
                 return
             }
             

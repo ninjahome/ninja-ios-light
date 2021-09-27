@@ -107,6 +107,7 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         senderBar.layer.shadowOpacity = 0.1
         
         self.messageTableView.reloadData()
+        
         DispatchQueue.main.async {
             self.scrollToBottom()
         }
@@ -290,16 +291,16 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
 
     @objc func contactUpdate(notification:NSNotification){
         contactData = ContactItem.cache[peerUid]
-        DispatchQueue.main.async {
+//        DispatchQueue.main.async {
             self.peerNickName.title = self.contactData?.nickName ?? self.peerUid
-        }
+//        }
     }
     // TODO: Update group member
     @objc func groupUpdate(notification: NSNotification) {
         groupData = GroupItem.cache[peerUid]
-        DispatchQueue.main.async {
-            self.setPeerNick()
-        }
+        
+        self.setPeerNick()
+        
     }
     @objc func newMsg(notification:NSNotification){
         guard let uid = notification.userInfo?[MessageItem.NotiKey] as? String else {
@@ -313,9 +314,10 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         guard let msges = MessageItem.cache[self.peerUid] else{
                 return
         }
-
+        self.messages = msges
+        
         DispatchQueue.main.async {
-                self.messages = msges
+                
 //                        self.receiver.text = msges.toString()
                 self.messageTableView.reloadData()
                 self.scrollToBottom(animated: true)

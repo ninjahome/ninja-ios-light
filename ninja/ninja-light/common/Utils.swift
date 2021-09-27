@@ -10,6 +10,17 @@ import UIKit
 import MBProgressHUD
 import LocalAuthentication
 
+public func afterWallet() {
+    if #available(iOS 13.0, *) {
+        let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
+        sceneDelegate.window!.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
+    } else {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.window?.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
+        appDelegate.window?.makeKeyAndVisible()
+    }
+}
+
 public func instantiateViewController(storyboardName: String, viewControllerIdentifier: String) -> UIViewController {
     let storyboard = UIStoryboard(name: storyboardName, bundle: Bundle.main);
     return storyboard.instantiateViewController(withIdentifier: viewControllerIdentifier);
@@ -46,8 +57,20 @@ public func instantiateViewController(vcID: String) -> UIViewController {
     return storyboard.instantiateViewController(withIdentifier: vcID);
 }
 
-public func DeriveAesKey(auth: String) {
+public func SetAesKey(auth: String) {
     KeychainWrapper.standard.set(auth, forKey: "AUTHKey")
+}
+
+public func DeriveAesKey() -> String? {
+    return KeychainWrapper.standard.string(forKey: "AUTHKey")
+}
+
+public func SetDestroyKey(auth: String) {
+    KeychainWrapper.standard.set(auth, forKey: "DESTORY_AUTHKey")
+}
+
+public func DeriveDestroyKey() -> String? {
+    return KeychainWrapper.standard.string(forKey: "DESTORY_AUTHKey")
 }
 
 func dispatch_async_safely_to_main_queue(_ block: @escaping ()->()) {
@@ -322,7 +345,8 @@ extension UIViewController {
         LoadAlertFromStoryBoard(payload: ap)
     }
     
-    func LoadAlertFromStoryBoard(payload:AlertPayload){ DispatchQueue.main.async {
+    func LoadAlertFromStoryBoard(payload: AlertPayload) {
+        DispatchQueue.main.async {
             guard let alertVC = instantiateViewController(vcID: "PasswordViewControllerID")
                 as? PasswordViewController else{
                 return
@@ -407,12 +431,12 @@ func cleanAllData() {
     ContactItem.cache.removeAll()
 }
 
-extension MBProgressHUD{
+extension MBProgressHUD {
         
     func setDetailText(msg:String) {
-         DispatchQueue.main.async {
+//         DispatchQueue.main.async {
             self.detailsLabel.text = msg
-        }
+//        }
     }
 }
 

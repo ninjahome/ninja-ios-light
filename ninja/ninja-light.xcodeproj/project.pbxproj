@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0818D88426FD6FC1002BF3B9 /* DestroyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D88326FD6FC1002BF3B9 /* DestroyViewController.swift */; };
+		0818D88526FD6FC1002BF3B9 /* DestroyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D88326FD6FC1002BF3B9 /* DestroyViewController.swift */; };
+		0818D888270165FA002BF3B9 /* TransferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D887270165FA002BF3B9 /* TransferViewController.swift */; };
+		0818D889270165FA002BF3B9 /* TransferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D887270165FA002BF3B9 /* TransferViewController.swift */; };
+		0818D88B27016613002BF3B9 /* TransferContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D88A27016613002BF3B9 /* TransferContactViewController.swift */; };
+		0818D88C27016613002BF3B9 /* TransferContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D88A27016613002BF3B9 /* TransferContactViewController.swift */; };
+		0818D88E27016638002BF3B9 /* TransferStrangerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D88D27016638002BF3B9 /* TransferStrangerViewController.swift */; };
+		0818D88F27016638002BF3B9 /* TransferStrangerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D88D27016638002BF3B9 /* TransferStrangerViewController.swift */; };
+		0818D8912701665A002BF3B9 /* ConfirmTransferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D8902701665A002BF3B9 /* ConfirmTransferViewController.swift */; };
+		0818D8922701665A002BF3B9 /* ConfirmTransferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D8902701665A002BF3B9 /* ConfirmTransferViewController.swift */; };
+		0818D8942701B334002BF3B9 /* ContactTransferTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D8932701B334002BF3B9 /* ContactTransferTableViewCell.swift */; };
+		0818D8952701B334002BF3B9 /* ContactTransferTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D8932701B334002BF3B9 /* ContactTransferTableViewCell.swift */; };
 		0823F778265201B4000DA4DB /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0823F777265201B4000DA4DB /* QRViewController.swift */; };
 		0823F779265201B4000DA4DB /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0823F777265201B4000DA4DB /* QRViewController.swift */; };
 		0823F77D26520B24000DA4DB /* NickEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0823F77C26520B24000DA4DB /* NickEditViewController.swift */; };
@@ -143,6 +155,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0818D88326FD6FC1002BF3B9 /* DestroyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestroyViewController.swift; sourceTree = "<group>"; };
+		0818D887270165FA002BF3B9 /* TransferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferViewController.swift; sourceTree = "<group>"; };
+		0818D88A27016613002BF3B9 /* TransferContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferContactViewController.swift; sourceTree = "<group>"; };
+		0818D88D27016638002BF3B9 /* TransferStrangerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferStrangerViewController.swift; sourceTree = "<group>"; };
+		0818D8902701665A002BF3B9 /* ConfirmTransferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmTransferViewController.swift; sourceTree = "<group>"; };
+		0818D8932701B334002BF3B9 /* ContactTransferTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTransferTableViewCell.swift; sourceTree = "<group>"; };
 		081DB9C526A7D4D5004165AA /* SimLocation.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SimLocation.gpx; sourceTree = "<group>"; };
 		0823F777265201B4000DA4DB /* QRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRViewController.swift; sourceTree = "<group>"; };
 		0823F77C26520B24000DA4DB /* NickEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NickEditViewController.swift; sourceTree = "<group>"; };
@@ -252,6 +270,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0818D88627006597002BF3B9 /* transfer */ = {
+			isa = PBXGroup;
+			children = (
+				0818D887270165FA002BF3B9 /* TransferViewController.swift */,
+				0818D88A27016613002BF3B9 /* TransferContactViewController.swift */,
+				0818D88D27016638002BF3B9 /* TransferStrangerViewController.swift */,
+				0818D8902701665A002BF3B9 /* ConfirmTransferViewController.swift */,
+				0818D8932701B334002BF3B9 /* ContactTransferTableViewCell.swift */,
+			);
+			path = transfer;
+			sourceTree = "<group>";
+		};
 		0823F78126565137000DA4DB /* keychain */ = {
 			isa = PBXGroup;
 			children = (
@@ -411,12 +441,14 @@
 		6969ECD9261344BD008CB0B2 /* wallet */ = {
 			isa = PBXGroup;
 			children = (
+				0818D88627006597002BF3B9 /* transfer */,
 				6969ECDA261344CA008CB0B2 /* WalletViewController.swift */,
 				69F8D0FD261AA544009D7AF3 /* NewWalletViewController.swift */,
 				0823F777265201B4000DA4DB /* QRViewController.swift */,
 				0823F77C26520B24000DA4DB /* NickEditViewController.swift */,
 				087BD8122658AF430009459C /* ManageViewController.swift */,
 				087B57F726E1E15900591F8D /* AgentViewController.swift */,
+				0818D88326FD6FC1002BF3B9 /* DestroyViewController.swift */,
 			);
 			path = wallet;
 			sourceTree = "<group>";
@@ -614,6 +646,7 @@
 				7CEFD46F261E9ACA0002B0B9 /* Constants.swift in Sources */,
 				69B8C0EF261DA17B00B4E4AC /* CliMessage.swift in Sources */,
 				087B57F826E1E15900591F8D /* AgentViewController.swift in Sources */,
+				0818D88B27016613002BF3B9 /* TransferContactViewController.swift in Sources */,
 				69B8C0CD261D2C0900B4E4AC /* MessageListViewController.swift in Sources */,
 				0823F778265201B4000DA4DB /* QRViewController.swift in Sources */,
 				08F0FA9026884C2000C5C1DF /* ImageTableViewCell.swift in Sources */,
@@ -623,12 +656,14 @@
 				08CCDC6F26A3C3A200B0D7DA /* MapViewController.swift in Sources */,
 				6953EAF82622C12F008EC2F0 /* AuthorViewController.swift in Sources */,
 				087B57F226DF1F1400591F8D /* AgentButton.swift in Sources */,
+				0818D8912701665A002BF3B9 /* ConfirmTransferViewController.swift in Sources */,
 				08EAAE1E26968A9200210271 /* Reachability.m in Sources */,
 				087B57F526DF529D00591F8D /* AgentService.swift in Sources */,
 				0825C21A26CB6B40003E0EF3 /* AvatarCollectionCell.swift in Sources */,
 				086701B926672CAE00A1E951 /* AudioPlayManager.swift in Sources */,
 				69F8D102261AA615009D7AF3 /* Wallet.swift in Sources */,
 				69B8C0DC261D334100B4E4AC /* ChatItem.swift in Sources */,
+				0818D8942701B334002BF3B9 /* ContactTransferTableViewCell.swift in Sources */,
 				0823F78326565152000DA4DB /* KeychainWrapper.swift in Sources */,
 				69B8C0EA261D9FB100B4E4AC /* QRCodeShowViewController.swift in Sources */,
 				08EAAE272697496700210271 /* SearchDetailViewController.swift in Sources */,
@@ -641,13 +676,16 @@
 				6969ECBC26134294008CB0B2 /* AppDelegate.swift in Sources */,
 				08EAAE24269735AC00210271 /* ContactAddViewController.swift in Sources */,
 				0823F78A26565186000DA4DB /* KeychainItemAccessibility.swift in Sources */,
+				0818D888270165FA002BF3B9 /* TransferViewController.swift in Sources */,
 				08B74A6726B3B90D00D6F0F8 /* GroupMemberViewController.swift in Sources */,
+				0818D88426FD6FC1002BF3B9 /* DestroyViewController.swift in Sources */,
 				6969ECD526134450008CB0B2 /* MsgViewController.swift in Sources */,
 				0825C21D26CF5887003E0EF3 /* DeleteMemberController.swift in Sources */,
 				088C3C60267B01F300E5A715 /* ImageFilesManager.swift in Sources */,
 				69F8D107261AA7FE009D7AF3 /* CoreData.swift in Sources */,
 				7CEFD45F261E91A20002B0B9 /* ContactItemTableViewCell.swift in Sources */,
 				69F8D10C261AEA39009D7AF3 /* Utils.swift in Sources */,
+				0818D88E27016638002BF3B9 /* TransferStrangerViewController.swift in Sources */,
 				69B8C0D7261D2ED100B4E4AC /* PasswordViewController.swift in Sources */,
 				6969ECC626134294008CB0B2 /* ninja.xcdatamodeld in Sources */,
 				08F0FA9626884C5C00C5C1DF /* LocationTableViewCell.swift in Sources */,
@@ -679,6 +717,7 @@
 				7CEFD472261E9ACD0002B0B9 /* Constants.swift in Sources */,
 				69B8C0F0261DA17B00B4E4AC /* CliMessage.swift in Sources */,
 				087B57F926E1E15900591F8D /* AgentViewController.swift in Sources */,
+				0818D88C27016613002BF3B9 /* TransferContactViewController.swift in Sources */,
 				69B8C0CE261D2C0900B4E4AC /* MessageListViewController.swift in Sources */,
 				0823F779265201B4000DA4DB /* QRViewController.swift in Sources */,
 				08F0FA9126884C2000C5C1DF /* ImageTableViewCell.swift in Sources */,
@@ -688,12 +727,14 @@
 				08CCDC7026A3C3A200B0D7DA /* MapViewController.swift in Sources */,
 				6953EAF92622C12F008EC2F0 /* AuthorViewController.swift in Sources */,
 				087B57F326DF1F1400591F8D /* AgentButton.swift in Sources */,
+				0818D8922701665A002BF3B9 /* ConfirmTransferViewController.swift in Sources */,
 				08EAAE1F26968A9200210271 /* Reachability.m in Sources */,
 				087B57F626DF529D00591F8D /* AgentService.swift in Sources */,
 				0825C21B26CB6B40003E0EF3 /* AvatarCollectionCell.swift in Sources */,
 				086701BA26672CAE00A1E951 /* AudioPlayManager.swift in Sources */,
 				69B8C091261C5E1200B4E4AC /* Wallet.swift in Sources */,
 				69B8C0DD261D334100B4E4AC /* ChatItem.swift in Sources */,
+				0818D8952701B334002BF3B9 /* ContactTransferTableViewCell.swift in Sources */,
 				0823F78426565152000DA4DB /* KeychainWrapper.swift in Sources */,
 				69B8C0EB261D9FB100B4E4AC /* QRCodeShowViewController.swift in Sources */,
 				08EAAE282697496700210271 /* SearchDetailViewController.swift in Sources */,
@@ -706,13 +747,16 @@
 				69B8C092261C5E1200B4E4AC /* ContactViewController.swift in Sources */,
 				08EAAE25269735AC00210271 /* ContactAddViewController.swift in Sources */,
 				0823F78B26565186000DA4DB /* KeychainItemAccessibility.swift in Sources */,
+				0818D889270165FA002BF3B9 /* TransferViewController.swift in Sources */,
 				08B74A6826B3B90D00D6F0F8 /* GroupMemberViewController.swift in Sources */,
+				0818D88526FD6FC1002BF3B9 /* DestroyViewController.swift in Sources */,
 				69B8C093261C5E1200B4E4AC /* AppDelegate.swift in Sources */,
 				0825C21E26CF5887003E0EF3 /* DeleteMemberController.swift in Sources */,
 				088C3C61267B01F300E5A715 /* ImageFilesManager.swift in Sources */,
 				69B8C094261C5E1200B4E4AC /* MsgViewController.swift in Sources */,
 				69B8C095261C5E1200B4E4AC /* CoreData.swift in Sources */,
 				69B8C096261C5E1200B4E4AC /* Utils.swift in Sources */,
+				0818D88F27016638002BF3B9 /* TransferStrangerViewController.swift in Sources */,
 				69B8C0D8261D2ED100B4E4AC /* PasswordViewController.swift in Sources */,
 				69B8C097261C5E1200B4E4AC /* ninja.xcdatamodeld in Sources */,
 				08F0FA9726884C5C00C5C1DF /* LocationTableViewCell.swift in Sources */,
@@ -863,7 +907,7 @@
 				CODE_SIGN_ENTITLEMENTS = "ninja-light/ninja-light.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development: bencong ri (5PQQRQ4DWP)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = 6A53CAFMZ9;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -880,8 +924,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/bin",
-					"$(PROJECT_DIR)/ninja-light/AMRAudioSwift/Source",
-					"$(PROJECT_DIR)/AMRAudioSwift/Source",
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hop.ninja.light;
@@ -901,7 +943,7 @@
 				CODE_SIGN_ENTITLEMENTS = "ninja-light/ninja-light.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Distribution: Lendger, Inc (6A53CAFMZ9)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = 6A53CAFMZ9;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -918,8 +960,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/bin",
-					"$(PROJECT_DIR)/ninja-light/AMRAudioSwift/Source",
-					"$(PROJECT_DIR)/AMRAudioSwift/Source",
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hop.ninja.light;
@@ -956,8 +996,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/bin",
-					"$(PROJECT_DIR)/ninja-light/AMRAudioSwift/Source",
-					"$(PROJECT_DIR)/AMRAudioSwift/Source",
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hop.ninja.light;
@@ -996,8 +1034,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/bin",
-					"$(PROJECT_DIR)/ninja-light/AMRAudioSwift/Source",
-					"$(PROJECT_DIR)/AMRAudioSwift/Source",
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hop.ninja.light;

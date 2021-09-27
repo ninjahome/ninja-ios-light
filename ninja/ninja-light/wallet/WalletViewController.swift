@@ -13,6 +13,7 @@ class WalletViewController: UIViewController {
     @IBOutlet weak var address: UILabel!
     
     @IBOutlet weak var faceIDSwitch: UISwitch!
+    @IBOutlet weak var destroySwitch: UISwitch!
     
     @IBOutlet weak var avatar: AvatarButton!
     @IBOutlet weak var backGroundView: UIView!
@@ -27,6 +28,7 @@ class WalletViewController: UIViewController {
         address.text = Wallet.shared.Addr
         nickName.text = Wallet.shared.nickName
         faceIDSwitch.isOn = Wallet.shared.useFaceID
+        destroySwitch.isOn = Wallet.shared.useDestroy
         
         avatar.type = AvatarButtonType.wallet
         avatar.avaInfo = nil
@@ -98,6 +100,17 @@ class WalletViewController: UIViewController {
         } else {
             if let err = Wallet.shared.UpdateUseFaceID(by: sender.isOn) {
                 faceIDSwitch.isOn = !sender.isOn
+                self.toastMessage(title: err.localizedDescription)
+            }
+        }
+    }
+    
+    @IBAction func setDestroy(_ sender: UISwitch) {
+        if sender.isOn {
+            self.performSegue(withIdentifier: "ShowDestroySEG", sender: self)
+        } else {
+            if let err = Wallet.shared.UpdateUseDestroy(by: false) {
+                destroySwitch.isOn = false
                 self.toastMessage(title: err.localizedDescription)
             }
         }

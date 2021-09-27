@@ -20,10 +20,9 @@ class ChatItem:NSObject{
     var unreadNo:Int = 0
     var isGroup: Bool = false
     
-    
-    
     public static func ReloadChatRoom() {
         
+        CachedChats = [:]
         var result:[ChatItem]?
         let owner = Wallet.shared.Addr!
         result = try? CDManager.shared.Get(entity: "CDChatItem",

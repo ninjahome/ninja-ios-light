@@ -16,6 +16,7 @@ class Wallet: NSObject{
     var wJson: String?
     var nickName: String?
     var useFaceID = false
+    var useDestroy = false
     var deviceToken: String?
 
     public static let shared = Wallet()
@@ -23,8 +24,9 @@ class Wallet: NSObject{
     lazy var loaded: Bool = {
         do {
             var inst:Wallet?
-            inst = try CDManager.shared.GetOne(entity: "CDWallet", predicate: nil)
-            if inst == nil{
+            inst = try CDManager.shared.GetOne(entity: "CDWallet",
+                                               predicate: nil)
+            if inst == nil {
                 return false
             }
             
@@ -36,15 +38,16 @@ class Wallet: NSObject{
         return self.obj != nil
     }()
     
-    func Copy(_ a:Wallet) {
+    func Copy(_ a: Wallet) {
         self.Addr = a.Addr
         self.wJson = a.wJson
         self.obj = a.obj
         self.nickName = a.nickName
         self.useFaceID = a.useFaceID
+        self.useDestroy = a.useDestroy
     }
     
-    func New(_ password:String) throws {
+    func New(_ password: String) throws {
 
         let walletJson =  ChatLib.ChatLibNewWallet(password)
         if walletJson == ""{
@@ -58,6 +61,7 @@ class Wallet: NSObject{
         self.wJson = walletJson
         self.loaded = true
         self.useFaceID = false
+        self.useDestroy = false
         self.nickName = ""
         try CDManager.shared.Delete(entity: "CDWallet")
         try CDManager.shared.AddEntity(entity: "CDWallet", m: self)
@@ -67,7 +71,7 @@ class Wallet: NSObject{
         return ChatLib.ChatLibWalletIsOpen()
     }
         
-    func Active(_ password:String) -> Error? {
+    func Active(_ password: String) -> Error? {
         var error:NSError? = nil
         ChatLib.ChatLibActiveWallet(self.wJson, password, self.deviceToken, &error)
         return error
@@ -88,6 +92,7 @@ class Wallet: NSObject{
         self.wJson = walletJson
         self.loaded = true
         self.useFaceID = false
+        self.useDestroy = false
         self.nickName = ""
 
         ServiceDelegate.InitService()
@@ -113,6 +118,29 @@ class Wallet: NSObject{
         }
         return nil
     }
+    
+    func openDestroy(auth: String) -> Bool {
+        if DeriveAesKey() == auth {
+            return false
+        }
+        
+        SetDestroyKey(auth: auth)
+        if UpdateUseDestroy(by: true) != nil {
+            return false
+        }
+        
+        return true
+    }
+    
+    func UpdateUseDestroy(by use: Bool) -> NJError? {
+        self.useDestroy = use
+        do {
+            try CDManager.shared.UpdateOrAddOne(entity: "CDWallet", m: self, predicate: NSPredicate(format: "address == %@ AND jsonStr == %@", self.Addr!, self.wJson!))
+        } catch let err {
+            return NJError.wallet(err.localizedDescription)
+        }
+        return nil
+    }
 
     func UpdateUseFaceID(by use: Bool) -> NJError? {
         self.useFaceID = use
@@ -126,7 +154,7 @@ class Wallet: NSObject{
 
     func openFaceID(auth: String) -> Bool {
         guard let _ = Active(auth) else {
-            DeriveAesKey(auth: auth)
+            SetAesKey(auth: auth)
             if UpdateUseFaceID(by: true) != nil {
                 return false
             }
@@ -175,6 +203,7 @@ extension Wallet: ModelObj {
         wObj.jsonStr = self.wJson
         wObj.nick = self.nickName
         wObj.useFaceID = self.useFaceID
+        wObj.useDestroy = self.useDestroy
         self.obj = wObj
     }
     
@@ -187,6 +216,7 @@ extension Wallet: ModelObj {
         self.wJson = wObj.jsonStr
         self.nickName = wObj.nick
         self.useFaceID = wObj.useFaceID
+        self.useDestroy = wObj.useDestroy
     }
     
 }

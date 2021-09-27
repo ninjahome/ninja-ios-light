@@ -11,6 +11,9 @@ import ChatLib
 
 class WebsocketSrv:NSObject{
     public static var shared = WebsocketSrv()
+    
+    public static let netQueue = DispatchQueue.init(label: "Connect Queue", qos: .userInteractive)
+    
     override init() {
             super.init()
     }
@@ -20,10 +23,12 @@ class WebsocketSrv:NSObject{
     }
     
     func Online()->Error?{
-            var err:NSError? = nil
+        var err:NSError? = nil
+        WebsocketSrv.netQueue.async {
             ChatLib.ChatLibWSOnline(&err)
-            print("online err \(String(describing: err?.localizedDescription))")
-            return err
+        }
+        print("online err \(String(describing: err?.localizedDescription))")
+        return err
     }
     
     func Offline() {

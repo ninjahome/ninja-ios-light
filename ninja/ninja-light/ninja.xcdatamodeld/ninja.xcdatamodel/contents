@@ -21,8 +21,8 @@
         <attribute name="gid" optional="YES" attributeType="String"/>
         <attribute name="groupName" optional="YES" attributeType="String"/>
         <attribute name="leader" optional="YES" attributeType="String"/>
-        <attribute name="memberIds" optional="YES" attributeType="Transformable"/>
-        <attribute name="memberNicks" optional="YES" attributeType="Transformable"/>
+        <attribute name="memberIds" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer"/>
+        <attribute name="memberNicks" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer"/>
         <attribute name="owner" optional="YES" attributeType="String"/>
         <attribute name="unixTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
@@ -31,7 +31,7 @@
         <attribute name="groupId" optional="YES" attributeType="String"/>
         <attribute name="image" optional="YES" attributeType="Binary"/>
         <attribute name="isOut" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="media" optional="YES" attributeType="Transformable"/>
+        <attribute name="media" optional="YES" attributeType="Transformable" valueTransformerName=""/>
         <attribute name="message" optional="YES" attributeType="String"/>
         <attribute name="owner" optional="YES" attributeType="String"/>
         <attribute name="to" optional="YES" attributeType="String"/>
@@ -42,13 +42,14 @@
         <attribute name="address" optional="YES" attributeType="String"/>
         <attribute name="jsonStr" optional="YES" attributeType="String"/>
         <attribute name="nick" optional="YES" attributeType="String"/>
+        <attribute name="useDestroy" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="useFaceID" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </entity>
     <elements>
         <element name="CDChatItem" positionX="-45" positionY="27" width="128" height="119"/>
         <element name="CDContact" positionX="-36" positionY="18" width="128" height="119"/>
-        <element name="CDUnread" positionX="-54" positionY="9" width="128" height="179"/>
-        <element name="CDWallet" positionX="-63" positionY="-18" width="128" height="89"/>
         <element name="CDGroup" positionX="-45" positionY="72" width="128" height="149"/>
+        <element name="CDUnread" positionX="-54" positionY="9" width="128" height="179"/>
+        <element name="CDWallet" positionX="-63" positionY="-18" width="128" height="104"/>
     </elements>
 </model>

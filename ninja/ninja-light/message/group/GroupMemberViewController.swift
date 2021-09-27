@@ -160,9 +160,9 @@ class GroupMemberViewController: UIViewController {
     private func reload(){
         ContactItem.LocalSavedContact()
         
-        DispatchQueue.main.async {
+//        DispatchQueue.main.async {
             self.tableView.reloadData()
-        }
+//        }
     }
     
     func enableOrDisableCompleteBtn(number: Int) {

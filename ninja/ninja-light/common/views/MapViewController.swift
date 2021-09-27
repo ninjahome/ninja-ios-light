@@ -70,9 +70,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
             self.locationInfo.la = Float(GCJLocation.coordinate.latitude)
             self.locationInfo.lo = Float(GCJLocation.coordinate.longitude)
             
-            DispatchQueue.main.async {
+//            DispatchQueue.main.async {
                 self.renderPin(GCJLocation)
-            }
+//            }
             
             let geocoder = CLGeocoder.init()
             geocoder.reverseGeocodeLocation(GCJLocation) { (placemarks, error) in

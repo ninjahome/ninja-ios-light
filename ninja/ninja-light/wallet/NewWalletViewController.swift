@@ -9,71 +9,57 @@ import UIKit
 
 class NewWalletViewController: UIViewController {
 
-        @IBOutlet weak var password2: UITextField!
-        @IBOutlet weak var password1: UITextField!
-    
-        @IBOutlet weak var importtext: UILabel!
-        @IBOutlet weak var importbtn: UIButton!
-    
-            
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            self.hideKeyboardWhenTappedAround()
-            
-            if Wallet.shared.Addr != nil {
-                importtext.isHidden = true
-                importbtn.isHidden = true
-            }
-        }
-    
-        @IBAction func CreateWallet(_ sender: UIButton) {
-                guard let password = self.password1.text,password != ""else {
-                        self.toastMessage(title: "Password can't be empty")
-                        return
-                }
-                if password != self.password2.text{
-                        self.toastMessage(title: "2 passwords are not same")
-                        return
-                }
-            
-                if Wallet.shared.Addr != nil {
-                    cleanAllData()
-                }
-                
-                do {
-                        try Wallet.shared.New(password)
-                        
-                        ServiceDelegate.InitService()
-                        _ = Wallet.shared.Active(password)
+    @IBOutlet weak var password2: UITextField!
+    @IBOutlet weak var password1: UITextField!
 
-                        afterWallet()
-                                                    
-                } catch let err as NSError{
-                        self.toastMessage(title: err.localizedDescription)
-                }
+    @IBOutlet weak var importtext: UILabel!
+    @IBOutlet weak var importbtn: UIButton!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.hideKeyboardWhenTappedAround()
+        
+        if Wallet.shared.Addr != nil {
+            importtext.isHidden = true
+            importbtn.isHidden = true
+        }
+    }
+
+    @IBAction func CreateWallet(_ sender: UIButton) {
+        guard let password = self.password1.text,password != ""else {
+            self.toastMessage(title: "Password can't be empty")
+            return
+        }
+        if password != self.password2.text{
+            self.toastMessage(title: "2 passwords are not same")
+            return
+        }
+    
+        if Wallet.shared.Addr != nil {
+            cleanAllData()
         }
         
-        func afterWallet() {
-            if #available(iOS 13.0, *) {
-                    let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
-                    sceneDelegate.window!.rootViewController =  instantiateViewController(vcID: "NinjaHomeTabVC")
-            } else {
-                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                    appDelegate.window?.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
-                    appDelegate.window?.makeKeyAndVisible()
-            }
+        do {
+            try Wallet.shared.New(password)
+            
+            ServiceDelegate.InitService()
+            _ = Wallet.shared.Active(password)
+
+            afterWallet()
+                                            
+        } catch let err as NSError{
+            self.toastMessage(title: err.localizedDescription)
         }
-        
-        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            if segue.identifier == "ImportScannerID" {
-                let vc : ScannerViewController = segue.destination as! ScannerViewController
-                vc.delegate = self
-            }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ImportScannerID" {
+            let vc : ScannerViewController = segue.destination as! ScannerViewController
+            vc.delegate = self
         }
-        
+    }
 
 }
-
 
 extension NewWalletViewController: ScannerViewControllerDelegate {
     func codeDetected(code: String) {
@@ -92,7 +78,7 @@ extension NewWalletViewController: ScannerViewControllerDelegate {
                         
                         try Wallet.shared.Import(cipher: code, addr: addr, auth: pwd)
                         
-                        self.afterWallet()
+                        afterWallet()
                         
                         print("new wallet \(String(describing: Wallet.shared.Addr))")
                         

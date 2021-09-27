@@ -9,25 +9,23 @@ import Foundation
 import ChatLib
 
 class ServiceDelegate: NSObject {
-        public static let workQueue = DispatchQueue.init(label: "Serivce Queue", qos: .utility)
-        
-        override init() {
-                super.init()
-        }
-        
-        public static func InitService(){
-                //TODO:: more system configs
-//                IosLib.IosLibConfigApp("", WebsocketSrv.shared)
-            
-            ChatLib.ChatLibConfigApp("", WebsocketSrv.shared, WebsocketSrv.shared)
-                ContactItem.LocalSavedContact()
-                GroupItem.LocalSavedGroup()
-                MessageItem.loadUnread()
-                dateFormatterGet.timeStyle = .medium
-        }
+    public static let workQueue = DispatchQueue.init(label: "Serivce Queue", qos: .utility)
     
-        public static func InitConfig() {
-            ChatLib.ChatLibConfigApp("", WebsocketSrv.shared, nil)
-        }
+    override init() {
+        super.init()
+    }
+    
+    public static func InitService(){
+        ChatLib.ChatLibConfigApp("", WebsocketSrv.shared, WebsocketSrv.shared, "", 1)
+        ContactItem.LocalSavedContact()
+        GroupItem.LocalSavedGroup()
+        MessageItem.loadUnread()
+        ChatItem.ReloadChatRoom()
+        dateFormatterGet.timeStyle = .medium
+    }
+
+    public static func InitConfig() {
+        ChatLib.ChatLibConfigApp("", WebsocketSrv.shared, WebsocketSrv.shared, "", 1)
+    }
     
 }

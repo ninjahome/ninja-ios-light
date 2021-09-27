@@ -11,19 +11,19 @@ import UserNotifications
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
         var window: UIWindow?
-        var reach: Reachability?
+//        var reach: Reachability?
     
         func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-            self.reach = Reachability.forInternetConnection()
-            self.reach?.reachableOnWWAN = false
-            
-            NotificationCenter.default.addObserver(
-                    self,
-                    selector: #selector(reachabilityChanged),
-                    name: NSNotification.Name.reachabilityChanged,
-                    object: nil
-                )
-            self.reach!.startNotifier()
+//            self.reach = Reachability.forInternetConnection()
+//            self.reach?.reachableOnWWAN = false
+//
+//            NotificationCenter.default.addObserver(
+//                    self,
+//                    selector: #selector(reachabilityChanged),
+//                    name: NSNotification.Name.reachabilityChanged,
+//                    object: nil
+//                )
+//            self.reach?.startNotifier()
             
             let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
             print("token \(token)")
@@ -43,13 +43,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             
         }
     
-        @objc func reachabilityChanged(notification: NSNotification) {
-            if self.reach!.isReachableViaWiFi() || self.reach!.isReachableViaWWAN() {
-                print("Service available!!!")
-            } else {
-                print("No service available!!!")
-            }
-        }
+//        @objc func reachabilityChanged(notification: NSNotification) {
+//            if self.reach!.isReachableViaWiFi() || self.reach!.isReachableViaWWAN() {
+//                print("Service available!!!")
+//            } else {
+//                print("No service available!!!")
+//            }
+//        }
     
         func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
             print("failed to register remote noti\(error.localizedDescription)")
@@ -79,15 +79,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             
         }
     
-    func getNotificationSettings() {
-      UNUserNotificationCenter.current().getNotificationSettings { settings in
-        guard settings.authorizationStatus == .authorized else { return }
-        DispatchQueue.main.sync {
-            UIApplication.shared.registerForRemoteNotifications()
+        func getNotificationSettings() {
+            UNUserNotificationCenter.current().getNotificationSettings { settings in
+                guard settings.authorizationStatus == .authorized else { return }
+                
+                DispatchQueue.main.sync {
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
+                print("Notification settings: \(settings)")
+            }
         }
-        print("Notification settings: \(settings)")
-      }
-    }
         
         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
                 
@@ -102,12 +103,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             
                 UNUserNotificationCenter.current().delegate = self
             
-                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound, .provisional]) { (granted, error) in
+                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound, .carPlay]) { (granted, error) in
                     print("granted \(granted)")
                     guard granted else { return }
-                    self.getNotificationSettings()
+                    
                 }
-            
+                self.getNotificationSettings()
                 return true
         }
 
@@ -138,7 +139,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         func applicationWillTerminate(_ application: UIApplication) {
                 MessageItem.removeAllRead()
                 AudioFilesManager.deleteAllRecordingFiles()
-            
         }
+    
+        
 }
 
