@@ -30,9 +30,8 @@ class MessageListViewController: UIViewController {
         tableView.tableFooterView = UIView()
         refreshControl.addTarget(self, action: #selector(self.reloadChatRoom(_:)), for: .valueChanged)
         tableView.addSubview(refreshControl)
-        
-        reloadChat()
-        
+
+        sortedArray = ChatItem.SortedArra()
         
         NotificationCenter.default.addObserver(self,
                                                selector:#selector(notifiAction(notification:)),
@@ -81,32 +80,18 @@ class MessageListViewController: UIViewController {
     }
     
     @objc func notifiAction(notification:NSNotification) {
-        reloadChat()
+        ServiceDelegate.workQueue.async { [weak self] in
+            ChatItem.ReloadChatRoom()
+            self?.sortedArray = ChatItem.SortedArra()
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+        }
     }
    
     @objc func reloadChatRoom(_ sender: Any?) {
-
-        reloadChat()
         connNetwork()
-        
         self.refreshControl.endRefreshing()
-    }
-    
-    func reloadChat() {
-        ChatItem.ReloadChatRoom()
-        
-        self.sortedArray = ChatItem.SortedArra()
-        
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-        
-//        ServiceDelegate.workQueue.async { [self] in
-//
-//            DispatchQueue.main.async {
-//
-//            }
-//        }
     }
     
     func connNetwork() {
@@ -126,7 +111,6 @@ class MessageListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.hideErrorTips()
-        reloadChat()
         guard Wallet.shared.loaded else {
             self.performSegue(withIdentifier: "CreateNewAccountSeg", sender: self)
             return

@@ -275,21 +275,21 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         }
     }
     
-    @objc func keyboardDidShow(notification:NSNotification) {
+    @objc func keyboardDidShow(notification: NSNotification) {
         guard let _ = notification.userInfo else {
             return
         }
         self.keyboardIsHide = false
     }
 
-    @objc func keyboardDidHide(notification:NSNotification) {
+    @objc func keyboardDidHide(notification: NSNotification) {
         guard let _ = notification.userInfo else {
             return
         }
         self.keyboardIsHide = true
     }
 
-    @objc func contactUpdate(notification:NSNotification){
+    @objc func contactUpdate(notification: NSNotification){
         contactData = ContactItem.cache[peerUid]
 //        DispatchQueue.main.async {
             self.peerNickName.title = self.contactData?.nickName ?? self.peerUid
@@ -302,7 +302,7 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         self.setPeerNick()
         
     }
-    @objc func newMsg(notification:NSNotification){
+    @objc func newMsg(notification: NSNotification){
         guard let uid = notification.userInfo?[MessageItem.NotiKey] as? String else {
                 return
         }
@@ -317,10 +317,8 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         self.messages = msges
         
         DispatchQueue.main.async {
-                
-//                        self.receiver.text = msges.toString()
-                self.messageTableView.reloadData()
-                self.scrollToBottom(animated: true)
+            self.messageTableView.reloadData()
+            self.scrollToBottom(animated: true)
         }
     }
     
@@ -518,27 +516,25 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
             cliMsg.imgData = imagedata
         }
         cliMsg.type = .image
-        DispatchQueue.global().async {
+//        WebsocketSrv.messageQueue.async {
             print("+++发送消息")
             guard let err = WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg) else {
                 if let msges = MessageItem.cache[self.peerUid] {
                     print("+++发送消息成功")
-                    DispatchQueue.main.async {
+//                    DispatchQueue.main.async {
                         print("+++发送成功 更新table view")
                         self.messages = msges
                         self.messageTableView.reloadData()
                         self.scrollToBottom()
-                    }
+//                    }
                 }
                 return
             }
-            DispatchQueue.main.async {
+//            DispatchQueue.main.async {
                 print("+++发送失败")
                 self.toastMessage(title: err.localizedDescription)
-            }
-            
-        }
-
+//            }
+//        }
     }
 }
 
@@ -579,7 +575,7 @@ extension MsgViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
             
         if (text == "\n") {
-            guard let msg = self.sender.text, msg != "" else{
+            guard let msg = self.sender.text, msg != "" else {
                     return false
             }
             let cliMsg = CliMessage.init()
@@ -607,7 +603,6 @@ extension MsgViewController: UITextViewDelegate {
                 if let msges = MessageItem.cache[self.peerUid] {
                     messages = msges
                     messageTableView.reloadData()
-                    
                     scrollToBottom()
                 }
             

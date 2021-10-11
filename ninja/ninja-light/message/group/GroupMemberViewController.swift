@@ -204,7 +204,10 @@ extension GroupMemberViewController: UITableViewDelegate, UITableViewDataSource 
         
         if let c = cell as? GroupMemberTableViewCell {
             let item = contacts[indexPath.row]
-            c.initWith(details: item, idx: indexPath.row)
+            
+            let selected = selectedIndexs.contains(indexPath.row)
+            
+            c.initWith(details: item, idx: indexPath.row, selected: selected)
             c.cellDelegate = self
             
             return c

@@ -14,6 +14,11 @@ class WebsocketSrv:NSObject{
     
     public static let netQueue = DispatchQueue.init(label: "Connect Queue", qos: .userInteractive)
     
+    public static let textMsgQueue = DispatchQueue.init(label: "Sending Text Queue")
+    public static let imageMsgQueue = DispatchQueue.init(label: "Sending Image Queue")
+    public static let voiceMsgQueue = DispatchQueue.init(label: "Sending Voice Queue")
+    public static let locationMsgQueue = DispatchQueue.init(label: "Sending Location Queue")
+    
     override init() {
             super.init()
     }
@@ -35,7 +40,7 @@ class WebsocketSrv:NSObject{
         ChatLib.ChatLibWSOffline()
     }
     
-    func SendIMMsg(cliMsg:CliMessage) -> NJError?{
+    func SendIMMsg(cliMsg:CliMessage) -> NJError? {
         var error:NSError?
         var isGroup: Bool = false
         
@@ -51,30 +56,37 @@ class WebsocketSrv:NSObject{
         
         switch cliMsg.type {
             case .plainTxt:
-                if isGroup {
-                    ChatLib.ChatLibWriteGroupMessage(cliMsg.to, gid, cliMsg.textData, &error)
-                } else {
-                    ChatLib.ChatLibWriteMessage(cliMsg.to, cliMsg.textData, &error)
+                WebsocketSrv.textMsgQueue.async {
+                    if isGroup {
+                        ChatLib.ChatLibWriteGroupMessage(cliMsg.to, gid, cliMsg.textData, &error)
+                    } else {
+                        ChatLib.ChatLibWriteMessage(cliMsg.to, cliMsg.textData, &error)
+                    }
                 }
             case .image:
-                if isGroup {
-                    ChatLib.ChatLibWriteImageGroupMessage(cliMsg.to, cliMsg.imgData, gid, &error)
-                } else {
-                    ChatLib.ChatLibWriteImageMessage(cliMsg.to, cliMsg.imgData, &error)
+                WebsocketSrv.imageMsgQueue.async {
+                    if isGroup {
+                        ChatLib.ChatLibWriteImageGroupMessage(cliMsg.to, cliMsg.imgData, gid, &error)
+                    } else {
+                        ChatLib.ChatLibWriteImageMessage(cliMsg.to, cliMsg.imgData, &error)
+                    }
                 }
             case .voice:
-                if isGroup {
-                    ChatLib.ChatLibWriteVoiceGroupMessage(cliMsg.to, cliMsg.audioData!.content, cliMsg.audioData!.duration, gid, &error)
-                } else {
-                    ChatLib.ChatLibWriteVoiceMessage(cliMsg.to, cliMsg.audioData?.content, cliMsg.audioData?.duration ?? 0, &error)
+                WebsocketSrv.voiceMsgQueue.async {
+                    if isGroup {
+                        ChatLib.ChatLibWriteVoiceGroupMessage(cliMsg.to, cliMsg.audioData!.content, cliMsg.audioData!.duration, gid, &error)
+                    } else {
+                        ChatLib.ChatLibWriteVoiceMessage(cliMsg.to, cliMsg.audioData?.content, cliMsg.audioData?.duration ?? 0, &error)
+                    }
                 }
             case .location:
-                if isGroup {
-                    ChatLib.ChatLibWriteLocationGroupMessage(cliMsg.to, cliMsg.locationData!.lo, cliMsg.locationData!.la, cliMsg.locationData!.str, gid, &error)
-                } else {
-                    ChatLib.ChatLibWriteLocationMessage(cliMsg.to, cliMsg.locationData!.lo, cliMsg.locationData!.la, cliMsg.locationData!.str, &error)
+                WebsocketSrv.locationMsgQueue.async {
+                    if isGroup {
+                        ChatLib.ChatLibWriteLocationGroupMessage(cliMsg.to, cliMsg.locationData!.lo, cliMsg.locationData!.la, cliMsg.locationData!.str, gid, &error)
+                    } else {
+                        ChatLib.ChatLibWriteLocationMessage(cliMsg.to, cliMsg.locationData!.lo, cliMsg.locationData!.la, cliMsg.locationData!.str, &error)
+                    }
                 }
-                
             default:
                 print("send msg: no such type")
         }

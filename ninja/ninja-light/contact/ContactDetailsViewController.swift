@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ContactDetailsViewController: UIViewController {
+class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegate {
         
 //        @IBOutlet weak var uid: UITextView!
 //        @IBOutlet weak var remarks: UITextView!
@@ -27,16 +27,23 @@ class ContactDetailsViewController: UIViewController {
     var itemUID:String?
     var itemData:ContactItem?
     
+    var _delegate: UIGestureRecognizerDelegate?
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         self.navigationController?.setNavigationBarHidden(true, animated: true)
- 
+        
+        if (self.navigationController?.viewControllers.count)! >= 1 {
+            _delegate = self.navigationController?.interactivePopGestureRecognizer?.delegate
+            self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = _delegate
     }
   
     override func viewDidLoad() {

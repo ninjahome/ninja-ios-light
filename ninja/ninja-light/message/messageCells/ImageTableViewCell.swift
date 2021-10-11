@@ -16,6 +16,9 @@ class ImageTableViewCell: UITableViewCell {
     @IBOutlet weak var nickname: UILabel!
     @IBOutlet weak var time: UILabel!
     
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
+    
+    
     override func prepareForReuse() {
         super.prepareForReuse()
     }

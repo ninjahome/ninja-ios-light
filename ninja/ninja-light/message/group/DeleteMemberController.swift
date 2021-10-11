@@ -104,8 +104,11 @@ extension DeleteMemberController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CreateGroupMemberTableViewCell", for: indexPath)
         
         if let c = cell as? GroupMemberTableViewCell {
+            
+            let selected = selectedIndexs.contains(indexPath.row)
+            
 
-            c.initWith(group: self.groupItem!, idx: indexPath.row)
+            c.initWith(group: self.groupItem!, idx: indexPath.row, selected: selected)
             c.cellDelegate = self
             
             return c

@@ -14,7 +14,7 @@ class DestroyViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.hideKeyboardWhenTappedAround()
     }
     
     @IBAction func confirmDestroyBtn(_ sender: UIButton) {
@@ -28,5 +28,10 @@ class DestroyViewController: UIViewController {
             self.toastMessage(title: "Invaild password")
         }
     }
-
+    
+    
+    @IBAction func dismissView(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
 }

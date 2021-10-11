@@ -23,6 +23,12 @@ class GroupMemberTableViewCell: UITableViewCell {
     var cellDelegate: CellClickDelegate?
     var index: Int?
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        setSelect(selected: false)
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -33,9 +39,11 @@ class GroupMemberTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    func initWith(details: ContactItem, idx: Int) {
+    func initWith(details: ContactItem, idx: Int, selected: Bool) {
         self.index = idx
         self.nickName.text = details.nickName
+        
+        setSelect(selected: selected)
         
         guard let uid = details.uid else {
             return
@@ -46,11 +54,13 @@ class GroupMemberTableViewCell: UITableViewCell {
 
     }
     
-    func initWith(group: GroupItem, idx: Int) {
+    func initWith(group: GroupItem, idx: Int, selected: Bool) {
         self.index = idx
         
         let id = group.memberIds![idx] as! String
         let nick = group.memberNicks![idx] as! String
+        
+        setSelect(selected: selected)
         
         self.nickName.text = nick != "" ? nick: id
         
@@ -60,8 +70,7 @@ class GroupMemberTableViewCell: UITableViewCell {
     }
     
     @IBAction func addToGroupList(_ sender: UIButton) {
-        selectBtn.setImage(UIImage(named: "pick_icon"), for: .normal)
-        deleteBtn.isHidden = false
+        setSelect(selected: true)
         
         if let idx = index {
             self.cellDelegate?.addDidClick(idx)
@@ -70,11 +79,20 @@ class GroupMemberTableViewCell: UITableViewCell {
     }
     
     @IBAction func deleteFromGroupList(_ sender: UIButton) {
-        selectBtn.setImage(UIImage(named: "+_icon-1"), for: .normal)
-        deleteBtn.isHidden = true
+        setSelect(selected: false)
         
         if let idx = index {
             self.cellDelegate?.delDidClick(idx)
+        }
+    }
+    
+    fileprivate func setSelect(selected: Bool) {
+        if selected {
+            selectBtn.setImage(UIImage(named: "pick_icon"), for: .normal)
+            deleteBtn.isHidden = false
+        } else {
+            selectBtn.setImage(UIImage(named: "+_icon-1"), for: .normal)
+            deleteBtn.isHidden = true
         }
         
     }
