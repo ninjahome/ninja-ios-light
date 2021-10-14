@@ -33,8 +33,12 @@ class AudioPlayManager: NSObject, AVAudioPlayerDelegate {
         }
     }
     
-    func playMusic(file: Data) {
+    func playMusic(file: Data, stop: Bool = false) {
         do {
+            if audioPlayer?.isPlaying ?? false || stop {
+                audioPlayer?.stop()
+                return
+            }
             audioPlayer = try AVAudioPlayer(data: file)
             audioPlayer?.delegate = self
 
@@ -42,7 +46,7 @@ class AudioPlayManager: NSObject, AVAudioPlayerDelegate {
             audioPlayer?.play()
             
             print("播放成功")
-        }catch {
+        } catch {
             print(error)
             return
         }

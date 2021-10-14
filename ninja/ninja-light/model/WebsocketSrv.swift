@@ -9,7 +9,7 @@ import Foundation
 import SwiftyJSON
 import ChatLib
 
-class WebsocketSrv:NSObject{
+class WebsocketSrv: NSObject {
     public static var shared = WebsocketSrv()
     
     public static let netQueue = DispatchQueue.init(label: "Connect Queue", qos: .userInteractive)
@@ -27,7 +27,7 @@ class WebsocketSrv:NSObject{
         return ChatLib.ChatLibWSIsOnline()
     }
     
-    func Online()->Error?{
+    func Online() -> Error? {
         var err:NSError? = nil
         WebsocketSrv.netQueue.async {
             ChatLib.ChatLibWSOnline(&err)
@@ -40,19 +40,28 @@ class WebsocketSrv:NSObject{
         ChatLib.ChatLibWSOffline()
     }
     
-    func SendIMMsg(cliMsg:CliMessage) -> NJError? {
+    func SendIMMsg(cliMsg: CliMessage, retry: Bool = false, onStart: @escaping()-> Void, onCompletion: @escaping(Bool) -> Void) {
         var error:NSError?
         var isGroup: Bool = false
-        
+        var res: Bool = false
         let gid = cliMsg.groupId
         
         if gid != nil {
             isGroup = true
         }
-
-        print("cliMsg\(cliMsg)")
-        print("cliMsg.to\(String(describing: cliMsg.to))")
-        let msg = MessageItem.addSentIM(cliMsg: cliMsg)
+//        print("cliMsg\(cliMsg)...\(cliMsg.type)")
+//        print("cliMsg.to\(String(describing: cliMsg.to))")
+        if retry {
+            onStart()
+        } else {
+            let msg = MessageItem.addSentIM(cliMsg: cliMsg)
+            onStart()
+            ChatItem.updateLastMsg(peerUid: isGroup ? gid! : cliMsg.to!,
+                                   msg: msg.coinvertToLastMsg(),
+                                   time: msg.timeStamp,
+                                   unread: 0,
+                                   isGroup: isGroup)
+        }
         
         switch cliMsg.type {
             case .plainTxt:
@@ -62,6 +71,14 @@ class WebsocketSrv:NSObject{
                     } else {
                         ChatLib.ChatLibWriteMessage(cliMsg.to, cliMsg.textData, &error)
                     }
+                    
+                    if error == nil {
+                        res = true
+                    }
+                    
+                    DispatchQueue.main.async {
+                        onCompletion(res)
+                    }
                 }
             case .image:
                 WebsocketSrv.imageMsgQueue.async {
@@ -70,13 +87,28 @@ class WebsocketSrv:NSObject{
                     } else {
                         ChatLib.ChatLibWriteImageMessage(cliMsg.to, cliMsg.imgData, &error)
                     }
+                    print("send image success_____")
+                    if error == nil {
+                        res = true
+                    }
+                    
+                    DispatchQueue.main.async {
+                        onCompletion(res)
+                    }
                 }
             case .voice:
                 WebsocketSrv.voiceMsgQueue.async {
                     if isGroup {
-                        ChatLib.ChatLibWriteVoiceGroupMessage(cliMsg.to, cliMsg.audioData!.content, cliMsg.audioData!.duration, gid, &error)
+                        ChatLib.ChatLibWriteVoiceGroupMessage(cliMsg.to, cliMsg.audioData?.content, cliMsg.audioData?.duration ?? 0, gid, &error)
                     } else {
                         ChatLib.ChatLibWriteVoiceMessage(cliMsg.to, cliMsg.audioData?.content, cliMsg.audioData?.duration ?? 0, &error)
+                    }
+                    if error == nil {
+                        res = true
+                    }
+                    
+                    DispatchQueue.main.async {
+                        onCompletion(res)
                     }
                 }
             case .location:
@@ -86,24 +118,18 @@ class WebsocketSrv:NSObject{
                     } else {
                         ChatLib.ChatLibWriteLocationMessage(cliMsg.to, cliMsg.locationData!.lo, cliMsg.locationData!.la, cliMsg.locationData!.str, &error)
                     }
+                    if error == nil {
+                        res = true
+                    }
+                    
+                    DispatchQueue.main.async {
+                        onCompletion(res)
+                    }
                 }
             default:
                 print("send msg: no such type")
         }
-        
-        if error != nil{
-            print("wirte msg error \(String(describing: error?.localizedDescription))")
-            return NJError.msg(error!.localizedDescription)
-        }
-
-        ChatItem.updateLastMsg(peerUid: isGroup ? gid! : cliMsg.to!,
-                               msg: msg.coinvertToLastMsg(),
-                               time: msg.timeStamp,
-                               unread: 0,
-                               isGroup: isGroup)
-        return nil
     }
-    
 }
 
 extension WebsocketSrv: ChatLibUnicastCallBackProtocol {
@@ -351,7 +377,7 @@ extension WebsocketSrv: ChatLibMulticastCallBackProtocol {
 
 }
 
-//extension WebsocketSrv{
+//extension WebsocketSrv {
 //
 //        func immediateMessage(_ from: String?, to: String?, payload: Data?, time: Int64) throws {
 //

@@ -16,11 +16,17 @@ class ImageTableViewCell: UITableViewCell {
     @IBOutlet weak var nickname: UILabel!
     @IBOutlet weak var time: UILabel!
     
-    @IBOutlet weak var spinner: UIActivityIndicatorView!
+    @IBOutlet weak var spinner: UIActivityIndicatorView?
     
+    @IBOutlet weak var retry: UIButton?
+    
+    var cellMsg: MessageItem?
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        
+        spinner?.stopAnimating()
+        retry?.isHidden = true
     }
     
     override func awakeFromNib() {
@@ -34,8 +40,12 @@ class ImageTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    @IBAction func retry(_ sender: UIButton) {
+        //TODO:: Retry sending msg
+    }
+    
     func updateMessageCell (by message: MessageItem) {
-
+        cellMsg = message
         msgBackgroundView.layer.cornerRadius = 8
         msgBackgroundView.clipsToBounds = true
         
@@ -50,13 +60,23 @@ class ImageTableViewCell: UITableViewCell {
         
         ShowImageDetail.show(imageView: imageMsg)
         
+        
 //        let gesture = UITapGestureRecognizer(target: self, action: #selector(showBigPicture))
 //        imageMsg.addGestureRecognizer(gesture)
 //        imageMsg.isUserInteractionEnabled = true
         
         //message bubble
         if message.isOut {
-
+            switch message.status {
+            case .faild:
+                spinner?.stopAnimating()
+                retry?.isHidden = false
+                //TODO::
+            case .sending:
+                spinner?.startAnimating()
+            default:
+                spinner?.stopAnimating()
+            }
 //            let img = UIImage(named: "white")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
 //            msgBackgroundView.image = img
             

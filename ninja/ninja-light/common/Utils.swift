@@ -294,7 +294,7 @@ extension UIViewController {
             Indicator.show(animated: true)
     }}
     
-    func createIndicator(withTitle title: String, and Description:String) -> MBProgressHUD{
+    func createIndicator(withTitle title: String, and Description:String) -> MBProgressHUD {
             let Indicator = MBProgressHUD.showAdded(to: self.view, animated: true)
             Indicator.label.text = title
             Indicator.isUserInteractionEnabled = false
@@ -302,7 +302,7 @@ extension UIViewController {
             return Indicator
     }
     
-    func toastMessage(title:String) ->Void {
+    func toastMessage(title:String) -> Void {
 //            DispatchQueue.main.async {
             let hud : MBProgressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
             hud.mode = MBProgressHUDMode.text
@@ -405,7 +405,6 @@ extension UIViewController {
         UIGraphicsEndImageContext()
         
         return img
-        
     }
     
     func biometryUsage(onCompletion: @escaping(Bool) -> Void) {
@@ -432,11 +431,8 @@ func cleanAllData() {
 }
 
 extension MBProgressHUD {
-        
     func setDetailText(msg:String) {
-//         DispatchQueue.main.async {
-            self.detailsLabel.text = msg
-//        }
+        self.detailsLabel.text = msg
     }
 }
 

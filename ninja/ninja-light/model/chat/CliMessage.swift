@@ -17,11 +17,6 @@ enum CMT:Int {
     case video = 4
     case contact = 5
 }
-//
-//struct audioMsg:Codable {
-//    var content: Data = Data()
-//    var duration: Int = 0
-//}
 
 class audioMsg: NSObject, NSCoding {
     var content: Data = Data()
@@ -35,7 +30,6 @@ class audioMsg: NSObject, NSCoding {
     required init?(coder: NSCoder) {
         self.content = coder.decodeObject(forKey: "content") as! Data
         self.duration = coder.decodeInteger(forKey: "duration")
-
     }
 
     override init() {
@@ -76,9 +70,12 @@ class CliMessage: NSObject {
     var imgData: Data?
     var locationData: locationMsg?
     var groupId:String?
+    var timestamp: Int64?
 
     override init() {
         super.init()
+        
+        self.timestamp = Int64(Date().timeIntervalSince1970)
     }
 
     init(to:String, txtData: String, groupId: String? = nil) {
@@ -125,45 +122,5 @@ class CliMessage: NSObject {
         self.locationData = loca
         self.groupId = groupId
     }
-        
-//        func ToNinjaPayload() throws -> Data {
-//            var jObj:JSON = [:]
-//            jObj["type"].int = self.type.rawValue
-////                jObj["data"] = self.data
-//            switch self.type {
-//            case .plainTxt:
-//                jObj["data"].string = self.textData
-//            case .image:
-//                jObj["data"] = JSON(self.imgData as Any)
-//            case .voice:
-//                jObj["data"] = JSON(self.audioData as Any)
-//            case .location:
-//                jObj["data"] = JSON(self.locationData as Any)
-//            default:
-//                break
-//            }
-//                return try jObj.rawData()
-//        }
-//        
-//        static func FromNinjaPayload(_ data:Data, to:String)throws -> CliMessage {
-//            let cliMsg = CliMessage.init()
-//
-//            let json = try JSON(data: data)
-//            cliMsg.type = CMT(rawValue: json["type"].int!) ?? .plainTxt
-//            cliMsg.to = to
-//
-//            switch cliMsg.type {
-//            case .plainTxt:
-//                cliMsg.textData = json["data"].string!
-//            case .voice:
-//                cliMsg.audioData!.content = try json["data"].rawData()
-//            case .image:
-//                cliMsg.imgData = try json["data"].rawData()
-////            case .location:
-////                cliMsg.locationData = try json["data"].rawData()
-//            default:
-//                break
-//            }
-//            return cliMsg
-//        }
+
 }

@@ -16,6 +16,7 @@ class VoiceTableViewCell: UITableViewCell {
     @IBOutlet weak var nickname: UILabel!
     @IBOutlet weak var time: UILabel!
 
+    @IBOutlet weak var spinner: UIActivityIndicatorView?
     
     var audioData:Data?
     var isOut: Bool?
@@ -36,6 +37,7 @@ class VoiceTableViewCell: UITableViewCell {
         super.prepareForReuse()
         isOut = false
         playBtn.setImage(nil, for: .normal)
+        spinner?.stopAnimating()
     }
     
     func updateMessageCell (by message: MessageItem) {
@@ -53,6 +55,18 @@ class VoiceTableViewCell: UITableViewCell {
         self.long = voice.duration
         //message bubble
         if message.isOut {
+            
+            switch message.status {
+            case .faild:
+                spinner?.stopAnimating()
+//                retry?.isHidden = false
+                //TODO::
+            case .sending:
+                spinner?.startAnimating()
+            default:
+                spinner?.stopAnimating()
+            }
+            
             let img = UIImage(named: "white")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
             msgBackgroundView.image = img
             

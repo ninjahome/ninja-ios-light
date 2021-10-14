@@ -8,15 +8,13 @@
 import UIKit
 import AVFoundation
 
-class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
+class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         
     @IBOutlet weak var voiceBtn: UIButton!
     @IBOutlet weak var sender: UITextView!
     @IBOutlet weak var recordBtn: UIButton!
     
     @IBOutlet weak var mutiMsgType: UIView!
-
-//    @IBOutlet weak var receiver: UITextView!
     @IBOutlet weak var peerNickName: UINavigationItem!
     var peerUid: String = ""
 //    var groupId: String = ""
@@ -39,7 +37,7 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     var messages: [MessageItem]!
     var isTextType = true
-//    var locationMessage: locationMsg?
+
     var selectedRow: Int?
     var isLocalMsg:Bool?
     
@@ -61,6 +59,8 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = _delegate
+        
+        AudioPlayManager.sharedInstance.playMusic(file: Data(), stop: true)
     }
 
     override func viewDidLoad() {
@@ -362,7 +362,7 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         
     }
 
-    private func populateView(){
+    private func populateView() {
         if IS_GROUP {
             groupData = GroupItem.cache[peerUid]
             setPeerNick()
@@ -432,7 +432,33 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     }
     
-    //MARK: - TableViewDelegates
+    func sendAllTypeMessage(_ cliMsg: CliMessage) {
+        
+        WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg) {
+            if let msges = MessageItem.cache[self.peerUid] {
+                
+                self.messages = msges
+                self.messageTableView.reloadData()
+                
+                self.scrollToBottom()
+            }
+        } onCompletion: { success in
+            MessageItem.resetSending(cliMsg: cliMsg, success: success)
+            if let msges = MessageItem.cache[self.peerUid] {
+                
+                self.messages = msges
+                self.messageTableView.reloadData()
+                
+                self.scrollToBottom()
+            }
+        }
+        
+    }
+
+}
+
+extension MsgViewController: UITableViewDelegate, UITableViewDataSource {
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if messages != nil {
             return messages.count
@@ -471,8 +497,6 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             cell.updateMessageCell(by: msgItem)
             return cell
         default:
-//                let cell = tableView.dequeueReusableCell(withIdentifier: "messageCell", for: indexPath) as! MessageTableViewCell
-//                cell.updateMessageCell(by: messages[indexPath.row])
             return MessageTableViewCell()
         }
     }
@@ -484,13 +508,13 @@ class MsgViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
-
 }
 
 extension MsgViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        mutiMsgType.isHidden = true
         picker.dismiss(animated: true, completion: nil)
-//        let img = info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerOriginalImage")] as! UIImage
+
         let img = info[.originalImage] as! UIImage
 
         var imagedata:Data?
@@ -516,25 +540,9 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
             cliMsg.imgData = imagedata
         }
         cliMsg.type = .image
-//        WebsocketSrv.messageQueue.async {
-            print("+++发送消息")
-            guard let err = WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg) else {
-                if let msges = MessageItem.cache[self.peerUid] {
-                    print("+++发送消息成功")
-//                    DispatchQueue.main.async {
-                        print("+++发送成功 更新table view")
-                        self.messages = msges
-                        self.messageTableView.reloadData()
-                        self.scrollToBottom()
-//                    }
-                }
-                return
-            }
-//            DispatchQueue.main.async {
-                print("+++发送失败")
-                self.toastMessage(title: err.localizedDescription)
-//            }
-//        }
+        
+        sendAllTypeMessage(cliMsg)
+
     }
 }
 
@@ -556,24 +564,16 @@ extension MsgViewController: MapViewControllerDelegate {
             cliMsg.locationData = location
         }
         cliMsg.type = .location
-//        let cliMsg = CliMessage.init(to: peerUid, locationData: location, groupId: groupId)
-        guard let err = WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg) else {
-            if let msges = MessageItem.cache[self.peerUid] {
-                messages = msges
-                messageTableView.reloadData()
-                scrollToBottom()
-            }
-            return
-        }
         
-        self.toastMessage(title: err.localizedDescription)
+        sendAllTypeMessage(cliMsg)
+
     }
 }
 
 extension MsgViewController: UITextViewDelegate {
         
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-            
+        
         if (text == "\n") {
             guard let msg = self.sender.text, msg != "" else {
                     return false
@@ -594,21 +594,10 @@ extension MsgViewController: UITextViewDelegate {
                 cliMsg.to = peerUid
                 cliMsg.textData = msg
             }
+            
+            textView.text = nil
+            sendAllTypeMessage(cliMsg)
 
-            
-//            let cliMsg = CliMessage.init(to: peerUid, txtData: msg, groupId: groupId)
-            guard let err = WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg) else{
-                textView.text = nil
-//                                receiver.insertText("[me]:" + msg + "\r\n")
-                if let msges = MessageItem.cache[self.peerUid] {
-                    messages = msges
-                    messageTableView.reloadData()
-                    scrollToBottom()
-                }
-            
-                return false
-            }
-            self.toastMessage(title: err.localizedDescription)
             return false
         }
         return true
@@ -657,21 +646,9 @@ extension MsgViewController: RecordAudioDelegate {
         audio.content = uploadWavData
         audio.duration = Int(recordTime)
         cliMsg.audioData = audio
-        
-//        let cliMsg = CliMessage.init(to: peerUid, audioD: uploadWavData, length: Int(recordTime), groupId: groupId)
-        guard let err = WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg) else {
-            if let msges = MessageItem.cache[self.peerUid] {
                 
-                messages = msges
-                messageTableView.reloadData()
-                
-                scrollToBottom()
-            }
-            return
-        }
-        self.toastMessage(title: err.localizedDescription)
+        sendAllTypeMessage(cliMsg)
 
-        print("record wav finish")
     }
 
 }

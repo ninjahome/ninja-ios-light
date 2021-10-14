@@ -21,7 +21,6 @@ class ChatItem:NSObject{
     var isGroup: Bool = false
     
     public static func ReloadChatRoom() {
-        
         CachedChats = [:]
         var result:[ChatItem]?
         let owner = Wallet.shared.Addr!
@@ -46,12 +45,8 @@ class ChatItem:NSObject{
     }
     
     public static func updateLastMsg(peerUid:String, msg:String, time:Int64, unread no:Int, isGroup: Bool = false) {
-//                let formatTime = formatTimeStamp(by: time)
         var chat = CachedChats[peerUid]
         if chat == nil {
-//            if isGroup {
-//                return
-//            }
             chat = ChatItem.init()
             chat!.isGroup = isGroup
             chat!.ItemID = peerUid

@@ -17,12 +17,14 @@ class MessageTableViewCell: UITableViewCell {
     @IBOutlet weak var nickname: UILabel!
     @IBOutlet weak var time: UILabel!
     
+    @IBOutlet weak var spinner: UIActivityIndicatorView?
     
 //    var trailingConstrain: NSLayoutConstraint!
 //    var leadingConstrain:NSLayoutConstraint!
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        spinner?.stopAnimating()
 //        leadingConstrain.isActive = false
 //        trailingConstrain.isActive = false
         
@@ -59,6 +61,16 @@ class MessageTableViewCell: UITableViewCell {
         
         //message bubble
         if message.isOut {
+            switch message.status {
+            case .faild:
+                spinner?.stopAnimating()
+//                retry?.isHidden = false
+                //TODO::
+            case .sending:
+                spinner?.startAnimating()
+            default:
+                spinner?.stopAnimating()
+            }
 //            let frame = msgBackgroundView.frame
 //            let imgView = UIImageView.init(frame: frame)
             let img = UIImage(named: "white")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)

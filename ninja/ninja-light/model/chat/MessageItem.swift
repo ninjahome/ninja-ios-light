@@ -12,6 +12,12 @@ import ChatLib
 
 typealias MessageList = [MessageItem]
 
+enum sendingStatus: Int16 {
+    case sent = 0
+    case sending
+    case faild
+}
+
 class MessageItem: NSObject {
         
     public static let NotiKey = "peerUid"
@@ -22,6 +28,7 @@ class MessageItem: NSObject {
     var payload:Any?
     var isOut:Bool = false
     var groupId:String?
+    var status: sendingStatus = .sent
     
     var avatarInfo: Avatar?
     
@@ -102,33 +109,7 @@ class MessageItem: NSObject {
         }
     }
         
-//        init(json:JSON, out:Bool){
-//
-//                self.from = json["From"].string
-//                self.to = json["To"].string
-//                self.timeStamp = json["UnixTime"].int64 ?? 0
-//                self.isOut = out
-//
-//                let payStr = json["PayLoad"].string
-//                if let data = IosLib.IosLibUnmarshalGoByte(payStr){
-//                        let cliMsg = try? CliMessage.FromNinjaPayload(data, to: self.to!)
-//                        self.typ = cliMsg!.type
-//
-//                        switch self.typ {
-//                        case .plainTxt:
-//                            self.payload = cliMsg?.textData
-//                        case .image:
-//
-//                            self.payload = cliMsg?.imgData
-//                        case .voice:
-//                            self.payload = cliMsg?.audioData
-//                        default:
-//                            print("init MESSAGE error: undefined type")
-//                        }
-//                }
-//        }
-        
-    init(cliMsg:CliMessage, from: String, time: Int64, out:Bool) {
+    init(cliMsg: CliMessage, from: String, time: Int64, out:Bool) {
         super.init()
         self.from = from
         self.timeStamp = time
@@ -145,11 +126,6 @@ class MessageItem: NSObject {
             self.payload = cliMsg.audioData
         case .location:
             self.payload = cliMsg.locationData
-//                    if let ad = cliMsg.audioData {
-//                        if let url = AudioFilesManager.saveWavData(ad, fileName: String(time)) {
-//                            self.payload = url.path
-//                        }
-//                    }
         default:
             print("init MESSAGE error: undefined type")
         }
@@ -157,42 +133,39 @@ class MessageItem: NSObject {
         self.isOut = out
     }
     
-    public static func addSentIM(cliMsg:CliMessage) -> MessageItem {
-            
+    init(cliMsg: CliMessage) {
         let sender = Wallet.shared.Addr!
-        let msg = MessageItem.init()
-        msg.from = sender
+        self.from = sender
         
         if let groupid = cliMsg.groupId {
-            msg.to = groupid
+            self.to = groupid
         } else {
-            msg.to = cliMsg.to
+            self.to = cliMsg.to
         }
 
-        msg.typ = cliMsg.type
-        msg.timeStamp = Int64(Date().timeIntervalSince1970)
-        msg.isOut = true
-        msg.groupId = cliMsg.groupId
-//                msg.payload = cliMsg.data
-        switch msg.typ {
+        self.typ = cliMsg.type
+        self.timeStamp = cliMsg.timestamp ?? Int64(Date().timeIntervalSince1970)
+        self.isOut = true
+        self.groupId = cliMsg.groupId
+
+        switch self.typ {
         case .plainTxt:
-            msg.payload = cliMsg.textData
+            self.payload = cliMsg.textData
         case .image:
-            msg.payload = cliMsg.imgData
+            self.payload = cliMsg.imgData
         case .voice:
-            msg.payload = cliMsg.audioData
+            self.payload = cliMsg.audioData
         case .location:
-            msg.payload = cliMsg.locationData
-//                    if let ad = cliMsg.audioData {
-//                        if let url = AudioFilesManager.saveWavData(ad, fileName: String(msg.timeStamp)) {
-//                            msg.payload = url.path
-//                        }
-//                    }
-//                    msg.payload = cliMsg.audioData
+            self.payload = cliMsg.locationData
         default:
             print("init MESSAGE error: undefined type")
         }
+        self.status = .sending
+    }
+    
+    public static func addSentIM(cliMsg: CliMessage) -> MessageItem {
         
+        let msg = MessageItem.init(cliMsg: cliMsg)
         if cache[msg.to!] == nil{
             cache[msg.to!] = []
         }
@@ -200,6 +173,44 @@ class MessageItem: NSObject {
         
         try? CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
         return msg
+    }
+    
+    public static func resetSending(cliMsg: CliMessage, success: Bool) {
+        let msg = MessageItem.init(cliMsg: cliMsg)
+        
+        if success {
+            msg.status = .sent
+        } else {
+            msg.status = .faild
+        }
+        
+        var peerUid: String?
+        if let gid = msg.groupId {
+            peerUid = gid
+        } else {
+            peerUid = msg.to
+        }
+        
+//        func modifyMsgStatus(_ msgInList: inout MessageItem, _ msg: MessageItem) {
+//            msgInList = msg
+//        }
+        
+        if var msgs = MessageItem.cache[peerUid!] {
+            for (index, item) in msgs.enumerated() {
+                if item.timeStamp == msg.timeStamp {
+//                    modifyMsgStatus(&msgs[index], msg)
+                    msgs[index] = msg
+                    break
+                }
+            }
+            
+            MessageItem.cache.updateValue(msgs, forKey: peerUid!)
+            
+            for item in msgs {
+                print(item.status)
+            }
+        }
+        
     }
     
     public static func receivedIM(msg: MessageItem){
@@ -236,7 +247,7 @@ extension MessageItem: ModelObj {
                 throw NJError.coreData("cast to unread item obj failed")
         }
         let owner = Wallet.shared.Addr!
-        uObj.type = Int16(self.typ.rawValue)
+//        uObj.type = Int16(self.typ.rawValue)
         uObj.from = self.from
         uObj.isOut = self.isOut
         
@@ -256,7 +267,7 @@ extension MessageItem: ModelObj {
         uObj.owner = owner
         uObj.to = self.to
         uObj.unixTime = self.timeStamp
-    
+        uObj.status = self.status.rawValue
         uObj.groupId = self.groupId
     }
     
@@ -285,13 +296,12 @@ extension MessageItem: ModelObj {
 //                self.payload = uObj.message
         self.to = uObj.to
         self.timeStamp = uObj.unixTime
-    
+//        self.status = sendingStatus(rawValue: uObj.status) ?? .sent
         self.groupId = uObj.groupId
         
 //        let color = ContactItem.GetAvatarColor(by: self.from!)
-        
-        
     }
+    
 }
 
 extension MessageList {
