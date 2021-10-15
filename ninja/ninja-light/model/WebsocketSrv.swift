@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import SwiftyJSON
+//import SwiftyJSON
 import ChatLib
 
 class WebsocketSrv: NSObject {

@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 import ChatLib
-import SwiftyJSON
+//import SwiftyJSON
 
 class Wallet: NSObject{
     var obj: CDWallet?
@@ -167,9 +167,10 @@ class Wallet: NSObject{
         guard let qrData: Data = ((walletJson).data(using: .utf8)) else {
             return false
         }
-        let json = JSON(qrData)
+//        let json = JSON(qrData)
+        let json = try? JSONSerialization.jsonObject(with: qrData, options: .mutableContainers) as? [String: Any]
         
-        if json["address"].exists() {
+        if json?["address"] != nil {
             return true
         }
         return false

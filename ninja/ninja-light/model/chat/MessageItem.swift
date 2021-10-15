@@ -7,7 +7,7 @@
 
 import Foundation
 import CoreData
-import SwiftyJSON
+//import SwiftyJSON
 import ChatLib
 
 typealias MessageList = [MessageItem]
@@ -208,6 +208,7 @@ class MessageItem: NSObject {
             
             for item in msgs {
                 print(item.status)
+                print(item.typ)
             }
         }
         
@@ -267,7 +268,8 @@ extension MessageItem: ModelObj {
         uObj.owner = owner
         uObj.to = self.to
         uObj.unixTime = self.timeStamp
-        uObj.status = self.status.rawValue
+        uObj.type = Int16(self.typ.rawValue)
+//        uObj.status = self.status.rawValue
         uObj.groupId = self.groupId
     }
     

@@ -289,7 +289,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         self.keyboardIsHide = true
     }
 
-    @objc func contactUpdate(notification: NSNotification){
+    @objc func contactUpdate(notification: NSNotification) {
         contactData = ContactItem.cache[peerUid]
 //        DispatchQueue.main.async {
             self.peerNickName.title = self.contactData?.nickName ?? self.peerUid
