@@ -35,7 +35,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
     
     var IS_GROUP: Bool = false
     
-    var messages: [MessageItem]!
+    var messages: [MessageItem] = []
     var isTextType = true
 
     var selectedRow: Int?
@@ -50,11 +50,16 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.populateView()
+        populateView()
+        DispatchQueue.main.async {
+            self.scrollToBottom()
+        }
+        
         if (self.navigationController?.viewControllers.count)! >= 1 {
             _delegate = self.navigationController?.interactivePopGestureRecognizer?.delegate
             self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         }
+
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -65,7 +70,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        audioRecorder.delegate = self
         messageTableView.delegate = self
         messageTableView.dataSource = self
 
@@ -97,21 +102,11 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                                        name: UIResponder.keyboardDidHideNotification,
                                        object: nil)
 
-        
-        guard let msges = MessageItem.cache[self.peerUid] else{
-            return
-        }
-        self.messages = msges
-        audioRecorder.delegate = self
-
         senderBar.layer.shadowOpacity = 0.1
         
-        self.messageTableView.reloadData()
-        
-        DispatchQueue.main.async {
-            self.scrollToBottom()
+        if let msges = MessageItem.cache[self.peerUid] {
+            self.messages = msges
         }
-                
     }
         
     deinit {
@@ -170,7 +165,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
 
         } else if sender.state == .changed {
             
-            print("press changed")
+//            print("press changed")
             let point = sender.location(in: self.recordingPoint)
             if self.recordingPoint.point(inside: point, with: nil) {
                 willCancelRecord()
@@ -247,13 +242,11 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         let keyboardTopYPosition = keyboardRect.height
         self.textFieldConstrain.constant = -keyboardTopYPosition
         self.msgTableConstrain.constant = 0
-//            self.msgTableConstrain.constant = keyboardTopYPosition+30
-        
+
         UIView.animate(withDuration: duration!) {
-//                self.view.setNeedsLayout()
-//                self.scrollToBottom()
+            
+            self.scrollToBottom()
         }
-        messageTableView.setContentOffset(CGPoint(x: 0, y: CGFloat.greatestFiniteMagnitude), animated: true)
         
     }
         
@@ -266,27 +259,42 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         
         self.textFieldConstrain.constant = 4
         self.msgTableConstrain.constant = 0
-//            self.msgTableConstrain.constant = 90.0
-
+        
+        print("keyboardWillHide")
         UIView.animate(withDuration: duration!) {
-//                self.view.setNeedsLayout()
-//                self.scrollToBottom()
-            
+            self.scrollToBottom()
         }
+
+        
     }
     
     @objc func keyboardDidShow(notification: NSNotification) {
-        guard let _ = notification.userInfo else {
+        guard let userInfo = notification.userInfo else {
             return
         }
+        var duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
+        if duration == nil {
+            duration = 0.25
+        }
         self.keyboardIsHide = false
+        print("keyboardDidShow")
+
+        UIView.animate(withDuration: duration!) {
+            
+        }
     }
 
     @objc func keyboardDidHide(notification: NSNotification) {
-        guard let _ = notification.userInfo else {
+        guard let userInfo = notification.userInfo else {
             return
         }
+        var duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
+        if duration == nil {
+            duration = 0.25
+        }
         self.keyboardIsHide = true
+        print("keyboardDidHide")
+        
     }
 
     @objc func contactUpdate(notification: NSNotification) {
@@ -423,12 +431,30 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
     
     }
     
-    func scrollToBottom(animated: Bool = false) {
+    private func scrollToBottom(animated: Bool = false) {
         
-        if messages != nil && messages.count > 1 {
-            let index = IndexPath(row: messages.count-1, section: 0)
-            self.messageTableView.scrollToRow(at: index, at: .bottom, animated: animated)
+        guard self.messages.count > 0 else {
+            return
         }
+//        self.messageTableView.beginUpdates()
+        self.messageTableView.reloadData()
+//        self.messageTableView.endUpdates()
+        
+//        let offsetY = self.messageTableView.contentSize.height - self.messageTableView.frame.height
+//        if offsetY > 0 {
+//            let offset = CGPoint.init(x: 0, y: offsetY)
+//            self.messageTableView.setContentOffset(offset, animated: animated)
+//        }
+        
+        self.view.layoutIfNeeded()
+        let bottomIndexPath = IndexPath.init(row: self.messages.count - 1, section: 0)
+        self.messageTableView.scrollToRow(at: bottomIndexPath, at: .bottom, animated: animated)
+//        if messages != nil && messages.count > 1 {
+//            self.messageTableView.scrollToBottom(isAnimated: animated)
+//            let index = IndexPath(row: messages.count-1, section: 0)
+//            print("scroll index:\(index)")
+//            self.messageTableView.scrollToRow(at: index, at: .bottom, animated: animated)
+//        }
     
     }
     
@@ -460,10 +486,11 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
 extension MsgViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if messages != nil {
-            return messages.count
-        }
-        return 0
+//        if messages != nil {
+//            return messages.count
+//        }
+//        return 0
+        return messages.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -578,6 +605,7 @@ extension MsgViewController: UITextViewDelegate {
             guard let msg = self.sender.text, msg != "" else {
                     return false
             }
+            
             let cliMsg = CliMessage.init()
             cliMsg.type = .plainTxt
             if IS_GROUP {

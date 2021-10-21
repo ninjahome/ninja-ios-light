@@ -56,7 +56,7 @@ class MessageItem: NSObject {
             if let groupId = msg.groupId {
                 peerUid = groupId
             } else {
-                if msg.isOut{
+                if msg.isOut {
                     peerUid = msg.to!
                 }else{
                     peerUid = msg.from!
@@ -214,7 +214,7 @@ class MessageItem: NSObject {
         
     }
     
-    public static func receivedIM(msg: MessageItem){
+    public static func receivedIM(msg: MessageItem) {
         var peerUid: String
         
         if let groupId = msg.groupId {
@@ -222,11 +222,11 @@ class MessageItem: NSObject {
         } else {
             peerUid = msg.from!
         }
-        if cache[peerUid] == nil{
+        if cache[peerUid] == nil {
             cache[peerUid] = []
         }
-        cache[peerUid]!.append(msg)
-        cache[peerUid]!.sort(by: { (a, b) -> Bool in
+        cache[peerUid]?.append(msg)
+        cache[peerUid]?.sort(by: { (a, b) -> Bool in
             return a.timeStamp < b.timeStamp
         })
         
@@ -245,7 +245,7 @@ extension MessageItem: ModelObj {
         
     func fullFillObj(obj: NSManagedObject) throws {
         guard let uObj = obj as? CDUnread else {
-                throw NJError.coreData("cast to unread item obj failed")
+            throw NJError.coreData("cast to unread item obj failed")
         }
         let owner = Wallet.shared.Addr!
 //        uObj.type = Int16(self.typ.rawValue)
@@ -275,7 +275,7 @@ extension MessageItem: ModelObj {
     
     func initByObj(obj: NSManagedObject) throws {
         guard let uObj = obj as? CDUnread else {
-                throw NJError.coreData("cast to unread item obj failed")
+            throw NJError.coreData("cast to unread item obj failed")
         }
         self.typ = CMT(rawValue: Int(uObj.type))!
     

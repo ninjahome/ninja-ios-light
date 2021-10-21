@@ -73,13 +73,13 @@ class MessageListViewController: UIViewController {
     }
     
     //MARK: - object c
-    @objc func wsOffline(notification:NSNotification) {
+    @objc func wsOffline(notification: NSNotification) {
         //TODO::
 //        showErrorTips(err: "offline, please pull to online again" as! Error)
         connNetwork()
     }
     
-    @objc func notifiAction(notification:NSNotification) {
+    @objc func notifiAction(notification: NSNotification) {
         ServiceDelegate.workQueue.async { [weak self] in
             ChatItem.ReloadChatRoom()
             self?.sortedArray = ChatItem.SortedArra()
@@ -122,6 +122,11 @@ class MessageListViewController: UIViewController {
         }
         print("wallet is active")
         connNetwork()
+        
+        self.sortedArray = ChatItem.SortedArra()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     private func showErrorTips(err:Error) {
