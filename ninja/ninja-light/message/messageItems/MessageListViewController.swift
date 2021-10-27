@@ -25,7 +25,6 @@ class MessageListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         tableView.rowHeight = 80
         tableView.tableFooterView = UIView()
         refreshControl.addTarget(self, action: #selector(self.reloadChatRoom(_:)), for: .valueChanged)
@@ -76,7 +75,12 @@ class MessageListViewController: UIViewController {
     @objc func wsOffline(notification: NSNotification) {
         //TODO::
 //        showErrorTips(err: "offline, please pull to online again" as! Error)
-        connNetwork()
+        print("Client Shutdown....")
+        DispatchQueue.main.async {
+            self.title = "连接中..."
+        }
+        self.connNetwork()
+        
     }
     
     @objc func notifiAction(notification: NSNotification) {
@@ -90,22 +94,26 @@ class MessageListViewController: UIViewController {
     }
    
     @objc func reloadChatRoom(_ sender: Any?) {
+
         connNetwork()
         self.refreshControl.endRefreshing()
     }
     
     func connNetwork() {
-        guard WebsocketSrv.shared.IsOnline() else {
-            navTitle.title = "连接中..."
-            print("connecting")
+        let online = WebsocketSrv.shared.IsOnline()
+        if online {
+            self.hideErrorTips()
+            self.hideConnectingTips()
+        } else {
+            self.showConnectingTips()
             guard let err = WebsocketSrv.shared.Online() else {
-                navTitle.title = "消息"
+                self.hideErrorTips()
+                self.hideConnectingTips()
                 return
             }
-            self.showErrorTips(err: err)
-            return
+
+            showErrorTips(err: err)
         }
-        print("connected")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -129,7 +137,19 @@ class MessageListViewController: UIViewController {
         }
     }
     
-    private func showErrorTips(err:Error) {
+    private func hideConnectingTips() {
+        DispatchQueue.main.async {
+            self.title = "消息"
+        }
+    }
+    
+    private func showConnectingTips() {
+        DispatchQueue.main.async {
+            self.title = "连接中..."
+        }
+    }
+    
+    private func showErrorTips(err: Error) {
         DispatchQueue.main.async {
             self.tableTopConstraint.constant = 30
             self.errorTips.isHidden = false

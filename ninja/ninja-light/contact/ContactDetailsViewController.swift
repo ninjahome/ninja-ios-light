@@ -106,6 +106,9 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
         guard let err = ContactItem.DelContact(uid) else{
             NotificationCenter.default.post(name:NotifyContactChanged,
                                             object: nil, userInfo:nil)
+            
+            
+            
             self.closeWindow()
             return
         }

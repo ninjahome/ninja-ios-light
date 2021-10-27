@@ -20,18 +20,19 @@ class WebsocketSrv: NSObject {
     public static let locationMsgQueue = DispatchQueue.init(label: "Sending Location Queue")
     
     override init() {
-            super.init()
+        super.init()
     }
     
     func IsOnline() -> Bool {
-        return ChatLib.ChatLibWSIsOnline()
+        let online = ChatLib.ChatLibWSIsOnline()
+        return online
     }
     
     func Online() -> Error? {
         var err:NSError? = nil
-        WebsocketSrv.netQueue.async {
+//        WebsocketSrv.netQueue.async {
             ChatLib.ChatLibWSOnline(&err)
-        }
+//        }
         print("online err \(String(describing: err?.localizedDescription))")
         return err
     }
@@ -192,9 +193,9 @@ extension WebsocketSrv: ChatLibUnicastCallBackProtocol {
     
     func webSocketClosed() {
         NSLog("======> websocket is closed")
-        NotificationCenter.default.post(name:NotifyWebsocketOffline,
+        NotificationCenter.default.post(name: NotifyWebsocketOffline,
                                         object: self,
-                                        userInfo:nil)
+                                        userInfo: nil)
     }
     
 }

@@ -454,9 +454,12 @@ extension UIViewController {
 }
 
 func cleanAllData() {
-    MessageItem.cache.removeAll()
-    ChatItem.CachedChats.removeAll()
-    ContactItem.cache.removeAll()
+//    MessageItem.cache.removeAll(keepingCapacity: true)
+//    ChatItem.CachedChats.removeAll(keepingCapacity: true)
+    ContactItem.cache.removeAll(keepingCapacity: true)
+    
+    ChatItem.CachedChats.deleteAll()
+    MessageItem.cache.deleteAll()
 }
 
 extension MBProgressHUD {

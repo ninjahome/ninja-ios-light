@@ -45,7 +45,7 @@ class WalletViewController: UIViewController {
                 case .almostExpire:
                     self.agentTime.text = String(format: "%4d 天", AgentService.shared.expireDays)
                 case .initial:
-//                    self.agentTime.text = "账号激活后才能正常使用"
+                    self.agentTime.text = "账号激活后才能正常使用"
                     break
                 }
                 
@@ -69,7 +69,7 @@ class WalletViewController: UIViewController {
                 case .almostExpire:
                     self.agentTime.text = String(format: "%4d 天", AgentService.shared.expireDays)
                 case .initial:
-//                    self.agentTime.text = "账号激活后才能正常使用"
+                    self.agentTime.text = "账号激活后才能正常使用"
                     break
                 }
                 

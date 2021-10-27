@@ -83,6 +83,7 @@ class AuthorViewController: UIViewController {
                     self.hideKeyboardWhenTappedAround()
                     self.dismiss(animated: true)
                 }
+                MessageItem.deleteMsgOneWeek()
                 return
             }
             DispatchQueue.main.async {

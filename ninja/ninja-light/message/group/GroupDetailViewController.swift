@@ -37,7 +37,7 @@ class GroupDetailViewController: UIViewController {
         collectionView.dataSource = self
         
         groupTitle.title = groupItem?.groupName
-//        prepareView()
+
         self.collectionView.reloadData()
         if let group = groupItem, group.leader != Wallet.shared.Addr {
             deleteMemberBtn.isHidden = true
@@ -47,17 +47,7 @@ class GroupDetailViewController: UIViewController {
         groupNameBtn.setTitle(groupItem?.groupName, for: .normal)
         selfNickBtn.setTitle(groupItem?.memberInfos[Wallet.shared.Addr!], for: .normal)
     }
-    
-//    func prepareView() {
-//        DispatchQueue.global().async {
-//            self.getAvatars()
-//            DispatchQueue.main.async {
-//                self.collectionView.reloadData()
-//            }
-//        }
-//
-//    }
-    
+        
     @IBAction func addMemberBtn(_ sender: UIButton) {
         self.performSegue(withIdentifier: "AddGroupMemberSeg", sender: self)
     }

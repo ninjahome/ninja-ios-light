@@ -93,6 +93,8 @@ class AudioRecordManager:NSObject {
             dispatch_async_safely_to_main_queue({ () -> () in
                 self.delegate?.audioRecordTooShort()
             })
+        } else if (self.endTimer - self.startTime) > 59 {
+            self.readyStopRecord()
         } else {
             self.audioTimeInterval = NSNumber(value: NSNumber(value: self.recorder.currentTime as Double).int32Value as Int32)
             
@@ -130,14 +132,16 @@ class AudioRecordManager:NSObject {
         repeat {
             recorder.updateMeters()
             self.audioTimeInterval = NSNumber(value: NSNumber(value: recorder.currentTime as Double).floatValue as Float)
-            let averagePower = recorder.averagePower(forChannel: 0)
-            let lowPassResults = pow(10, (0.05 * averagePower)) * 10
+            
+//            let averagePower = recorder.averagePower(forChannel: 0)
+//            let lowPassResults = pow(10, (0.05 * averagePower)) * 10
+            
             dispatch_async_safely_to_main_queue({ () -> () in
                 
-                self.delegate?.audioRecordUpdateMetra(lowPassResults)
+                self.delegate?.audioRecordUpdateMetra(self.audioTimeInterval.floatValue)
             })
             
-            if self.audioTimeInterval.int32Value > 60 {
+            if self.audioTimeInterval.int32Value > 59 {
                 self.stopRecord()
             }
         
@@ -157,7 +161,7 @@ class AudioRecordManager:NSObject {
     }
     
     @objc func readyStopRecord() {
-        self.recorder.stop()
+        self.recorder?.stop()
         self.recorder = nil
         let audioSession = AVAudioSession.sharedInstance()
         do {

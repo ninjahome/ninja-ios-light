@@ -32,13 +32,13 @@ class MessageItem: NSObject {
     
     var avatarInfo: Avatar?
     
-    public static var cache:[String: MessageList] = [:]
-//    public static var cacheGroup: [String: MessageList] = [:]
+    public static var cache = LockCache<MessageList>()
+//    public static var cache:[String: MessageList] = [:]
     override init() {
         super.init()
     }
     
-    public static func loadUnread(){
+    public static func loadUnread() {
         guard let owner = Wallet.shared.Addr else {
             return
         }
@@ -48,7 +48,7 @@ class MessageItem: NSObject {
         guard let data = result else{
                 return
         }
-        cache.removeAll()
+        cache.deleteAll()
         
         for msg in data {
             
@@ -58,22 +58,27 @@ class MessageItem: NSObject {
             } else {
                 if msg.isOut {
                     peerUid = msg.to!
-                }else{
+                } else {
                     peerUid = msg.from!
                 }
             }
-                        
-            if cache[peerUid] == nil{
-                cache[peerUid] = MessageList.init()
-            }
-            cache[peerUid]?.append(msg)
             
+            var msgList = cache.get(idStr: peerUid)
+            
+            if msgList == nil {
+                msgList = MessageList.init()
+            }
+            
+            msgList!.append(msg)
+            
+            cache.setOrAdd(idStr: peerUid, item: msgList)
+    
         }
         
     }
     
     public static func removeRead(_ uid:String){
-        cache.removeValue(forKey: uid)
+        cache.delete(idStr: uid)
         let owner = Wallet.shared.Addr!
         try? CDManager.shared.Delete(entity: "CDUnread",
                                 predicate: NSPredicate(format: "owner == %@ AND (from == %@ OR to == %@)",
@@ -81,7 +86,7 @@ class MessageItem: NSObject {
     }
 
     public static func removeAllRead() {
-        cache.removeAll()
+        cache.deleteAll()
         let owner = Wallet.shared.Addr!
         try? CDManager.shared.Delete(entity: "CDUnread",
                                 predicate: NSPredicate(format: "owner == %@", owner))
@@ -90,22 +95,22 @@ class MessageItem: NSObject {
     
     func coinvertToLastMsg() -> String{
         switch self.typ {
-            case .plainTxt:
+        case .plainTxt:
 //                        let time = Date.init(timeIntervalSince1970: TimeInterval(self.timeStamp))
 //                    dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                
+            
 //                        return dateFormatterGet.string(from: time)
-                return "[Text Message]"
-            case .voice:
-                    return "[Voice Message]"
-            case .video:
-                    return "[Video Message]"
-            case .location:
-                    return "[Location]"
-            case .contact:
-                    return "[Contact]"
-            case .image:
-                    return "[Image]"
+            return "[Text Message]"
+        case .voice:
+            return "[Voice Message]"
+        case .video:
+            return "[Video Message]"
+        case .location:
+            return "[Location]"
+        case .contact:
+            return "[Contact]"
+        case .image:
+            return "[Image]"
         }
     }
         
@@ -166,10 +171,17 @@ class MessageItem: NSObject {
     public static func addSentIM(cliMsg: CliMessage) -> MessageItem {
         
         let msg = MessageItem.init(cliMsg: cliMsg)
-        if cache[msg.to!] == nil{
-            cache[msg.to!] = []
+        
+        var msgList = cache.get(idStr: msg.to!)
+        if msgList == nil {
+            msgList = []
         }
-        cache[msg.to!]!.append(msg)
+        msgList?.append(msg)
+        cache.setOrAdd(idStr: msg.to!, item: msgList)
+//        if cache[msg.to!] == nil{
+//            cache[msg.to!] = []
+//        }
+//        cache[msg.to!]!.append(msg)
         
         try? CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
         return msg
@@ -195,7 +207,7 @@ class MessageItem: NSObject {
 //            msgInList = msg
 //        }
         
-        if var msgs = MessageItem.cache[peerUid!] {
+        if var msgs = MessageItem.cache.get(idStr: peerUid!) {
             for (index, item) in msgs.enumerated() {
                 if item.timeStamp == msg.timeStamp {
 //                    modifyMsgStatus(&msgs[index], msg)
@@ -204,7 +216,7 @@ class MessageItem: NSObject {
                 }
             }
             
-            MessageItem.cache.updateValue(msgs, forKey: peerUid!)
+            MessageItem.cache.setOrAdd(idStr: peerUid!, item: msgs)
             
             for item in msgs {
                 print(item.status)
@@ -222,21 +234,33 @@ class MessageItem: NSObject {
         } else {
             peerUid = msg.from!
         }
-        if cache[peerUid] == nil {
-            cache[peerUid] = []
+        
+        var msgList = cache.get(idStr: peerUid)
+        if msgList == nil {
+            msgList = []
         }
-        cache[peerUid]?.append(msg)
-        cache[peerUid]?.sort(by: { (a, b) -> Bool in
+        
+        msgList?.append(msg)
+        msgList?.sort(by: { (a, b) -> Bool in
             return a.timeStamp < b.timeStamp
         })
+        cache.setOrAdd(idStr: peerUid, item: msgList)
         
         try? CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
         NotificationCenter.default.post(name:NotifyMessageAdded,
                                         object: self, userInfo:[NotiKey: peerUid])
     }
     
-    public static func saveUnread(_ msg:[MessageItem])throws {
+    public static func saveUnread(_ msg:[MessageItem]) throws {
         try CDManager.shared.AddBatch(entity: "CDUnread", m: msg)
+        loadUnread()
+    }
+    
+    public static func deleteMsgOneWeek() {
+        let owner = Wallet.shared.Addr!
+        let limitTime = Int64(Date().timeIntervalSince1970) - 7*86400
+        try? CDManager.shared.Delete(entity: "CDUnread",
+                                     predicate: NSPredicate(format: "owner == %@ AND unixTime < %@", owner, NSNumber(value: limitTime)))
         loadUnread()
     }
 }

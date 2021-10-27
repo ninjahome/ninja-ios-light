@@ -69,6 +69,10 @@ class ContactItem:NSObject{
                                         predicate: NSPredicate(format: "uid == %@ AND owner == %@", uid, owner)
             )
             cache.removeValue(forKey: uid)
+            
+            ChatItem.remove(uid)
+            MessageItem.removeRead(uid)
+            
         }catch let err{
             return NJError.contact(err.localizedDescription)
         }

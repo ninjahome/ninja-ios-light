@@ -69,6 +69,8 @@
 		08B74A6C26B637D800D6F0F8 /* GroupMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B74A6A26B637D800D6F0F8 /* GroupMemberTableViewCell.swift */; };
 		08B74A6E26B6840300D6F0F8 /* chatLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08B74A6D26B6840300D6F0F8 /* chatLib.framework */; };
 		08B74A6F26B6841200D6F0F8 /* chatLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08B74A6D26B6840300D6F0F8 /* chatLib.framework */; };
+		08BFE0CA2722749F000BADAD /* LockCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BFE0C92722749F000BADAD /* LockCache.swift */; };
+		08BFE0CB2722749F000BADAD /* LockCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BFE0C92722749F000BADAD /* LockCache.swift */; };
 		08CCDC6F26A3C3A200B0D7DA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CCDC6E26A3C3A200B0D7DA /* MapViewController.swift */; };
 		08CCDC7026A3C3A200B0D7DA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CCDC6E26A3C3A200B0D7DA /* MapViewController.swift */; };
 		08EAAD3F2695847900210271 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08EAAD3E2695847900210271 /* SystemConfiguration.framework */; };
@@ -189,6 +191,7 @@
 		08B74A6626B3B90D00D6F0F8 /* GroupMemberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberViewController.swift; sourceTree = "<group>"; };
 		08B74A6A26B637D800D6F0F8 /* GroupMemberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberTableViewCell.swift; sourceTree = "<group>"; };
 		08B74A6D26B6840300D6F0F8 /* chatLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = chatLib.framework; path = bin/chatLib.framework; sourceTree = "<group>"; };
+		08BFE0C92722749F000BADAD /* LockCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockCache.swift; sourceTree = "<group>"; };
 		08CCDC6E26A3C3A200B0D7DA /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		08EAAD3E2695847900210271 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		08EAAE102695973B00210271 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -310,6 +313,7 @@
 				69B8C0DB261D334100B4E4AC /* ChatItem.swift */,
 				69B8C0E0261D334900B4E4AC /* MessageItem.swift */,
 				69B8C0EE261DA17B00B4E4AC /* CliMessage.swift */,
+				08BFE0C92722749F000BADAD /* LockCache.swift */,
 			);
 			path = chat;
 			sourceTree = "<group>";
@@ -694,6 +698,7 @@
 				69F8D0FE261AA544009D7AF3 /* NewWalletViewController.swift in Sources */,
 				086701B32665C6D900A1E951 /* AudioRecordManager.swift in Sources */,
 				69B8C0C8261C8AD100B4E4AC /* ServiceDelegate.swift in Sources */,
+				08BFE0CA2722749F000BADAD /* LockCache.swift in Sources */,
 				08B74A6B26B637D800D6F0F8 /* GroupMemberTableViewCell.swift in Sources */,
 				0825C21126BF9638003E0EF3 /* GroupItem.swift in Sources */,
 				69B8C0E1261D334900B4E4AC /* MessageItem.swift in Sources */,
@@ -765,6 +770,7 @@
 				69B8C102261DC42D00B4E4AC /* ContactItem.swift in Sources */,
 				086701B42665C6D900A1E951 /* AudioRecordManager.swift in Sources */,
 				69B8C098261C5E1200B4E4AC /* NewWalletViewController.swift in Sources */,
+				08BFE0CB2722749F000BADAD /* LockCache.swift in Sources */,
 				08B74A6C26B637D800D6F0F8 /* GroupMemberTableViewCell.swift in Sources */,
 				0825C21226BF9638003E0EF3 /* GroupItem.swift in Sources */,
 				69B8C0C9261C8AD100B4E4AC /* ServiceDelegate.swift in Sources */,
@@ -907,7 +913,7 @@
 				CODE_SIGN_ENTITLEMENTS = "ninja-light/ninja-light.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development: bencong ri (5PQQRQ4DWP)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6A53CAFMZ9;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -925,7 +931,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/bin",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hop.ninja.light;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = dev_ninja_light;
@@ -943,7 +949,7 @@
 				CODE_SIGN_ENTITLEMENTS = "ninja-light/ninja-light.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Distribution: Lendger, Inc (6A53CAFMZ9)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6A53CAFMZ9;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -961,7 +967,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/bin",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hop.ninja.light;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = release_ninja_light;

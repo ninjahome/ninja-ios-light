@@ -109,15 +109,6 @@ FOUNDATION_EXPORT BOOL ChatLibActiveWallet(NSString* _Nullable cipherTxt, NSStri
 
 FOUNDATION_EXPORT BOOL ChatLibBanTalking(NSString* _Nullable to, NSString* _Nullable owner, NSString* _Nullable groupId, BOOL banned, NSError* _Nullable* _Nullable error);
 
-/**
- * if startTime == endTime, just delete one msg
-if startTime == endTime == 0, delete all chat msg
-if startTime < endTime, error
-id means userId or groupId
-if id == "", clear all msg between startTime and endTime
- */
-FOUNDATION_EXPORT BOOL ChatLibClearMsg(int64_t startTime, int64_t endTime, NSString* _Nullable id_, NSError* _Nullable* _Nullable error);
-
 FOUNDATION_EXPORT void ChatLibConfigApp(NSString* _Nullable addr, id<ChatLibUnicastCallBack> _Nullable unicast, id<ChatLibMulticastCallBack> _Nullable multicast, NSString* _Nullable dbPath, long devType);
 
 FOUNDATION_EXPORT BOOL ChatLibCreateGroup(NSString* _Nullable to, NSString* _Nullable nickNames, NSString* _Nullable groupId, NSString* _Nullable groupName, NSError* _Nullable* _Nullable error);
@@ -152,12 +143,6 @@ FOUNDATION_EXPORT BOOL ChatLibQuitGroup(NSString* _Nullable to, NSString* _Nulla
 
 // skipped function RandomSrvList with unsupported parameter or return types
 
-
-FOUNDATION_EXPORT void ChatLibRecoverGroupMsg(long msgCount, NSString* _Nullable groupId, int64_t time);
-
-FOUNDATION_EXPORT void ChatLibRecoverMsg(long msgCount, NSString* _Nullable to, int64_t time);
-
-FOUNDATION_EXPORT void ChatLibRecoverMsgFromDb(long msgCount, int64_t time);
 
 FOUNDATION_EXPORT BOOL ChatLibSyncGroup(NSString* _Nullable to, NSString* _Nullable groupId, NSError* _Nullable* _Nullable error);
 

@@ -1602,8 +1602,8 @@
                                             <constraint firstAttribute="width" secondItem="IpZ-li-Zcg" secondAttribute="height" multiplier="1:1" id="QdX-HL-ceX"/>
                                         </constraints>
                                     </imageView>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="60" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NoP-Fr-Ufc">
-                                        <rect key="frame" x="8" y="12.5" width="17.5" height="17"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NoP-Fr-Ufc">
+                                        <rect key="frame" x="8" y="12.5" width="21.5" height="17"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -1611,6 +1611,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="IpZ-li-Zcg" firstAttribute="leading" secondItem="NoP-Fr-Ufc" secondAttribute="trailing" constant="8" id="6eR-gx-ouW"/>
                                     <constraint firstItem="IpZ-li-Zcg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="NoP-Fr-Ufc" secondAttribute="trailing" constant="8" symbolic="YES" id="81R-tv-ehK"/>
                                     <constraint firstAttribute="width" constant="117" id="HVx-4X-s0e"/>
                                     <constraint firstItem="IpZ-li-Zcg" firstAttribute="centerX" secondItem="KaY-Ze-9SL" secondAttribute="centerX" id="Vpl-6B-ehV"/>
@@ -4590,7 +4591,7 @@
         <segue reference="NDR-GO-jzh"/>
         <segue reference="L2b-bt-kYp"/>
         <segue reference="V9e-Ft-IOj"/>
-        <segue reference="Pew-Ri-Krv"/>
+        <segue reference="fgS-SB-Gkg"/>
         <segue reference="I7X-dG-gCK"/>
     </inferredMetricsTieBreakers>
     <resources>

@@ -104,7 +104,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
 
         senderBar.layer.shadowOpacity = 0.1
         
-        if let msges = MessageItem.cache[self.peerUid] {
+        if let msges = MessageItem.cache.get(idStr: self.peerUid) {
             self.messages = msges
         }
     }
@@ -221,8 +221,8 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         ServiceDelegate.workQueue.async {
-            ChatItem.CachedChats[self.peerUid]?.resetUnread()
-//                        MessageItem.removeRead(self.peerUid)
+            ChatItem.CachedChats.get(idStr: self.peerUid)?.resetUnread()
+//            ChatItem.CachedChats[self.peerUid]?.resetUnread()
         }
     }
     
@@ -319,7 +319,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 return
         }
         
-        guard let msges = MessageItem.cache[self.peerUid] else{
+        guard let msges = MessageItem.cache.get(idStr: self.peerUid) else {
                 return
         }
         self.messages = msges
@@ -436,32 +436,21 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         guard self.messages.count > 0 else {
             return
         }
-//        self.messageTableView.beginUpdates()
+
         self.messageTableView.reloadData()
-//        self.messageTableView.endUpdates()
-        
-//        let offsetY = self.messageTableView.contentSize.height - self.messageTableView.frame.height
-//        if offsetY > 0 {
-//            let offset = CGPoint.init(x: 0, y: offsetY)
-//            self.messageTableView.setContentOffset(offset, animated: animated)
-//        }
-        
         self.view.layoutIfNeeded()
-        let bottomIndexPath = IndexPath.init(row: self.messages.count - 1, section: 0)
-        self.messageTableView.scrollToRow(at: bottomIndexPath, at: .bottom, animated: animated)
-//        if messages != nil && messages.count > 1 {
-//            self.messageTableView.scrollToBottom(isAnimated: animated)
-//            let index = IndexPath(row: messages.count-1, section: 0)
-//            print("scroll index:\(index)")
-//            self.messageTableView.scrollToRow(at: index, at: .bottom, animated: animated)
-//        }
-    
+        
+        if messages.count > 1 {
+            let bottomIndexPath = IndexPath.init(row: self.messages.count - 1, section: 0)
+            self.messageTableView.scrollToRow(at: bottomIndexPath, at: .bottom, animated: animated)
+        }
+        
     }
     
     func sendAllTypeMessage(_ cliMsg: CliMessage) {
         
         WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg) {
-            if let msges = MessageItem.cache[self.peerUid] {
+            if let msges = MessageItem.cache.get(idStr: self.peerUid) {
                 
                 self.messages = msges
                 self.messageTableView.reloadData()
@@ -470,7 +459,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
             }
         } onCompletion: { success in
             MessageItem.resetSending(cliMsg: cliMsg, success: success)
-            if let msges = MessageItem.cache[self.peerUid] {
+            if let msges = MessageItem.cache.get(idStr: self.peerUid) {
                 
                 self.messages = msges
                 self.messageTableView.reloadData()
@@ -635,6 +624,10 @@ extension MsgViewController: UITextViewDelegate {
 extension MsgViewController: RecordAudioDelegate {
     func audioRecordUpdateMetra(_ metra: Float) {
         print("\(metra)")
+        DispatchQueue.main.async {
+            self.recordSeconds.text = String(Int(metra))
+        }
+        
     }
     
     func audioRecordTooShort() {

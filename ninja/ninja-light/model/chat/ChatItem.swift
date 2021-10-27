@@ -8,9 +8,10 @@
 import Foundation
 import CoreData
 
-class ChatItem:NSObject{
+class ChatItem: NSObject{
         
-    public static var CachedChats:[String:ChatItem] = [:]
+    public static var CachedChats = LockCache<ChatItem>()
+//    public static var CachedChats:[String:ChatItem] = [:]
     var cObj:CDChatItem?
     var ItemID:String?
     var ImageData:Data?
@@ -21,7 +22,7 @@ class ChatItem:NSObject{
     var isGroup: Bool = false
     
     public static func ReloadChatRoom() {
-        CachedChats = [:]
+//        CachedChats = [:]
         var result:[ChatItem]?
         let owner = Wallet.shared.Addr!
         result = try? CDManager.shared.Get(entity: "CDChatItem",
@@ -39,19 +40,22 @@ class ChatItem:NSObject{
                     continue
                 }
             }
-            CachedChats[obj.ItemID!] = obj
+//            CachedChats[obj.ItemID!] = obj
+            
+            CachedChats.setOrAdd(idStr: obj.ItemID!, item: obj)
         }
         
     }
     
     public static func updateLastMsg(peerUid:String, msg:String, time:Int64, unread no:Int, isGroup: Bool = false) {
-        var chat = CachedChats[peerUid]
+        var chat = CachedChats.get(idStr: peerUid)
         if chat == nil {
             chat = ChatItem.init()
             chat!.isGroup = isGroup
             chat!.ItemID = peerUid
             chat!.updateTime = time
-            CachedChats[peerUid] = chat
+//            CachedChats[peerUid] = chat
+            CachedChats.setOrAdd(idStr: peerUid, item: chat!)
             try? CDManager.shared.AddEntity(entity: "CDChatItem", m: chat!)
         }
         
@@ -80,7 +84,8 @@ class ChatItem:NSObject{
 
         chat!.cObj?.unreadNo = Int32(chat!.unreadNo)
         chat!.cObj?.lastMsg = chat!.LastMsg
-        CachedChats[peerUid] = chat
+//        CachedChats[peerUid] = chat
+        CachedChats.setOrAdd(idStr: peerUid, item: chat!)
 //            try? CDManager.shared.UpdateOrAddOne(entity: "CDChatItem", m: chat!)
         
         let owner = Wallet.shared.Addr!
@@ -113,8 +118,8 @@ class ChatItem:NSObject{
     
     public static func SortedArra() -> [ChatItem] {
 //        var sortedArray:[ChatItem] = []
-        var sortedArray = Array(CachedChats.values)
-        
+        var sortedArray = CachedChats.getValues()
+//        var sortedArray = Array(CachedChats.values)
         guard sortedArray.count > 1 else {
             return sortedArray
         }
@@ -144,7 +149,7 @@ class ChatItem:NSObject{
         let owner = Wallet.shared.Addr!
         try? CDManager.shared.Delete(entity: "CDChatItem",
                                 predicate: NSPredicate(format: "owner == %@ AND (uid == %@ OR groupId == %@)", owner, uid, uid))
-        CachedChats.removeValue(forKey: uid)
+        CachedChats.delete(idStr: uid)
     }
 }
 
