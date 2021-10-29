@@ -43,11 +43,11 @@ class AvatarButton: UIButton {
             if let item = ContactItem.cache[info.id] {
                 let vc = instantiateViewController(storyboardName: "Main", viewControllerIdentifier: "ContactDetailsViewController") as! ContactDetailsViewController
                 vc.itemData = item
-                UIViewController.topMost?.navigationController?.pushViewController(vc, animated: true)
+                UIViewController.topMostInApp?.navigationController?.pushViewController(vc, animated: true)
             } else {
                 let vc = instantiateViewController(storyboardName: "Main", viewControllerIdentifier: "SearchDetailViewController") as! SearchDetailViewController
                 vc.uid = info.id
-                UIViewController.topMost?.navigationController?.pushViewController(vc, animated: true)
+                UIViewController.topMostInApp?.navigationController?.pushViewController(vc, animated: true)
             }
             
         default: break

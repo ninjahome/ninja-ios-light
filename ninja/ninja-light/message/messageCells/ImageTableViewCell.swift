@@ -41,7 +41,23 @@ class ImageTableViewCell: UITableViewCell {
     }
     
     @IBAction func retry(_ sender: UIButton) {
-        //TODO:: Retry sending msg
+        if let msg = cellMsg {
+            let cliMsg = CliMessage.init(to: msg.to!, imgData: msg.payload as! Data, groupId: msg.groupId)
+            
+            WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg, retry: true) { [self] in
+                self.retry?.isHidden = true
+                self.spinner?.startAnimating()
+            } onCompletion: { success in
+                MessageItem.resetSending(cliMsg: cliMsg, success: success)
+                
+                if success {
+                    msg.status = .sent
+                }
+                
+                self.updateMessageCell(by: msg)
+            }
+        }
+        
     }
     
     func updateMessageCell (by message: MessageItem) {
@@ -60,41 +76,23 @@ class ImageTableViewCell: UITableViewCell {
         
         ShowImageDetail.show(imageView: imageMsg)
         
-        
-//        let gesture = UITapGestureRecognizer(target: self, action: #selector(showBigPicture))
-//        imageMsg.addGestureRecognizer(gesture)
-//        imageMsg.isUserInteractionEnabled = true
-        
-        //message bubble
         if message.isOut {
             switch message.status {
             case .faild:
                 spinner?.stopAnimating()
                 retry?.isHidden = false
-                //TODO::
             case .sending:
                 spinner?.startAnimating()
             default:
                 spinner?.stopAnimating()
             }
-//            let img = UIImage(named: "white")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
-//            msgBackgroundView.image = img
-            
-//            avatar.setTitle(Wallet.GenAvatarText(), for: .normal)
-//            avatar.backgroundColor = UIColor.init(hex: Wallet.GenAvatarColor())
+
             avatar.type = AvatarButtonType.wallet
             avatar.avaInfo = nil
             
             nickname.text = Wallet.GenAvatarText()
 
         } else {
-//            let img = UIImage(named: "babycolor")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
-//            msgBackgroundView.image = img
-            
-//            let avaName = ContactItem.GetAvatarText(by: from)
-//            avatar.setTitle(ContactItem.GetAvatarText(by: avaName), for: .normal)
-//            let hex = ContactItem.GetAvatarColor(by: from)
-//            avatar.backgroundColor = UIColor.init(hex: hex)
             
             avatar.type = AvatarButtonType.contact
             avatar.avaInfo = AvatarInfo.init(id: from)

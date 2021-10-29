@@ -50,8 +50,7 @@ class WebsocketSrv: NSObject {
         if gid != nil {
             isGroup = true
         }
-//        print("cliMsg\(cliMsg)...\(cliMsg.type)")
-//        print("cliMsg.to\(String(describing: cliMsg.to))")
+
         if retry {
             onStart()
         } else {
@@ -160,8 +159,6 @@ extension WebsocketSrv: ChatLibUnicastCallBackProtocol {
         localMsg.lo = l
         localMsg.str = name ?? "[]"
         let cliMsg = CliMessage.init(to: to!, locationData: localMsg)
-    
-//        let cliMsg = CliMessage.init(to: to!, la: a, lo: l, describe: name!)
         let msg = MessageItem.init(cliMsg: cliMsg, from: from!, time: time, out: false)
         MessageItem.receivedIM(msg: msg)
         ChatItem.updateLastMsg(peerUid: from!, msg: msg.coinvertToLastMsg(), time: time, unread: 1)
@@ -377,58 +374,3 @@ extension WebsocketSrv: ChatLibMulticastCallBackProtocol {
     }
 
 }
-
-//extension WebsocketSrv {
-//
-//        func immediateMessage(_ from: String?, to: String?, payload: Data?, time: Int64) throws {
-//
-//                let owner = Wallet.shared.Addr!
-//                if owner != to {
-//                        throw NJError.msg("this im is not for me")
-//                }
-//
-//                let cliMsg = try CliMessage.FromNinjaPayload(payload!, to: to!)
-//                let msg = MessageItem.init(cliMsg:cliMsg, from:from!, time:time, out:false)
-//
-//                MessageItem.receivedIM(msg: msg)
-//                ChatItem.updateLastMsg(peerUid:from!,
-//                                       msg: msg.coinvertToLastMsg(),
-//                                       time: time,
-//                                       unread: 1)
-//        }
-//
-//        func unreadMsg(_ jsonData: Data?) throws {
-//                guard let data = jsonData else {
-//                        return
-//                }
-//
-//                var unreadItem:[String:ChatItem] = [:]
-//                let json = try JSON(data: data)
-//                var unreadMsg:[MessageItem] = []
-//
-//                for (_,subJson):(String, JSON) in json{
-//                        let msg = MessageItem.init(json:subJson, out:false)
-//                        unreadMsg.append(msg)
-//                        let from = msg.from!
-//                        if unreadItem[from] == nil{
-//                                unreadItem[from] = ChatItem.init()
-//                                unreadItem[from]?.ItemID = from
-//                        }
-//
-//                        if  unreadItem[from]!.updateTime < msg.timeStamp{
-//                                unreadItem[from]?.updateTime = msg.timeStamp
-//                                unreadItem[from]?.LastMsg = msg.coinvertToLastMsg()
-//                                unreadItem[from]?.unreadNo += 1
-//                        }
-//                }
-//
-//                try MessageItem.saveUnread(unreadMsg)
-//                try ChatItem.updateAllLastMsg(msg: unreadItem)
-//        }
-        
-//        func webSocketClosed() {
-//                NotificationCenter.default.post(name:NotifyWebsocketOffline,
-//                                                object: self,
-//                                                userInfo:nil)
-//        }
-//}

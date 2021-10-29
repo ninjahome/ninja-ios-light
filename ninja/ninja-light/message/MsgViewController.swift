@@ -51,6 +51,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         populateView()
+        
         DispatchQueue.main.async {
             self.scrollToBottom()
         }
@@ -164,8 +165,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
             beganRecord()
 
         } else if sender.state == .changed {
-            
-//            print("press changed")
             let point = sender.location(in: self.recordingPoint)
             if self.recordingPoint.point(inside: point, with: nil) {
                 willCancelRecord()
@@ -203,8 +202,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func beganRecord() {
         finishRecording = true
-//        print("began. finishRecording \(finishRecording)")
-        
+
         self.recordingPoint.isHidden = false
         self.recordingTip.isHidden = false
         self.recordBtn.setTitle("松开发送", for: .normal)
@@ -222,7 +220,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidDisappear(animated)
         ServiceDelegate.workQueue.async {
             ChatItem.CachedChats.get(idStr: self.peerUid)?.resetUnread()
-//            ChatItem.CachedChats[self.peerUid]?.resetUnread()
         }
     }
     
@@ -299,10 +296,9 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
 
     @objc func contactUpdate(notification: NSNotification) {
         contactData = ContactItem.cache[peerUid]
-//        DispatchQueue.main.async {
-            self.peerNickName.title = self.contactData?.nickName ?? self.peerUid
-//        }
+        self.peerNickName.title = self.contactData?.nickName ?? self.peerUid
     }
+    
     // TODO: Update group member
     @objc func groupUpdate(notification: NSNotification) {
         groupData = GroupItem.cache[peerUid]
@@ -397,7 +393,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         self.performSegue(withIdentifier: "ShowMapSeg", sender: self)
     }
 
-        // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "EditContactDetailsSEG"{
             let vc : ContactDetailsViewController = segue.destination as! ContactDetailsViewController
@@ -432,24 +427,29 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     private func scrollToBottom(animated: Bool = false) {
-        
-        guard self.messages.count > 0 else {
+        let rowCount = self.messageTableView.numberOfRows(inSection: 0)
+
+        guard rowCount > 0 else {
             return
         }
-
+        
         self.messageTableView.reloadData()
         self.view.layoutIfNeeded()
-        
-        if messages.count > 1 {
-            let bottomIndexPath = IndexPath.init(row: self.messages.count - 1, section: 0)
+
+        if rowCount > 1 {
+            let bottomIndexPath = IndexPath.init(row: rowCount - 1, section: 0)
             self.messageTableView.scrollToRow(at: bottomIndexPath, at: .bottom, animated: animated)
+            
         }
-        
     }
     
-    func sendAllTypeMessage(_ cliMsg: CliMessage) {
+    private func layoutToBottom(animated: Bool = false) {
+        self.messageTableView.setContentOffset(CGPoint.init(x: 0, y: (self.messageTableView.contentSize.height-self.messageTableView.bounds.size.height)), animated: animated)
+    }
+    
+    func sendAllTypeMessage(_ cliMsg: CliMessage, resend: Bool = false) {
         
-        WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg) {
+        WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg, retry: resend) {
             if let msges = MessageItem.cache.get(idStr: self.peerUid) {
                 
                 self.messages = msges
@@ -475,10 +475,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
 extension MsgViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        if messages != nil {
-//            return messages.count
-//        }
-//        return 0
+
         return messages.count
     }
     

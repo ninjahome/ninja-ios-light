@@ -48,51 +48,49 @@ class ChatItem: NSObject{
     }
     
     public static func updateLastMsg(peerUid:String, msg:String, time:Int64, unread no:Int, isGroup: Bool = false) {
-        var chat = CachedChats.get(idStr: peerUid)
-        if chat == nil {
-            chat = ChatItem.init()
-            chat!.isGroup = isGroup
-            chat!.ItemID = peerUid
-            chat!.updateTime = time
-//            CachedChats[peerUid] = chat
-            CachedChats.setOrAdd(idStr: peerUid, item: chat!)
-            try? CDManager.shared.AddEntity(entity: "CDChatItem", m: chat!)
-        }
+        let chat = CachedChats.get(idStr: peerUid) ?? ChatItem.init()
+//        if chat == nil {
+//            chat = ChatItem.init()
+//            chat!.isGroup = isGroup
+//            chat!.ItemID = peerUid
+//            chat!.updateTime = time
+//            CachedChats.setOrAdd(idStr: peerUid, item: chat!)
+//            try? CDManager.shared.AddEntity(entity: "CDChatItem", m: chat!)
+//        }
+        chat.ItemID = peerUid
+        chat.isGroup = isGroup
         
-        if chat!.updateTime > time {
+        if chat.updateTime > time {
             return
-        }
-        
-        if let contact = ContactItem.cache[peerUid] {
-            chat!.NickName = contact.nickName
-            chat!.ImageData = contact.avatar
         }
         
         if isGroup {
             if let groupItem = GroupItem.cache[peerUid] {
-                chat!.NickName = groupItem.groupName
+                chat.NickName = groupItem.groupName
             } else {
                 return
             }
+        } else {
+            if let contact = ContactItem.cache[peerUid] {
+                chat.NickName = contact.nickName
+//                chat.ImageData = contact.avatar
+            }
         }
 
-        chat!.updateTime = time
-        chat!.unreadNo += no
-        chat!.LastMsg = msg
-        // 临时
-        chat!.isGroup = isGroup
+        chat.updateTime = time
+        chat.unreadNo += no
+        chat.LastMsg = msg
+        
+        chat.cObj?.unreadNo = Int32(chat.unreadNo)
+        chat.cObj?.lastMsg = chat.LastMsg
 
-        chat!.cObj?.unreadNo = Int32(chat!.unreadNo)
-        chat!.cObj?.lastMsg = chat!.LastMsg
-//        CachedChats[peerUid] = chat
-        CachedChats.setOrAdd(idStr: peerUid, item: chat!)
-//            try? CDManager.shared.UpdateOrAddOne(entity: "CDChatItem", m: chat!)
+        CachedChats.setOrAdd(idStr: peerUid, item: chat)
         
         let owner = Wallet.shared.Addr!
-        if chat!.isGroup {
-            try? CDManager.shared.UpdateOrAddOne(entity: "CDChatItem", m: chat!, predicate: NSPredicate(format: "groupId == %@ AND owner == %@", peerUid, owner))
+        if chat.isGroup {
+            try? CDManager.shared.UpdateOrAddOne(entity: "CDChatItem", m: chat, predicate: NSPredicate(format: "groupId == %@ AND owner == %@", peerUid, owner))
         } else {
-            try? CDManager.shared.UpdateOrAddOne(entity: "CDChatItem", m: chat!, predicate: NSPredicate(format: "uid == %@ AND owner == %@", peerUid, owner))
+            try? CDManager.shared.UpdateOrAddOne(entity: "CDChatItem", m: chat, predicate: NSPredicate(format: "uid == %@ AND owner == %@", peerUid, owner))
         }
         
         NotificationCenter.default.post(name:NotifyMsgSumChanged,

@@ -53,14 +53,13 @@ class VoiceTableViewCell: UITableViewCell {
         setBtn(isOut: message.isOut, data: voice.content, long: voice.duration)
         self.isOut = message.isOut
         self.long = voice.duration
-        //message bubble
+        
         if message.isOut {
             
             switch message.status {
             case .faild:
                 spinner?.stopAnimating()
 //                retry?.isHidden = false
-                //TODO::
             case .sending:
                 spinner?.startAnimating()
             default:
@@ -72,8 +71,6 @@ class VoiceTableViewCell: UITableViewCell {
             
             avatar.type = AvatarButtonType.wallet
             avatar.avaInfo = nil
-//            avatar.setTitle(Wallet.GenAvatarText(), for: .normal)
-//            avatar.backgroundColor = UIColor.init(hex: Wallet.GenAvatarColor())
             
             nickname.text = Wallet.GenAvatarText()
 
@@ -81,10 +78,6 @@ class VoiceTableViewCell: UITableViewCell {
             let img = UIImage(named: "babycolor")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
             msgBackgroundView.image = img
             
-//            let avaName = ContactItem.GetAvatarText(by: from)
-//            avatar.setTitle(ContactItem.GetAvatarText(by: avaName), for: .normal)
-//            let hex = ContactItem.GetAvatarColor(by: from)
-//            avatar.backgroundColor = UIColor.init(hex: hex)
             avatar.type = AvatarButtonType.contact
             avatar.avaInfo = AvatarInfo.init(id: from)
             
@@ -104,9 +97,9 @@ class VoiceTableViewCell: UITableViewCell {
         let flipImgH = filpImageH(rawImg)
     
         playBtn.setTitle("\(long)", for: .normal)
-        //voice message bubble
-//        let space = 20*long/60 + 20
-        let space = 20
+        
+        let space = 20*long/60 + 20
+
         if isOut {
             playBtn.imagePosition(at: .right, space: CGFloat(space))
             playBtn.setImage(flipImgH, for: .normal)
@@ -167,7 +160,5 @@ class VoiceTableViewCell: UITableViewCell {
         )
         return flipImage
     }
-
-
 
 }

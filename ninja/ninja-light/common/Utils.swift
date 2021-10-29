@@ -95,17 +95,17 @@ public func formatTimeStamp(by timeStamp: Int64) -> String {
 }
 
 public struct AlertPayload {
-        var title:String!
-        var placeholderTxt:String?
-        var securityShow:Bool = true
-        var keyType:UIKeyboardType = .default
-        var action:((String?, Bool)->Void)!
+    var title:String!
+    var placeholderTxt:String?
+    var securityShow:Bool = true
+    var keyType:UIKeyboardType = .default
+    var action:((String?, Bool)->Void)!
 }
 
 extension String {
     func isIncludeChinese() -> Bool {
         for ch in self.unicodeScalars {
-            if (0x4e00 < ch.value  && ch.value < 0x9fff) { return true } // 中文字符范围：0x4e00 ~ 0x9fff
+            if (0x4e00 < ch.value  && ch.value < 0x9fff) { return true }
         }
         return false
     }
@@ -113,14 +113,14 @@ extension String {
     func transformToPinyin(hasBlank: Bool = false) -> String {
         
         let stringRef = NSMutableString(string: self) as CFMutableString
-        CFStringTransform(stringRef,nil, kCFStringTransformToLatin, false) // 转换为带音标的拼音
-        CFStringTransform(stringRef, nil, kCFStringTransformStripCombiningMarks, false) // 去掉音标
+        CFStringTransform(stringRef,nil, kCFStringTransformToLatin, false)
+        CFStringTransform(stringRef, nil, kCFStringTransformStripCombiningMarks, false)
         let pinyin = stringRef as String
         return hasBlank ? pinyin : pinyin.replacingOccurrences(of: " ", with: "")
     }
     
     func transformToPinyinHead(lowercased: Bool = false) -> String {
-        let pinyin = self.transformToPinyin(hasBlank: true).capitalized // 字符串转换为首字母大写
+        let pinyin = self.transformToPinyin(hasBlank: true).capitalized
         var headPinyinStr = ""
         for ch in pinyin {
             if ch <= "Z" && ch >= "A" {
@@ -153,29 +153,13 @@ extension String {
     
 }
 
-extension NSArray {
-    
-    func delArray(by arr: NSArray) -> NSArray {
-        return self.compactMap { item in
-            return !arr.contains(item) ? item : nil
-        } as NSArray
-    }
-    
-}
-
 extension Array {
-    
-    /// 数组内中文按拼音字母排序
-    ///
-    /// - Parameter ascending: 是否升序（默认升序）
     func sortedByPinyin(ascending: Bool = true) -> Array<ContactItem>? {
         if self is Array<ContactItem> {
             return (self as! Array<ContactItem>).sorted { (value1, value2) -> Bool in
                 guard let pinyin1 = value1.sortPinyin, let pinyin2 = value2.sortPinyin else {
                     return false
                 }
-                
-//                let pinyin2 = value2.sortPinyin!
                 return pinyin1.compare(pinyin2) == (ascending ? .orderedAscending : .orderedDescending)
             }
         }
@@ -197,35 +181,6 @@ extension UIImage {
     var png: Data? { pngData() }
 }
 
-extension UITableView {
-//
-//    func scrollToBottom(isAnimated:Bool = true){
-//
-//        DispatchQueue.main.async {
-//            let indexPath = IndexPath(
-//                row: self.numberOfRows(inSection:  self.numberOfSections-1) - 1,
-//                section: self.numberOfSections - 1)
-//            if self.hasRowAtIndexPath(indexPath: indexPath) {
-//                self.scrollToRow(at: indexPath, at: .bottom, animated: isAnimated)
-//            }
-//        }
-//    }
-
-//    func scrollToTop(isAnimated:Bool = true) {
-//
-//        DispatchQueue.main.async {
-//            let indexPath = IndexPath(row: 0, section: 0)
-//            if self.hasRowAtIndexPath(indexPath: indexPath) {
-//                self.scrollToRow(at: indexPath, at: .top, animated: isAnimated)
-//           }
-//        }
-//    }
-
-    func hasRowAtIndexPath(indexPath: IndexPath) -> Bool {
-        return indexPath.section < self.numberOfSections && indexPath.row < self.numberOfRows(inSection: indexPath.section)
-    }
-}
-
 extension UIViewController {
     
     private class var sharedApplication: UIApplication? {
@@ -233,8 +188,8 @@ extension UIViewController {
         return UIApplication.perform(selector)?.takeUnretainedValue() as? UIApplication
     }
 
-    /// Returns the current application's top most view controller.
-    open class var topMost: UIViewController? {
+    // Returns the current application's top most view controller.
+    open class var topMostInApp: UIViewController? {
         guard let currentWindows = self.sharedApplication?.windows else { return nil }
         var rootViewController: UIViewController?
         for window in currentWindows {
@@ -246,32 +201,28 @@ extension UIViewController {
         return self.topMost(of: rootViewController)
     }
 
-    /// Returns the top most view controller from given view controller's stack.
+    // Returns the top most view controller from given view controller's stack.
     open class func topMost(of viewController: UIViewController?) -> UIViewController? {
-        // presented view controller
+        
         if let presentedViewController = viewController?.presentedViewController {
             return self.topMost(of: presentedViewController)
         }
 
-        // UITabBarController
         if let tabBarController = viewController as? UITabBarController,
            let selectedViewController = tabBarController.selectedViewController {
             return self.topMost(of: selectedViewController)
         }
 
-        // UINavigationController
         if let navigationController = viewController as? UINavigationController,
            let visibleViewController = navigationController.visibleViewController {
             return self.topMost(of: visibleViewController)
         }
 
-        // UIPageController
         if let pageViewController = viewController as? UIPageViewController,
            pageViewController.viewControllers?.count == 1 {
             return self.topMost(of: pageViewController.viewControllers?.first)
         }
 
-        // child view controller
         for subview in viewController?.view?.subviews ?? [] {
             if let childViewController = subview.next as? UIViewController {
                 return self.topMost(of: childViewController)
@@ -454,10 +405,9 @@ extension UIViewController {
 }
 
 func cleanAllData() {
-//    MessageItem.cache.removeAll(keepingCapacity: true)
-//    ChatItem.CachedChats.removeAll(keepingCapacity: true)
+
     ContactItem.cache.removeAll(keepingCapacity: true)
-    
+
     ChatItem.CachedChats.deleteAll()
     MessageItem.cache.deleteAll()
 }
@@ -483,12 +433,7 @@ extension FileManager {
     }
 }
 
-enum ZGJButtonImageEdgeInsetsStyle {
-    case top, left, right, bottom
-}
-
 extension UIColor {
-
     var toHexString: String {
         var r: CGFloat = 0
         var g: CGFloat = 0
@@ -526,43 +471,36 @@ extension UIColor {
 
 }
 
+enum ButtonImageEdgeInsetsStyle {
+    case top, left, right, bottom
+}
 
 extension UIButton {
-    func imagePosition(at style: ZGJButtonImageEdgeInsetsStyle, space: CGFloat) {
+    func imagePosition(at style: ButtonImageEdgeInsetsStyle, space: CGFloat) {
         guard let imageV = imageView else { return }
         guard let titleL = titleLabel else { return }
-        //获取图像的宽和高
+        
         let imageWidth = imageV.frame.size.width
         let imageHeight = imageV.frame.size.height
-        //获取文字的宽和高
+        
         let labelWidth  = titleL.intrinsicContentSize.width
         let labelHeight = titleL.intrinsicContentSize.height
         
         var imageEdgeInsets = UIEdgeInsets.zero
         var labelEdgeInsets = UIEdgeInsets.zero
-        //UIButton同时有图像和文字的正常状态---左图像右文字，间距为0
+        
         switch style {
         case .left:
-            //正常状态--只不过加了个间距
+            
             imageEdgeInsets = UIEdgeInsets(top: 0, left: -space * 0.5, bottom: 0, right: space * 0.5)
             labelEdgeInsets = UIEdgeInsets(top: 0, left: space * 0.5, bottom: 0, right: -space * 0.5)
         case .right:
-            //切换位置--左文字右图像
-            //图像：UIEdgeInsets的left是相对于UIButton的左边移动了labelWidth + space * 0.5，right相对于label的左边移动了-labelWidth - space * 0.5
             imageEdgeInsets = UIEdgeInsets(top: 0, left: labelWidth + space * 0.5, bottom: 0, right: -labelWidth - space * 0.5)
             labelEdgeInsets = UIEdgeInsets(top: 0, left: -imageWidth - space * 0.5, bottom: 0, right: imageWidth + space * 0.5)
         case .top:
-            //切换位置--上图像下文字
-            /**图像的中心位置向右移动了labelWidth * 0.5，向上移动了-imageHeight * 0.5 - space * 0.5
-             *文字的中心位置向左移动了imageWidth * 0.5，向下移动了labelHeight*0.5+space*0.5
-            */
             imageEdgeInsets = UIEdgeInsets(top: -imageHeight * 0.5 - space * 0.5, left: labelWidth * 0.5, bottom: imageHeight * 0.5 + space * 0.5, right: -labelWidth * 0.5)
             labelEdgeInsets = UIEdgeInsets(top: labelHeight * 0.5 + space * 0.5, left: -imageWidth * 0.5, bottom: -labelHeight * 0.5 - space * 0.5, right: imageWidth * 0.5)
         case .bottom:
-            //切换位置--下图像上文字
-            /**图像的中心位置向右移动了labelWidth * 0.5，向下移动了imageHeight * 0.5 + space * 0.5
-             *文字的中心位置向左移动了imageWidth * 0.5，向上移动了labelHeight*0.5+space*0.5
-             */
             imageEdgeInsets = UIEdgeInsets(top: imageHeight * 0.5 + space * 0.5, left: labelWidth * 0.5, bottom: -imageHeight * 0.5 - space * 0.5, right: -labelWidth * 0.5)
             labelEdgeInsets = UIEdgeInsets(top: -labelHeight * 0.5 - space * 0.5, left: -imageWidth * 0.5, bottom: labelHeight * 0.5 + space * 0.5, right: imageWidth * 0.5)
         }

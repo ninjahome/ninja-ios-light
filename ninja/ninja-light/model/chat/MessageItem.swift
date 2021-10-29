@@ -7,7 +7,6 @@
 
 import Foundation
 import CoreData
-//import SwiftyJSON
 import ChatLib
 
 typealias MessageList = [MessageItem]
@@ -33,7 +32,7 @@ class MessageItem: NSObject {
     var avatarInfo: Avatar?
     
     public static var cache = LockCache<MessageList>()
-//    public static var cache:[String: MessageList] = [:]
+
     override init() {
         super.init()
     }
@@ -96,10 +95,6 @@ class MessageItem: NSObject {
     func coinvertToLastMsg() -> String{
         switch self.typ {
         case .plainTxt:
-//                        let time = Date.init(timeIntervalSince1970: TimeInterval(self.timeStamp))
-//                    dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            
-//                        return dateFormatterGet.string(from: time)
             return "[Text Message]"
         case .voice:
             return "[Voice Message]"
@@ -178,10 +173,6 @@ class MessageItem: NSObject {
         }
         msgList?.append(msg)
         cache.setOrAdd(idStr: msg.to!, item: msgList)
-//        if cache[msg.to!] == nil{
-//            cache[msg.to!] = []
-//        }
-//        cache[msg.to!]!.append(msg)
         
         try? CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
         return msg
@@ -189,7 +180,7 @@ class MessageItem: NSObject {
     
     public static func resetSending(cliMsg: CliMessage, success: Bool) {
         let msg = MessageItem.init(cliMsg: cliMsg)
-        
+        let owner = Wallet.shared.Addr!
         if success {
             msg.status = .sent
         } else {
@@ -203,20 +194,17 @@ class MessageItem: NSObject {
             peerUid = msg.to
         }
         
-//        func modifyMsgStatus(_ msgInList: inout MessageItem, _ msg: MessageItem) {
-//            msgInList = msg
-//        }
-        
         if var msgs = MessageItem.cache.get(idStr: peerUid!) {
             for (index, item) in msgs.enumerated() {
                 if item.timeStamp == msg.timeStamp {
-//                    modifyMsgStatus(&msgs[index], msg)
                     msgs[index] = msg
                     break
                 }
             }
-            
             MessageItem.cache.setOrAdd(idStr: peerUid!, item: msgs)
+            try? CDManager.shared.UpdateOrAddOne(entity: "CDUnread", m: msg,
+                                                 predicate: NSPredicate(format: "owner == %@ AND unixTime == %@", owner, NSNumber(value: msg.timeStamp)))
+            
             
             for item in msgs {
                 print(item.status)
@@ -272,7 +260,7 @@ extension MessageItem: ModelObj {
             throw NJError.coreData("cast to unread item obj failed")
         }
         let owner = Wallet.shared.Addr!
-//        uObj.type = Int16(self.typ.rawValue)
+        uObj.type = Int16(self.typ.rawValue)
         uObj.from = self.from
         uObj.isOut = self.isOut
         
@@ -288,12 +276,10 @@ extension MessageItem: ModelObj {
         default:
             print("full fill msg: no such type")
         }
-//                uObj.message = self.payload as? String
         uObj.owner = owner
         uObj.to = self.to
         uObj.unixTime = self.timeStamp
-        uObj.type = Int16(self.typ.rawValue)
-//        uObj.status = self.status.rawValue
+        uObj.status = self.status.rawValue
         uObj.groupId = self.groupId
     }
     
@@ -318,14 +304,10 @@ extension MessageItem: ModelObj {
         default:
             print("init by msg obj: no such type")
         }
-    
-//                self.payload = uObj.message
         self.to = uObj.to
         self.timeStamp = uObj.unixTime
-//        self.status = sendingStatus(rawValue: uObj.status) ?? .sent
+        self.status = sendingStatus(rawValue: uObj.status) ?? .sent
         self.groupId = uObj.groupId
-        
-//        let color = ContactItem.GetAvatarColor(by: self.from!)
     }
     
 }
@@ -342,11 +324,11 @@ extension MessageList {
                         str += "[me]:"
                 }
                 str += "\(msg.payload!)\r\n"
-            case .contact://TODO::
+            case .contact:
                 str += "Contact TODO::\r\n"
-            case .voice://TODO::
+            case .voice:
                 str += "Voice TODO::\r\n"
-            case .location://TODO::
+            case .location:
                 str += "Location TODO::\r\n"
             case .image:
                 str += "Image TODO::\r\n"

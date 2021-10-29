@@ -73,14 +73,9 @@ class MessageListViewController: UIViewController {
     
     //MARK: - object c
     @objc func wsOffline(notification: NSNotification) {
-        //TODO::
-//        showErrorTips(err: "offline, please pull to online again" as! Error)
         print("Client Shutdown....")
-        DispatchQueue.main.async {
-            self.title = "连接中..."
-        }
+        self.showConnectingTips()
         self.connNetwork()
-        
     }
     
     @objc func notifiAction(notification: NSNotification) {
@@ -94,31 +89,23 @@ class MessageListViewController: UIViewController {
     }
    
     @objc func reloadChatRoom(_ sender: Any?) {
-
-        connNetwork()
+        let isOnline = WebsocketSrv.shared.IsOnline()
+        if !isOnline {
+            connNetwork()
+        }
+        
         self.refreshControl.endRefreshing()
     }
     
     func connNetwork() {
-        let online = WebsocketSrv.shared.IsOnline()
-        if online {
-            self.hideErrorTips()
+        guard let _ = WebsocketSrv.shared.Online() else {
             self.hideConnectingTips()
-        } else {
-            self.showConnectingTips()
-            guard let err = WebsocketSrv.shared.Online() else {
-                self.hideErrorTips()
-                self.hideConnectingTips()
-                return
-            }
-
-            showErrorTips(err: err)
+            return
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.hideErrorTips()
         guard Wallet.shared.loaded else {
             self.performSegue(withIdentifier: "CreateNewAccountSeg", sender: self)
             return
@@ -129,7 +116,10 @@ class MessageListViewController: UIViewController {
             return
         }
         print("wallet is active")
-        connNetwork()
+        
+        if !(WebsocketSrv.shared.IsOnline()) {
+            self.connNetwork()
+        }
         
         self.sortedArray = ChatItem.SortedArra()
         DispatchQueue.main.async {
@@ -140,30 +130,38 @@ class MessageListViewController: UIViewController {
     private func hideConnectingTips() {
         DispatchQueue.main.async {
             self.title = "消息"
+            
+            self.tableTopConstraint.constant = 0
+            self.errorTips.isHidden = true
+            self.errorTips.text = ""
         }
     }
     
     private func showConnectingTips() {
         DispatchQueue.main.async {
             self.title = "连接中..."
-        }
-    }
-    
-    private func showErrorTips(err: Error) {
-        DispatchQueue.main.async {
+            
             self.tableTopConstraint.constant = 30
             self.errorTips.isHidden = false
-            self.errorTips.text = err.localizedDescription
+            self.errorTips.text = "下拉刷新"
         }
     }
     
-    private func hideErrorTips() {
-        DispatchQueue.main.async {
-            self.tableTopConstraint.constant = 0
-            self.errorTips.isHidden = true
-            self.errorTips.text = ""
-        }
-    }
+//    private func showErrorTips(err: Error) {
+//        DispatchQueue.main.async {
+//            self.tableTopConstraint.constant = 30
+//            self.errorTips.isHidden = false
+//            self.errorTips.text = err.localizedDescription
+//        }
+//    }
+//
+//    private func hideErrorTips() {
+//        DispatchQueue.main.async {
+//            self.tableTopConstraint.constant = 0
+//            self.errorTips.isHidden = true
+//            self.errorTips.text = ""
+//        }
+//    }
 
 // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
