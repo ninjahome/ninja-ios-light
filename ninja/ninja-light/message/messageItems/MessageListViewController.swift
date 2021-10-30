@@ -41,6 +41,12 @@ class MessageListViewController: UIViewController {
                                                selector:#selector(wsOffline(notification:)),
                                                name: NotifyWebsocketOffline,
                                                    object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector:#selector(wsDidOnline(notification:)),
+                                               name: NotifyWebsocketOnline,
+                                                   object: nil)
+        
     }
     
     deinit {
@@ -75,7 +81,10 @@ class MessageListViewController: UIViewController {
     @objc func wsOffline(notification: NSNotification) {
         print("Client Shutdown....")
         self.showConnectingTips()
-        self.connNetwork()
+    }
+    @objc func wsDidOnline(notification: NSNotification) {
+        print("Client online....")
+        self.hideConnectingTips()
     }
     
     @objc func notifiAction(notification: NSNotification) {
@@ -99,7 +108,6 @@ class MessageListViewController: UIViewController {
     
     func connNetwork() {
         guard let _ = WebsocketSrv.shared.Online() else {
-            self.hideConnectingTips()
             return
         }
     }

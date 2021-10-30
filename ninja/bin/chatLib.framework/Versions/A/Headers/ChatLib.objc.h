@@ -43,6 +43,7 @@
 - (BOOL)textMessage:(NSString* _Nullable)from to:(NSString* _Nullable)to payload:(NSString* _Nullable)payload time:(int64_t)time error:(NSError* _Nullable* _Nullable)error;
 - (BOOL)voiceMessage:(NSString* _Nullable)from to:(NSString* _Nullable)to payload:(NSData* _Nullable)payload length:(long)length time:(int64_t)time error:(NSError* _Nullable* _Nullable)error;
 - (void)webSocketClosed;
+- (void)webSocketDidOnline;
 @end
 
 @interface ChatLibChatLicense : NSObject <goSeqRefInterface> {
@@ -216,6 +217,7 @@ FOUNDATION_EXPORT BOOL ChatLibWriteVoiceMessage(NSString* _Nullable to, NSData* 
 - (BOOL)textMessage:(NSString* _Nullable)from to:(NSString* _Nullable)to payload:(NSString* _Nullable)payload time:(int64_t)time error:(NSError* _Nullable* _Nullable)error;
 - (BOOL)voiceMessage:(NSString* _Nullable)from to:(NSString* _Nullable)to payload:(NSData* _Nullable)payload length:(long)length time:(int64_t)time error:(NSError* _Nullable* _Nullable)error;
 - (void)webSocketClosed;
+- (void)webSocketDidOnline;
 @end
 
 #endif

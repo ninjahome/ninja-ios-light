@@ -195,6 +195,13 @@ extension WebsocketSrv: ChatLibUnicastCallBackProtocol {
                                         userInfo: nil)
     }
     
+    func webSocketDidOnline(){
+            NSLog("======> websocket did online")
+            NotificationCenter.default.post(name: NotifyWebsocketOnline,
+                                            object: self,
+                                            userInfo: nil)
+    }
+    
 }
 
 extension WebsocketSrv: ChatLibMulticastCallBackProtocol {
