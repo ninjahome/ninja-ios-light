@@ -79,7 +79,7 @@ class MessageListViewController: UIViewController {
     
     //MARK: - object c
     @objc func wsOffline(notification: NSNotification) {
-        print("Client Shutdown....")
+        print("Client shutdown....")
         self.showConnectingTips()
     }
     @objc func wsDidOnline(notification: NSNotification) {
@@ -114,6 +114,8 @@ class MessageListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        self.hideConnectingTips()
         guard Wallet.shared.loaded else {
             self.performSegue(withIdentifier: "CreateNewAccountSeg", sender: self)
             return
@@ -124,11 +126,7 @@ class MessageListViewController: UIViewController {
             return
         }
         print("wallet is active")
-        
-        if !(WebsocketSrv.shared.IsOnline()) {
-            self.connNetwork()
-        }
-        
+    
         self.sortedArray = ChatItem.SortedArra()
         DispatchQueue.main.async {
             self.tableView.reloadData()
@@ -137,8 +135,6 @@ class MessageListViewController: UIViewController {
     
     private func hideConnectingTips() {
         DispatchQueue.main.async {
-            self.title = "消息"
-            
             self.tableTopConstraint.constant = 0
             self.errorTips.isHidden = true
             self.errorTips.text = ""
@@ -147,29 +143,11 @@ class MessageListViewController: UIViewController {
     
     private func showConnectingTips() {
         DispatchQueue.main.async {
-            self.title = "连接中..."
-            
             self.tableTopConstraint.constant = 30
             self.errorTips.isHidden = false
-            self.errorTips.text = "下拉刷新"
+            self.errorTips.text = "网络断开，下拉重新连接"
         }
     }
-    
-//    private func showErrorTips(err: Error) {
-//        DispatchQueue.main.async {
-//            self.tableTopConstraint.constant = 30
-//            self.errorTips.isHidden = false
-//            self.errorTips.text = err.localizedDescription
-//        }
-//    }
-//
-//    private func hideErrorTips() {
-//        DispatchQueue.main.async {
-//            self.tableTopConstraint.constant = 0
-//            self.errorTips.isHidden = true
-//            self.errorTips.text = ""
-//        }
-//    }
 
 // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
