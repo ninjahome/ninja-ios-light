@@ -8,16 +8,22 @@
 import Foundation
 
 class LockCache<T> : NSObject {
-    let rlock = NSLock()
-    let wlock = NSLock()
+        lazy var rwLock: pthread_rwlock_t = {
+                var lock = pthread_rwlock_t()
+                pthread_rwlock_init(&lock, nil)
+                return lock
+        }()
     
     var contents: [String: T] = [:]
     
-    func getValues() -> [T] {
+        deinit{
+                pthread_rwlock_destroy(&rwLock)
+        }
         
-        rlock.lock()
+    func getValues() -> [T] {
+            pthread_rwlock_rdlock(&rwLock)
         defer {
-            rlock.unlock()
+                pthread_rwlock_unlock(&rwLock)
         }
         
         return Array(contents.values)
@@ -25,9 +31,9 @@ class LockCache<T> : NSObject {
     
     func get(idStr: String) -> T? {
         
-        rlock.lock()
+            pthread_rwlock_rdlock(&rwLock)
         defer {
-            rlock.unlock()
+                pthread_rwlock_unlock(&rwLock)
         }
         
         return contents[idStr]
@@ -36,9 +42,9 @@ class LockCache<T> : NSObject {
     
     func setOrAdd(idStr: String, item: T?) {
         
-        wlock.lock()
+            pthread_rwlock_wrlock(&rwLock)
         defer {
-            wlock.unlock()
+                pthread_rwlock_unlock(&rwLock)
         }
         
         if let i = item {
@@ -49,9 +55,9 @@ class LockCache<T> : NSObject {
     
     func delete(idStr: String) {
         
-        wlock.lock()
+            pthread_rwlock_wrlock(&rwLock)
         defer {
-            wlock.unlock()
+                pthread_rwlock_unlock(&rwLock)
         }
         
         contents.removeValue(forKey: idStr)
@@ -59,9 +65,9 @@ class LockCache<T> : NSObject {
     
     func deleteAll() {
         
-        wlock.lock()
+            pthread_rwlock_wrlock(&rwLock)
         defer {
-            wlock.unlock()
+                pthread_rwlock_unlock(&rwLock)
         }
         
         contents.removeAll(keepingCapacity: true)
