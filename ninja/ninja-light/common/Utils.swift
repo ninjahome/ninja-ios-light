@@ -53,8 +53,8 @@ public func getDictionaryFromJSONString(jsonString: String) -> NSDictionary {
 }
 
 public func instantiateViewController(vcID: String) -> UIViewController {
-    let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main);
-    return storyboard.instantiateViewController(withIdentifier: vcID);
+    let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+    return storyboard.instantiateViewController(withIdentifier: vcID)
 }
 
 public func SetAesKey(auth: String) {
@@ -324,13 +324,13 @@ extension UIViewController {
                               action: nextAction)
         LoadAlertFromStoryBoard(payload: ap)
     }
-    
+
     func LoadAlertFromStoryBoard(payload: AlertPayload) {
         DispatchQueue.main.async {
             guard let alertVC = instantiateViewController(vcID: "PasswordViewControllerID")
-                as? PasswordViewController else{
-                return
-            }
+                as? PasswordViewController else {
+                    return
+                }
                     
             alertVC.payload = payload;
 

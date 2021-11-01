@@ -106,11 +106,11 @@ FOUNDATION_EXPORT const int64_t ChatLibValidTrue;
 
 FOUNDATION_EXPORT NSString* _Nonnull ChatLibActiveAddress(void);
 
-FOUNDATION_EXPORT BOOL ChatLibActiveWallet(NSString* _Nullable cipherTxt, NSString* _Nullable auth, NSString* _Nullable devtoken, NSError* _Nullable* _Nullable error);
+FOUNDATION_EXPORT BOOL ChatLibActiveWallet(NSString* _Nullable cipherTxt, NSString* _Nullable auth, NSError* _Nullable* _Nullable error);
 
 FOUNDATION_EXPORT BOOL ChatLibBanTalking(NSString* _Nullable to, NSString* _Nullable owner, NSString* _Nullable groupId, BOOL banned, NSError* _Nullable* _Nullable error);
 
-FOUNDATION_EXPORT void ChatLibConfigApp(NSString* _Nullable addr, id<ChatLibUnicastCallBack> _Nullable unicast, id<ChatLibMulticastCallBack> _Nullable multicast, NSString* _Nullable dbPath, long devType);
+FOUNDATION_EXPORT BOOL ChatLibConfigApp(NSString* _Nullable addr, id<ChatLibUnicastCallBack> _Nullable unicast, id<ChatLibMulticastCallBack> _Nullable multicast, NSString* _Nullable devToken, long devType, NSError* _Nullable* _Nullable error);
 
 FOUNDATION_EXPORT BOOL ChatLibCreateGroup(NSString* _Nullable to, NSString* _Nullable nickNames, NSString* _Nullable groupId, NSString* _Nullable groupName, NSError* _Nullable* _Nullable error);
 

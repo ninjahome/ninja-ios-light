@@ -133,11 +133,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         func applicationDidBecomeActive(_ application: UIApplication) {
-                _ = WebsocketSrv.shared.Online()
+            if Wallet.shared.IsActive(){
+                    _ = WebsocketSrv.shared.Online()
+            }
         }
     
         func applicationWillTerminate(_ application: UIApplication) {
-                MessageItem.removeAllRead()
+//                MessageItem.removeAllRead()
                 AudioFilesManager.deleteAllRecordingFiles()
         }
     

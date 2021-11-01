@@ -7,11 +7,16 @@
 
 import UIKit
 
+protocol WalletDelegate{
+    func OpenSuccess()
+}
+
 class AuthorViewController: UIViewController {
 
     @IBOutlet weak var tips: UILabel!
     @IBOutlet weak var password: UITextField!
-        
+    var walletDelegate:WalletDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
@@ -81,7 +86,10 @@ class AuthorViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.hideIndicator()
                     self.hideKeyboardWhenTappedAround()
-                    self.dismiss(animated: true)
+//                    self.dismiss(animated: true)
+                    self.dismiss(animated: true) {
+                        self.walletDelegate?.OpenSuccess()
+                    }
                 }
                 MessageItem.deleteMsgOneWeek()
                 return

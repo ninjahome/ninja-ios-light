@@ -7,7 +7,8 @@
 
 import UIKit
 
-class MessageListViewController: UIViewController {
+class MessageListViewController: UIViewController{
+    
     
     @IBOutlet weak var navTitle: UINavigationItem!
     @IBOutlet weak var errorTips: UILabel!
@@ -22,6 +23,7 @@ class MessageListViewController: UIViewController {
     var SelectedRowID:Int? = nil
     var refreshControl = UIRefreshControl()
     var sortedArray:[ChatItem] = []
+    var initErr:Error?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,20 +104,23 @@ class MessageListViewController: UIViewController {
         if !isOnline {
             connNetwork()
         }
-        
         self.refreshControl.endRefreshing()
     }
     
     func connNetwork() {
+        if self.initErr != nil{
+            self.initErr = ServiceDelegate.InitConfig()
+        }
+        
         guard let _ = WebsocketSrv.shared.Online() else {
             return
         }
+        self.showConnectingTips()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.hideConnectingTips()
         guard Wallet.shared.loaded else {
             self.performSegue(withIdentifier: "CreateNewAccountSeg", sender: self)
             return
@@ -151,6 +156,7 @@ class MessageListViewController: UIViewController {
 
 // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         if segue.identifier == "ShowMessageDetailsSEG"{
             guard let idx = self.SelectedRowID else {
                 return
@@ -163,7 +169,15 @@ class MessageListViewController: UIViewController {
             item.resetUnread()
             vc.peerUid = item.ItemID!
             vc.IS_GROUP = item.isGroup
+            return
+        }
+        if segue.identifier == "ShowAutherSEG"{
             
+            guard let vc = segue.destination as? AuthorViewController else {
+                return
+            }
+            vc.walletDelegate = self
+            return
         }
     }
 }
@@ -198,5 +212,11 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
             ChatItem.remove(item.ItemID!)
         }
     }
-    
+}
+
+extension MessageListViewController: WalletDelegate {
+        func OpenSuccess() {
+            initErr = ServiceDelegate.InitConfig()
+            connNetwork()
+        }
 }

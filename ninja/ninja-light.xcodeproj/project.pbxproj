@@ -913,7 +913,7 @@
 				CODE_SIGN_ENTITLEMENTS = "ninja-light/ninja-light.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development: bencong ri (5PQQRQ4DWP)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 6A53CAFMZ9;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -949,7 +949,7 @@
 				CODE_SIGN_ENTITLEMENTS = "ninja-light/ninja-light.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Distribution: Lendger, Inc (6A53CAFMZ9)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 6A53CAFMZ9;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

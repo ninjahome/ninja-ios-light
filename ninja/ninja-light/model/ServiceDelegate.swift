@@ -15,8 +15,8 @@ class ServiceDelegate: NSObject {
         super.init()
     }
     
-    public static func InitService(){
-        ChatLib.ChatLibConfigApp("", WebsocketSrv.shared, WebsocketSrv.shared, "", 1)
+    public static func InitService() {
+        _ = InitConfig()
         ContactItem.LocalSavedContact()
         GroupItem.LocalSavedGroup()
         MessageItem.loadUnread()
@@ -24,8 +24,11 @@ class ServiceDelegate: NSObject {
         dateFormatterGet.timeStyle = .medium
     }
 
-    public static func InitConfig() {
-        ChatLib.ChatLibConfigApp("", WebsocketSrv.shared, WebsocketSrv.shared, "", 1)
+    public static func InitConfig() ->Error?{
+        var error:NSError? = nil
+        
+        ChatLib.ChatLibConfigApp("", WebsocketSrv.shared, WebsocketSrv.shared, Wallet.shared.deviceToken, 1, &error)
+        return error
     }
     
 }

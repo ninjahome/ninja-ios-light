@@ -73,7 +73,8 @@ class Wallet: NSObject{
         
     func Active(_ password: String) -> Error? {
         var error:NSError? = nil
-        ChatLib.ChatLibActiveWallet(self.wJson, password, self.deviceToken, &error)
+        ChatLib.ChatLibActiveWallet(self.wJson, password, &error)
+        
         return error
     }
 

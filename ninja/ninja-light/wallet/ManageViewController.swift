@@ -57,7 +57,6 @@ extension ManageViewController: ScannerViewControllerDelegate {
                         
                         try Wallet.shared.Import(cipher: code, addr: addr, auth: pwd)
                         self?.navigationController?.popToRootViewController(animated: true)
-//                        let online_err = WebsocketSrv.shared.Online()
                         print("import wallet \(String(describing: Wallet.shared.Addr))")
                         
                     } catch let err as NSError {
