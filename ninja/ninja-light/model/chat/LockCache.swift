@@ -8,22 +8,22 @@
 import Foundation
 
 class LockCache<T> : NSObject {
-        lazy var rwLock: pthread_rwlock_t = {
-                var lock = pthread_rwlock_t()
-                pthread_rwlock_init(&lock, nil)
-                return lock
-        }()
+    lazy var rwLock: pthread_rwlock_t = {
+        var lock = pthread_rwlock_t()
+        pthread_rwlock_init(&lock, nil)
+        return lock
+    }()
     
     var contents: [String: T] = [:]
     
-        deinit{
-                pthread_rwlock_destroy(&rwLock)
-        }
+    deinit{
+        pthread_rwlock_destroy(&rwLock)
+    }
         
     func getValues() -> [T] {
-            pthread_rwlock_rdlock(&rwLock)
+        pthread_rwlock_rdlock(&rwLock)
         defer {
-                pthread_rwlock_unlock(&rwLock)
+            pthread_rwlock_unlock(&rwLock)
         }
         
         return Array(contents.values)
@@ -31,9 +31,9 @@ class LockCache<T> : NSObject {
     
     func get(idStr: String) -> T? {
         
-            pthread_rwlock_rdlock(&rwLock)
+        pthread_rwlock_rdlock(&rwLock)
         defer {
-                pthread_rwlock_unlock(&rwLock)
+            pthread_rwlock_unlock(&rwLock)
         }
         
         return contents[idStr]
@@ -42,9 +42,9 @@ class LockCache<T> : NSObject {
     
     func setOrAdd(idStr: String, item: T?) {
         
-            pthread_rwlock_wrlock(&rwLock)
+        pthread_rwlock_wrlock(&rwLock)
         defer {
-                pthread_rwlock_unlock(&rwLock)
+            pthread_rwlock_unlock(&rwLock)
         }
         
         if let i = item {
@@ -55,9 +55,9 @@ class LockCache<T> : NSObject {
     
     func delete(idStr: String) {
         
-            pthread_rwlock_wrlock(&rwLock)
+        pthread_rwlock_wrlock(&rwLock)
         defer {
-                pthread_rwlock_unlock(&rwLock)
+            pthread_rwlock_unlock(&rwLock)
         }
         
         contents.removeValue(forKey: idStr)
@@ -65,9 +65,9 @@ class LockCache<T> : NSObject {
     
     func deleteAll() {
         
-            pthread_rwlock_wrlock(&rwLock)
+        pthread_rwlock_wrlock(&rwLock)
         defer {
-                pthread_rwlock_unlock(&rwLock)
+            pthread_rwlock_unlock(&rwLock)
         }
         
         contents.removeAll(keepingCapacity: true)
