@@ -24,7 +24,7 @@ class ServiceDelegate: NSObject {
         dateFormatterGet.timeStyle = .medium
     }
 
-    public static func InitConfig() ->Error?{
+    public static func InitConfig() -> Error? {
         var error:NSError? = nil
         
         ChatLib.ChatLibConfigApp("", WebsocketSrv.shared, WebsocketSrv.shared, Wallet.shared.deviceToken, 1, &error)
