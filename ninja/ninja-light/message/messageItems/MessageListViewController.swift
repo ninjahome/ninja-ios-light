@@ -108,10 +108,7 @@ class MessageListViewController: UIViewController{
     }
     
     func connNetwork() {
-        if self.initErr != nil{
-            self.initErr = ServiceDelegate.InitConfig()
-        }
-        
+            ServiceDelegate.InitConfig()
         guard let _ = WebsocketSrv.shared.Online() else {
             return
         }
@@ -216,7 +213,7 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
 
 extension MessageListViewController: WalletDelegate {
         func OpenSuccess() {
-            initErr = ServiceDelegate.InitConfig()
+            ServiceDelegate.InitConfig()
             connNetwork()
         }
 }

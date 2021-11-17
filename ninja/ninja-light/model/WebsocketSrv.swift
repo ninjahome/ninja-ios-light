@@ -8,6 +8,7 @@
 import Foundation
 //import SwiftyJSON
 import ChatLib
+import UIKit
 
 class WebsocketSrv: NSObject {
     public static var shared = WebsocketSrv()
@@ -132,7 +133,15 @@ class WebsocketSrv: NSObject {
     }
 }
 
-extension WebsocketSrv: ChatLibUnicastCallBackProtocol {
+extension WebsocketSrv: ChatLibUICallBackProtocol {
+        func endPointChanged(_ newEndPoint: String?, p1: Error?) {
+                print(newEndPoint ?? "")
+        }
+        
+        func licenseChanged(_ newTime: Int64, p1: Error?) {
+                print(newTime)
+        }
+        
     func fileMessage(_ from: String?, to: String?, payload: Data?, size: Int, name: String?) throws {
         print("file msg size\(size)")
     }
@@ -202,11 +211,7 @@ extension WebsocketSrv: ChatLibUnicastCallBackProtocol {
                                             userInfo: nil)
     }
     
-}
-
-extension WebsocketSrv: ChatLibMulticastCallBackProtocol {
-    
-    func fileMessage(_ from: String?, groupId: String?, payload: Data?, size: Int, name: String?) throws {
+    func gFileMessage(_ from: String?, groupId: String?, payload: Data?, size: Int, name: String?) throws {
         if !GroupItem.CheckGroupExist(groupId: groupId!, syncTo: from) {
             return
         }
@@ -214,7 +219,7 @@ extension WebsocketSrv: ChatLibMulticastCallBackProtocol {
         print("\(String(describing: name))-file msg size:\(size)")
     }
     
-    func imageMessage(_ from: String?, groupId: String?, payload: Data?, time: Int64) throws {
+    func gImageMessage(_ from: String?, groupId: String?, payload: Data?, time: Int64) throws {
         if !GroupItem.CheckGroupExist(groupId: groupId!, syncTo: from) {
             return
         }
@@ -226,7 +231,7 @@ extension WebsocketSrv: ChatLibMulticastCallBackProtocol {
         ChatItem.updateLastMsg(peerUid: groupId!, msg: msg.coinvertToLastMsg(), time: time, unread: 1, isGroup: true)
     }
     
-    func locationMessage(_ from: String?, groupId: String?, l: Float, a: Float, name: String?, time: Int64) throws {
+    func gLocationMessage(_ from: String?, groupId: String?, l: Float, a: Float, name: String?, time: Int64) throws {
         if !GroupItem.CheckGroupExist(groupId: groupId!, syncTo: from) {
             return
         }
@@ -239,7 +244,7 @@ extension WebsocketSrv: ChatLibMulticastCallBackProtocol {
         ChatItem.updateLastMsg(peerUid: groupId!, msg: msg.coinvertToLastMsg(), time: time, unread: 1, isGroup: true)
     }
     
-    func voiceMessage(_ from: String?, groupId: String?, payload: Data?, length: Int, time: Int64) throws {
+    func gVoiceMessage(_ from: String?, groupId: String?, payload: Data?, length: Int, time: Int64) throws {
         if !GroupItem.CheckGroupExist(groupId: groupId!, syncTo: from) {
             return
         }
@@ -251,7 +256,7 @@ extension WebsocketSrv: ChatLibMulticastCallBackProtocol {
         ChatItem.updateLastMsg(peerUid: groupId!, msg: msg.coinvertToLastMsg(), time: time, unread: 1, isGroup: true)
     }
     
-    func textMessage(_ from: String?, groupId: String?, payload: String?, time: Int64) throws {
+    func gTextMessage(_ from: String?, groupId: String?, payload: String?, time: Int64) throws {
         if !GroupItem.CheckGroupExist(groupId: groupId!, syncTo: from) {
             return
         }
