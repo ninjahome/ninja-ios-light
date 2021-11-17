@@ -609,7 +609,6 @@
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftyJSON.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/MBProgressHUD.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/AMRAudioSwift.framework",
 			);
 			name = cart;
 			outputFileListPaths = (
