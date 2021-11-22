@@ -44,7 +44,7 @@ class AgentService {
     public static let shared = AgentService()
     
     func getAgentStatus() -> AgentStatus {
-        
+
         let currentTime = Int64(Date().timeIntervalSince1970)
         let expireTime = ChatLib.ChatLibGetLicense(0)
         expireDate = formatTimeStamp(by: expireTime)
