@@ -22,6 +22,8 @@ class WalletViewController: UIViewController {
     @IBOutlet weak var agentLabel: UILabel!
     @IBOutlet weak var agentTime: UILabel!
     
+    @IBOutlet weak var appVersion: UILabel!
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -55,6 +57,7 @@ class WalletViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        appVersion.text = getAppVersion()
         backGroundView.layer.contents = UIImage(named: "user_backg_img")?.cgImage
         
         DispatchQueue.global().async {
@@ -114,6 +117,21 @@ class WalletViewController: UIViewController {
                 self.toastMessage(title: err.localizedDescription)
             }
         }
+    }
+    
+    @IBAction func clearChatHistory(_ sender: UIButton) {
+        let alertActionController = UIAlertController.init(title: "", message: "将删除所有个人和群的聊天记录", preferredStyle: .actionSheet)
+        alertActionController.modalPresentationStyle = .popover
+        
+        let deleteAction = UIAlertAction(title: "清空聊天记录", style: .destructive) { action in
+            MessageItem.removeAllRead()
+        }
+        let cancleAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+        
+        alertActionController.addAction(deleteAction)
+        alertActionController.addAction(cancleAction)
+        
+        self.present(alertActionController, animated: true, completion: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

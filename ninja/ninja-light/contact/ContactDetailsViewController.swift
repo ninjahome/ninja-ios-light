@@ -22,7 +22,9 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
     @IBOutlet weak var uid: UILabel!
     @IBOutlet weak var deleteBtn: UIButton!
     @IBOutlet weak var moreBtn: UIButton!
-    @IBOutlet weak var memo: UILabel!
+
+    @IBOutlet weak var nickTextField: UITextField!
+    @IBOutlet weak var memoTextView: UITextView!
     
     var itemUID:String?
     var itemData:ContactItem?
@@ -52,8 +54,11 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
         self.hideKeyboardWhenTappedAround()
         self.populateView()
         
-        backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
+        nickTextField.text = itemData?.nickName
+        memoTextView.text = itemData?.remark
         
+        backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
+    
         setAvatar()
         
         NotificationCenter.default.addObserver(self, selector:#selector(notifiAction(notification:)),
@@ -85,7 +90,18 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
     }
     
     @IBAction func backBtn(_ sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)
+        let contact = ContactItem.init()
+        contact.uid = itemData?.uid
+        contact.nickName = self.nickTextField.text
+        contact.remark = self.memoTextView.text
+
+        if let err = ContactItem.UpdateContact(contact) {
+                NotificationCenter.default.post(name:NotifyContactChanged,
+                                               object: contact, userInfo:nil)
+                self.toastMessage(title: err.localizedDescription)
+        }
+        
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     @IBAction func moreBarItem(_ sender: UIButton) {
@@ -116,6 +132,18 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
         self.toastMessage(title: err.localizedDescription)
     }
     
+    @IBAction func copyContactAddr(_ sender: UIButton) {
+        UIPasteboard.general.string = itemData?.uid
+        self.toastMessage(title: "Copy Success")
+    }
+    
+    @IBAction func contactQRAlert(_ sender: UIButton) {
+        if let uid = itemData?.uid {
+            ShowQRAlertView(data: uid)
+        }
+    }
+    
+    
     private func populateView(){
             
         if let newUid = self.itemUID {
@@ -136,8 +164,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
 //                self.uid.isEditable = false
         self.uid.text = data.uid
         self.nickName.text = data.nickName
-        self.memo.text = data.nickName
-    
+//        self.memo.text = data.nickName
     
 //                self.remarks.text = data.remark
 //            if data.avatar != nil{

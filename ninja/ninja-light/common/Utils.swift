@@ -412,6 +412,17 @@ func cleanAllData() {
     MessageItem.cache.deleteAll()
 }
 
+func getAppVersion() -> String {
+    if let infoDict: [String: Any] = Bundle.main.infoDictionary {
+        if let mainVersion = infoDict["CFBundleShortVersionString"] as? String,
+           let build = infoDict["CFBundleVersion"] as? String {
+            return String("版本号："+mainVersion+"."+build)
+        }
+    }
+    
+    return "版本号"
+}
+
 extension MBProgressHUD {
     func setDetailText(msg:String) {
         self.detailsLabel.text = msg

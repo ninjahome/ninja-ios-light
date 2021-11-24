@@ -21,7 +21,7 @@ class ContactEditViewController: UIViewController {
         nickName.text = itemData?.nickName
         memo.text = itemData?.remark
     }
-    
+     
     @IBAction func saveEdit(_ sender: UIButton) {
         
         let contact = ContactItem.init()
