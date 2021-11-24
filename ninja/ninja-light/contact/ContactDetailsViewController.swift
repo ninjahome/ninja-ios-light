@@ -123,8 +123,6 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
             NotificationCenter.default.post(name:NotifyContactChanged,
                                             object: nil, userInfo:nil)
             
-            
-            
             self.closeWindow()
             return
         }
@@ -143,8 +141,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
         }
     }
     
-    
-    private func populateView(){
+    private func populateView() {
             
         if let newUid = self.itemUID {
             if let obj = ContactItem.GetContact(newUid){
