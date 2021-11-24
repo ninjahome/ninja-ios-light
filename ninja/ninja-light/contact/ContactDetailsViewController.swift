@@ -223,9 +223,5 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
             vc.peerUid = self.uid.text!
         }
         
-        if segue.identifier == "EditContactSegue" {
-            let vc: ContactEditViewController = segue.destination as! ContactEditViewController
-            vc.itemData = self.itemData
-        }
     }
 }

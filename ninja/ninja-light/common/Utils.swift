@@ -102,6 +102,17 @@ public struct AlertPayload {
     var action:((String?, Bool)->Void)!
 }
 
+
+public func getKeyWindow() -> UIWindow? {
+    let keyWindow = UIApplication.shared.connectedScenes
+            .filter({$0.activationState == .foregroundActive})
+            .map({$0 as? UIWindowScene})
+            .compactMap({$0})
+            .first?.windows
+            .filter({$0.isKeyWindow}).first
+    return keyWindow
+}
+
 extension String {
     func isIncludeChinese() -> Bool {
         for ch in self.unicodeScalars {
@@ -463,8 +474,7 @@ extension UIColor {
 
     convenience init(hex: String) {
         let scanner = Scanner(string: hex)
-        scanner.scanLocation = 0
-        
+//        scanner.scanLocation = 0
         var rgbValue: UInt64 = 0
         
         scanner.scanHexInt64(&rgbValue)

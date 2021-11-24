@@ -43,7 +43,6 @@
 		08EAAE112695973B00210271 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08EAAE102695973B00210271 /* Main.storyboard */; };
 		08EAAE142695977300210271 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08EAAE132695977300210271 /* LaunchScreen.storyboard */; };
 		08EAAE1E26968A9200210271 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EAAE1C26968A9200210271 /* Reachability.m */; };
-		08EAAE212696EDC000210271 /* ContactEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EAAE202696EDC000210271 /* ContactEditViewController.swift */; };
 		08EAAE24269735AC00210271 /* ContactAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EAAE23269735AC00210271 /* ContactAddViewController.swift */; };
 		08EAAE272697496700210271 /* SearchDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EAAE262697496700210271 /* SearchDetailViewController.swift */; };
 		08F0FA8D268839F200C5C1DF /* VoiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F0FA8C268839F200C5C1DF /* VoiceTableViewCell.swift */; };
@@ -125,7 +124,6 @@
 		08EAAE172696896A00210271 /* ninja-light_sim-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ninja-light_sim-Bridging-Header.h"; sourceTree = "<group>"; };
 		08EAAE1C26968A9200210271 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		08EAAE1D26968A9200210271 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		08EAAE202696EDC000210271 /* ContactEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditViewController.swift; sourceTree = "<group>"; };
 		08EAAE23269735AC00210271 /* ContactAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactAddViewController.swift; sourceTree = "<group>"; };
 		08EAAE262697496700210271 /* SearchDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDetailViewController.swift; sourceTree = "<group>"; };
 		08F0FA8C268839F200C5C1DF /* VoiceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceTableViewCell.swift; sourceTree = "<group>"; };
@@ -347,7 +345,6 @@
 				6969ECBF26134294008CB0B2 /* ContactViewController.swift */,
 				7CEFD45E261E91A20002B0B9 /* ContactItemTableViewCell.swift */,
 				7CEFD462261E93FA0002B0B9 /* ContactDetailsViewController.swift */,
-				08EAAE202696EDC000210271 /* ContactEditViewController.swift */,
 				08EAAE23269735AC00210271 /* ContactAddViewController.swift */,
 				08EAAE262697496700210271 /* SearchDetailViewController.swift */,
 			);
@@ -532,7 +529,6 @@
 				08EAAE272697496700210271 /* SearchDetailViewController.swift in Sources */,
 				08B74A5F26AFF31B00D6F0F8 /* LocationUtils.swift in Sources */,
 				69B8C0F6261DBEED00B4E4AC /* ScannerViewController.swift in Sources */,
-				08EAAE212696EDC000210271 /* ContactEditViewController.swift in Sources */,
 				6969ECC026134294008CB0B2 /* ContactViewController.swift in Sources */,
 				082CF17C263A9C6D0009450E /* MessageTableViewCell.swift in Sources */,
 				0825C21726CB6B23003E0EF3 /* AddCollectionCell.swift in Sources */,

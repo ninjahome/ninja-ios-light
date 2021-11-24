@@ -39,12 +39,10 @@ extension ShowImageDetail {
 //    guard let window = UIApplication.shared.delegate?.window else {
 //        return
 //    }
-
-    
-        guard let window = UIApplication.shared.keyWindow else {
+       
+        guard let window = getKeyWindow() else {
             return
         }
-    
         window.endEditing(true)
     
         originalFrame = CGRect()
@@ -94,12 +92,13 @@ extension ShowImageDetail {
         alert.addAction(action)
         alert.addAction(cancel)
         
-        guard let window = UIApplication.shared.keyWindow?.rootViewController else {
+        let keyWindow = getKeyWindow()
+        guard let window = keyWindow?.rootViewController else {
                 return
         }
         window.present(alert, animated: true, completion: nil)
         //TODO::
-//        backgroundView.present(alert, animated: true, completion: nil)
+//        backgroundView.present(alert, animated: true, completion: nil)keyWindow
     }
         
     @objc class private func showOriginal(sender: UITapGestureRecognizer) {
