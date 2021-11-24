@@ -65,43 +65,44 @@ class AgentService {
     }
     
     func decodeLicense(_ licenseCode: String) throws -> String? {
-        let license = ChatLib.ChatLibDecodeLicense(licenseCode)
-        let code = ChatLib.ChatLibIsValidLicense(licenseCode)
-        let verifyCode = IsVaildResultCode(rawValue: code)
-        
-        switch verifyCode {
-        case .ValidFalse:
-            return license
-        case .ValidTrue:
-            throw NJError.agent(verifyCode!.localizedDescription)
-        default:
+//        let license = ChatLib.ChatLibDecodeLicense(licenseCode)
+//        let code = ChatLib.ChatLibIsValidLicense(licenseCode)
+//        let verifyCode = IsVaildResultCode(rawValue: code)
+//
+//        switch verifyCode {
+//        case .ValidFalse:
+//            return license
+//        case .ValidTrue:
+//            throw NJError.agent(verifyCode!.localizedDescription)
+//        default:
+//            return nil
+//        }
             return nil
-        }
-        
     }
     
     func importVaildLicense(_ license: String) throws {
-        let importRes = ChatLib.ChatLibImportLicense(license)
-        let dict = getDictionaryFromJSONString(jsonString: importRes)
-        guard let rawVal = dict["result_code"] as? Int else {
-            return
-        }
-        let impCode = ImportResultCode(rawValue: rawVal)
-        switch impCode {
-        case .Success:
-            self.isActive = true
-            break
-        default:
-            throw NJError.agent(dict["result_message"] as! String)
-        }
+//        let importRes = ChatLib.ChatLibImportLicense(license)
+//        let dict = getDictionaryFromJSONString(jsonString: importRes)
+//        guard let rawVal = dict["result_code"] as? Int else {
+//            return
+//        }
+//        let impCode = ImportResultCode(rawValue: rawVal)
+//        switch impCode {
+//        case .Success:
+//            self.isActive = true
+//            break
+//        default:
+//            throw NJError.agent(dict["result_message"] as! String)
+//        }
     }
     
     func transferLicense(to addr: String, days: Int) -> Bool {
-        let ret = ChatLib.ChatLibTransferLicense(addr, days)
+            var err:NSError?
+            ChatLib.ChatLibTransferLicense(addr, days, &err)
         
-        if ret == "" {
-            return false
-        }
+            if err == nil {
+                    return true
+            }
         
         return true
     }

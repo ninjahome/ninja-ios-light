@@ -8,9 +8,11 @@
 import Foundation
 import ChatLib
 
+
 class ServiceDelegate: NSObject {
     public static let workQueue = DispatchQueue.init(label: "Serivce Queue", qos: .utility)
-    
+        public static let DevTypeIOS = 1
+        public static let Debug = true
     override init() {
         super.init()
     }
@@ -25,7 +27,7 @@ class ServiceDelegate: NSObject {
     }
 
     public static func InitConfig(){
-        ChatLib.ChatLibInitAPP("35.75.21.32:16666", WebsocketSrv.shared, Wallet.shared.deviceToken, 1)
+        ChatLib.ChatLibInitAPP("34.96.141.169:16666", WebsocketSrv.shared, Wallet.shared.deviceToken, DevTypeIOS, Debug)
     }
     
 }
