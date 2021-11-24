@@ -89,3 +89,4 @@ fastlane/test_output
 
 iOSInjectionProject/
 /ninja/bin/chatLib.xcframework
+ninja/Carthage
