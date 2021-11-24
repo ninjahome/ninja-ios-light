@@ -17,7 +17,6 @@ class Wallet: NSObject{
     var nickName: String?
     var useFaceID = false
     var useDestroy = false
-    var deviceToken: String?
 
     public static let shared = Wallet()
         
@@ -104,10 +103,6 @@ class Wallet: NSObject{
         try CDManager.shared.Delete(entity: "CDWallet")
         try CDManager.shared.UpdateOrAddOne(entity: "CDWallet", m: self)
         
-    }
-
-    func setDeviceToken(_ token: String) {
-        self.deviceToken = token
     }
 
     func UpdateNick(by nick: String) -> NJError? {

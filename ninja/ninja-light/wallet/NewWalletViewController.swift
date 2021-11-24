@@ -74,9 +74,10 @@ extension NewWalletViewController: ScannerViewControllerDelegate {
                     do {
                         
                         WebsocketSrv.shared.Offline()
-                        ServiceDelegate.InitConfig()
                         
                         try Wallet.shared.Import(cipher: code, addr: addr, auth: pwd)
+                        
+                        ServiceDelegate.InitService()
                         
                         afterWallet()
                         

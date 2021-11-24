@@ -7,30 +7,23 @@
 
 import UIKit
 import UserNotifications
+import ChatLib
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    public let DevTypeIOS = 1
+    public let Debug = true
+    
         var window: UIWindow?
-//        var reach: Reachability?
     
         func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-//            self.reach = Reachability.forInternetConnection()
-//            self.reach?.reachableOnWWAN = false
-//
-//            NotificationCenter.default.addObserver(
-//                    self,
-//                    selector: #selector(reachabilityChanged),
-//                    name: NSNotification.Name.reachabilityChanged,
-//                    object: nil
-//                )
-//            self.reach?.startNotifier()
+
             
             let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
             print("token \(token)")
             print("deviceToken \(deviceToken)")
-            Wallet.shared.setDeviceToken(token)
-//            let bundleID = Bundle.main.bundleIdentifier
-//            print("bundleID \(String(describing: bundleID))")
+//            Wallet.shared.setDeviceToken(token)
+            ServiceDelegate.deviceToken = token
             
             if Wallet.shared.Addr == nil {
                 let url = URL(string: "https://baidu.com")
@@ -40,16 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                 task.resume()
             }
-            
         }
-    
-//        @objc func reachabilityChanged(notification: NSNotification) {
-//            if self.reach!.isReachableViaWiFi() || self.reach!.isReachableViaWWAN() {
-//                print("Service available!!!")
-//            } else {
-//                print("No service available!!!")
-//            }
-//        }
     
         func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
             print("failed to register remote noti\(error.localizedDescription)")
@@ -91,7 +75,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-                
+            
+                //TODO:: to be test
+                ServiceDelegate.InitAPP()
                 // Override point for customization after application launch.
                 if Wallet.shared.loaded{
                         ServiceDelegate.InitService()

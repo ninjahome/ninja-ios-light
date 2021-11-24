@@ -31,7 +31,7 @@ class MessageListViewController: UIViewController{
         tableView.tableFooterView = UIView()
         refreshControl.addTarget(self, action: #selector(self.reloadChatRoom(_:)), for: .valueChanged)
         tableView.addSubview(refreshControl)
-
+        
         sortedArray = ChatItem.SortedArra()
         
         NotificationCenter.default.addObserver(self,
@@ -108,7 +108,6 @@ class MessageListViewController: UIViewController{
     }
     
     func connNetwork() {
-            ServiceDelegate.InitConfig()
         guard let _ = WebsocketSrv.shared.Online() else {
             return
         }
@@ -213,7 +212,6 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
 
 extension MessageListViewController: WalletDelegate {
         func OpenSuccess() {
-            ServiceDelegate.InitConfig()
             connNetwork()
         }
 }

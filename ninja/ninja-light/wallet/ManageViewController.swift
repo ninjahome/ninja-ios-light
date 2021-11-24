@@ -51,10 +51,11 @@ extension ManageViewController: ScannerViewControllerDelegate {
                         cleanAllData()
                         
                         WebsocketSrv.shared.Offline()
-                       
-                        ServiceDelegate.InitConfig()
                         
                         try Wallet.shared.Import(cipher: code, addr: addr, auth: pwd)
+                        
+                        ServiceDelegate.InitService()
+                        
                         self?.navigationController?.popToRootViewController(animated: true)
                         print("import wallet \(String(describing: Wallet.shared.Addr))")
                         
