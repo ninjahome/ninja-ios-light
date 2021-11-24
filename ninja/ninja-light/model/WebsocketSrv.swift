@@ -138,7 +138,7 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
                 guard let e = p1 else{
                         //TODO:: save newEndPoint to local disk and load it as ChatLibInitAPP parameter next time
                         NSLog("------>>>new endpoint[\(newEndPoint!)] avlaible")
-                        webSocketDidOnline()
+                        _ = Online()
                         return
                 }
                 //TODO::show  tips of network invalidation
