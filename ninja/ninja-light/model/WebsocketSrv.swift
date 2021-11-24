@@ -135,7 +135,14 @@ class WebsocketSrv: NSObject {
 
 extension WebsocketSrv: ChatLibUICallBackProtocol {
         func endPointChanged(_ newEndPoint: String?, p1: Error?) {
-                print(newEndPoint ?? "")
+                guard let e = p1 else{
+                        //TODO:: save newEndPoint to local disk and load it as ChatLibInitAPP parameter next time
+                        NSLog("------>>>new endpoint[\(newEndPoint!)] avlaible")
+                        webSocketDidOnline()
+                        return
+                }
+                //TODO::show  tips of network invalidation
+                NSLog("------>>>end point failed[\(e.localizedDescription)]")
         }
         
         func licenseChanged(_ newTime: Int64, p1: Error?) {

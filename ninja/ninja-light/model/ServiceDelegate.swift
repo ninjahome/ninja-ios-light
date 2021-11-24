@@ -27,7 +27,7 @@ class ServiceDelegate: NSObject {
     }
 
     public static func InitConfig(){
-        ChatLib.ChatLibInitAPP("34.96.141.169:16666", WebsocketSrv.shared, Wallet.shared.deviceToken, DevTypeIOS, Debug)
+        ChatLib.ChatLibInitAPP("192.168.1.167:16666", WebsocketSrv.shared, Wallet.shared.deviceToken, DevTypeIOS, Debug)
     }
     
 }
