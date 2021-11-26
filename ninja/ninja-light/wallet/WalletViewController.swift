@@ -7,8 +7,8 @@
 
 import UIKit
 
-class WalletViewController: UIViewController {
-    @IBOutlet weak var nickName: UILabel!
+class WalletViewController: UITableViewController {
+//    @IBOutlet weak var nickName: UILabel!
 //        @IBOutlet weak var avatarImg: UIImageView!
     @IBOutlet weak var address: UILabel!
     
@@ -28,7 +28,7 @@ class WalletViewController: UIViewController {
         super.viewWillAppear(animated)
         
         address.text = Wallet.shared.Addr
-        nickName.text = Wallet.shared.nickName
+//        nickName.text = Wallet.shared.nickName
         faceIDSwitch.isOn = Wallet.shared.useFaceID
         destroySwitch.isOn = Wallet.shared.useDestroy
         
@@ -136,9 +136,9 @@ class WalletViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "EditNicknameSEG", let vc = segue.destination as? NickEditViewController {
-                vc.nick = nickName.text
+//                vc.nick = nickName.text
             vc.returnHost = {[weak self] res in
-                self?.nickName.text = res
+//                self?.nickName.text = res
                 self?.avatar.avaInfo = nil
             }
         }

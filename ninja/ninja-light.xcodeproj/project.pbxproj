@@ -42,7 +42,6 @@
 		08EAAD3F2695847900210271 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08EAAD3E2695847900210271 /* SystemConfiguration.framework */; };
 		08EAAE112695973B00210271 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08EAAE102695973B00210271 /* Main.storyboard */; };
 		08EAAE142695977300210271 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08EAAE132695977300210271 /* LaunchScreen.storyboard */; };
-		08EAAE1E26968A9200210271 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EAAE1C26968A9200210271 /* Reachability.m */; };
 		08EAAE24269735AC00210271 /* ContactAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EAAE23269735AC00210271 /* ContactAddViewController.swift */; };
 		08EAAE272697496700210271 /* SearchDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EAAE262697496700210271 /* SearchDetailViewController.swift */; };
 		08F0FA8D268839F200C5C1DF /* VoiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F0FA8C268839F200C5C1DF /* VoiceTableViewCell.swift */; };
@@ -89,7 +88,6 @@
 		0818D88D27016638002BF3B9 /* TransferStrangerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferStrangerViewController.swift; sourceTree = "<group>"; };
 		0818D8902701665A002BF3B9 /* ConfirmTransferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmTransferViewController.swift; sourceTree = "<group>"; };
 		0818D8932701B334002BF3B9 /* ContactTransferTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTransferTableViewCell.swift; sourceTree = "<group>"; };
-		081DB9C526A7D4D5004165AA /* SimLocation.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SimLocation.gpx; sourceTree = "<group>"; };
 		0823F777265201B4000DA4DB /* QRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRViewController.swift; sourceTree = "<group>"; };
 		0823F77C26520B24000DA4DB /* NickEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NickEditViewController.swift; sourceTree = "<group>"; };
 		0823F78226565152000DA4DB /* KeychainWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
@@ -121,9 +119,6 @@
 		08EAAD3E2695847900210271 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		08EAAE102695973B00210271 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		08EAAE132695977300210271 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		08EAAE172696896A00210271 /* ninja-light_sim-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ninja-light_sim-Bridging-Header.h"; sourceTree = "<group>"; };
-		08EAAE1C26968A9200210271 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		08EAAE1D26968A9200210271 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		08EAAE23269735AC00210271 /* ContactAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactAddViewController.swift; sourceTree = "<group>"; };
 		08EAAE262697496700210271 /* SearchDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDetailViewController.swift; sourceTree = "<group>"; };
 		08F0FA8C268839F200C5C1DF /* VoiceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceTableViewCell.swift; sourceTree = "<group>"; };
@@ -313,16 +308,12 @@
 				6969ECD72613448B008CB0B2 /* contact */,
 				6969ECD32613443A008CB0B2 /* message */,
 				6969ECBB26134294008CB0B2 /* AppDelegate.swift */,
-				08EAAE1D26968A9200210271 /* Reachability.h */,
-				08EAAE1C26968A9200210271 /* Reachability.m */,
 				6969ECBD26134294008CB0B2 /* SceneDelegate.swift */,
-				081DB9C526A7D4D5004165AA /* SimLocation.gpx */,
 				08EAAE102695973B00210271 /* Main.storyboard */,
 				6969ECC726134295008CB0B2 /* Assets.xcassets */,
 				08EAAE132695977300210271 /* LaunchScreen.storyboard */,
 				6969ECCC26134295008CB0B2 /* Info.plist */,
 				6969ECC426134294008CB0B2 /* ninja.xcdatamodeld */,
-				08EAAE172696896A00210271 /* ninja-light_sim-Bridging-Header.h */,
 			);
 			path = "ninja-light";
 			sourceTree = "<group>";
@@ -517,7 +508,6 @@
 				6953EAF82622C12F008EC2F0 /* AuthorViewController.swift in Sources */,
 				087B57F226DF1F1400591F8D /* AgentButton.swift in Sources */,
 				0818D8912701665A002BF3B9 /* ConfirmTransferViewController.swift in Sources */,
-				08EAAE1E26968A9200210271 /* Reachability.m in Sources */,
 				087B57F526DF529D00591F8D /* AgentService.swift in Sources */,
 				0825C21A26CB6B40003E0EF3 /* AvatarCollectionCell.swift in Sources */,
 				086701B926672CAE00A1E951 /* AudioPlayManager.swift in Sources */,
@@ -718,7 +708,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.hop.ninja.light;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = dev_ninja_light;
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT_NAME)/ninja-light_sim-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -754,7 +743,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.hop.ninja.light;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = release_ninja_light;
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT_NAME)/ninja-light_sim-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
