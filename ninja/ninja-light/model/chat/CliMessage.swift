@@ -16,6 +16,7 @@ enum CMT:Int {
     case location = 3
     case video = 4
     case contact = 5
+        case file = 6
 }
 
 class audioMsg: NSObject, NSCoding {

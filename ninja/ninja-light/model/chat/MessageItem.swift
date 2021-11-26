@@ -105,6 +105,8 @@ class MessageItem: NSObject {
             return "[Contact]"
         case .image:
             return "[Image]"
+        case .file:
+                return "[File]"
         }
     }
         
@@ -333,6 +335,8 @@ extension MessageList {
                 str += "Image TODO::\r\n"
             case .video:
                 str += "Video TODO::\r\n"
+            case .file:
+                str += "File TODO::\r\n"
             }
         }
         return str

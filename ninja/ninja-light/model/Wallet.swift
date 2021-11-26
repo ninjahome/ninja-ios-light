@@ -52,7 +52,7 @@ class Wallet: NSObject{
         if walletJson == ""{
             throw NJError.wallet("Create Wallet Failed")
         }
-        let addr = ChatLib.ChatLibActiveAddress()
+        let addr = ChatLib.ChatLibWalletAddress()
         if addr == ""{
             throw NJError.wallet("Create Wallet Failed")
         }
