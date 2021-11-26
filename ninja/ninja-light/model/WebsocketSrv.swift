@@ -25,13 +25,12 @@ class WebsocketSrv: NSObject {
     }
     
     
-    func Online() -> Error? {
-        var err:NSError? = nil
-//        WebsocketSrv.netQueue.async {
-            ChatLib.ChatLibWSOnline(&err)
-//        }
-        print("online err \(String(describing: err?.localizedDescription))")
-        return err
+    func Online(){
+            WebsocketSrv.netQueue.async {
+                    var err:NSError? = nil
+                    ChatLib.ChatLibWSOnline(&err)
+                    print("online err \(String(describing: err?.localizedDescription))")
+            }
     }
     
     func Offline() {
@@ -111,10 +110,15 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
        
         func endPointChanged(_ p0: String?) {
                 NSLog("------>>>new endpoint[\(p0!)] avlaible")
+                
                 _ = Online()
         }
         
         func msgResult(_ p0: Int64, p1: String?, p2: Bool) {
+                let msgID = p0
+                let to = p1
+                let isGrp = p2
+                
                 //TODO:: update local msg status
         }
         func licenseChanged(_ newTime: Int64, p1: Error?) {

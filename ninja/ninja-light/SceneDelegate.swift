@@ -68,7 +68,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
                 // Called as the scene transitions from the background to the foreground.
                 // Use this method to undo the changes made on entering the background.
             if Wallet.shared.IsActive() {
-                    _ = WebsocketSrv.shared.Online()
+                    WebsocketSrv.shared.Online()
             }
         }
 

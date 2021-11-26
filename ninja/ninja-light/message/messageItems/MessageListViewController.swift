@@ -105,9 +105,7 @@ class MessageListViewController: UIViewController{
     }
     
     func connNetwork() {
-        guard let _ = WebsocketSrv.shared.Online() else {
-            return
-        }
+        WebsocketSrv.shared.Online()
         self.showConnectingTips()
     }
     
