@@ -98,40 +98,41 @@ class GroupItem: NSObject {
         
         let groupId = ChatLib.ChatLibNewGroupId()
         
-        var error: NSError? = nil
-        ChatLib.ChatLibCreateGroup(ids.toString(), nicks.toString(), groupId, groupName, &error)
-        
-        if error == nil {
+            guard let data = ChatLib.ChatLibPackCreateGroup(nicks.toString(), groupId, groupName) else{
+                    NSLog("pack data failed")
+                    return nil
+            }
+            let msgID = ChatLib.ChatLibSend(ids.toString(), data, true)
+            //TODO:: save msgID and wait success callback
             return groupId
-        } else {
-            print("create error is \(String(describing: error?.localizedDescription))")
-            return nil
-        }
-        
     }
     
     public static func AddMemberToGroup(group: GroupItem, newIds: [String]) -> NJError? {
         var error: NSError?
         let to = group.memberIds as! [String]
         let nicks = group.memberNicks as! [String]
-        ChatLib.ChatLibJoinGroup(to.toString(), nicks.toString(), group.gid, group.groupName, group.leader, group.banTalked, newIds.toString(), &error)
-        
-        if error != nil {
-            return NJError.msg(error!.localizedDescription)
+        guard let data = ChatLib.ChatLibPackJoinGroup(nicks.toString(),
+                                     group.gid,
+                                     group.groupName,
+                                     group.leader,
+                                     group.banTalked,
+                                    newIds.toString()) else{
+                return NJError.msg("pack error failed")
         }
         
-        return nil
+            let msgID = ChatLib.ChatLibSend(to.toString(), data, true)
+            //TODO:: save msgID and wait success callback
+            return nil
     }
     
     public static func KickOutUser(to: String?, groupId: String, leader: String, kickUserId: String) -> NJError? {
-        var error: NSError?
-        ChatLib.ChatLibKickOutUser(to, groupId, leader, kickUserId, &error)
         
-        if error != nil {
-            return NJError.msg(error!.localizedDescription)
-        }
-        
-        return nil
+            guard let data = ChatLib.ChatLibPackKickOutUser(groupId, leader, kickUserId) else{
+                    return NJError.msg("pack error failed")
+            }
+            let msgID = ChatLib.ChatLibSend(to, data, true)
+            //TODO:: save msgID and wait success callback
+            return nil
     }
     
     public static func KickOutUserNoti(group: GroupItem, kickIds: String?, from: String) throws {
@@ -177,17 +178,18 @@ class GroupItem: NSObject {
         let ids = groupItem.memberIds as! [String]
         let gid = groupItem.gid!
         
-        var error: NSError?
+        var data: Data?
         if groupItem.leader == Wallet.shared.Addr! {
-            ChatLib.ChatLibDismisGroup(ids.toString(), Wallet.shared.Addr, gid, &error)
+            data = ChatLib.ChatLibPackDismissGroup(Wallet.shared.Addr, gid)
 
         } else {
-            ChatLib.ChatLibQuitGroup(ids.toString(), gid, &error)
+                data = ChatLib.ChatLibPackQuitGroup(gid)
         }
-        
-        if error != nil {
-            return NJError.msg(error!.localizedDescription)
-        }
+            guard let d = data else{
+                    return NJError.msg("pack data error")
+            }
+            let msgID = ChatLib.ChatLibSend(ids.toString(), d, true)
+            //TODO:: save msgID and wait success callback
         
         _ = GroupItem.DeleteGroup(gid)
         ChatItem.remove(gid)

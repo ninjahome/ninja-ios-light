@@ -100,10 +100,7 @@ class MessageListViewController: UIViewController{
     }
    
     @objc func reloadChatRoom(_ sender: Any?) {
-        let isOnline = WebsocketSrv.shared.IsOnline()
-        if !isOnline {
             connNetwork()
-        }
         self.refreshControl.endRefreshing()
     }
     

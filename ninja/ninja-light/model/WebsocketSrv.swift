@@ -24,10 +24,6 @@ class WebsocketSrv: NSObject {
         super.init()
     }
     
-    func IsOnline() -> Bool {
-        let online = ChatLib.ChatLibWSIsOnline()
-        return online
-    }
     
     func Online() -> Error? {
         var err:NSError? = nil
@@ -43,9 +39,8 @@ class WebsocketSrv: NSObject {
     }
     
     func SendIMMsg(cliMsg: CliMessage, retry: Bool = false, onStart: @escaping()-> Void, onCompletion: @escaping(Bool) -> Void) {
-        var error:NSError?
+        
         var isGroup: Bool = false
-        var res: Bool = false
         let gid = cliMsg.groupId
         
         if gid != nil {
@@ -64,87 +59,64 @@ class WebsocketSrv: NSObject {
                                    isGroup: isGroup)
         }
         
+            var data:Data?
         switch cliMsg.type {
             case .plainTxt:
-                WebsocketSrv.textMsgQueue.async {
                     if isGroup {
-                        ChatLib.ChatLibWriteGroupMessage(cliMsg.to, gid, cliMsg.textData, &error)
+                            data = ChatLib.ChatLibPackGroupTxt(gid, cliMsg.textData)
                     } else {
-                        ChatLib.ChatLibWriteMessage(cliMsg.to, cliMsg.textData, &error)
+                            data = ChatLib.ChatLibPackPlainTxt(cliMsg.textData)
                     }
-                    
-                    if error == nil {
-                        res = true
-                    }
-                    
-                    DispatchQueue.main.async {
-                        onCompletion(res)
-                    }
-                }
             case .image:
-                WebsocketSrv.imageMsgQueue.async {
-                    if isGroup {
-                        ChatLib.ChatLibWriteImageGroupMessage(cliMsg.to, cliMsg.imgData, gid, &error)
-                    } else {
-                        ChatLib.ChatLibWriteImageMessage(cliMsg.to, cliMsg.imgData, &error)
-                    }
-                    print("send image success_____")
-                    if error == nil {
-                        res = true
-                    }
-                    
-                    DispatchQueue.main.async {
-                        onCompletion(res)
-                    }
+                if isGroup {
+                        data = ChatLib.ChatLibPackGroupImage(gid, cliMsg.imgData)
+                } else {
+                        data = ChatLib.ChatLibPackImage(cliMsg.imgData)
                 }
             case .voice:
-                WebsocketSrv.voiceMsgQueue.async {
-                    if isGroup {
-                        ChatLib.ChatLibWriteVoiceGroupMessage(cliMsg.to, cliMsg.audioData?.content, cliMsg.audioData?.duration ?? 0, gid, &error)
-                    } else {
-                        ChatLib.ChatLibWriteVoiceMessage(cliMsg.to, cliMsg.audioData?.content, cliMsg.audioData?.duration ?? 0, &error)
-                    }
-                    if error == nil {
-                        res = true
-                    }
-                    
-                    DispatchQueue.main.async {
-                        onCompletion(res)
-                    }
+                guard let audioData = cliMsg.audioData, audioData.duration > 1 else{//TODO::duration?
+                        //TODO::
+                        return
                 }
+                    if isGroup {
+                            data = ChatLib.ChatLibPackGroupVoice(gid, audioData.content, audioData.duration)
+                    } else {
+                            data = ChatLib.ChatLibPackVoice(audioData.content, audioData.duration)
+                    }
+                
             case .location:
-                WebsocketSrv.locationMsgQueue.async {
-                    if isGroup {
-                        ChatLib.ChatLibWriteLocationGroupMessage(cliMsg.to, cliMsg.locationData!.lo, cliMsg.locationData!.la, cliMsg.locationData!.str, gid, &error)
-                    } else {
-                        ChatLib.ChatLibWriteLocationMessage(cliMsg.to, cliMsg.locationData!.lo, cliMsg.locationData!.la, cliMsg.locationData!.str, &error)
-                    }
-                    if error == nil {
-                        res = true
-                    }
-                    
-                    DispatchQueue.main.async {
-                        onCompletion(res)
-                    }
+                guard let locData =  cliMsg.locationData else{
+                        //TODO::
+                        return
                 }
+                if isGroup {
+                        data = ChatLib.ChatLibPackGroupLocation(gid,locData.str, locData.lo, locData.la)
+                } else {
+                        data = ChatLib.ChatLibPackLocation(locData.lo, locData.la, locData.str)
+                }
+        case .file:
+                //TODO::
+                return
             default:
                 print("send msg: no such type")
         }
-    }
+        
+        let msgID = ChatLib.ChatLibSend(cliMsg.to, data, isGroup)
+        print(msgID)
+            //TODO::
+}
 }
 
 extension WebsocketSrv: ChatLibUICallBackProtocol {
-        func endPointChanged(_ newEndPoint: String?, p1: Error?) {
-                guard let e = p1 else{
-                        //TODO:: save newEndPoint to local disk and load it as ChatLibInitAPP parameter next time
-                        NSLog("------>>>new endpoint[\(newEndPoint!)] avlaible")
-                        _ = Online()
-                        return
-                }
-                //TODO::show  tips of network invalidation
-                NSLog("------>>>end point failed[\(e.localizedDescription)]")
+       
+        func endPointChanged(_ p0: String?) {
+                NSLog("------>>>new endpoint[\(p0!)] avlaible")
+                _ = Online()
         }
         
+        func msgResult(_ p0: Int64, p1: String?, p2: Bool) {
+                //TODO:: update local msg status
+        }
         func licenseChanged(_ newTime: Int64, p1: Error?) {
                 print(newTime)
         }
