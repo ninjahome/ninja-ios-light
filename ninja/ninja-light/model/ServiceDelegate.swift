@@ -30,4 +30,14 @@ class ServiceDelegate: NSObject {
         public static func InitAPP(){
             ChatLib.ChatLibInitAPP("192.168.1.167:16666", WebsocketSrv.shared, deviceToken, DevTypeIOS, Debug)
         }
+        public static func GetLicense(){
+                
+                var cachedLicense = 0//TOOD::Load license from database
+                let new =  ChatLib.ChatLibGetLicense(0)
+                
+                if cachedLicense != new{
+                        //TODO:: save it to local database
+                        print("---------->>>new license:", new)
+                }
+        }
 }

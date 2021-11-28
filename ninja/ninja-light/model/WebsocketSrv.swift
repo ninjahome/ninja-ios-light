@@ -101,7 +101,7 @@ class WebsocketSrv: NSObject {
         }
         
         let msgID = ChatLib.ChatLibSend(cliMsg.to, data, isGroup)
-        print(msgID)
+        print("------------msg id=>",msgID)
             //TODO::
 }
 }
