@@ -40,70 +40,36 @@ class WebsocketSrv: NSObject {
     func SendIMMsg(cliMsg: CliMessage, retry: Bool = false, onStart: @escaping()-> Void, onCompletion: @escaping(Bool) -> Void) {
         
         var isGroup: Bool = false
-        let gid = cliMsg.groupId
-        
-        if gid != nil {
-            isGroup = true
-        }
+            var peerID:String
+            if let groupId = cliMsg.groupId{
+                    isGroup = true
+                    peerID = groupId
+            }else{
+                    peerID = cliMsg.to!
+            }
+     
 
         if retry {
-            onStart()
+                onStart()
         } else {
-            let msg = MessageItem.addSentIM(cliMsg: cliMsg)
-            onStart()
-            ChatItem.updateLastMsg(peerUid: isGroup ? gid! : cliMsg.to!,
+                let msg = MessageItem.addSentIM(cliMsg: cliMsg)
+                onStart()
+                ChatItem.updateLastMsg(peerUid: peerID,
                                    msg: msg.coinvertToLastMsg(),
                                    time: msg.timeStamp,
                                    unread: 0,
                                    isGroup: isGroup)
         }
         
-            var data:Data?
-        switch cliMsg.type {
-            case .plainTxt:
-                    if isGroup {
-                            data = ChatLib.ChatLibPackGroupTxt(gid, cliMsg.textData)
-                    } else {
-                            data = ChatLib.ChatLibPackPlainTxt(cliMsg.textData)
-                    }
-            case .image:
-                if isGroup {
-                        data = ChatLib.ChatLibPackGroupImage(gid, cliMsg.imgData)
-                } else {
-                        data = ChatLib.ChatLibPackImage(cliMsg.imgData)
-                }
-            case .voice:
-                guard let audioData = cliMsg.audioData, audioData.duration > 1 else{//TODO::duration?
-                        //TODO::
-                        return
-                }
-                    if isGroup {
-                            data = ChatLib.ChatLibPackGroupVoice(gid, audioData.content, audioData.duration)
-                    } else {
-                            data = ChatLib.ChatLibPackVoice(audioData.content, audioData.duration)
-                    }
-                
-            case .location:
-                guard let locData =  cliMsg.locationData else{
-                        //TODO::
-                        return
-                }
-                if isGroup {
-                        data = ChatLib.ChatLibPackGroupLocation(gid,locData.str, locData.lo, locData.la)
-                } else {
-                        data = ChatLib.ChatLibPackLocation(locData.lo, locData.la, locData.str)
-                }
-        case .file:
-                //TODO::
-                return
-            default:
-                print("send msg: no such type")
-        }
-        
+            
+            guard let data =  cliMsg.PackData() else{
+                    //TODO::error process
+                    return
+            }
         let msgID = ChatLib.ChatLibSend(cliMsg.to, data, isGroup)
         print("------------msg id=>",msgID)
             //TODO::
-}
+    }
 }
 
 extension WebsocketSrv: ChatLibUICallBackProtocol {

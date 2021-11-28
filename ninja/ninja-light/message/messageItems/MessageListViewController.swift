@@ -207,6 +207,7 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
 
 extension MessageListViewController: WalletDelegate {
         func OpenSuccess() {
+                ServiceDelegate.GetLicense()
             connNetwork()
         }
 }

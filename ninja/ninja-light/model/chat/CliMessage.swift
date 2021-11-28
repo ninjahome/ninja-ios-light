@@ -7,6 +7,7 @@
 
 import Foundation
 //import SwiftyJSON
+import ChatLib
 
 
 enum CMT:Int {
@@ -123,5 +124,58 @@ class CliMessage: NSObject {
         self.locationData = loca
         self.groupId = groupId
     }
+        
+        func PackData() -> (Data?){
+                var data:Data?
+                var gid:String = ""
+                var isGroup = false
+                if let groupId = groupId {
+                        isGroup = true
+                        gid = groupId
+                }
+                
+            switch self.type {
+                case .plainTxt:
+                        if isGroup {
+                                data = ChatLib.ChatLibPackGroupTxt(gid, self.textData)
+                        } else {
+                                data = ChatLib.ChatLibPackPlainTxt(self.textData)
+                        }
+                case .image:
+                    if isGroup {
+                            data = ChatLib.ChatLibPackGroupImage(gid, self.imgData)
+                    } else {
+                            data = ChatLib.ChatLibPackImage(self.imgData)
+                    }
+                case .voice:
+                    guard let audioData = self.audioData, audioData.duration > 1 else{//TODO::  duration?
+                            //TODO::
+                            return nil
+                    }
+                        if isGroup {
+                                data = ChatLib.ChatLibPackGroupVoice(gid, audioData.content, audioData.duration)
+                        } else {
+                                data = ChatLib.ChatLibPackVoice(audioData.content, audioData.duration)
+                        }
+                    
+                case .location:
+                    guard let locData =  self.locationData else{
+                            //TODO::
+                            return nil
+                    }
+                    if isGroup {
+                            data = ChatLib.ChatLibPackGroupLocation(gid,locData.str, locData.lo, locData.la)
+                    } else {
+                            data = ChatLib.ChatLibPackLocation(locData.lo, locData.la, locData.str)
+                    }
+            case .file:
+                    //TODO::
+                    return nil
+                default:
+                    return nil
+            }
+                
+                return data
+        }
 
 }
