@@ -86,6 +86,7 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
                 let isGrp = p2
                 
                 //TODO:: update local msg status
+                NSLog("------>>>message[\(msgID)] to[\(to!)] proc result:[\(isGrp)]")
         }
         func licenseChanged(_ newTime: Int64, p1: Error?) {
                 print(newTime)
