@@ -119,6 +119,8 @@ class WalletViewController: UITableViewController {
         }
     }
     
+    
+    
     @IBAction func clearChatHistory(_ sender: UIButton) {
         let alertActionController = UIAlertController.init(title: "", message: "将删除所有个人和群的聊天记录", preferredStyle: .actionSheet)
         alertActionController.modalPresentationStyle = .popover
