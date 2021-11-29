@@ -34,11 +34,6 @@ class ServiceDelegate: NSObject {
         }
         
         public static func GetLicense(){
-                let new =  ChatLib.ChatLibGetLicense(cachedLicense)
-                if cachedLicense != new{
-                        //TODO:: save it to local database
-                        cachedLicense = new
-                        print("---------->>>new license:", new)
-                }
+                ChatLib.ChatLibReloadLicense(cachedLicense)
         }
 }

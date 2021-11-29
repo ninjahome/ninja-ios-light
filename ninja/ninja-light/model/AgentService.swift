@@ -45,22 +45,22 @@ class AgentService {
     
     func getAgentStatus() -> AgentStatus {
 
-        let currentTime = Int64(Date().timeIntervalSince1970)
-        let expireTime = ChatLib.ChatLibGetLicense(0)
-        expireDate = formatTimeStamp(by: expireTime)
-        if currentTime > expireTime {
-            return AgentStatus.initial
-        }
-        
-        self.isActive = true
-        
-        let expStamp = expireTime - currentTime
-        expireDays = Int(expStamp / 86400)
-        
-        if expStamp < 604800 {
-            return AgentStatus.almostExpire
-        }
-        
+//        let currentTime = Int64(Date().timeIntervalSince1970)
+//        let expireTime = ChatLib.ChatLibGetLicense(0)
+//        expireDate = formatTimeStamp(by: expireTime)
+//        if currentTime > expireTime {
+//            return AgentStatus.initial
+//        }
+//        
+//        self.isActive = true
+//        
+//        let expStamp = expireTime - currentTime
+//        expireDays = Int(expStamp / 86400)
+//        
+//        if expStamp < 604800 {
+//            return AgentStatus.almostExpire
+//        }
+//        
         return AgentStatus.activated
     }
     
