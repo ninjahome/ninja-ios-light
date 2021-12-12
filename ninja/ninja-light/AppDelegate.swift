@@ -22,8 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
             print("token \(token)")
             print("deviceToken \(deviceToken)")
-//            Wallet.shared.setDeviceToken(token)
             ServiceDelegate.deviceToken = token
+            ServiceDelegate.InitAPP()
             
             if Wallet.shared.Addr == nil {
                 let url = URL(string: "https://baidu.com")
@@ -77,8 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
             
                 //TODO:: to be test
-            print("init APP=========>")
-                ServiceDelegate.InitAPP()
+//                ServiceDelegate.InitAPP()
                 // Override point for customization after application launch.
                 if Wallet.shared.loaded{
                         ServiceDelegate.InitService()

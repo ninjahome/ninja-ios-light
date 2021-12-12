@@ -8,27 +8,25 @@
 import UIKit
 
 class WalletViewController: UITableViewController {
-//    @IBOutlet weak var nickName: UILabel!
-//        @IBOutlet weak var avatarImg: UIImageView!
-    @IBOutlet weak var address: UILabel!
+        @IBOutlet weak var address: UILabel!
     
-    @IBOutlet weak var faceIDSwitch: UISwitch!
-    @IBOutlet weak var destroySwitch: UISwitch!
-    
-    @IBOutlet weak var avatar: AvatarButton!
-    @IBOutlet weak var backGroundView: UIView!
-    
-    @IBOutlet weak var agentBtn: AgentButton!
-    @IBOutlet weak var agentLabel: UILabel!
-    @IBOutlet weak var agentTime: UILabel!
-    
-    @IBOutlet weak var appVersion: UILabel!
-    
+        @IBOutlet weak var vipBackground: UIView!
+        @IBOutlet weak var faceIDSwitch: UISwitch!
+        @IBOutlet weak var destroySwitch: UISwitch!
+
+        @IBOutlet weak var avatar: AvatarButton!
+        @IBOutlet weak var backGroundView: UIView!
+
+        @IBOutlet weak var agentBtn: AgentButton!
+        @IBOutlet weak var agentLabel: UILabel!
+        @IBOutlet weak var agentTime: UILabel!
+
+        @IBOutlet weak var appVersion: UILabel!
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         address.text = Wallet.shared.Addr
-//        nickName.text = Wallet.shared.nickName
         faceIDSwitch.isOn = Wallet.shared.useFaceID
         destroySwitch.isOn = Wallet.shared.useDestroy
         
@@ -36,22 +34,27 @@ class WalletViewController: UITableViewController {
         avatar.avaInfo = nil
         
         DispatchQueue.global().async {
-            let status = AgentService.shared.getAgentStatus()
-            DispatchQueue.main.async {
+                let status = AgentService.shared.getAgentStatus()
+                DispatchQueue.main.async {
                 self.agentBtn.currentStatus = status
                 self.agentLabel.text = status.handleText[1]
-                
+
                 switch status {
-                case .activated:
-                    self.agentTime.text = "\(AgentService.shared.expireDate)到期"
-                case .almostExpire:
-                    self.agentTime.text = String(format: "%4d 天", AgentService.shared.expireDays)
-                case .initial:
-                    self.agentTime.text = "账号激活后才能正常使用"
-                    break
+                        case .activated:
+                                self.agentTime.text = "\(AgentService.shared.expireDate)到期"
+                                self.vipBackground.layer.contents = UIImage(named: "VIP_BGC")?.cgImage
+                                
+                        case .almostExpire:
+                                self.agentTime.text = String(format: "%4d 天", AgentService.shared.expireDays)
+                                self.vipBackground.layer.contents = UIImage(named: "VIP_BGC")?.cgImage
+                                
+                        case .initial:
+                                self.agentTime.text = "仅支持文本聊天"
+                                self.vipBackground.layer.contents = UIImage(named: "nor_bgc")?.cgImage
+                            break
+                        }
+
                 }
-                
-            }
         }
     }
     
@@ -59,7 +62,7 @@ class WalletViewController: UITableViewController {
         super.viewDidLoad()
         appVersion.text = getAppVersion()
         backGroundView.layer.contents = UIImage(named: "user_backg_img")?.cgImage
-        
+            
         DispatchQueue.global().async {
             let status = AgentService.shared.getAgentStatus()
             DispatchQueue.main.async {

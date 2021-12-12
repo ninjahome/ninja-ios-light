@@ -64,7 +64,6 @@ class AuthorViewController: UIViewController {
                 ContactItem.LocalSavedContact()
 
                 DispatchQueue.main.async {
-//                    afterWallet()
                     self.dismiss(animated: true, completion: nil)
                 }
                 
@@ -86,7 +85,6 @@ class AuthorViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.hideIndicator()
                     self.hideKeyboardWhenTappedAround()
-//                    self.dismiss(animated: true)
                     self.dismiss(animated: true) {
                         self.walletDelegate?.OpenSuccess()
                     }

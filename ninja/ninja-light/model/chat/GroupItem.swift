@@ -102,7 +102,7 @@ class GroupItem: NSObject {
                     NSLog("pack data failed")
                     return nil
             }
-            let msgID = ChatLib.ChatLibSend(ids.toString(), data, true)
+//            let msgID = ChatLib.ChatLibSend(ids.toString(), data, true)
             //TODO:: save msgID and wait success callback
             return groupId
     }
@@ -120,7 +120,7 @@ class GroupItem: NSObject {
                 return NJError.msg("pack error failed")
         }
         
-            let msgID = ChatLib.ChatLibSend(to.toString(), data, true)
+//            let msgID = ChatLib.ChatLibSend(to.toString(), data, true)
             //TODO:: save msgID and wait success callback
             return nil
     }
@@ -130,7 +130,7 @@ class GroupItem: NSObject {
             guard let data = ChatLib.ChatLibPackKickOutUser(groupId, leader, kickUserId) else{
                     return NJError.msg("pack error failed")
             }
-            let msgID = ChatLib.ChatLibSend(to, data, true)
+//            let msgID = ChatLib.ChatLibSend(to, data, true)
             //TODO:: save msgID and wait success callback
             return nil
     }
@@ -188,7 +188,7 @@ class GroupItem: NSObject {
             guard let d = data else{
                     return NJError.msg("pack data error")
             }
-            let msgID = ChatLib.ChatLibSend(ids.toString(), d, true)
+//            let msgID = ChatLib.ChatLibSend(ids.toString(), d, true)
             //TODO:: save msgID and wait success callback
         
         _ = GroupItem.DeleteGroup(gid)

@@ -1,16 +1,17 @@
 //
-//  ImageTableViewCell.swift
+//  FileTableViewCell.swift
 //  ninja-light
 //
-//  Created by 郭晓芙 on 2021/6/27.
+//  Created by 郭晓芙 on 2021/12/9.
 //
 
 import UIKit
+import AVFoundation
 
-class ImageTableViewCell: UITableViewCell {
+class FileTableViewCell: UITableViewCell {
 
         @IBOutlet weak var msgBackgroundView: UIImageView!
-        @IBOutlet weak var imageMsg: UIImageView!
+        @IBOutlet weak var thumbtailImage: UIImageView!
 
         @IBOutlet weak var avatar: AvatarButton!
         @IBOutlet weak var nickname: UILabel!
@@ -65,12 +66,19 @@ class ImageTableViewCell: UITableViewCell {
                 guard let from = message.from else {
                         return
                 }
+                
+                if cellMsg?.typ == .video {
+                        if let video = cellMsg?.payload as? videoMsg,
+                           let vurl = video.url {
+                                thumbtailImage.image = thumbnailImageOfVideoInVideoURL(videoURL: vurl)
+                                thumbtailImage.contentMode = .scaleAspectFill
+                                thumbtailImage.clipsToBounds = true
+                        }
+                }
 
-                imageMsg.image = UIImage(data: message.payload as! Data)
-                imageMsg.contentMode = .scaleAspectFill
-                imageMsg.clipsToBounds = true
+                
 
-                ShowImageDetail.show(imageView: imageMsg)
+//                ShowImageDetail.show(imageView: thumbtailImage)
 
                 if message.isOut {
                         switch message.status {
@@ -95,10 +103,29 @@ class ImageTableViewCell: UITableViewCell {
 
                         let contactData = ContactItem.cache[from]
                         nickname.text = contactData?.nickName ?? ContactItem.GetAvatarText(by: from)
-
+                        
                 }
 
                 time.text = formatTimeStamp(by: message.timeStamp)
         }
+        
+        private func thumbnailImageOfVideoInVideoURL(videoURL: URL) -> UIImage? {
+                let asset = AVURLAsset(url: videoURL as URL, options: [:])
+                
+                let imageGenerator = AVAssetImageGenerator(asset: asset)
+
+                imageGenerator.appliesPreferredTrackTransform = true
+
+                var actualTime: CMTime = CMTimeMake(value: 0, timescale: 0)
+
+                guard let cgImage = try? imageGenerator.copyCGImage(at: CMTimeMakeWithSeconds(0.0, preferredTimescale: 600), actualTime: &actualTime) else {
+                        return nil
+                }
+
+                let thumbnail = UIImage(cgImage: cgImage)
+
+                return thumbnail
+        }
+
 
 }

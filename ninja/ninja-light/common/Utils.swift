@@ -440,21 +440,6 @@ extension MBProgressHUD {
     }
 }
 
-extension FileManager {
-    func cleanTempFiles() {
-        do {
-            let tmpDirURL = FileManager.default.temporaryDirectory
-            let tmpDirectory = try contentsOfDirectory(atPath: tmpDirURL.path)
-            try tmpDirectory.forEach { file in
-                let fileUrl = tmpDirURL.appendingPathComponent(file)
-                try removeItem(atPath: fileUrl.path)
-            }
-        } catch let err as NSError {
-            print("clear temp files failed \(err.localizedDescription)")
-        }
-    }
-}
-
 extension UIColor {
     var toHexString: String {
         var r: CGFloat = 0

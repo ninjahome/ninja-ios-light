@@ -11,37 +11,42 @@ import ChatLib
 import UIKit
 
 class WebsocketSrv: NSObject {
-    public static var shared = WebsocketSrv()
+        public static var shared = WebsocketSrv()
+
+        public static let netQueue = DispatchQueue.init(label: "Connect Queue", qos: .userInteractive)
+
+        public static let textMsgQueue = DispatchQueue.init(label: "Sending Text Queue")
+        public static let imageMsgQueue = DispatchQueue.init(label: "Sending Image Queue")
+        public static let voiceMsgQueue = DispatchQueue.init(label: "Sending Voice Queue")
+        public static let locationMsgQueue = DispatchQueue.init(label: "Sending Location Queue")
+
+        override init() {
+                super.init()
+        }
     
-    public static let netQueue = DispatchQueue.init(label: "Connect Queue", qos: .userInteractive)
     
-    public static let textMsgQueue = DispatchQueue.init(label: "Sending Text Queue")
-    public static let imageMsgQueue = DispatchQueue.init(label: "Sending Image Queue")
-    public static let voiceMsgQueue = DispatchQueue.init(label: "Sending Voice Queue")
-    public static let locationMsgQueue = DispatchQueue.init(label: "Sending Location Queue")
-    
-    override init() {
-        super.init()
-    }
-    
-    
-    func Online(){
+    func Online() {
             WebsocketSrv.netQueue.async {
                     var err:NSError? = nil
                     ChatLib.ChatLibWSOnline(&err)
-                    print("online err \(String(describing: err?.localizedDescription))")
+                    if err != nil {
+                            print("online err \(String(describing: err?.localizedDescription))")
+                            NotificationCenter.default.post(name: NotifyOnlineError,
+                                                            object: self,
+                                                            userInfo: nil)
+                    }
             }
     }
     
     func Offline() {
-        ChatLib.ChatLibWSOffline()
+            ChatLib.ChatLibWSOffline()
     }
     
     func SendIMMsg(cliMsg: CliMessage, retry: Bool = false, onStart: @escaping()-> Void, onCompletion: @escaping(Bool) -> Void) {
         
         var isGroup: Bool = false
             var peerID:String
-            if let groupId = cliMsg.groupId{
+            if let groupId = cliMsg.groupId {
                     isGroup = true
                     peerID = groupId
             }else{
@@ -66,8 +71,9 @@ class WebsocketSrv: NSObject {
                     //TODO::error process
                     return
             }
-        let msgID = ChatLib.ChatLibSend(cliMsg.to, data, isGroup)
-        print("------------msg id=>",msgID)
+//        let msgID = ChatLib.ChatLibSend(cliMsg.to, data, isGroup)
+        ChatLib.ChatLibSend(cliMsg.timestamp ?? Int64(Date().timeIntervalSince1970), cliMsg.to, data, isGroup)
+//        print("------------msg id=>",msgID)
             //TODO::
     }
 }
@@ -77,7 +83,7 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
         func endPointChanged(_ p0: String?) {
                 NSLog("------>>>new endpoint[\(p0!)] avlaible")
                 
-                _ = Online()
+                Online()
         }
         
         func msgResult(_ p0: Int64, p1: String?, p2: Bool) {
@@ -89,167 +95,170 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
                 NSLog("------>>>message[\(msgID)] to[\(to!)] proc result:[\(isGrp)]")
         }
         func licenseChanged(_ newTime: Int64, p1: Error?) {
+                if let err = Wallet.shared.UpdateLicense(by: newTime) {
+                        print(err.localizedDescription ?? "saving license error")
+                }
                 print(newTime)
         }
         
-    func fileMessage(_ from: String?, to: String?, payload: Data?, size: Int, name: String?) throws {
-        print("file msg size\(size)")
-    }
-    
-    func imageMessage(_ from: String?, to: String?, payload: Data?, time: Int64) throws {
-        let owner = Wallet.shared.Addr!
-        if owner != to {
-            throw NJError.msg("this image im is not for me")
+        func fileMessage(_ from: String?, to: String?, payload: Data?, size: Int, name: String?) throws {
+                print("file msg size\(size)")
         }
-        let cliMsg = CliMessage.init(to: to!, imgData: payload!)
-        let msg = MessageItem.init(cliMsg: cliMsg, from: from!, time: time, out: false)
-        MessageItem.receivedIM(msg: msg)
-        ChatItem.updateLastMsg(peerUid: from!, msg: msg.coinvertToLastMsg(), time: time, unread: 1)
-        
-    }
     
-    func locationMessage(_ from: String?, to: String?, l: Float, a: Float, name: String?, time: Int64) throws {
-        let owner = Wallet.shared.Addr!
-        if owner != to {
-            throw NJError.msg("this location im is not for me")
+        func imageMessage(_ from: String?, to: String?, payload: Data?, time: Int64) throws {
+                let owner = Wallet.shared.Addr!
+                if owner != to {
+                        throw NJError.msg("this image im is not for me")
+                }
+                let cliMsg = CliMessage.init(to: to!, imgData: payload!)
+                let msg = MessageItem.init(cliMsg: cliMsg, from: from!, time: time, out: false)
+                MessageItem.receivedIM(msg: msg)
+                ChatItem.updateLastMsg(peerUid: from!, msg: msg.coinvertToLastMsg(), time: time, unread: 1)
+
         }
-        let localMsg = locationMsg()
-        localMsg.la = a
-        localMsg.lo = l
-        localMsg.str = name ?? "[]"
-        let cliMsg = CliMessage.init(to: to!, locationData: localMsg)
-        let msg = MessageItem.init(cliMsg: cliMsg, from: from!, time: time, out: false)
-        MessageItem.receivedIM(msg: msg)
-        ChatItem.updateLastMsg(peerUid: from!, msg: msg.coinvertToLastMsg(), time: time, unread: 1)
-        print("location msg received")
-    }
     
-    func voiceMessage(_ from: String?, to: String?, payload: Data?, length: Int, time: Int64) throws {
-        let owner = Wallet.shared.Addr!
-        if owner != to {
-            throw NJError.msg("this voice im is not for me")
+        func locationMessage(_ from: String?, to: String?, l: Float, a: Float, name: String?, time: Int64) throws {
+                let owner = Wallet.shared.Addr!
+                if owner != to {
+                        throw NJError.msg("this location im is not for me")
+                }
+                let localMsg = locationMsg()
+                localMsg.la = a
+                localMsg.lo = l
+                localMsg.str = name ?? "[]"
+                let cliMsg = CliMessage.init(to: to!, locationData: localMsg)
+                let msg = MessageItem.init(cliMsg: cliMsg, from: from!, time: time, out: false)
+                MessageItem.receivedIM(msg: msg)
+                ChatItem.updateLastMsg(peerUid: from!, msg: msg.coinvertToLastMsg(), time: time, unread: 1)
+                print("location msg received")
         }
-        let cliMsg = CliMessage.init(to: to!, audioD: payload!, length: length)
-        let msg = MessageItem.init(cliMsg: cliMsg, from: from!, time: time, out: false)
-        MessageItem.receivedIM(msg: msg)
-        ChatItem.updateLastMsg(peerUid: from!, msg: msg.coinvertToLastMsg(), time: time, unread: 1)
-        
-    }
     
-    func textMessage(_ from: String?, to: String?, payload: String?, time: Int64) throws {
-        let owner = Wallet.shared.Addr!
-        if owner != to {
-            throw NJError.msg("this txt im is not for me")
+        func voiceMessage(_ from: String?, to: String?, payload: Data?, length: Int, time: Int64) throws {
+                let owner = Wallet.shared.Addr!
+                if owner != to {
+                        throw NJError.msg("this voice im is not for me")
+                }
+                let cliMsg = CliMessage.init(to: to!, audioD: payload!, length: length)
+                let msg = MessageItem.init(cliMsg: cliMsg, from: from!, time: time, out: false)
+                MessageItem.receivedIM(msg: msg)
+                ChatItem.updateLastMsg(peerUid: from!, msg: msg.coinvertToLastMsg(), time: time, unread: 1)
+
         }
-        let cliMsg = CliMessage.init(to: to!, txtData: payload!)
-        let msg = MessageItem.init(cliMsg: cliMsg, from: from!, time: time, out: false)
-        MessageItem.receivedIM(msg: msg)
-        ChatItem.updateLastMsg(peerUid: from!, msg: msg.coinvertToLastMsg(), time: time, unread: 1)
-    }
     
-    func webSocketClosed() {
-        NSLog("======> websocket is closed")
-        NotificationCenter.default.post(name: NotifyWebsocketOffline,
-                                        object: self,
-                                        userInfo: nil)
-    }
-    
-    func webSocketDidOnline(){
-            NSLog("======> websocket did online")
-            NotificationCenter.default.post(name: NotifyWebsocketOnline,
-                                            object: self,
-                                            userInfo: nil)
-    }
-    
-    func gFileMessage(_ from: String?, groupId: String?, payload: Data?, size: Int, name: String?) throws {
-        if !GroupItem.CheckGroupExist(groupId: groupId!, syncTo: from) {
-            return
+        func textMessage(_ from: String?, to: String?, payload: String?, time: Int64) throws {
+                let owner = Wallet.shared.Addr!
+                if owner != to {
+                        throw NJError.msg("this txt im is not for me")
+                }
+                let cliMsg = CliMessage.init(to: to!, txtData: payload!)
+                let msg = MessageItem.init(cliMsg: cliMsg, from: from!, time: time, out: false)
+                MessageItem.receivedIM(msg: msg)
+                ChatItem.updateLastMsg(peerUid: from!, msg: msg.coinvertToLastMsg(), time: time, unread: 1)
         }
 
-        print("\(String(describing: name))-file msg size:\(size)")
-    }
-    
-    func gImageMessage(_ from: String?, groupId: String?, payload: Data?, time: Int64) throws {
-        if !GroupItem.CheckGroupExist(groupId: groupId!, syncTo: from) {
-            return
+        func webSocketClosed() {
+                NSLog("======> websocket is closed")
+                NotificationCenter.default.post(name: NotifyWebsocketOffline,
+                        object: self,
+                        userInfo: nil)
         }
 
-        let owner = Wallet.shared.Addr!
-        let cliMsg = CliMessage.init(to: owner, imgData: payload!, groupId: groupId)
-        let msg = MessageItem.init(cliMsg: cliMsg, from: from!, time: time, out: false)
-        MessageItem.receivedIM(msg: msg)
-        ChatItem.updateLastMsg(peerUid: groupId!, msg: msg.coinvertToLastMsg(), time: time, unread: 1, isGroup: true)
-    }
-    
-    func gLocationMessage(_ from: String?, groupId: String?, l: Float, a: Float, name: String?, time: Int64) throws {
-        if !GroupItem.CheckGroupExist(groupId: groupId!, syncTo: from) {
-            return
+        func webSocketDidOnline(){
+                NSLog("======> websocket did online")
+                NotificationCenter.default.post(name: NotifyWebsocketOnline,
+                            object: self,
+                            userInfo: nil)
         }
 
-        let owner = Wallet.shared.Addr!
-        let cliMsg = CliMessage.init(to: owner, la: a, lo: l, describe: name ?? "", groupId: groupId)
-        let msg = MessageItem.init(cliMsg: cliMsg, from: from!, time: time, out: false)
-        
-        MessageItem.receivedIM(msg: msg)
-        ChatItem.updateLastMsg(peerUid: groupId!, msg: msg.coinvertToLastMsg(), time: time, unread: 1, isGroup: true)
-    }
-    
-    func gVoiceMessage(_ from: String?, groupId: String?, payload: Data?, length: Int, time: Int64) throws {
-        if !GroupItem.CheckGroupExist(groupId: groupId!, syncTo: from) {
-            return
+        func gFileMessage(_ from: String?, groupId: String?, payload: Data?, size: Int, name: String?) throws {
+                if !GroupItem.CheckGroupExist(groupId: groupId!, syncTo: from) {
+                        return
+                }
+
+                print("\(String(describing: name))-file msg size:\(size)")
         }
 
-        let owner = Wallet.shared.Addr!
-        let cliMsg = CliMessage.init(to: owner, audioD: payload!, length: length, groupId: groupId)
-        let msg = MessageItem.init(cliMsg: cliMsg, from: from!, time: time, out: false)
-        MessageItem.receivedIM(msg: msg)
-        ChatItem.updateLastMsg(peerUid: groupId!, msg: msg.coinvertToLastMsg(), time: time, unread: 1, isGroup: true)
-    }
-    
-    func gTextMessage(_ from: String?, groupId: String?, payload: String?, time: Int64) throws {
-        if !GroupItem.CheckGroupExist(groupId: groupId!, syncTo: from) {
-            return
-        }
-        let owner = Wallet.shared.Addr!
-        let cliMsg = CliMessage.init(to: owner, txtData: payload!, groupId: groupId)
-        let msg = MessageItem.init(cliMsg: cliMsg, from: from!, time: time, out: false)
-        MessageItem.receivedIM(msg: msg)
-        ChatItem.updateLastMsg(peerUid: groupId!, msg: msg.coinvertToLastMsg(), time: time, unread: 1, isGroup: true)
-    }
-    
-    func banTalking(_ groupId: String?, banned: Bool) throws {
-        print("ban talking\(String(describing: groupId))")
-    }
+        func gImageMessage(_ from: String?, groupId: String?, payload: Data?, time: Int64) throws {
+                if !GroupItem.CheckGroupExist(groupId: groupId!, syncTo: from) {
+                        return
+                }
 
-    func createGroup(_ groupId: String?, groupName: String?, owner: String?, memberIdList: String?, memberNickNameList: String?) throws {
-        
-        let account = Wallet.shared.Addr!
-        let group = GroupItem.init()
-        group.gid = groupId
-        group.groupName = groupName
-        group.owner = account
-        group.leader = owner
-        group.memberIds = memberIdList?.toArray()
-        group.memberNicks = memberNickNameList?.toArray()
-        
-        if let err = GroupItem.UpdateGroup(group) {
-            print("Update group erro.\(String(describing: err.localizedDescription))")
+                let owner = Wallet.shared.Addr!
+                let cliMsg = CliMessage.init(to: owner, imgData: payload!, groupId: groupId)
+                let msg = MessageItem.init(cliMsg: cliMsg, from: from!, time: time, out: false)
+                MessageItem.receivedIM(msg: msg)
+                ChatItem.updateLastMsg(peerUid: groupId!, msg: msg.coinvertToLastMsg(), time: time, unread: 1, isGroup: true)
         }
-        print("create new group")
-    }
 
-    func dismisGroup(_ groupId: String?) throws {
-        guard let gid = groupId else {
-            return
+        func gLocationMessage(_ from: String?, groupId: String?, l: Float, a: Float, name: String?, time: Int64) throws {
+                if !GroupItem.CheckGroupExist(groupId: groupId!, syncTo: from) {
+                        return
+                }
+
+                let owner = Wallet.shared.Addr!
+                let cliMsg = CliMessage.init(to: owner, la: a, lo: l, describe: name ?? "", groupId: groupId)
+                let msg = MessageItem.init(cliMsg: cliMsg, from: from!, time: time, out: false)
+
+                MessageItem.receivedIM(msg: msg)
+                ChatItem.updateLastMsg(peerUid: groupId!, msg: msg.coinvertToLastMsg(), time: time, unread: 1, isGroup: true)
         }
-        MessageItem.removeRead(gid)
-        
-        if let err = GroupItem.DeleteGroup(gid) {
-            print("Dismiss group error.\(String(describing: err.localizedDescription))")
+    
+        func gVoiceMessage(_ from: String?, groupId: String?, payload: Data?, length: Int, time: Int64) throws {
+                if !GroupItem.CheckGroupExist(groupId: groupId!, syncTo: from) {
+                        return
+                }
+
+                let owner = Wallet.shared.Addr!
+                let cliMsg = CliMessage.init(to: owner, audioD: payload!, length: length, groupId: groupId)
+                let msg = MessageItem.init(cliMsg: cliMsg, from: from!, time: time, out: false)
+                MessageItem.receivedIM(msg: msg)
+                ChatItem.updateLastMsg(peerUid: groupId!, msg: msg.coinvertToLastMsg(), time: time, unread: 1, isGroup: true)
         }
-        
-        print("dismiss group: \(String(describing: groupId)) success")
-    }
+
+        func gTextMessage(_ from: String?, groupId: String?, payload: String?, time: Int64) throws {
+                if !GroupItem.CheckGroupExist(groupId: groupId!, syncTo: from) {
+                        return
+                }
+                let owner = Wallet.shared.Addr!
+                let cliMsg = CliMessage.init(to: owner, txtData: payload!, groupId: groupId)
+                let msg = MessageItem.init(cliMsg: cliMsg, from: from!, time: time, out: false)
+                MessageItem.receivedIM(msg: msg)
+                ChatItem.updateLastMsg(peerUid: groupId!, msg: msg.coinvertToLastMsg(), time: time, unread: 1, isGroup: true)
+        }
+
+        func banTalking(_ groupId: String?, banned: Bool) throws {
+                print("ban talking\(String(describing: groupId))")
+        }
+
+        func createGroup(_ groupId: String?, groupName: String?, owner: String?, memberIdList: String?, memberNickNameList: String?) throws {
+
+                let account = Wallet.shared.Addr!
+                let group = GroupItem.init()
+                group.gid = groupId
+                group.groupName = groupName
+                group.owner = account
+                group.leader = owner
+                group.memberIds = memberIdList?.toArray()
+                group.memberNicks = memberNickNameList?.toArray()
+
+                if let err = GroupItem.UpdateGroup(group) {
+                        print("Update group erro.\(String(describing: err.localizedDescription))")
+                }
+                print("create new group")
+        }
+
+        func dismisGroup(_ groupId: String?) throws {
+                guard let gid = groupId else {
+                        return
+                }
+                MessageItem.removeRead(gid)
+
+                if let err = GroupItem.DeleteGroup(gid) {
+                        print("Dismiss group error.\(String(describing: err.localizedDescription))")
+                }
+
+                print("dismiss group: \(String(describing: groupId)) success")
+        }
 
     func joinGroup(_ from: String?, groupId: String?, groupName: String?, owner: String?, memberIdList: String?, memberNickNameList: String?, newIdList: String?, banTalkding: Bool) throws {
         

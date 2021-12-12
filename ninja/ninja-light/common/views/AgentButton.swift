@@ -16,9 +16,9 @@ extension AgentStatus {
     var color: UIColor {
         switch self {
         case .initial, .almostExpire:
-            return UIColor.init(hex: "EE674C")
+            return UIColor.init(hex: "000000")
         case .activated:
-            return UIColor.init(hex: "3B877F")
+            return UIColor.init(hex: "FFFFFF")
         }
     }
     
