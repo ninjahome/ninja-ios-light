@@ -158,7 +158,6 @@
 		69B8C068261C582B00B4E4AC /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		69B8C069261C582B00B4E4AC /* libc++.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.1.tbd"; path = "usr/lib/libc++.1.tbd"; sourceTree = SDKROOT; };
 		69B8C06A261C582B00B4E4AC /* libc++abi.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++abi.tbd"; path = "usr/lib/libc++abi.tbd"; sourceTree = SDKROOT; };
-		69B8C0AE261C5F0100B4E4AC /* libbls384_256_sim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbls384_256_sim.a; path = bin/libbls384_256_sim.a; sourceTree = "<group>"; };
 		69B8C0B2261C627E00B4E4AC /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		69B8C0BB261C683100B4E4AC /* NJError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NJError.swift; sourceTree = "<group>"; };
 		69B8C0C2261C703800B4E4AC /* WebsocketSrv.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsocketSrv.swift; sourceTree = "<group>"; };
@@ -430,7 +429,6 @@
 				694D55C62766F5B60044E580 /* SwiftyJSON.xcframework */,
 				69D03BE0274507F800A86690 /* chatLib.xcframework */,
 				08EAAD3E2695847900210271 /* SystemConfiguration.framework */,
-				69B8C0AE261C5F0100B4E4AC /* libbls384_256_sim.a */,
 				69B8C069261C582B00B4E4AC /* libc++.1.tbd */,
 				69B8C068261C582B00B4E4AC /* libc++.tbd */,
 				69B8C06A261C582B00B4E4AC /* libc++abi.tbd */,
