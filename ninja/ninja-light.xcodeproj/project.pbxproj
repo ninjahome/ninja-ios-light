@@ -109,6 +109,7 @@
 		082CF17B263A9C6D0009450E /* MessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
 		0860D5C42761FDD000E53FDA /* FileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTableViewCell.swift; sourceTree = "<group>"; };
 		0860D5C627634F7900E53FDA /* FileManager+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
+		0860D5C82766F52300E53FDA /* MBProgressHUD.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MBProgressHUD.xcframework; path = Carthage/Build/MBProgressHUD.xcframework; sourceTree = "<group>"; };
 		086701B22665C6D900A1E951 /* AudioRecordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecordManager.swift; sourceTree = "<group>"; };
 		086701B52667159E00A1E951 /* AudioFilesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFilesManager.swift; sourceTree = "<group>"; };
 		086701B826672CAE00A1E951 /* AudioPlayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayManager.swift; sourceTree = "<group>"; };
@@ -420,6 +421,7 @@
 		69F8D10F261B3626009D7AF3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0860D5C82766F52300E53FDA /* MBProgressHUD.xcframework */,
 				69D03BE0274507F800A86690 /* chatLib.xcframework */,
 				08EAAD3E2695847900210271 /* SystemConfiguration.framework */,
 				69B8C0AE261C5F0100B4E4AC /* libbls384_256_sim.a */,

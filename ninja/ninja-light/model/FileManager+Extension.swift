@@ -6,20 +6,106 @@
 //
 
 import Foundation
+import UIKit
 
 extension FileManager {
-        func cleanTempFiles() {
-                do {
-                        let tmpDirURL = FileManager.default.temporaryDirectory
-                        let tmpDirectory = try contentsOfDirectory(atPath: tmpDirURL.path)
-                        try tmpDirectory.forEach { file in
-                                let fileUrl = tmpDirURL.appendingPathComponent(file)
-                                try removeItem(atPath: fileUrl.path)
+        static var fileManager: FileManager {
+                return FileManager.default
+        }
+        
+        static func CachesDirectory() -> URL {
+                let cachesPath =  fileManager.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+                return cachesPath
+        }
+        
+        static func TmpDirectory() -> URL {
+                let tmpDir = fileManager.urls(for: .itemReplacementDirectory, in: .userDomainMask)[0]
+                return tmpDir
+        }
+        
+        @discardableResult
+        class fileprivate func createFolder(_ folderName :String) -> URL {
+                let folder = CachesDirectory().appendingPathComponent(folderName)
+                let fileManager = FileManager.default
+                if !fileManager.fileExists(atPath: folder.absoluteString) {
+                        do {
+                                try fileManager.createDirectory(atPath: folder.path, withIntermediateDirectories: true, attributes: nil)
+                                return folder
+                        } catch let error as NSError {
+                                print("\(error.description)")
                         }
-                } catch let err as NSError {
-                        print("clear temp files failed \(err.localizedDescription)")
+                }
+                return folder
+        }
+        
+        static func writeFile(content: Data, folderPath: URL, fileName: String) -> URL? {
+                let filePath = folderPath.appendingPathComponent(fileName)
+                let success = fileManager.createFile(atPath: filePath.path, contents: content, attributes: .none)
+                if success {
+                        return filePath
+                }
+                return nil
+        }
+        
+        static func readFile(url: URL) -> Data? {
+                let fileContents = fileManager.contents(atPath: url.path)
+                if fileContents?.isEmpty == false {
+                        return fileContents
+                } else {
+                        return nil
                 }
         }
         
-
+        @discardableResult
+        static func readFromFile(readPath: String) -> (isSuccess: Bool, content: Any?, error: String) {
+                guard judgeFileOrFolderExists(filePath: readPath),
+                      let readHandler =  FileHandle(forReadingAtPath: readPath) else {
+                        return (false, nil, "不存在的文件路径")
+                }
+                let data = readHandler.readDataToEndOfFile()
+                return (true, data, "")
+        }
+        
+        static func deleteFilesWithPath(_ path: String) {
+                let fileManager = FileManager.default
+                do {
+                        let files = try fileManager.contentsOfDirectory(atPath: path)
+                        let recordings = files.filter( { (name: String) -> Bool in
+                                return name.hasSuffix(kAudioFileTypeWav)
+                        })
+                        for i in 0 ..< recordings.count {
+                                let path = path + "/" + recordings[i]
+                                print("removing \(path)")
+                                do {
+                                        try fileManager.removeItem(atPath: path)
+                                } catch let error as NSError {
+                                        print("could not remove \(path)")
+                                        print("\(error.description)")
+                                }
+                        }
+                } catch let error as NSError {
+                        print("could not get contents of directory at \(path)")
+                        print("\(error.description)")
+                }
+        }
+        
+        static func judgeFileOrFolderExists(filePath: String) -> Bool {
+                let exist = fileManager.fileExists(atPath: filePath)
+                guard exist else {
+                        return false
+                }
+                return true
+        }
+        
+        fileprivate static func covertUInt64ToString(with size: UInt64) -> String {
+                var convertedValue: Double = Double(size)
+                var multiplyFactor = 0
+                let tokens = ["bytes", "KB", "MB", "GB", "TB", "PB",  "EB",  "ZB", "YB"]
+                while convertedValue > 1024 {
+                        convertedValue /= 1024
+                        multiplyFactor += 1
+                }
+                return String(format: "%4.2f %@", convertedValue, tokens[multiplyFactor])
+        }
+        
 }

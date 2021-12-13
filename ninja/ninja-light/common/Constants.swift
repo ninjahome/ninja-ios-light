@@ -24,7 +24,8 @@ let kAudioFileTypeAmr = "amr"
 let kAmrRecordFolder = "ChatAudioAmrRecord"
 let kWavRecordFolder = "ChatAudioWavRecord"
 
-let imageCacheFolder = "ChatImageCache"
+let njVideoFolder = "NJChatVideo"
+let njFileFolder = "NJChatFile"
 
 //enum AvaColor:String {
 //    case c0 = "#F4CCE3"
