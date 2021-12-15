@@ -9,187 +9,233 @@ import Foundation
 import UIKit
 import MBProgressHUD
 import LocalAuthentication
+import MobileCoreServices
+
+extension URL {
+        func mimeType() -> String {
+                let pathExtension = self.pathExtension
+                if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension as NSString, nil)?.takeRetainedValue() {
+                        if let mimetype = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType)?.takeRetainedValue() {
+                                return mimetype as String
+                        }
+                }
+                return "application/octet-stream"
+        }
+        
+        var containsImage: Bool {
+                let mimeType = self.mimeType()
+                guard let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, mimeType as CFString, nil)?.takeRetainedValue() else {
+                        return false
+                }
+                return UTTypeConformsTo(uti, kUTTypeImage)
+        }
+        
+        var containsAudio: Bool {
+                let mimeType = self.mimeType()
+                guard let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, mimeType as CFString, nil)?.takeRetainedValue() else {
+                        return false
+                }
+                return UTTypeConformsTo(uti, kUTTypeAudio)
+        }
+        
+        var containsVideo: Bool {
+                let mimeType = self.mimeType()
+                guard  let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, mimeType as CFString, nil)?.takeRetainedValue() else {
+                        return false
+                }
+                return UTTypeConformsTo(uti, kUTTypeMovie)
+        }
+
+}
 
 public func afterWallet() {
-    if #available(iOS 13.0, *) {
-        let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
-        sceneDelegate.window!.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
-    } else {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.window?.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
-        appDelegate.window?.makeKeyAndVisible()
-    }
+        if #available(iOS 13.0, *) {
+                let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
+                sceneDelegate.window!.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
+        } else {
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                appDelegate.window?.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
+                appDelegate.window?.makeKeyAndVisible()
+        }
 }
 
 public func instantiateViewController(storyboardName: String, viewControllerIdentifier: String) -> UIViewController {
-    let storyboard = UIStoryboard(name: storyboardName, bundle: Bundle.main);
-    return storyboard.instantiateViewController(withIdentifier: viewControllerIdentifier);
+        let storyboard = UIStoryboard(name: storyboardName, bundle: Bundle.main);
+        return storyboard.instantiateViewController(withIdentifier: viewControllerIdentifier);
 }
 
 
 public func getJSONStringFromDictionary(dictionary: NSDictionary) -> String {
-    if !JSONSerialization.isValidJSONObject(dictionary) {
-        return ""
-    }
-    
-    let data = try? JSONSerialization.data(withJSONObject: dictionary, options: []) as Data
-    
-    let JSONString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-    
-    return JSONString! as String
+        if !JSONSerialization.isValidJSONObject(dictionary) {
+                return ""
+        }
+
+        let data = try? JSONSerialization.data(withJSONObject: dictionary, options: []) as Data
+
+        let JSONString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+
+        return JSONString! as String
 }
 
 public func getDictionaryFromJSONString(jsonString: String) -> NSDictionary {
-    let jsonData = jsonString.data(using: .utf8)!
-    
-    let dict = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers)
-    
-    if dict != nil {
-        return dict as! NSDictionary
-    }
-    
-    return NSDictionary()
+        let jsonData = jsonString.data(using: .utf8)!
+
+        let dict = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers)
+
+        if dict != nil {
+                return dict as! NSDictionary
+        }
+
+        return NSDictionary()
     
 }
 
 public func instantiateViewController(vcID: String) -> UIViewController {
-    let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-    return storyboard.instantiateViewController(withIdentifier: vcID)
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        return storyboard.instantiateViewController(withIdentifier: vcID)
 }
 
 public func SetAesKey(auth: String) {
-    KeychainWrapper.standard.set(auth, forKey: "AUTHKey")
+        KeychainWrapper.standard.set(auth, forKey: "AUTHKey")
 }
 
 public func DeriveAesKey() -> String? {
-    return KeychainWrapper.standard.string(forKey: "AUTHKey")
+        return KeychainWrapper.standard.string(forKey: "AUTHKey")
 }
 
 public func SetDestroyKey(auth: String) {
-    KeychainWrapper.standard.set(auth, forKey: "DESTORY_AUTHKey")
+        KeychainWrapper.standard.set(auth, forKey: "DESTORY_AUTHKey")
 }
 
 public func DeriveDestroyKey() -> String? {
-    return KeychainWrapper.standard.string(forKey: "DESTORY_AUTHKey")
+        return KeychainWrapper.standard.string(forKey: "DESTORY_AUTHKey")
 }
 
 func dispatch_async_safely_to_main_queue(_ block: @escaping ()->()) {
-    dispatch_async_safely_to_queue(DispatchQueue.main, block)
+        dispatch_async_safely_to_queue(DispatchQueue.main, block)
 }
 
 func dispatch_async_safely_to_queue(_ queue: DispatchQueue, _ block: @escaping ()->()) {
-    if queue === DispatchQueue.main && Thread.isMainThread {
-        block()
-    } else {
-        queue.async {
-            block()
+        if queue === DispatchQueue.main && Thread.isMainThread {
+                block()
+        } else {
+                queue.async {
+                        block()
+                }
         }
-    }
 }
 
 public func formatTimeStamp(by timeStamp: Int64) -> String {
-    let time = Date.init(timeIntervalSince1970: TimeInterval(timeStamp))
-    dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let time = Date.init(timeIntervalSince1970: TimeInterval(timeStamp))
+        dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
 
-    return dateFormatterGet.string(from: time)
+        return dateFormatterGet.string(from: time)
 }
 
 public struct AlertPayload {
-    var title:String!
-    var placeholderTxt:String?
-    var securityShow:Bool = true
-    var keyType:UIKeyboardType = .default
-    var action:((String?, Bool)->Void)!
+        var title:String!
+        var placeholderTxt:String?
+        var securityShow:Bool = true
+        var keyType:UIKeyboardType = .default
+        var action:((String?, Bool)->Void)!
 }
 
 
 public func getKeyWindow() -> UIWindow? {
-    let keyWindow = UIApplication.shared.connectedScenes
-            .filter({$0.activationState == .foregroundActive})
-            .map({$0 as? UIWindowScene})
-            .compactMap({$0})
-            .first?.windows
-            .filter({$0.isKeyWindow}).first
-    return keyWindow
+        let keyWindow = UIApplication.shared.connectedScenes
+                .filter({$0.activationState == .foregroundActive})
+                .map({$0 as? UIWindowScene})
+                .compactMap({$0})
+                .first?.windows
+                .filter({$0.isKeyWindow}).first
+        return keyWindow
 }
 
 extension String {
-    func isIncludeChinese() -> Bool {
-        for ch in self.unicodeScalars {
-            if (0x4e00 < ch.value  && ch.value < 0x9fff) { return true }
+        var `extension`: String {
+                if let index = self.lastIndex(of: ".") {
+                        return String(self[index...])
+                } else {
+                        return ""
+                }
         }
-        return false
-    }
-    
-    func transformToPinyin(hasBlank: Bool = false) -> String {
         
-        let stringRef = NSMutableString(string: self) as CFMutableString
-        CFStringTransform(stringRef,nil, kCFStringTransformToLatin, false)
-        CFStringTransform(stringRef, nil, kCFStringTransformStripCombiningMarks, false)
-        let pinyin = stringRef as String
-        return hasBlank ? pinyin : pinyin.replacingOccurrences(of: " ", with: "")
-    }
-    
-    func transformToPinyinHead(lowercased: Bool = false) -> String {
-        let pinyin = self.transformToPinyin(hasBlank: true).capitalized
-        var headPinyinStr = ""
-        for ch in pinyin {
-            if ch <= "Z" && ch >= "A" {
-                headPinyinStr.append(ch) // 获取所有大写字母
-            }
+        func isIncludeChinese() -> Bool {
+                for ch in self.unicodeScalars {
+                        if (0x4e00 < ch.value  && ch.value < 0x9fff) { return true }
+                }
+                return false
         }
-        return lowercased ? headPinyinStr.lowercased() : headPinyinStr
-    }
     
-    func transformToCapitalized() -> String {
-        let str = self.capitalized
-        var selectStr = ""
-        for ch in str {
-            if ch <= "Z" && ch >= "A" {
-                selectStr.append(ch)
-            }
+        func transformToPinyin(hasBlank: Bool = false) -> String {
+
+                let stringRef = NSMutableString(string: self) as CFMutableString
+                CFStringTransform(stringRef,nil, kCFStringTransformToLatin, false)
+                CFStringTransform(stringRef, nil, kCFStringTransformStripCombiningMarks, false)
+                let pinyin = stringRef as String
+                return hasBlank ? pinyin : pinyin.replacingOccurrences(of: " ", with: "")
         }
-        return selectStr
-    }
     
-    func toArray() -> NSArray? {
-        if let jsonData: Data = self.data(using: .utf8) {
-            let array = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers)
-            if array != nil {
-                return array as? NSArray
-            }
+        func transformToPinyinHead(lowercased: Bool = false) -> String {
+                let pinyin = self.transformToPinyin(hasBlank: true).capitalized
+                var headPinyinStr = ""
+                for ch in pinyin {
+                        if ch <= "Z" && ch >= "A" {
+                                headPinyinStr.append(ch) // 获取所有大写字母
+                        }
+                }
+                return lowercased ? headPinyinStr.lowercased() : headPinyinStr
         }
-        return nil
-    }
+    
+        func transformToCapitalized() -> String {
+                let str = self.capitalized
+                var selectStr = ""
+                for ch in str {
+                        if ch <= "Z" && ch >= "A" {
+                                selectStr.append(ch)
+                        }
+                }
+                return selectStr
+        }
+    
+        func toArray() -> NSArray? {
+                if let jsonData: Data = self.data(using: .utf8) {
+                        let array = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers)
+                        if array != nil {
+                                return array as? NSArray
+                        }
+                }
+                return nil
+        }
     
 }
 
 extension Array {
-    func sortedByPinyin(ascending: Bool = true) -> Array<ContactItem>? {
-        if self is Array<ContactItem> {
-            return (self as! Array<ContactItem>).sorted { (value1, value2) -> Bool in
-                guard let pinyin1 = value1.sortPinyin, let pinyin2 = value2.sortPinyin else {
-                    return false
+        func sortedByPinyin(ascending: Bool = true) -> Array<ContactItem>? {
+                if self is Array<ContactItem> {
+                        return (self as! Array<ContactItem>).sorted { (value1, value2) -> Bool in
+                                guard let pinyin1 = value1.sortPinyin, let pinyin2 = value2.sortPinyin else {
+                                        return false
+                                }
+                                return pinyin1.compare(pinyin2) == (ascending ? .orderedAscending : .orderedDescending)
+                        }
                 }
-                return pinyin1.compare(pinyin2) == (ascending ? .orderedAscending : .orderedDescending)
-            }
+                return nil
         }
-        return nil
-    }
-    
-    func toString() -> String? {
-        if let data = try? JSONSerialization.data(withJSONObject: self, options: []),
-           let str = String(data: data, encoding: .utf8) {
-                return str
+
+        func toString() -> String? {
+                if let data = try? JSONSerialization.data(withJSONObject: self, options: []),
+                   let str = String(data: data, encoding: .utf8) {
+                        return str
+                }
+                return nil
         }
-        return nil
-    }
     
 }
 
 extension UIImage {
-    var jpeg: Data? { jpegData(compressionQuality: 0.8) }  // QUALITY min = 0 / max = 1
-    var png: Data? { pngData() }
+        var jpeg: Data? { jpegData(compressionQuality: 0.8) }  // QUALITY min = 0 / max = 1
+        var png: Data? { pngData() }
 }
 
 extension UIViewController {

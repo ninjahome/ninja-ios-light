@@ -29,7 +29,7 @@ class MessageListViewController: UIViewController{
                 tableView.rowHeight = 80
                 tableView.tableFooterView = UIView()
 //                refreshControl.addTarget(self, action: #selector(self.reloadChatRoom(_:)), for: .valueChanged)
-                tableView.addSubview(refreshControl)
+//                tableView.addSubview(refreshControl)
 
                 sortedArray = ChatItem.SortedArra()
 

@@ -24,7 +24,7 @@ extension FileManager {
         }
         
         @discardableResult
-        class fileprivate func createFolder(_ folderName :String) -> URL {
+        static func createFolder(_ folderName :String) -> URL {
                 let folder = CachesDirectory().appendingPathComponent(folderName)
                 let fileManager = FileManager.default
                 if !fileManager.fileExists(atPath: folder.absoluteString) {
@@ -56,16 +56,6 @@ extension FileManager {
                 }
         }
         
-        @discardableResult
-        static func readFromFile(readPath: String) -> (isSuccess: Bool, content: Any?, error: String) {
-                guard judgeFileOrFolderExists(filePath: readPath),
-                      let readHandler =  FileHandle(forReadingAtPath: readPath) else {
-                        return (false, nil, "不存在的文件路径")
-                }
-                let data = readHandler.readDataToEndOfFile()
-                return (true, data, "")
-        }
-        
         static func deleteFilesWithPath(_ path: String) {
                 let fileManager = FileManager.default
                 do {
@@ -87,6 +77,12 @@ extension FileManager {
                         print("could not get contents of directory at \(path)")
                         print("\(error.description)")
                 }
+        }
+        
+        static func copyFile(fileName: String, origin: URL, to: URL) throws {
+//                let origin = from.appendingPathComponent(fileName)
+                let direct = to
+                return try fileManager.copyItem(at: origin, to: direct)
         }
         
         static func judgeFileOrFolderExists(filePath: String) -> Bool {

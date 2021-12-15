@@ -6,13 +6,15 @@
 //
 
 import UIKit
+import AVKit
 import AVFoundation
 
 class FileTableViewCell: UITableViewCell {
 
         @IBOutlet weak var msgBackgroundView: UIImageView!
-        @IBOutlet weak var thumbtailImage: UIImageView!
+//        @IBOutlet weak var thumbtailImage: UIImageView!
 
+        @IBOutlet weak var openFileBtn: UIButton!
         @IBOutlet weak var avatar: AvatarButton!
         @IBOutlet weak var nickname: UILabel!
         @IBOutlet weak var time: UILabel!
@@ -42,13 +44,22 @@ class FileTableViewCell: UITableViewCell {
     
         @IBAction func retry(_ sender: UIButton) {
                 if let msg = cellMsg {
-                        let cliMsg = CliMessage.init(to: msg.to!, imgData: msg.payload as! Data, groupId: msg.groupId)
+                        var cliMsg: CliMessage?
+                        if let videoData = msg.payload as? videoMsg {
+                                cliMsg = CliMessage.init(to: msg.to!, videoUrl: URL(fileURLWithPath: videoData.url), groupId: msg.groupId!)
+                        }
+                        if let fileData = msg.payload as? fileMsg {
+                                cliMsg = CliMessage.init(to: msg.to!, fileUrl: fileData.url!, groupId: msg.groupId!)
+                        }
+                        guard let resendCli = cliMsg else {
+                                return
+                        }
 
-                        WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg, retry: true) { [self] in
+                        WebsocketSrv.shared.SendIMMsg(cliMsg: resendCli, retry: true) { [self] in
                                 self.retry?.isHidden = true
                                 self.spinner?.startAnimating()
                         } onCompletion: { success in
-                                MessageItem.resetSending(cliMsg: cliMsg, success: success)
+                                MessageItem.resetSending(cliMsg: resendCli, success: success)
 
                                 if success {
                                         msg.status = .sent
@@ -57,6 +68,15 @@ class FileTableViewCell: UITableViewCell {
                         }
                 }
         }
+        
+        @IBAction func openFileOrPlayVideo(_ sender: UIButton) {
+                if let msg = cellMsg {
+                        if let videoData = msg.payload as? videoMsg {
+                                playVideo(url: URL(fileURLWithPath: videoData.url))
+                        }
+                }
+        }
+        
     
         func updateMessageCell (by message: MessageItem) {
                 cellMsg = message
@@ -69,16 +89,14 @@ class FileTableViewCell: UITableViewCell {
                 
                 if cellMsg?.typ == .video {
                         if let video = cellMsg?.payload as? videoMsg,
-                           let vurl = video.url {
-                                thumbtailImage.image = thumbnailImageOfVideoInVideoURL(videoURL: vurl)
-                                thumbtailImage.contentMode = .scaleAspectFill
-                                thumbtailImage.clipsToBounds = true
+                           let image = UIImage(data: video.thumbnailImg) {
+                                openFileBtn.layer.contents = image.cgImage
                         }
                 }
 
                 
-
-//                ShowImageDetail.show(imageView: thumbtailImage)
+                // TODO: play video
+//                 ShowImageDetail.show(imageView: thumbtailImage)
 
                 if message.isOut {
                         switch message.status {
@@ -90,12 +108,10 @@ class FileTableViewCell: UITableViewCell {
                         default:
                                 spinner?.stopAnimating()
                         }
-
+                        
                         avatar.type = AvatarButtonType.wallet
                         avatar.avaInfo = nil
-
                         nickname.text = Wallet.GenAvatarText()
-
                 } else {
 
                         avatar.type = AvatarButtonType.contact
@@ -103,29 +119,22 @@ class FileTableViewCell: UITableViewCell {
 
                         let contactData = ContactItem.cache[from]
                         nickname.text = contactData?.nickName ?? ContactItem.GetAvatarText(by: from)
-                        
                 }
 
                 time.text = formatTimeStamp(by: message.timeStamp)
         }
         
-        private func thumbnailImageOfVideoInVideoURL(videoURL: URL) -> UIImage? {
-                let asset = AVURLAsset(url: videoURL as URL, options: [:])
-                
-                let imageGenerator = AVAssetImageGenerator(asset: asset)
 
-                imageGenerator.appliesPreferredTrackTransform = true
-
-                var actualTime: CMTime = CMTimeMake(value: 0, timescale: 0)
-
-                guard let cgImage = try? imageGenerator.copyCGImage(at: CMTimeMakeWithSeconds(0.0, preferredTimescale: 600), actualTime: &actualTime) else {
-                        return nil
-                }
-
-                let thumbnail = UIImage(cgImage: cgImage)
-
-                return thumbnail
+        func playVideo(url: URL) {
+                let size = VideoFileManager.getVideoSize(videoURL: url)
+                print("video size\(size)")
+                let player = AVPlayer(url: url)
+                let vc = AVPlayerViewController()
+                vc.player = player
+                let window = getKeyWindow()
+                window?.rootViewController?.present(vc, animated: true, completion: {
+                        vc.player?.play()
+                })
         }
-
 
 }

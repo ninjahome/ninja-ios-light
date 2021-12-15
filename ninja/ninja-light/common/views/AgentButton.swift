@@ -21,6 +21,15 @@ extension AgentStatus {
             return UIColor.init(hex: "FFFFFF")
         }
     }
+        
+        var fontColor: UIColor {
+                switch self {
+                case .initial, .almostExpire:
+                    return UIColor.init(hex: "FFFFFF")
+                case .activated:
+                    return UIColor.init(hex: "000000")
+                }
+        }
     
     var handleText: [String] {
         switch self {
@@ -39,6 +48,7 @@ class AgentButton: UIButton {
     
     var currentStatus: AgentStatus = .initial {
         didSet {
+                self.setTitleColor(self.currentStatus.fontColor, for: .normal)
             self.backgroundColor = self.currentStatus.color
             self.setTitle(self.currentStatus.handleText[0], for: .normal)
         }

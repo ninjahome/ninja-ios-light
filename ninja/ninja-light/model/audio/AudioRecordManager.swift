@@ -186,11 +186,7 @@ extension AudioRecordManager: AVAudioRecorderDelegate {
                 self.delegate?.audioRecordFailed()
                 return
             }
-//            let fileName = String(data: wavAudioData, encoding: String.Encoding.utf8)
-           
-//            let wavDestinationURL = AudioFilesManager.wavPathWithName(fileName ?? "")
-//            AudioFilesManager.renameFile(TempWavRecordPath, destinationPath: wavDestinationURL)
-            
+                
             self.delegate?.audioRecordWavFinish(wavAudioData, recordTime: self.audioTimeInterval.floatValue, fileHash: "")
             
         } else {

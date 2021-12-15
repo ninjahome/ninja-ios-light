@@ -119,9 +119,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         func applicationDidBecomeActive(_ application: UIApplication) {
-            if Wallet.shared.IsActive(){
-                    WebsocketSrv.shared.Online()
-            }
+                if Wallet.shared.IsActive(){
+                        WebsocketSrv.shared.Online()
+                }
         }
     
         func applicationWillTerminate(_ application: UIApplication) {

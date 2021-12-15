@@ -25,64 +25,62 @@ class WebsocketSrv: NSObject {
         }
     
     
-    func Online() {
-            WebsocketSrv.netQueue.async {
-                    var err:NSError? = nil
-                    ChatLib.ChatLibWSOnline(&err)
-                    if err != nil {
-                            print("online err \(String(describing: err?.localizedDescription))")
-                            NotificationCenter.default.post(name: NotifyOnlineError,
-                                                            object: self,
-                                                            userInfo: nil)
-                    }
-            }
-    }
-    
-    func Offline() {
-            ChatLib.ChatLibWSOffline()
-    }
-    
-    func SendIMMsg(cliMsg: CliMessage, retry: Bool = false, onStart: @escaping()-> Void, onCompletion: @escaping(Bool) -> Void) {
-        
-        var isGroup: Bool = false
-            var peerID:String
-            if let groupId = cliMsg.groupId {
-                    isGroup = true
-                    peerID = groupId
-            }else{
-                    peerID = cliMsg.to!
-            }
-     
-
-        if retry {
-                onStart()
-        } else {
-                let msg = MessageItem.addSentIM(cliMsg: cliMsg)
-                onStart()
-                ChatItem.updateLastMsg(peerUid: peerID,
-                                   msg: msg.coinvertToLastMsg(),
-                                   time: msg.timeStamp,
-                                   unread: 0,
-                                   isGroup: isGroup)
+        func Online() {
+                WebsocketSrv.netQueue.async {
+                        var err:NSError? = nil
+                        ChatLib.ChatLibWSOnline(&err)
+                        if err != nil {
+                                print("online err \(String(describing: err?.localizedDescription))")
+                                NotificationCenter.default.post(name: NotifyOnlineError,
+                                                                object: self,
+                                                                userInfo: nil)
+                        }
+                }
         }
+    
+        func Offline() {
+                ChatLib.ChatLibWSOffline()
+        }
+    
+        func SendIMMsg(cliMsg: CliMessage, retry: Bool = false, onStart: @escaping()-> Void, onCompletion: @escaping(Bool) -> Void) {
+        
+                var isGroup: Bool = false
+                var peerID:String
+                if let groupId = cliMsg.groupId {
+                        isGroup = true
+                        peerID = groupId
+                } else {
+                        peerID = cliMsg.to!
+                }
+                
+                if retry {
+                        onStart()
+                } else {
+                        let msg = MessageItem.addSentIM(cliMsg: cliMsg)
+                        onStart()
+                        ChatItem.updateLastMsg(peerUid: peerID,
+                                               msg: msg.coinvertToLastMsg(),
+                                               time: msg.timeStamp,
+                                               unread: 0,
+                                               isGroup: isGroup)
+                }
         
             
-            guard let data =  cliMsg.PackData() else{
+                guard let data =  cliMsg.PackData() else{
                     //TODO::error process
-                    return
-            }
+                        return
+                }
 //        let msgID = ChatLib.ChatLibSend(cliMsg.to, data, isGroup)
-        ChatLib.ChatLibSend(cliMsg.timestamp ?? Int64(Date().timeIntervalSince1970), cliMsg.to, data, isGroup)
+                ChatLib.ChatLibSend(cliMsg.timestamp ?? Int64(Date().timeIntervalSince1970), cliMsg.to, data, isGroup)
 //        print("------------msg id=>",msgID)
             //TODO::
-    }
+        }
 }
 
 extension WebsocketSrv: ChatLibUICallBackProtocol {
        
         func endPointChanged(_ p0: String?) {
                 NSLog("------>>>new endpoint[\(p0!)] avlaible")
-                
                 Online()
         }
         
@@ -90,7 +88,6 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
                 let msgID = p0
                 let to = p1
                 let isGrp = p2
-                
                 //TODO:: update local msg status
                 NSLog("------>>>message[\(msgID)] to[\(to!)] proc result:[\(isGrp)]")
         }
@@ -103,6 +100,27 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
         
         func fileMessage(_ from: String?, to: String?, payload: Data?, size: Int, name: String?) throws {
                 print("file msg size\(size)")
+                let owner = Wallet.shared.Addr!
+                if owner !=  to {
+                        throw NJError.msg("this file msg is not for me")
+                }
+                guard let fileData = payload else {
+                        return
+                }
+                guard let url = FileManager.writeFile(content: fileData, folderPath: FileManager.createFolder(njFileFolder), fileName: name ?? "") else {
+                        return
+                }
+                var cliMsg: CliMessage?
+                if url.containsVideo {
+                        cliMsg = CliMessage.init(to: to!, videoUrl: url)
+                } else {
+                        cliMsg = CliMessage.init(to: to!, fileUrl: url)
+                }
+                let time = Int64(Date().timeIntervalSince1970)
+                let msg = MessageItem.init(cliMsg: cliMsg!, from: from!, time: time, out: false)
+                MessageItem.receivedIM(msg: msg)
+                ChatItem.updateLastMsg(peerUid: from!, msg: msg.coinvertToLastMsg(), time: time, unread: 1)
+                
         }
     
         func imageMessage(_ from: String?, to: String?, payload: Data?, time: Int64) throws {
@@ -159,15 +177,15 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
         func webSocketClosed() {
                 NSLog("======> websocket is closed")
                 NotificationCenter.default.post(name: NotifyWebsocketOffline,
-                        object: self,
-                        userInfo: nil)
+                                                object: self,
+                                                userInfo: nil)
         }
 
         func webSocketDidOnline(){
                 NSLog("======> websocket did online")
                 NotificationCenter.default.post(name: NotifyWebsocketOnline,
-                            object: self,
-                            userInfo: nil)
+                                                object: self,
+                                                userInfo: nil)
         }
 
         func gFileMessage(_ from: String?, groupId: String?, payload: Data?, size: Int, name: String?) throws {
@@ -260,88 +278,88 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
                 print("dismiss group: \(String(describing: groupId)) success")
         }
 
-    func joinGroup(_ from: String?, groupId: String?, groupName: String?, owner: String?, memberIdList: String?, memberNickNameList: String?, newIdList: String?, banTalkding: Bool) throws {
-        
-        let account = Wallet.shared.Addr!
-        
-        var group = GroupItem.init()
-        group.owner = account
-        group.groupName = groupName
-        group.gid = groupId
-        group.unixTime = Int64(Date().timeIntervalSince1970)
-        group.banTalked = banTalkding
-        
-        if let item = GroupItem.GetGroup(groupId!) {
-            group = item
-            if group.owner != account {
-                print("This group is not mine")
-                return
-            }
-        }
-        
-        group.memberIds = memberIdList?.toArray()
-        group.memberNicks = memberNickNameList?.toArray()
-        
-        _ = GroupItem.UpdateGroup(group)
+        func joinGroup(_ from: String?, groupId: String?, groupName: String?, owner: String?, memberIdList: String?, memberNickNameList: String?, newIdList: String?, banTalkding: Bool) throws {
 
-        let NotiKey_group = "GROUP_ID"
-        let NotiKey_newList = "NEW_LIST"
-        NotificationCenter.default.post(name: NotifyJoinGroup,
-                                        object: from,
-                                        userInfo: [NotiKey_group: groupId!, NotiKey_newList: newIdList!])
-        
-        print("join new group from: \(String(describing: from))")
-    }
+                let account = Wallet.shared.Addr!
 
-    func kickOutUser(_ from: String?, groupId: String?, kickId: String?) throws {
-        let account = Wallet.shared.Addr!
-        
-        guard let group = GroupItem.cache[groupId!] else {
-            return
-        }
-        
-        if group.owner != account {
-            print("This group is not mine")
-            return
-        }
-        
-        try GroupItem.KickOutUserNoti(group: group, kickIds: kickId, from: from!)
-        
-        print("someone kicked out")
-    }
+                var group = GroupItem.init()
+                group.owner = account
+                group.groupName = groupName
+                group.gid = groupId
+                group.unixTime = Int64(Date().timeIntervalSince1970)
+                group.banTalked = banTalkding
 
-    func quitGroup(_ from: String?, groupId: String?, quitId: String?) throws {
-        
-        try GroupItem.QuitGroupNoti(from: from, groupId: groupId!, quitId: quitId!)
-    }
+                if let item = GroupItem.GetGroup(groupId!) {
+                        group = item
+                        if group.owner != account {
+                                print("This group is not mine")
+                                return
+                        }
+                }
 
-    func syncGroup(_ groupId: String?) -> String {
-        
-        return GroupItem.SyncGroupFromMe(by: groupId!)
-    }
+                group.memberIds = memberIdList?.toArray()
+                group.memberNicks = memberNickNameList?.toArray()
 
-    func syncGroupAck(_ groupId: String?, groupName: String?, owner: String?, banTalking: Bool, memberIdList: String?, memberNickNameList: String?) throws {
-        
-        let account = Wallet.shared.Addr!
-        
-        var group = GroupItem.cache[groupId!]
-        if group == nil {
-            group = GroupItem.init()
+                _ = GroupItem.UpdateGroup(group)
+
+                let NotiKey_group = "GROUP_ID"
+                let NotiKey_newList = "NEW_LIST"
+                NotificationCenter.default.post(name: NotifyJoinGroup,
+                                                object: from,
+                                                userInfo: [NotiKey_group: groupId!, NotiKey_newList: newIdList!])
+
+                print("join new group from: \(String(describing: from))")
         }
-        
-        group!.gid = groupId
-        group!.groupName = groupName
-        group!.memberIds = memberIdList?.toArray()
-        group!.memberNicks = memberNickNameList?.toArray()
-        group!.banTalked = banTalking
-        group!.leader = owner
-        group!.owner = account
-        
-        if let err = GroupItem.UpdateGroup(group!) {
-            print("sync group ack update error.\(String(describing: err.localizedDescription))")
+
+        func kickOutUser(_ from: String?, groupId: String?, kickId: String?) throws {
+                let account = Wallet.shared.Addr!
+
+                guard let group = GroupItem.cache[groupId!] else {
+                  return
+                }
+
+                if group.owner != account {
+                        print("This group is not mine")
+                        return
+                }
+
+                try GroupItem.KickOutUserNoti(group: group, kickIds: kickId, from: from!)
+
+                print("someone kicked out")
         }
-        
-        print("sync group ack")
-    }
+
+        func quitGroup(_ from: String?, groupId: String?, quitId: String?) throws {
+
+                try GroupItem.QuitGroupNoti(from: from, groupId: groupId!, quitId: quitId!)
+        }
+
+        func syncGroup(_ groupId: String?) -> String {
+
+                return GroupItem.SyncGroupFromMe(by: groupId!)
+        }
+
+        func syncGroupAck(_ groupId: String?, groupName: String?, owner: String?, banTalking: Bool, memberIdList: String?, memberNickNameList: String?) throws {
+
+                let account = Wallet.shared.Addr!
+
+                var group = GroupItem.cache[groupId!]
+                if group == nil {
+                        group = GroupItem.init()
+                }
+
+                group!.gid = groupId
+                group!.groupName = groupName
+                group!.memberIds = memberIdList?.toArray()
+                group!.memberNicks = memberNickNameList?.toArray()
+                group!.banTalked = banTalking
+                group!.leader = owner
+                group!.owner = account
+
+                if let err = GroupItem.UpdateGroup(group!) {
+                        print("sync group ack update error.\(String(describing: err.localizedDescription))")
+                }
+
+                print("sync group ack")
+        }
 
 }

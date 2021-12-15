@@ -50,26 +50,26 @@ class MessageItem: NSObject {
 
                 for msg in data {
 
-                var peerUid: String
-                if let groupId = msg.groupId {
-                        peerUid = groupId
-                } else {
-                        if msg.isOut {
-                                peerUid = msg.to!
+                        var peerUid: String
+                        if let groupId = msg.groupId {
+                                peerUid = groupId
                         } else {
-                                peerUid = msg.from!
+                                if msg.isOut {
+                                        peerUid = msg.to!
+                                } else {
+                                        peerUid = msg.from!
+                                }
                         }
-                }
 
-                var msgList = cache.get(idStr: peerUid)
+                        var msgList = cache.get(idStr: peerUid)
 
-                if msgList == nil {
-                        msgList = MessageList.init()
-                }
+                        if msgList == nil {
+                                msgList = MessageList.init()
+                        }
 
-                msgList!.append(msg)
+                        msgList!.append(msg)
 
-                cache.setOrAdd(idStr: peerUid, item: msgList)
+                        cache.setOrAdd(idStr: peerUid, item: msgList)
 
                 }
 
@@ -126,6 +126,10 @@ class MessageItem: NSObject {
                         self.payload = cliMsg.audioData
                 case .location:
                         self.payload = cliMsg.locationData
+                case .file:
+                        self.payload = cliMsg.fileData
+                case .video:
+                        self.payload = cliMsg.videoData
                 default:
                         print("init MESSAGE error: undefined type")
                 }
@@ -157,6 +161,10 @@ class MessageItem: NSObject {
                         self.payload = cliMsg.audioData
                 case .location:
                         self.payload = cliMsg.locationData
+                case .video:
+                        self.payload = cliMsg.videoData
+                case .file:
+                        self.payload = cliMsg.fileData
                 default:
                         print("init MESSAGE error: undefined type")
                 }

@@ -42,23 +42,42 @@ class audioMsg: NSObject, NSCoding {
 }
 
 class videoMsg: NSObject, NSCoding {
-        var content: Data = Data()
+//        var content: Data = Data()
         var name: String = ""
-        var url: URL?
-        var thumbnailImg: UIImage?
+        var url: String = ""
+        var thumbnailImg: Data = Data()
         
         func encode(with coder: NSCoder) {
-                coder.encode(content, forKey: "content")
+//                coder.encode(content, forKey: "content")
                 coder.encode(name, forKey: "name")
                 coder.encode(url, forKey: "url")
                 coder.encode(thumbnailImg, forKey: "thumbnailImg")
         }
 
         required init?(coder: NSCoder) {
-                self.content = coder.decodeObject(forKey: "content") as! Data
+//                self.content = coder.decodeObject(forKey: "content") as! Data
+                self.name = coder.decodeObject(forKey: "name") as! String
+                self.url = (coder.decodeObject(forKey: "url") as? String) ?? ""
+                self.thumbnailImg = (coder.decodeObject(forKey: "thumbnailImg") as? Data) ?? Data()
+        }
+
+        override init() {
+                super.init()
+        }
+}
+
+class fileMsg: NSObject, NSCoding {
+        var name: String = ""
+        var url: URL?
+        
+        func encode(with coder: NSCoder) {
+                coder.encode(name, forKey: "name")
+                coder.encode(url, forKey: "url")
+        }
+
+        required init?(coder: NSCoder) {
                 self.name = coder.decodeObject(forKey: "name") as! String
                 self.url = coder.decodeObject(forKey: "url") as? URL
-                self.thumbnailImg = coder.decodeObject(forKey: "thumbnailImg") as? UIImage
         }
 
         override init() {
@@ -67,7 +86,6 @@ class videoMsg: NSObject, NSCoding {
 }
 
 class locationMsg: NSObject, NSCoding {
-    
         var lo: Float = 0
         var la: Float = 0
         var str: String = ""
@@ -87,7 +105,6 @@ class locationMsg: NSObject, NSCoding {
         override init() {
                 super.init()
         }
-
 }
 
 class CliMessage: NSObject {
@@ -98,6 +115,7 @@ class CliMessage: NSObject {
         var imgData: Data?
         var locationData: locationMsg?
         var videoData: videoMsg?
+        var fileData: fileMsg?
         var groupId: String?
         var timestamp: Int64?
 
@@ -134,17 +152,30 @@ class CliMessage: NSObject {
                 self.timestamp = Int64(Date().timeIntervalSince1970)
         }
         
-        init(to: String, videoData: Data, videoUrl: URL, groupId: String? = nil) {
+        init(to: String, videoUrl: URL, groupId: String? = nil) {
                 self.to = to
                 self.type = .video
                 
                 let video = videoMsg.init()
                 let name = videoUrl.lastPathComponent
-                video.content = videoData
                 video.name = name
-                video.url = videoUrl
+                video.url = videoUrl.path
+                video.thumbnailImg = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: videoUrl)?.pngData() ?? Data()
                 
                 self.videoData = video
+                self.groupId = groupId
+                self.timestamp = Int64(Date().timeIntervalSince1970)
+        }
+        
+        init(to: String, fileUrl: URL, groupId: String? = nil) {
+                self.to = to
+                self.type = .file
+                
+                let file = fileMsg.init()
+                file.name = fileUrl.lastPathComponent
+//                file.url = fileUrl
+                
+                self.fileData = file
                 self.groupId = groupId
                 self.timestamp = Int64(Date().timeIntervalSince1970)
         }
@@ -218,10 +249,15 @@ class CliMessage: NSObject {
                         //TODO::
                         return nil
                 case .video:
-                        guard let videoD = self.videoData?.content else {
+                        guard let url = self.videoData?.url else {
                                 return nil
                         }
-                        let size = videoD.count
+                        
+                        guard let videoD = VideoFileManager.readVideoData(videoURL: URL(fileURLWithPath: url)) else {
+                                return nil
+                        }
+                       
+                        let size = VideoFileManager.getVideoSize(videoURL: URL(fileURLWithPath: url))
                         let name = self.videoData?.name
                         
                         if isGroup {
