@@ -94,10 +94,6 @@ class FileTableViewCell: UITableViewCell {
                         }
                 }
 
-                
-                // TODO: play video
-//                 ShowImageDetail.show(imageView: thumbtailImage)
-
                 if message.isOut {
                         switch message.status {
                         case .faild:
