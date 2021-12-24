@@ -1,8 +1,0 @@
-framework module "ChatLib" {
-	header "ref.h"
-    header "ChatLib.objc.h"
-    header "Universe.objc.h"
-    header "ChatLib.h"
-
-    export *
-}
