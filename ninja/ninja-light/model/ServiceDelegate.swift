@@ -36,10 +36,10 @@ class ServiceDelegate: NSObject {
                 } else {
                         endPoint = "192.168.1.167:16666"
                 }
-                ChatLib.ChatLibInitAPP(endPoint, WebsocketSrv.shared, deviceToken, DevTypeIOS, Debug)
+                ChatLibInitAPP(endPoint, "infura", WebsocketSrv.shared, deviceToken, DevTypeIOS, Debug)
         }
         
         public static func GetLicense() {
-                ChatLib.ChatLibReloadLicense(cachedLicense)
+//                ChatLib.ChatLibReloadLicense(cachedLicense)
         }
 }

@@ -49,12 +49,12 @@ class Wallet: NSObject{
         }
     
         func New(_ password: String) throws {
-
-                let walletJson =  ChatLib.ChatLibNewWallet(password)
+                let walletJson =  ChatLibNewWallet(password)
                 if walletJson == ""{
                         throw NJError.wallet("Create Wallet Failed")
                 }
-                let addr = ChatLib.ChatLibWalletAddress()
+
+                let addr = ChatLibWalletAddress()
                 if addr == ""{
                         throw NJError.wallet("Create Wallet Failed")
                 }
@@ -70,12 +70,12 @@ class Wallet: NSObject{
         }
 
         func IsActive() -> Bool {
-                return ChatLib.ChatLibWalletIsOpen()
+                return ChatLibWalletIsOpen()
         }
         
         func Active(_ password: String) -> Error? {
                 var error:NSError? = nil
-                ChatLib.ChatLibActiveWallet(self.wJson, password, &error)
+                ChatLibActiveWallet(self.wJson, password, &error)
 
                 return error
         }
@@ -192,7 +192,7 @@ class Wallet: NSObject{
                 guard let addr = Wallet.shared.Addr else {
                         return AvatarColors[12]
                 }
-                let idx = ChatLib.ChatLibIconIndex(addr, 12)
+                let idx = ChatLibIconIndex(addr, 12)
                 return AvatarColors[Int(idx)]
         }
 

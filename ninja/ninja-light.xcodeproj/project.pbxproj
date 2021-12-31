@@ -42,6 +42,10 @@
 		087B57F526DF529D00591F8D /* AgentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087B57F426DF529D00591F8D /* AgentService.swift */; };
 		087B57F826E1E15900591F8D /* AgentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087B57F726E1E15900591F8D /* AgentViewController.swift */; };
 		087BD8132658AF430009459C /* ManageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087BD8122658AF430009459C /* ManageViewController.swift */; };
+		0886B1AF2772BEC500257C15 /* AccountItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0886B1AE2772BEC500257C15 /* AccountItem.swift */; };
+		0886B1B127730A1B00257C15 /* BigInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0886B1B027730A1B00257C15 /* BigInt.swift */; };
+		0886B1B3277AFE9400257C15 /* GroupListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0886B1B2277AFE9400257C15 /* GroupListViewController.swift */; };
+		0886B1B5277B044100257C15 /* GroupItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0886B1B4277B044100257C15 /* GroupItemTableViewCell.swift */; };
 		088C3C5A2678560E00E5A715 /* ShowImageDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088C3C592678560E00E5A715 /* ShowImageDetail.swift */; };
 		08B74A5F26AFF31B00D6F0F8 /* LocationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B74A5E26AFF31B00D6F0F8 /* LocationUtils.swift */; };
 		08B74A6726B3B90D00D6F0F8 /* GroupMemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B74A6626B3B90D00D6F0F8 /* GroupMemberViewController.swift */; };
@@ -128,6 +132,10 @@
 		087BD8122658AF430009459C /* ManageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageViewController.swift; sourceTree = "<group>"; };
 		087BD817265B4ACE0009459C /* ninja-light.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ninja-light.entitlements"; sourceTree = "<group>"; };
 		087BD81C265BA0A80009459C /* ninja-light_sim.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ninja-light_sim.entitlements"; sourceTree = "<group>"; };
+		0886B1AE2772BEC500257C15 /* AccountItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountItem.swift; sourceTree = "<group>"; };
+		0886B1B027730A1B00257C15 /* BigInt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigInt.swift; sourceTree = "<group>"; };
+		0886B1B2277AFE9400257C15 /* GroupListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupListViewController.swift; sourceTree = "<group>"; };
+		0886B1B4277B044100257C15 /* GroupItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupItemTableViewCell.swift; sourceTree = "<group>"; };
 		088C3C592678560E00E5A715 /* ShowImageDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowImageDetail.swift; sourceTree = "<group>"; };
 		08B74A5E26AFF31B00D6F0F8 /* LocationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationUtils.swift; sourceTree = "<group>"; };
 		08B74A6626B3B90D00D6F0F8 /* GroupMemberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberViewController.swift; sourceTree = "<group>"; };
@@ -262,6 +270,7 @@
 				69B8C0E0261D334900B4E4AC /* MessageItem.swift */,
 				69B8C0EE261DA17B00B4E4AC /* CliMessage.swift */,
 				08BFE0C92722749F000BADAD /* LockCache.swift */,
+				0886B1AE2772BEC500257C15 /* AccountItem.swift */,
 			);
 			path = chat;
 			sourceTree = "<group>";
@@ -380,6 +389,8 @@
 				7CEFD462261E93FA0002B0B9 /* ContactDetailsViewController.swift */,
 				08EAAE23269735AC00210271 /* ContactAddViewController.swift */,
 				08EAAE262697496700210271 /* SearchDetailViewController.swift */,
+				0886B1B2277AFE9400257C15 /* GroupListViewController.swift */,
+				0886B1B4277B044100257C15 /* GroupItemTableViewCell.swift */,
 			);
 			path = contact;
 			sourceTree = "<group>";
@@ -426,6 +437,7 @@
 				08B74A5E26AFF31B00D6F0F8 /* LocationUtils.swift */,
 				69F8D10B261AEA39009D7AF3 /* Utils.swift */,
 				7CEFD46E261E9ACA0002B0B9 /* Constants.swift */,
+				0886B1B027730A1B00257C15 /* BigInt.swift */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -540,6 +552,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				08F0FA8D268839F200C5C1DF /* VoiceTableViewCell.swift in Sources */,
+				0886B1B127730A1B00257C15 /* BigInt.swift in Sources */,
 				7CEFD46F261E9ACA0002B0B9 /* Constants.swift in Sources */,
 				69B8C0EF261DA17B00B4E4AC /* CliMessage.swift in Sources */,
 				087B57F826E1E15900591F8D /* AgentViewController.swift in Sources */,
@@ -547,8 +560,10 @@
 				69B8C0CD261D2C0900B4E4AC /* MessageListViewController.swift in Sources */,
 				0823F778265201B4000DA4DB /* QRViewController.swift in Sources */,
 				08F0FA9026884C2000C5C1DF /* ImageTableViewCell.swift in Sources */,
+				0886B1AF2772BEC500257C15 /* AccountItem.swift in Sources */,
 				086701B62667159E00A1E951 /* AudioFilesManager.swift in Sources */,
 				69B8C0BC261C683100B4E4AC /* NJError.swift in Sources */,
+				0886B1B3277AFE9400257C15 /* GroupListViewController.swift in Sources */,
 				69B8C0D2261D2D4600B4E4AC /* MesasgeItemTableViewCell.swift in Sources */,
 				08CCDC6F26A3C3A200B0D7DA /* MapViewController.swift in Sources */,
 				6953EAF82622C12F008EC2F0 /* AuthorViewController.swift in Sources */,
@@ -595,6 +610,7 @@
 				69F8D0FE261AA544009D7AF3 /* NewWalletViewController.swift in Sources */,
 				086701B32665C6D900A1E951 /* AudioRecordManager.swift in Sources */,
 				69B8C0C8261C8AD100B4E4AC /* ServiceDelegate.swift in Sources */,
+				0886B1B5277B044100257C15 /* GroupItemTableViewCell.swift in Sources */,
 				08BFE0CA2722749F000BADAD /* LockCache.swift in Sources */,
 				08B74A6B26B637D800D6F0F8 /* GroupMemberTableViewCell.swift in Sources */,
 				0860D5C52761FDD000E53FDA /* FileTableViewCell.swift in Sources */,

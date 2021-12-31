@@ -11,60 +11,60 @@ typealias NotiGroupChange = (GroupItem) -> ()
 
 class GroupMemberViewController: UIViewController {
 
-    @IBOutlet weak var actTitle: UINavigationItem!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var finishBtn: UIButton!
+        @IBOutlet weak var actTitle: UINavigationItem!
+        @IBOutlet weak var tableView: UITableView!
+        @IBOutlet weak var finishBtn: UIButton!
 
-    var selectedIndexs = [Int]()
-    var setEnable: Bool = false
-    var contactArray: [ContactItem]?
-    var isAddMember: Bool = false
-    var isDelMember: Bool = false
-    var existMember: NSArray?
+        var selectedIndexs = [Int]()
+        var setEnable: Bool = false
+        var contactArray: [ContactItem]?
+        var isAddMember: Bool = false
+        var isDelMember: Bool = false
+        var existMember: NSArray?
+
+        var groupItem: GroupItem = GroupItem.init()
+
+        var notiMemberChange: NotiGroupChange!
     
-    var groupItem: GroupItem = GroupItem.init()
-    
-    var notiMemberChange: NotiGroupChange!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        if isAddMember {
-            actTitle.title = "添加新成员"
-        }
-        
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        self.tableView.rowHeight = 64
-        self.tableView.tableFooterView = UIView()
-        
-        self.contactArray = contactsFilter()
-        
-        self.reload()
-    }
-    
-    fileprivate func contactsFilter() -> [ContactItem] {
-        var contacts = ContactItem.CacheArray()
-        
-        if isAddMember {
-            if let exists = existMember {
-                contacts.removeAll { cont in
-                    exists.contains(cont.uid!)
+        override func viewDidLoad() {
+                super.viewDidLoad()
+
+                if isAddMember {
+                        actTitle.title = "添加新成员"
                 }
-            }
-        } else {
-            contacts.removeAll { cont in
-                cont.uid == Wallet.shared.Addr
-            }
+
+                self.tableView.delegate = self
+                self.tableView.dataSource = self
+                self.tableView.rowHeight = 64
+                self.tableView.tableFooterView = UIView()
+
+                self.contactArray = contactsFilter()
+
+                self.reload()
         }
-        
-        return contacts
-    }
     
-    @IBAction func returnBackItem(_ sender: UIBarButtonItem) {
-        self.navigationController?.popViewController(animated: true)
-    }
+        fileprivate func contactsFilter() -> [ContactItem] {
+                var contacts = ContactItem.CacheArray()
+
+                if isAddMember {
+                        if let exists = existMember {
+                                contacts.removeAll { cont in
+                                        exists.contains(cont.uid!)
+                                }
+                        }
+                } else {
+                        contacts.removeAll { cont in
+                                cont.uid == Wallet.shared.Addr
+                        }
+                }
+
+                return contacts
+        }
     
+        @IBAction func returnBackItem(_ sender: UIBarButtonItem) {
+                self.navigationController?.popViewController(animated: true)
+        }
+
     @IBAction func finishAction(_ sender: UIButton) {
         if !setEnable {
             return
@@ -135,7 +135,7 @@ class GroupMemberViewController: UIViewController {
 
     fileprivate func CreateGroup(ids: [String], nicks: [String], groupName: String) {
         
-        guard let groupId = GroupItem.NewGroup(ids: ids, nicks: nicks, groupName: groupName) else {
+        guard let groupId = GroupItem.NewGroup(ids: ids, groupName: groupName) else {
             self.toastMessage(title: "Created group failed")
             return
         }

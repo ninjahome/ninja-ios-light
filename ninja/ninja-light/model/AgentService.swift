@@ -98,13 +98,13 @@ class AgentService {
         }
 
         func transferLicense(to addr: String, days: Int) -> Bool {
-        var err:NSError?
-        ChatLib.ChatLibTransferLicense(addr, days, &err)
+                var err:NSError?
+                ChatLibTransferLicense(addr, days, &err)
 
-        if err == nil {
-                return true
-        }
-                return true
+                if err == nil {
+                        return true
+                }
+                return false
         }
         
 }

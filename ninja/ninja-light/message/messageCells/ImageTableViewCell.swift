@@ -20,7 +20,7 @@ class ImageTableViewCell: UITableViewCell {
 
         @IBOutlet weak var retry: UIButton?
 
-        var cellMsg: MessageItem?
+var cellMsg: MessageItem?
 
         override func prepareForReuse() {
                 super.prepareForReuse()
@@ -47,12 +47,11 @@ class ImageTableViewCell: UITableViewCell {
                                 self.retry?.isHidden = true
                                 self.spinner?.startAnimating()
                         } onCompletion: { success in
-                                MessageItem.resetSending(cliMsg: cliMsg, success: success)
-
-                                if success {
-                                        msg.status = .sent
+                                if !success {
+                                        MessageItem.resetSending(msgid: msg.timeStamp, to: msg.to!, success: success)
+                                        self.updateMessageCell(by: msg)
                                 }
-                                self.updateMessageCell(by: msg)
+                                
                         }
                 }
         }

@@ -12,13 +12,13 @@ import UIKit
 
 
 enum CMT: Int {
-        case plainTxt = 0
-        case image = 1
-        case voice = 2
-        case location = 3
-        case video = 4
-        case contact = 5
-        case file = 6
+        case plainTxt = 1
+        case image = 2
+        case voice = 3
+        case location = 4
+        case video = 6
+        case file = 5
+        case contact = 7
 }
 
 class audioMsg: NSObject, NSCoding {
@@ -213,58 +213,61 @@ class CliMessage: NSObject {
                 
                 switch self.type {
                 case .plainTxt:
-                        if isGroup {
-                                data = ChatLib.ChatLibPackGroupTxt(gid, self.textData)
-                        } else {
-                                data = ChatLib.ChatLibPackPlainTxt(self.textData)
-                        }
+                        data = ChatLibWrapTxt(self.textData)
+//                        if isGroup {
+//                                data = ChatLibWrapTxt(self.textData)
+//                                data = ChatLib.ChatLibPackGroupTxt(gid, self.textData)
+//                        } else {
+//                                data = ChatLib.ChatLibPackPlainTxt(self.textData)
+//                        }
                 case .image:
-                        if isGroup {
-                                data = ChatLib.ChatLibPackGroupImage(gid, self.imgData)
-                        } else {
-                                data = ChatLib.ChatLibPackImage(self.imgData)
-                        }
+                        data = ChatLibWrapImg(self.imgData)
+//                        if isGroup {
+//                                data = ChatLib.ChatLibPackGroupImage(gid, self.imgData)
+//                        } else {
+//                                data = ChatLib.ChatLibPackImage(self.imgData)
+//                        }
                 case .voice:
                         guard let audioData = self.audioData, audioData.duration > 1 else { //TODO::  duration?
                                 //TODO::
                                 return nil
                         }
-                        if isGroup {
-                                data = ChatLib.ChatLibPackGroupVoice(gid, audioData.content, audioData.duration)
-                        } else {
-                                data = ChatLib.ChatLibPackVoice(audioData.content, audioData.duration)
-                        }
+                        data = ChatLibWrapVoice(audioData.duration, audioData.content)
+//                        if isGroup {
+//                                data = ChatLib.ChatLibPackGroupVoice(gid, audioData.content, audioData.duration)
+//                        } else {
+//                                data = ChatLib.ChatLibPackVoice(audioData.content, audioData.duration)
+//                        }
                     
                 case .location:
                         guard let locData =  self.locationData else {
                                 //TODO::
                                 return nil
                         }
-                        if isGroup {
-                                data = ChatLib.ChatLibPackGroupLocation(gid,locData.str, locData.lo, locData.la)
-                        } else {
-                                data = ChatLib.ChatLibPackLocation(locData.lo, locData.la, locData.str)
-                        }
+                        data = ChatLibWrapLocation(locData.str, Double(locData.lo), Double(locData.la))
+//                        if isGroup {
+//                                data = ChatLib.ChatLibPackGroupLocation(gid,locData.str, locData.lo, locData.la)
+//                        } else {
+//                                data = ChatLib.ChatLibPackLocation(locData.lo, locData.la, locData.str)
+//                        }
                 case .file:
                         //TODO::
                         return nil
                 case .video:
-                        guard let url = self.videoData?.url else {
-                                return nil
-                        }
-                        
-                        guard let videoD = VideoFileManager.readVideoData(videoURL: URL(fileURLWithPath: url)) else {
+                        let url = URL(fileURLWithPath: self.videoData!.url)
+                        guard let videoD = VideoFileManager.readVideoData(videoURL: url) else {
                                 return nil
                         }
                        
-                        let size = VideoFileManager.getVideoSize(videoURL: URL(fileURLWithPath: url))
+                        let size = VideoFileManager.getVideoSize(videoURL: url)
+                        let suffix = url.pathExtension
                         let name = self.videoData?.name
-                        
-                        if isGroup {
-                                data = ChatLib.ChatLibPackGroupFile(gid, name, videoD, size)
-                        } else {
-                                data = ChatLib.ChatLibPackFile(videoD, size, name)
-                        }
+                        data = ChatLibWrapFile(name, suffix, size, videoD)
+//                        if isGroup {
+//                                data = ChatLib.ChatLibPackGroupFile(gid, name, videoD, size)
+//                        } else {
+//                                data = ChatLib.ChatLibPackFile(videoD, size, name)
+//                        }
                 default:
                         return nil
                 }

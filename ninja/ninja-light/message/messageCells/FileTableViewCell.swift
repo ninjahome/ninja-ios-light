@@ -59,12 +59,11 @@ class FileTableViewCell: UITableViewCell {
                                 self.retry?.isHidden = true
                                 self.spinner?.startAnimating()
                         } onCompletion: { success in
-                                MessageItem.resetSending(cliMsg: resendCli, success: success)
-
-                                if success {
-                                        msg.status = .sent
+                                if !success {
+                                        MessageItem.resetSending(msgid: resendCli.timestamp!, to: resendCli.to!, success: success)
+                                        self.updateMessageCell(by: msg)
                                 }
-                                self.updateMessageCell(by: msg)
+                                
                         }
                 }
         }

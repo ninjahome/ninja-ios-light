@@ -8,6 +8,7 @@
 import Foundation
 import CoreData
 import ChatLib
+import SwiftyJSON
 
 typealias MessageList = [MessageItem]
 
@@ -18,7 +19,6 @@ enum sendingStatus: Int16 {
 }
 
 class MessageItem: NSObject {
-        
         public static let NotiKey = "peerUid"
         var timeStamp: Int64 = 0
         var from: String?
@@ -34,6 +34,44 @@ class MessageItem: NSObject {
 
         override init() {
                 super.init()
+        }
+        
+        public static func initByData(_ data: Data, from: String, gid: String? = nil, time: Int64) -> MessageItem? {
+                guard let typ: CMT = CMT(rawValue: Int(data[0])),
+                      let objJson = try? JSON(data: data[1...]) else {
+                        return nil
+                }
+                let msgItem = MessageItem()
+                msgItem.typ = typ
+                msgItem.from = from
+                msgItem.timeStamp = time
+                msgItem.groupId = gid
+                switch typ {
+                case .plainTxt:
+                        msgItem.payload = objJson.string
+                case .image:
+                        msgItem.payload = objJson.rawValue as? Data
+                case .voice:
+                        let audiomsg = audioMsg()
+                        audiomsg.content = objJson["content"].rawValue as! Data
+                        audiomsg.duration = objJson["len"].int!
+                        
+                        msgItem.payload = audiomsg
+                case .location:
+                        let locMsg = locationMsg()
+                        locMsg.str = objJson["name"].string!
+                        locMsg.la = objJson["lat"].floatValue
+                        locMsg.lo = objJson["long"].floatValue
+                        
+                        msgItem.payload = locMsg
+                case .video:
+                        return nil
+                case .contact:
+                        return nil
+                case .file:
+                        return nil
+                }
+                return msgItem
         }
 
         public static func loadUnread() {
@@ -73,6 +111,14 @@ class MessageItem: NSObject {
 
                 }
 
+        }
+        
+        public static func getItemByTime(mid: Int64, to: String) -> MessageItem? {
+                let owner = Wallet.shared.Addr!
+                var result: MessageItem?
+                result = try? CDManager.shared.GetOne(entity: "CDUnread",
+                                   predicate: NSPredicate(format: "owner == %@ AND to == %@ AND unixTime", owner, to, mid))
+                return result
         }
     
         public static func removeRead(_ uid:String){
@@ -185,9 +231,11 @@ class MessageItem: NSObject {
                 try? CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
                 return msg
         }
-    
-        public static func resetSending(cliMsg: CliMessage, success: Bool) {
-                let msg = MessageItem.init(cliMsg: cliMsg)
+        
+        public static func resetSending(msgid: Int64, to: String, success: Bool) {
+                guard let msg = MessageItem.getItemByTime(mid: msgid, to: to) else {
+                        return
+                }
                 let owner = Wallet.shared.Addr!
                 if success {
                         msg.status = .sent
@@ -227,19 +275,19 @@ class MessageItem: NSObject {
                 var peerUid: String
 
                 if let groupId = msg.groupId {
-                peerUid = groupId
+                        peerUid = groupId
                 } else {
-                peerUid = msg.from!
+                        peerUid = msg.from!
                 }
 
                 var msgList = cache.get(idStr: peerUid)
                 if msgList == nil {
-                msgList = []
+                        msgList = []
                 }
 
                 msgList?.append(msg)
                 msgList?.sort(by: { (a, b) -> Bool in
-                return a.timeStamp < b.timeStamp
+                        return a.timeStamp < b.timeStamp
                 })
                 cache.setOrAdd(idStr: peerUid, item: msgList)
 
@@ -247,11 +295,19 @@ class MessageItem: NSObject {
                 NotificationCenter.default.post(name: NotifyMessageAdded,
                                                 object: self, userInfo: [NotiKey: peerUid])
         }
-
-        public static func saveUnread(_ msg:[MessageItem]) throws {
-                try CDManager.shared.AddBatch(entity: "CDUnread", m: msg)
-                loadUnread()
+        
+        public static func receiveMsg(from: String, gid: String? = nil, msgData: Data, time: Int64) {
+                if let msgItem = MessageItem.initByData(msgData, from: from, gid: gid, time: time) {
+                        MessageItem.receivedIM(msg: msgItem)
+                }
+                
         }
+        
+
+//        public static func saveUnread(_ msg:[MessageItem]) throws {
+//                try CDManager.shared.AddBatch(entity: "CDUnread", m: msg)
+//                loadUnread()
+//        }
 
         public static func deleteMsgOneWeek() {
                 let owner = Wallet.shared.Addr!

@@ -66,7 +66,6 @@ class GroupDetailViewController: UIViewController {
         }
         
         self.navigationController?.popToRootViewController(animated: true)
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

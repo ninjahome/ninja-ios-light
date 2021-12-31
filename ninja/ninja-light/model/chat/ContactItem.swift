@@ -47,14 +47,13 @@ class ContactItem:NSObject{
     
     public static func UpdateContact(_ contact:ContactItem) -> NJError?{
         contact.owner = Wallet.shared.Addr!
-        if !(ChatLib.ChatLibIsValidNinjaAddr(contact.uid)) {
+        if !(IsValidContactID(contact.uid)) {
             return NJError.contact("invalid ninja address")
         }
         do {
             try CDManager.shared.UpdateOrAddOne(entity: "CDContact",
                                                 m: contact,
                                                 predicate: NSPredicate(format: "uid == %@ AND owner == %@", contact.uid!, contact.owner!))
-                
             cache[contact.uid!] = contact
         }catch let err {
             return NJError.contact(err.localizedDescription)
@@ -98,8 +97,8 @@ class ContactItem:NSObject{
         }
     }
     
-    public static func IsValidContactID(_ uid:String) -> Bool {
-            return ChatLib.ChatLibIsValidNinjaAddr(uid)
+    public static func IsValidContactID(_ uid:String?) -> Bool {
+            return ChatLibIsValidNinjaAddr(uid)
     }
 
     public static func CacheArray() -> [ContactItem] {
@@ -114,7 +113,7 @@ class ContactItem:NSObject{
         }
         
         guard let color = bobj.avacolor else {
-            let colorNum = ChatLib.ChatLibIconIndex(uid, 12)
+            let colorNum = ChatLibIconIndex(uid, 12)
             let genColor = AvatarColors[Int(colorNum)]
             obj?.avacolor = genColor
             _ = UpdateContact(obj!)

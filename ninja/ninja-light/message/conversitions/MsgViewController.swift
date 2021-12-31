@@ -456,21 +456,20 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
 
                 WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg, retry: resend) {
                         if let msges = MessageItem.cache.get(idStr: self.peerUid) {
-
                                 self.messages = msges
                                 self.messageTableView.reloadData()
-
                                 self.scrollToBottom()
                         }
                 } onCompletion: { success in
-                        MessageItem.resetSending(cliMsg: cliMsg, success: success)
-                        if let msges = MessageItem.cache.get(idStr: self.peerUid) {
-
-                                self.messages = msges
-                                self.messageTableView.reloadData()
-
-                                self.scrollToBottom()
+                        if !success {
+                                MessageItem.resetSending(msgid: cliMsg.timestamp!, to: cliMsg.to!, success: success)
+                                if let msges = MessageItem.cache.get(idStr: self.peerUid) {
+                                        self.messages = msges
+                                        self.messageTableView.reloadData()
+                                        self.scrollToBottom()
+                                }
                         }
+                        
                 }
 
         }
