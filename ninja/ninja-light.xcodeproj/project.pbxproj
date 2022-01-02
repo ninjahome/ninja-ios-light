@@ -131,7 +131,6 @@
 		087B57F726E1E15900591F8D /* AgentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentViewController.swift; sourceTree = "<group>"; };
 		087BD8122658AF430009459C /* ManageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageViewController.swift; sourceTree = "<group>"; };
 		087BD817265B4ACE0009459C /* ninja-light.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ninja-light.entitlements"; sourceTree = "<group>"; };
-		087BD81C265BA0A80009459C /* ninja-light_sim.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ninja-light_sim.entitlements"; sourceTree = "<group>"; };
 		0886B1AE2772BEC500257C15 /* AccountItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountItem.swift; sourceTree = "<group>"; };
 		0886B1B027730A1B00257C15 /* BigInt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigInt.swift; sourceTree = "<group>"; };
 		0886B1B2277AFE9400257C15 /* GroupListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupListViewController.swift; sourceTree = "<group>"; };
@@ -333,7 +332,6 @@
 		6969ECAF26134293008CB0B2 = {
 			isa = PBXGroup;
 			children = (
-				087BD81C265BA0A80009459C /* ninja-light_sim.entitlements */,
 				69B8C0B2261C627E00B4E4AC /* Cartfile */,
 				6969ECBA26134294008CB0B2 /* ninja-light */,
 				6969ECB926134294008CB0B2 /* Products */,
@@ -750,7 +748,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/bin",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hop.ninja.light;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = dev_ninja_light;
@@ -785,7 +783,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/bin",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hop.ninja.light;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = release_ninja_light;
