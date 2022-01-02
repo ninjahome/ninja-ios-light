@@ -467,7 +467,6 @@
 				6969ECB426134293008CB0B2 /* Sources */,
 				6969ECB526134293008CB0B2 /* Frameworks */,
 				6969ECB626134293008CB0B2 /* Resources */,
-				69B8C0B3261C635600B4E4AC /* cart */,
 			);
 			buildRules = (
 			);
@@ -522,29 +521,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		69B8C0B3261C635600B4E4AC /* cart */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/SwiftyJSON.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/MBProgressHUD.framework",
-			);
-			name = cart;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/usr/local/bin/carthage copy-frameworks\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6969ECB426134293008CB0B2 /* Sources */ = {
