@@ -14,7 +14,8 @@ class GroupListViewController: UIViewController {
         
         override func viewDidLoad() {
                 super.viewDidLoad()
-                
+                self.tableView.delegate = self
+                self.tableView.dataSource = self
                 self.tableView.rowHeight = 60
                 self.tableView.tableFooterView = UIView()
                 self.reload()
@@ -36,7 +37,7 @@ class GroupListViewController: UIViewController {
 
         }
         
-        private func reload(){
+        private func reload() {
                 GroupItem.LocalSavedGroup()
                 self.tableView.reloadData()
         }
@@ -50,7 +51,7 @@ extension GroupListViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "", for: indexPath)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "GroupItemTableViewCell", for: indexPath)
                 if let c = cell as? GroupItemTableViewCell {
                         let item = GroupItem.CacheArray()[indexPath.row]
                         c.initWith(detail: item, idx: indexPath.row)

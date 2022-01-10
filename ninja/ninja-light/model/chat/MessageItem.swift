@@ -355,7 +355,7 @@ extension MessageItem: ModelObj {
                 guard let uObj = obj as? CDUnread else {
                         throw NJError.coreData("cast to unread item obj failed")
                 }
-                self.typ = CMT(rawValue: Int(uObj.type))!
+                self.typ = CMT(rawValue: Int(uObj.type)) ?? CMT(rawValue: 1)!
 
                 self.from = uObj.from
                 self.isOut = uObj.isOut

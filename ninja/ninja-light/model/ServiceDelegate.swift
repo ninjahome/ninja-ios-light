@@ -36,7 +36,10 @@ class ServiceDelegate: NSObject {
                 } else {
                         endPoint = "192.168.1.167:16666"
                 }
-                ChatLibInitAPP(endPoint, "infura", WebsocketSrv.shared, deviceToken, DevTypeIOS, Debug)
+                
+                // networkID 5: company 2: other
+                ChatLibInitAPP(endPoint, "a3a5c09826a246d0bfbef8084b81df1f", WebsocketSrv.shared, 2)
+
         }
         
         public static func GetLicense() {

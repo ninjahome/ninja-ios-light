@@ -52,6 +52,7 @@
     </entity>
     <entity name="CDWallet" representedClassName="CDWallet" syncable="YES" codeGenerationType="class">
         <attribute name="address" optional="YES" attributeType="String"/>
+        <attribute name="avatar" optional="YES" attributeType="Binary"/>
         <attribute name="jsonStr" optional="YES" attributeType="String"/>
         <attribute name="liceneseExpireTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="nick" optional="YES" attributeType="String"/>
@@ -59,12 +60,12 @@
         <attribute name="useFaceID" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </entity>
     <elements>
+        <element name="CDAccount" positionX="-45" positionY="90" width="128" height="119"/>
         <element name="CDChatItem" positionX="-45" positionY="27" width="128" height="119"/>
         <element name="CDConfig" positionX="-36" positionY="99" width="128" height="44"/>
         <element name="CDContact" positionX="-36" positionY="18" width="128" height="119"/>
         <element name="CDGroup" positionX="-45" positionY="72" width="128" height="149"/>
         <element name="CDUnread" positionX="-54" positionY="9" width="128" height="194"/>
-        <element name="CDWallet" positionX="-63" positionY="-18" width="128" height="119"/>
-        <element name="CDAccount" positionX="-45" positionY="90" width="128" height="119"/>
+        <element name="CDWallet" positionX="-63" positionY="-18" width="128" height="134"/>
     </elements>
 </model>

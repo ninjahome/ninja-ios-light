@@ -31,6 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
                 window = UIWindow(windowScene: winScene)
                 if Wallet.shared.loaded{
                         window?.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
+//                        window?.rootViewController = instantiateViewController(vcID: "NinjaGuideVC")
                 }else{
                         window?.rootViewController = instantiateViewController(vcID: "NinjaNewWalletVC")
                 }

@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0809CE8227857CF100AF2A95 /* SwiftyJSON.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 694D55C62766F5B60044E580 /* SwiftyJSON.xcframework */; };
+		0809CE8327857CF100AF2A95 /* SwiftyJSON.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 694D55C62766F5B60044E580 /* SwiftyJSON.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0809CE8527857D0600AF2A95 /* MBProgressHUD.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 694D55C52766F5B60044E580 /* MBProgressHUD.xcframework */; };
+		0809CE8627857D0600AF2A95 /* MBProgressHUD.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 694D55C52766F5B60044E580 /* MBProgressHUD.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0809CE882786963300AF2A95 /* BackupGuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0809CE872786963300AF2A95 /* BackupGuideViewController.swift */; };
+		0809CE8A2786C7B800AF2A95 /* VIPAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0809CE892786C7B800AF2A95 /* VIPAlertViewController.swift */; };
+		0809CE8C2786CE2500AF2A95 /* TryoutAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0809CE8B2786CE2500AF2A95 /* TryoutAlertViewController.swift */; };
+		0809CE902787DBCD00AF2A95 /* GuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0809CE8F2787DBCC00AF2A95 /* GuideViewController.swift */; };
 		080A11662755C0E900931B8C /* chatLib.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69D03BE0274507F800A86690 /* chatLib.xcframework */; };
 		080A116A275716E900931B8C /* ConfigItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080A1169275716E900931B8C /* ConfigItem.swift */; };
 		0818D88426FD6FC1002BF3B9 /* DestroyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D88326FD6FC1002BF3B9 /* DestroyViewController.swift */; };
@@ -60,8 +68,6 @@
 		08F0FA8D268839F200C5C1DF /* VoiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F0FA8C268839F200C5C1DF /* VoiceTableViewCell.swift */; };
 		08F0FA9026884C2000C5C1DF /* ImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F0FA8F26884C2000C5C1DF /* ImageTableViewCell.swift */; };
 		08F0FA9626884C5C00C5C1DF /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F0FA9526884C5C00C5C1DF /* LocationTableViewCell.swift */; };
-		694D55C72766F5B60044E580 /* MBProgressHUD.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 694D55C52766F5B60044E580 /* MBProgressHUD.xcframework */; };
-		694D55C92766F5B60044E580 /* SwiftyJSON.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 694D55C62766F5B60044E580 /* SwiftyJSON.xcframework */; };
 		6953EAF82622C12F008EC2F0 /* AuthorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6953EAF72622C12F008EC2F0 /* AuthorViewController.swift */; };
 		6969ECBC26134294008CB0B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969ECBB26134294008CB0B2 /* AppDelegate.swift */; };
 		6969ECBE26134294008CB0B2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969ECBD26134294008CB0B2 /* SceneDelegate.swift */; };
@@ -70,10 +76,6 @@
 		6969ECC826134295008CB0B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6969ECC726134295008CB0B2 /* Assets.xcassets */; };
 		6969ECD526134450008CB0B2 /* MsgViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969ECD426134450008CB0B2 /* MsgViewController.swift */; };
 		6969ECDB261344CA008CB0B2 /* WalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969ECDA261344CA008CB0B2 /* WalletViewController.swift */; };
-		69B8C066261C580400B4E4AC /* libbls384_256.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69B8C065261C580400B4E4AC /* libbls384_256.a */; settings = {ATTRIBUTES = (Weak, ); }; };
-		69B8C06B261C582B00B4E4AC /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 69B8C068261C582B00B4E4AC /* libc++.tbd */; };
-		69B8C06C261C582B00B4E4AC /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 69B8C069261C582B00B4E4AC /* libc++.1.tbd */; };
-		69B8C06D261C582B00B4E4AC /* libc++abi.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 69B8C06A261C582B00B4E4AC /* libc++abi.tbd */; };
 		69B8C0BC261C683100B4E4AC /* NJError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B8C0BB261C683100B4E4AC /* NJError.swift */; };
 		69B8C0C3261C703800B4E4AC /* WebsocketSrv.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B8C0C2261C703800B4E4AC /* WebsocketSrv.swift */; };
 		69B8C0C8261C8AD100B4E4AC /* ServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B8C0C7261C8AD100B4E4AC /* ServiceDelegate.swift */; };
@@ -95,7 +97,26 @@
 		7CEFD46F261E9ACA0002B0B9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFD46E261E9ACA0002B0B9 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		0809CE8427857CF100AF2A95 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				0809CE8327857CF100AF2A95 /* SwiftyJSON.xcframework in Embed Frameworks */,
+				0809CE8627857D0600AF2A95 /* MBProgressHUD.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		0809CE872786963300AF2A95 /* BackupGuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupGuideViewController.swift; sourceTree = "<group>"; };
+		0809CE892786C7B800AF2A95 /* VIPAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIPAlertViewController.swift; sourceTree = "<group>"; };
+		0809CE8B2786CE2500AF2A95 /* TryoutAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TryoutAlertViewController.swift; sourceTree = "<group>"; };
+		0809CE8F2787DBCC00AF2A95 /* GuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideViewController.swift; sourceTree = "<group>"; };
 		080A1169275716E900931B8C /* ConfigItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigItem.swift; sourceTree = "<group>"; };
 		0818D88326FD6FC1002BF3B9 /* DestroyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestroyViewController.swift; sourceTree = "<group>"; };
 		0818D887270165FA002BF3B9 /* TransferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferViewController.swift; sourceTree = "<group>"; };
@@ -194,13 +215,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				08EAAD3F2695847900210271 /* SystemConfiguration.framework in Frameworks */,
-				69B8C06B261C582B00B4E4AC /* libc++.tbd in Frameworks */,
-				69B8C06C261C582B00B4E4AC /* libc++.1.tbd in Frameworks */,
-				69B8C06D261C582B00B4E4AC /* libc++abi.tbd in Frameworks */,
-				69B8C066261C580400B4E4AC /* libbls384_256.a in Frameworks */,
-				694D55C92766F5B60044E580 /* SwiftyJSON.xcframework in Frameworks */,
+				0809CE8527857D0600AF2A95 /* MBProgressHUD.xcframework in Frameworks */,
+				0809CE8227857CF100AF2A95 /* SwiftyJSON.xcframework in Frameworks */,
 				080A11662755C0E900931B8C /* chatLib.xcframework in Frameworks */,
-				694D55C72766F5B60044E580 /* MBProgressHUD.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,6 +300,8 @@
 				69B8C0E9261D9FB100B4E4AC /* QRCodeShowViewController.swift */,
 				087B57F126DF1F1400591F8D /* AgentButton.swift */,
 				0879444726E6FFC70077DEDC /* AvatarButton.swift */,
+				0809CE892786C7B800AF2A95 /* VIPAlertViewController.swift */,
+				0809CE8B2786CE2500AF2A95 /* TryoutAlertViewController.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -399,11 +418,13 @@
 				0818D88627006597002BF3B9 /* transfer */,
 				6969ECDA261344CA008CB0B2 /* WalletViewController.swift */,
 				69F8D0FD261AA544009D7AF3 /* NewWalletViewController.swift */,
+				0809CE872786963300AF2A95 /* BackupGuideViewController.swift */,
 				0823F777265201B4000DA4DB /* QRViewController.swift */,
 				0823F77C26520B24000DA4DB /* NickEditViewController.swift */,
 				087BD8122658AF430009459C /* ManageViewController.swift */,
 				087B57F726E1E15900591F8D /* AgentViewController.swift */,
 				0818D88326FD6FC1002BF3B9 /* DestroyViewController.swift */,
+				0809CE8F2787DBCC00AF2A95 /* GuideViewController.swift */,
 			);
 			path = wallet;
 			sourceTree = "<group>";
@@ -465,6 +486,7 @@
 				6969ECB426134293008CB0B2 /* Sources */,
 				6969ECB526134293008CB0B2 /* Frameworks */,
 				6969ECB626134293008CB0B2 /* Resources */,
+				0809CE8427857CF100AF2A95 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -530,6 +552,7 @@
 				7CEFD46F261E9ACA0002B0B9 /* Constants.swift in Sources */,
 				69B8C0EF261DA17B00B4E4AC /* CliMessage.swift in Sources */,
 				087B57F826E1E15900591F8D /* AgentViewController.swift in Sources */,
+				0809CE882786963300AF2A95 /* BackupGuideViewController.swift in Sources */,
 				0818D88B27016613002BF3B9 /* TransferContactViewController.swift in Sources */,
 				69B8C0CD261D2C0900B4E4AC /* MessageListViewController.swift in Sources */,
 				0823F778265201B4000DA4DB /* QRViewController.swift in Sources */,
@@ -549,6 +572,7 @@
 				08781E8F275F09DE0084D80A /* MsgViewController+MapView.swift in Sources */,
 				08781E8B275DCEE30084D80A /* MsgViewController+TableView.swift in Sources */,
 				086701B926672CAE00A1E951 /* AudioPlayManager.swift in Sources */,
+				0809CE902787DBCD00AF2A95 /* GuideViewController.swift in Sources */,
 				69F8D102261AA615009D7AF3 /* Wallet.swift in Sources */,
 				0860D5C727634F7900E53FDA /* FileManager+Extension.swift in Sources */,
 				69B8C0DC261D334100B4E4AC /* ChatItem.swift in Sources */,
@@ -578,10 +602,12 @@
 				0818D88E27016638002BF3B9 /* TransferStrangerViewController.swift in Sources */,
 				69B8C0D7261D2ED100B4E4AC /* PasswordViewController.swift in Sources */,
 				6969ECC626134294008CB0B2 /* ninja.xcdatamodeld in Sources */,
+				0809CE8C2786CE2500AF2A95 /* TryoutAlertViewController.swift in Sources */,
 				08F0FA9626884C5C00C5C1DF /* LocationTableViewCell.swift in Sources */,
 				69B8C101261DC42D00B4E4AC /* ContactItem.swift in Sources */,
 				0825C21426CB53F1003E0EF3 /* GroupDetailViewController.swift in Sources */,
 				69F8D0FE261AA544009D7AF3 /* NewWalletViewController.swift in Sources */,
+				0809CE8A2786C7B800AF2A95 /* VIPAlertViewController.swift in Sources */,
 				086701B32665C6D900A1E951 /* AudioRecordManager.swift in Sources */,
 				69B8C0C8261C8AD100B4E4AC /* ServiceDelegate.swift in Sources */,
 				0886B1B5277B044100257C15 /* GroupItemTableViewCell.swift in Sources */,

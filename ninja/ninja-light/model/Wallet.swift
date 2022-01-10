@@ -18,24 +18,25 @@ class Wallet: NSObject{
         var useFaceID = false
         var useDestroy = false
         var liceneseExpireTime: Int64 = 0
+        var avatarData: Data?
 
         public static let shared = Wallet()
 
         lazy var loaded: Bool = {
-        do {
-            var inst:Wallet?
-            inst = try CDManager.shared.GetOne(entity: "CDWallet",
-                                               predicate: nil)
-            if inst == nil {
-                return false
-            }
-            
-            self.Copy(inst!)
-        } catch {
-            return false
-        }
+                do {
+                        var inst: Wallet?
+                        inst = try CDManager.shared.GetOne(entity: "CDWallet",
+                                                       predicate: nil)
+                        if inst == nil {
+                                return false
+                        }
 
-        return self.obj != nil
+                        self.Copy(inst!)
+                } catch {
+                        return false
+                }
+
+                return self.obj != nil
         }()
     
         func Copy(_ a: Wallet) {
@@ -46,6 +47,7 @@ class Wallet: NSObject{
                 self.useFaceID = a.useFaceID
                 self.useDestroy = a.useDestroy
                 self.liceneseExpireTime = a.liceneseExpireTime
+                self.avatarData = a.avatarData
         }
     
         func New(_ password: String) throws {
@@ -65,6 +67,7 @@ class Wallet: NSObject{
                 self.useDestroy = false
                 self.nickName = ""
                 self.liceneseExpireTime = 0
+
                 try CDManager.shared.Delete(entity: "CDWallet")
                 try CDManager.shared.AddEntity(entity: "CDWallet", m: self)
         }
@@ -164,6 +167,16 @@ class Wallet: NSObject{
                 }
                 return nil
         }
+        
+        func UpdateAvatarData(by data: Data) -> NJError? {
+                self.avatarData = data
+                do {
+                        try CDManager.shared.UpdateOrAddOne(entity: "CDWallet", m: self, predicate: NSPredicate(format: "address == %@ AND jsonStr == %@", self.Addr!, self.wJson!))
+                } catch let err {
+                        return NJError.wallet(err.localizedDescription)
+                }
+                return nil
+        }
 
         func openFaceID(auth: String) -> Bool {
                 guard let _ = Active(auth) else {
@@ -218,6 +231,7 @@ extension Wallet: ModelObj {
                 wObj.useFaceID = self.useFaceID
                 wObj.useDestroy = self.useDestroy
                 wObj.liceneseExpireTime = self.liceneseExpireTime
+                wObj.avatar = self.avatarData
                 self.obj = wObj
         }
 
@@ -232,6 +246,7 @@ extension Wallet: ModelObj {
                 self.useFaceID = wObj.useFaceID
                 self.useDestroy = wObj.useDestroy
                 self.liceneseExpireTime = wObj.liceneseExpireTime
+                self.avatarData = wObj.avatar
         }
     
 }

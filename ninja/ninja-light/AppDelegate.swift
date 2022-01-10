@@ -82,6 +82,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 if Wallet.shared.loaded{
                         ServiceDelegate.InitService()
                         window?.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
+//                        window?.rootViewController = instantiateViewController(vcID: "NinjaGuideVC")
+                        
                 }else{
                         window?.rootViewController = instantiateViewController(vcID: "NinjaNewWalletVC")
                 }

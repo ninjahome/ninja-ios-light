@@ -8,76 +8,39 @@
 import UIKit
 
 class AgentViewController: UIViewController {
-
-    @IBOutlet weak var doneStatus: UIButton!
-    @IBOutlet weak var licenseDecode: UITextView!
-    @IBOutlet weak var inputCode: UITextField!
     
-    var license: String?
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        hideKeyboardWhenTappedAround()
-    }
-    
-    @IBAction func backBarBtn(_ sender: UIBarButtonItem) {
-        self.navigationController?.popViewController(animated: true)
-    }
-    
-    @IBAction func importBtn(_ sender: UIButton) {
+        var license: String?
+        @IBOutlet weak var collectionView: UICollectionView!
         
-        if let code = license {
-            importLic(code)
-        } else {
-            if let input = inputCode.text {
-                importLic(input)
-            }
+        override func viewDidLoad() {
+                super.viewDidLoad()
+                hideKeyboardWhenTappedAround()
+                collectionView.delegate = self
+                collectionView.dataSource = self
         }
-    }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ImportAgentSEG" {
-            let vc : ScannerViewController = segue.destination as! ScannerViewController
-            vc.delegate = self
-        }
-    }
-    
-    func importLic(_ license: String) {
-        
-        self.showIndicator(withTitle: "", and: "Importing")
-        DispatchQueue.global().async {
-            do {
-                try AgentService.shared.importVaildLicense(license)
-            } catch let err {
-                DispatchQueue.main.async {
-                    self.hideIndicator()
-                    self.toastMessage(title: "import license err: \(err.localizedDescription)")
-                }
-                
-            }
-            DispatchQueue.main.async {
-                self.hideIndicator()
+        @IBAction func backBarBtn(_ sender: UIBarButtonItem) {
                 self.navigationController?.popViewController(animated: true)
-            }
         }
-        
-    }
 
 }
 
-extension AgentViewController: ScannerViewControllerDelegate {
-    
-    func codeDetected(code: String) {
-        self.license = code
-        do {
-            guard let decode = try AgentService.shared.decodeLicense(code) else {
-                return
-            }
-            self.doneStatus.isHidden = false
-            self.licenseDecode.text = decode
-        } catch let err {
-            self.toastMessage(title: "decode license err: \(err.localizedDescription)")
+extension AgentViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+        func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+                return 2
         }
-    }
-
+        
+        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+                let ncell = collectionView.dequeueReusableCell(withReuseIdentifier: "normalCollectCell", for: indexPath)
+                let vcell = collectionView.dequeueReusableCell(withReuseIdentifier: "vipCollectCell", for: indexPath)
+                if indexPath.row == 0 {
+                        return ncell
+                }
+                if indexPath.row == 1 {
+                        return vcell
+                }
+                return UICollectionViewCell()
+        }
+        
+        
 }

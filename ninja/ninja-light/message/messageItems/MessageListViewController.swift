@@ -120,6 +120,7 @@ class MessageListViewController: UIViewController{
         override func viewWillAppear(_ animated: Bool) {
                 super.viewWillAppear(animated)
                 self.hideConnectingTips()
+                
                 guard Wallet.shared.loaded else {
                         self.performSegue(withIdentifier: "CreateNewAccountSeg", sender: self)
                         return

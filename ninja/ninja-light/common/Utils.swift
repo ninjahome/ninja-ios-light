@@ -330,14 +330,46 @@ extension UIViewController {
             Indicator.detailsLabel.text = Description
             Indicator.show(animated: true)
     }}
-    
-    func createIndicator(withTitle title: String, and Description:String) -> MBProgressHUD {
-            let Indicator = MBProgressHUD.showAdded(to: self.view, animated: true)
-            Indicator.label.text = title
-            Indicator.isUserInteractionEnabled = false
-            Indicator.detailsLabel.text = Description
-            return Indicator
-    }
+
+        func showSyncIndicator(withTitle title: String, and Description:String) {DispatchQueue.main.async {
+                let Indicator = MBProgressHUD.showAdded(to: self.view, animated: true)
+                Indicator.label.text = title
+                Indicator.isUserInteractionEnabled = false
+                Indicator.mode = .customView
+                Indicator.customView = UIImageView(image: UIImage(named: "loading"))
+                
+//                Indicator.tintColor = UIColor(hex: "4BB5EF")
+                Indicator.detailsLabel.text = Description
+                Indicator.show(animated: true)
+        }}
+        
+        func hidedSuccIndicator() {
+                MBProgressHUD.hide(for: self.view, animated: true)
+                let Indicator = MBProgressHUD.showAdded(to: self.view, animated: true)
+                Indicator.isUserInteractionEnabled = false
+                Indicator.mode = .customView
+                Indicator.customView = UIImageView(image: UIImage(named: "bingggo"))
+                Indicator.detailsLabel.text = "同步成功"
+                Indicator.hide(animated: true, afterDelay: 2)
+        }
+        
+        func hidedFaildIndicator() {
+                MBProgressHUD.hide(for: self.view, animated: true)
+                let Indicator = MBProgressHUD.showAdded(to: self.view, animated: true)
+                Indicator.isUserInteractionEnabled = false
+                Indicator.mode = .customView
+                Indicator.customView = UIImageView(image: UIImage(named: ""))
+                Indicator.detailsLabel.text = "同步失败"
+                Indicator.hide(animated: true, afterDelay: 2)
+        }
+        
+//    func createIndicator(withTitle title: String, and Description:String) -> MBProgressHUD {
+//            let Indicator = MBProgressHUD.showAdded(to: self.view, animated: true)
+//            Indicator.label.text = title
+//            Indicator.isUserInteractionEnabled = false
+//            Indicator.detailsLabel.text = Description
+//            return Indicator
+//    }
     
     func toastMessage(title:String) -> Void {
 //            DispatchQueue.main.async {
@@ -351,7 +383,7 @@ extension UIViewController {
 //            }
     }
     
-    func CustomerAlert(name:String){ DispatchQueue.main.async {
+    func CustomerAlert(name:String) { DispatchQueue.main.async {
             
             let alertVC = instantiateViewController(vcID:name)
             
@@ -360,7 +392,7 @@ extension UIViewController {
             self.present(alertController, animated: true, completion: nil);
             }
     }
-    
+        
     func hideIndicator() {DispatchQueue.main.async {
             MBProgressHUD.hide(for: self.view, animated: true)
     }}
@@ -407,6 +439,23 @@ extension UIViewController {
         alertController.setValue(alertVC, forKey: "contentViewController");
         self.present(alertController, animated: true, completion: nil);
     }
+        
+        func ShowVIPAlertView() {
+                guard let alertVC = instantiateViewController(vcID: "VIPAlertViewControllerSID") as? VIPAlertViewController else {
+                        return
+                }
+                let alertViewCtrl = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
+                alertViewCtrl.setValue(alertVC, forKey: "contentViewController")
+                
+        }
+        
+        func ShowTryoutView() {
+                guard let alertVC = instantiateViewController(vcID: "TryoutAlertViewControllerSID") as? VIPAlertViewController else {
+                        return
+                }
+                let alertViewCtrl = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
+                alertViewCtrl.setValue(alertVC, forKey: "contentViewController")
+        }
     
     func ShowQRAlertView(data:String){
         guard let image = generateQRCode(from: data) else { return }
