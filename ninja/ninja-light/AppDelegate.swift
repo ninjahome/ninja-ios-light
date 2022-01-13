@@ -23,8 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             print("token \(token)")
             print("deviceToken \(deviceToken)")
             ServiceDelegate.deviceToken = token
-            ServiceDelegate.InitAPP()
-            
+            ChatLibSetPushParam(token, DevTypeIOS, Debug)
+
             if Wallet.shared.Addr == nil {
                 let url = URL(string: "https://baidu.com")
                 let task = URLSession.shared.dataTask(with: url!) {(data: Data?, response: URLResponse?, error: Error?) in
@@ -76,16 +76,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
             
-                //TODO:: to be test
-//                ServiceDelegate.InitAPP()
+                
+                ServiceDelegate.InitAPP()
                 // Override point for customization after application launch.
-                if Wallet.shared.loaded{
+                if Wallet.shared.loaded {
                         ServiceDelegate.InitService()
                         window?.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
-//                        window?.rootViewController = instantiateViewController(vcID: "NinjaGuideVC")
-                        
-                }else{
-                        window?.rootViewController = instantiateViewController(vcID: "NinjaNewWalletVC")
+                } else {
+                        if isFirstUser() {
+                                window?.rootViewController = instantiateViewController(vcID: "NinjaGuideVC")
+                        } else {
+                                window?.rootViewController = instantiateViewController(vcID: "NinjaNewWalletVC")
+                        }
                 }
                 window?.makeKeyAndVisible()
             

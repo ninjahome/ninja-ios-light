@@ -19,6 +19,8 @@ class AccountItem: NSObject {
         var Balance: String?
         var TouchTime: Int64?
         
+        public static let shared = AccountItem()
+        
         public override init() {
                 super.init()
         }
@@ -29,7 +31,8 @@ class AccountItem: NSObject {
                         data.Addr = objJson["addr"].string
                         data.Nonce = objJson["nonce"].int64
                         data.NickName = objJson["name"].string
-                        data.Avatar = try? objJson["avatar"].rawData()
+                        let str = objJson["avatar"].string
+                        data.Avatar = ChatLibUnmarshalGoByte(str)
                         data.Balance = objJson["balance"].string
                         data.TouchTime = objJson["touch_time"].int64
                         return data
@@ -51,6 +54,15 @@ class AccountItem: NSObject {
                                                         predicate: NSPredicate(format: "addr == %@", item.Addr!))
                 } catch let err {
                     return NJError.account(err.localizedDescription)
+                }
+                return nil
+        }
+        
+        func getLatestAccount(addr: String) -> AccountItem? {
+                var error: NSError?
+                if let data = ChatLibAccountDetail(addr, &error), error == nil {
+                        let item = AccountItem.initByData(data)
+                        return item
                 }
                 return nil
         }

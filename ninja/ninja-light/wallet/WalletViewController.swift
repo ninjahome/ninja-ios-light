@@ -28,6 +28,8 @@ class WalletViewController: UITableViewController {
         override func viewWillAppear(_ animated: Bool) {
                 super.viewWillAppear(animated)
                 
+                Wallet.shared.getLatestWallt()
+                
                 address.text = Wallet.shared.Addr
                 faceIDSwitch.isOn = Wallet.shared.useFaceID
                 destroySwitch.isOn = Wallet.shared.useDestroy
@@ -36,24 +38,32 @@ class WalletViewController: UITableViewController {
                 avatar.avaInfo = nil
                 
                 DispatchQueue.global().async {
+                        _ = Wallet.shared.getLatestWallt()
                         let status = AgentService.shared.getAgentStatus()
                         DispatchQueue.main.async {
                                 self.agentBtn.currentStatus = status
         //                        self.agentLabel.text = status.handleText[1]
                                 switch status {
                                 case .activated:
-                                        self.agentTime.text = "\(AgentService.shared.expireDate)到期"
+                                        self.agentTime.text = String(AgentService.shared.expireDays)
+//                                        self.agentTime.tintColor = UIColor(hex: "897455")
+                                        self.agentTime.font = UIFont(name: "", size: 20)
+//                                        self.agentTime.text = "\(AgentService.shared.expireDate)到期"
                                         self.vipBackground.layer.contents = UIImage(named: "VIP_BGC")?.cgImage
                                         self.agentBtn.setImage(nil, for: .normal)
                                         self.vipFlag(show: true)
                                 case .almostExpire:
-                                        self.agentTime.text = String(format: "%4d 天", AgentService.shared.expireDays)
+                                        self.agentTime.text = String(AgentService.shared.expireDays)
+//                                        self.agentTime.tintColor = UIColor(hex: "897455")
+                                        self.agentTime.font = UIFont(name: "", size: 20)
+//                                        self.agentTime.text = String(format: "%4d 天", AgentService.shared.expireDays)
                                         self.vipBackground.layer.contents = UIImage(named: "VIP_BGC")?.cgImage
                                 
                                         self.agentBtn.setImage(UIImage(named: "red"), for: .normal)
                                         self.vipFlag(show: true)
                                 case .initial:
                                         self.agentTime.text = "普通用户仅支持文本聊天"
+                                        self.agentTime.font = UIFont(name: "", size: 14)
                                         self.vipBackground.layer.contents = UIImage(named: "nor_bgc")?.cgImage
                                         self.agentBtn.setImage(nil, for: .normal)
                                         self.vipFlag(show: false)
@@ -61,6 +71,8 @@ class WalletViewController: UITableViewController {
                                 }
                         }
                 }
+                
+                
         }
     
         override func viewDidLoad() {
@@ -90,7 +102,14 @@ class WalletViewController: UITableViewController {
                 }
 
         }
-    
+        
+        
+        @IBAction func activeVIP(_ sender: UIButton) {
+                DispatchQueue.global().async {
+                        Wallet.shared.getLatestWalletFromChain()
+                }
+        }
+        
     @IBAction func setUseFaceID(_ sender: UISwitch) {
         if sender.isOn {
             biometryUsage { (usageRes) in
@@ -148,6 +167,7 @@ class WalletViewController: UITableViewController {
     
         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
                 if segue.identifier == "EditNicknameSEG", let vc = segue.destination as? NickEditViewController {
+                        vc.nick = Wallet.shared.nickName
                         vc.returnHost = {[weak self] res in
                                 self?.avatar.avaInfo = nil
                         }
@@ -162,7 +182,6 @@ class WalletViewController: UITableViewController {
                         self.vipFlag.isHidden = true
                         self.vipIcon.isHidden = true
                 }
-                
         }
 
 }

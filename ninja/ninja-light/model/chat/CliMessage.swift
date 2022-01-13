@@ -204,12 +204,12 @@ class CliMessage: NSObject {
         
         func PackData() -> (Data?) {
                 var data:Data?
-                var gid:String = ""
-                var isGroup = false
-                if let groupId = groupId {
-                        isGroup = true
-                        gid = groupId
-                }
+//                var gid:String = ""
+//                var isGroup = false
+//                if let groupId = groupId {
+//                        isGroup = true
+//                        gid = groupId
+//                }
                 
                 switch self.type {
                 case .plainTxt:
@@ -245,11 +245,7 @@ class CliMessage: NSObject {
                                 return nil
                         }
                         data = ChatLibWrapLocation(locData.str, Double(locData.lo), Double(locData.la))
-//                        if isGroup {
-//                                data = ChatLib.ChatLibPackGroupLocation(gid,locData.str, locData.lo, locData.la)
-//                        } else {
-//                                data = ChatLib.ChatLibPackLocation(locData.lo, locData.la, locData.str)
-//                        }
+
                 case .file:
                         //TODO::
                         return nil
@@ -263,11 +259,6 @@ class CliMessage: NSObject {
                         let suffix = url.pathExtension
                         let name = self.videoData?.name
                         data = ChatLibWrapFile(name, suffix, size, videoD)
-//                        if isGroup {
-//                                data = ChatLib.ChatLibPackGroupFile(gid, name, videoD, size)
-//                        } else {
-//                                data = ChatLib.ChatLibPackFile(videoD, size, name)
-//                        }
                 default:
                         return nil
                 }

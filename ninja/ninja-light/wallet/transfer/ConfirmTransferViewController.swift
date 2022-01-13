@@ -15,7 +15,7 @@ class ConfirmTransferViewController: UIViewController {
     @IBOutlet weak var confirmBtn: UIButton!
     
     var transAddress: String?
-    var expireDays: Int?
+    var expireDays: Float?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,15 +53,5 @@ class ConfirmTransferViewController: UIViewController {
     @IBAction func returnItem(_ sender: UIBarButtonItem) {
         self.navigationController?.popViewController(animated: true)
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

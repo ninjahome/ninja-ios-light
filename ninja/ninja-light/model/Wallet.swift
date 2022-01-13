@@ -8,9 +8,9 @@
 import Foundation
 import CoreData
 import ChatLib
-//import SwiftyJSON
+import SwiftyJSON
 
-class Wallet: NSObject{
+class Wallet: NSObject {
         var obj: CDWallet?
         var Addr: String?
         var wJson: String?
@@ -19,6 +19,8 @@ class Wallet: NSObject{
         var useDestroy = false
         var liceneseExpireTime: Int64 = 0
         var avatarData: Data?
+        var touchTime: Int64?
+        var nonce: Int64?
 
         public static let shared = Wallet()
 
@@ -30,7 +32,6 @@ class Wallet: NSObject{
                         if inst == nil {
                                 return false
                         }
-
                         self.Copy(inst!)
                 } catch {
                         return false
@@ -38,7 +39,57 @@ class Wallet: NSObject{
 
                 return self.obj != nil
         }()
-    
+        
+        public static func initByData(_ obj: Data) -> Wallet? {
+                if let objJson = try? JSON(data: obj) {
+                        let data = Wallet()
+                        data.Addr = objJson["addr"].string
+                        data.nonce = objJson["nonce"].int64
+                        data.nickName = objJson["name"].string
+                        let str = objJson["avatar"].string
+                        data.avatarData = ChatLibUnmarshalGoByte(str)
+                        data.liceneseExpireTime = objJson["balance"].int64 ?? 0
+                        data.touchTime = objJson["touch_time"].int64
+                        return data
+                }
+                return nil
+        }
+        
+        func getLatestWallt() {
+                var error: NSError?
+                if let data = ChatLibAccountDetail(self.Addr!, &error), error == nil {
+                        if let item = Wallet.initByData(data), let new = item.nonce {
+                                guard let old = self.nonce else {
+                                        _ = self.UpdateWallet(w: item)
+                                        return
+                                }
+                                if new > old {
+                                        _ = self.UpdateWallet(w: item)
+                                }
+                                
+                        }
+                }
+        }
+        
+        func getLatestWalletFromChain() {
+                var error: NSError?
+                if let data = ChatLibAccountBalance(self.Addr!, &error), error == nil {
+                        if let item = Wallet.initByData(data), let new = item.nonce {
+                                guard let old = self.nonce else {
+                                        _ = self.UpdateWallet(w: item)
+                                        return
+                                }
+                                if new > old {
+                                        _ = self.UpdateWallet(w: item)
+                                }
+                        }
+                }
+        }
+        
+        func accountNonce() {
+                ChatLibAccountNonce(self.nonce ?? 0)
+        }
+        
         func Copy(_ a: Wallet) {
                 self.Addr = a.Addr
                 self.wJson = a.wJson
@@ -49,10 +100,16 @@ class Wallet: NSObject{
                 self.liceneseExpireTime = a.liceneseExpireTime
                 self.avatarData = a.avatarData
         }
+        
+        func Update(_ a: Wallet) {
+                self.nickName = a.nickName
+                self.liceneseExpireTime = a.liceneseExpireTime
+                self.avatarData = a.avatarData
+        }
     
         func New(_ password: String) throws {
                 let walletJson =  ChatLibNewWallet(password)
-                if walletJson == ""{
+                if walletJson == "" {
                         throw NJError.wallet("Create Wallet Failed")
                 }
 
@@ -79,7 +136,6 @@ class Wallet: NSObject{
         func Active(_ password: String) -> Error? {
                 var error:NSError? = nil
                 ChatLibActiveWallet(self.wJson, password, &error)
-
                 return error
         }
 
@@ -109,6 +165,16 @@ class Wallet: NSObject{
                 try CDManager.shared.Delete(entity: "CDWallet")
                 try CDManager.shared.UpdateOrAddOne(entity: "CDWallet", m: self)
 
+        }
+        
+        func UpdateWallet(w: Wallet) -> NJError? {
+                Update(w)
+                do {
+                        try CDManager.shared.UpdateOrAddOne(entity: "CDWallet", m: self, predicate: NSPredicate(format: "address == %@ AND jsonStr == %@", self.Addr!, self.wJson!))
+                } catch let err {
+                        return NJError.wallet(err.localizedDescription)
+                }
+                return nil
         }
 
         func UpdateNick(by nick: String) -> NJError? {
@@ -170,12 +236,18 @@ class Wallet: NSObject{
         
         func UpdateAvatarData(by data: Data) -> NJError? {
                 self.avatarData = data
-                do {
-                        try CDManager.shared.UpdateOrAddOne(entity: "CDWallet", m: self, predicate: NSPredicate(format: "address == %@ AND jsonStr == %@", self.Addr!, self.wJson!))
-                } catch let err {
-                        return NJError.wallet(err.localizedDescription)
+                var error: NSError?
+                if ChatLibUpdateAvatar(data, &error), error == nil {
+                        do {
+                                try CDManager.shared.UpdateOrAddOne(entity: "CDWallet",
+                                                                    m: self,
+                                                                    predicate: NSPredicate(format: "address == %@ AND jsonStr == %@", self.Addr!, self.wJson!))
+                        } catch let err {
+                                return NJError.wallet(err.localizedDescription)
+                        }
+                        return nil
                 }
-                return nil
+                return NJError.wallet(error?.localizedDescription ?? "update avatar in chain faild")
         }
 
         func openFaceID(auth: String) -> Bool {

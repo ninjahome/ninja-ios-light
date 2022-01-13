@@ -77,27 +77,28 @@ class AuthorViewController: UIViewController {
         }
     }
 
-    func unlock(auth pwd: String) {
-        self.showIndicator(withTitle: "", and: "opening")
-        
-        DispatchQueue.global().async {
-            guard let err = Wallet.shared.Active(pwd) else {
-                DispatchQueue.main.async {
-                    self.hideIndicator()
-                    self.hideKeyboardWhenTappedAround()
-                    self.dismiss(animated: true) {
-                        self.walletDelegate?.OpenSuccess()
-                    }
+        func unlock(auth pwd: String) {
+                self.showIndicator(withTitle: "", and: "opening")
+
+                DispatchQueue.global().async {
+                        guard let err = Wallet.shared.Active(pwd) else {
+                                DispatchQueue.main.async {
+                                        self.hideIndicator()
+                                        self.hideKeyboardWhenTappedAround()
+                                        Wallet.shared.accountNonce()
+                                        self.dismiss(animated: true) {
+                                                self.walletDelegate?.OpenSuccess()
+                                        }
+                                }
+                                MessageItem.deleteMsgOneWeek()
+                                return
+                        }
+                        DispatchQueue.main.async {
+                                self.tips.text = err.localizedDescription
+                                self.hideIndicator()
+                                self.hideKeyboardWhenTappedAround()
+                        }
                 }
-                MessageItem.deleteMsgOneWeek()
-                return
-            }
-            DispatchQueue.main.async {
-                self.tips.text = err.localizedDescription
-                self.hideIndicator()
-                self.hideKeyboardWhenTappedAround()
-            }
         }
-    }
         
 }

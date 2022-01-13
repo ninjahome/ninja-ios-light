@@ -35,7 +35,7 @@ class ConfigItem: NSObject {
 
         public static func updateEndPoint(_ item: ConfigItem) -> NJError? {
                 do {
-                        try CDManager.shared.UpdateOrAddOne(entity: "CDCongig", m: item, predicate: nil)
+                        try CDManager.shared.UpdateOrAddOne(entity: "CDConfig", m: item, predicate: nil)
                 } catch let err {
                         return NJError.config(err.localizedDescription)
                 }

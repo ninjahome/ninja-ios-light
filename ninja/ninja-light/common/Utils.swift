@@ -48,6 +48,15 @@ extension URL {
 
 }
 
+public func isFirstUser() -> Bool {
+        let userDefault = UserDefaults.standard
+        if let _ = userDefault.string(forKey: "ninja") {
+                return true
+        }
+        userDefault.set("new", forKey: "ninja")
+        return false
+}
+
 public func afterWallet() {
         if #available(iOS 13.0, *) {
                 let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
@@ -236,6 +245,14 @@ extension Array {
 extension UIImage {
         var jpeg: Data? { jpegData(compressionQuality: 0.8) }  // QUALITY min = 0 / max = 1
         var png: Data? { pngData() }
+        
+        var compress: Data? {
+                let len = self.size.height
+                if len > 256 {
+                        return jpegData(compressionQuality: 256/len)
+                }
+                return jpegData(compressionQuality: 1)
+        }
 }
 
 extension UIViewController {

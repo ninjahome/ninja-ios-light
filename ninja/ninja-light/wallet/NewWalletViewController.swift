@@ -43,8 +43,7 @@ class NewWalletViewController: UIViewController {
             try Wallet.shared.New(password)
             
             ServiceDelegate.InitService()
-            _ = Wallet.shared.Active(password)
-
+//            _ = Wallet.shared.Active(password)
             afterWallet()
                                             
         } catch let err as NSError{

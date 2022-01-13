@@ -59,6 +59,7 @@
 		08B74A6726B3B90D00D6F0F8 /* GroupMemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B74A6626B3B90D00D6F0F8 /* GroupMemberViewController.swift */; };
 		08B74A6B26B637D800D6F0F8 /* GroupMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B74A6A26B637D800D6F0F8 /* GroupMemberTableViewCell.swift */; };
 		08BFE0CA2722749F000BADAD /* LockCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BFE0C92722749F000BADAD /* LockCache.swift */; };
+		08C2C22A278FD1BA0023D773 /* AvatarEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C2C229278FD1B90023D773 /* AvatarEditViewController.swift */; };
 		08CCDC6F26A3C3A200B0D7DA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CCDC6E26A3C3A200B0D7DA /* MapViewController.swift */; };
 		08EAAD3F2695847900210271 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08EAAD3E2695847900210271 /* SystemConfiguration.framework */; };
 		08EAAE112695973B00210271 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08EAAE102695973B00210271 /* Main.storyboard */; };
@@ -161,6 +162,7 @@
 		08B74A6626B3B90D00D6F0F8 /* GroupMemberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberViewController.swift; sourceTree = "<group>"; };
 		08B74A6A26B637D800D6F0F8 /* GroupMemberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberTableViewCell.swift; sourceTree = "<group>"; };
 		08BFE0C92722749F000BADAD /* LockCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockCache.swift; sourceTree = "<group>"; };
+		08C2C229278FD1B90023D773 /* AvatarEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarEditViewController.swift; sourceTree = "<group>"; };
 		08CCDC6E26A3C3A200B0D7DA /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		08EAAD3E2695847900210271 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		08EAAE102695973B00210271 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -419,6 +421,7 @@
 				6969ECDA261344CA008CB0B2 /* WalletViewController.swift */,
 				69F8D0FD261AA544009D7AF3 /* NewWalletViewController.swift */,
 				0809CE872786963300AF2A95 /* BackupGuideViewController.swift */,
+				08C2C229278FD1B90023D773 /* AvatarEditViewController.swift */,
 				0823F777265201B4000DA4DB /* QRViewController.swift */,
 				0823F77C26520B24000DA4DB /* NickEditViewController.swift */,
 				087BD8122658AF430009459C /* ManageViewController.swift */,
@@ -560,6 +563,7 @@
 				0886B1AF2772BEC500257C15 /* AccountItem.swift in Sources */,
 				086701B62667159E00A1E951 /* AudioFilesManager.swift in Sources */,
 				69B8C0BC261C683100B4E4AC /* NJError.swift in Sources */,
+				08C2C22A278FD1BA0023D773 /* AvatarEditViewController.swift in Sources */,
 				0886B1B3277AFE9400257C15 /* GroupListViewController.swift in Sources */,
 				69B8C0D2261D2D4600B4E4AC /* MesasgeItemTableViewCell.swift in Sources */,
 				08CCDC6F26A3C3A200B0D7DA /* MapViewController.swift in Sources */,

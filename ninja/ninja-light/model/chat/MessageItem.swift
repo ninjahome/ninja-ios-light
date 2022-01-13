@@ -117,7 +117,7 @@ class MessageItem: NSObject {
                 let owner = Wallet.shared.Addr!
                 var result: MessageItem?
                 result = try? CDManager.shared.GetOne(entity: "CDUnread",
-                                   predicate: NSPredicate(format: "owner == %@ AND to == %@ AND unixTime", owner, to, mid))
+                                   predicate: NSPredicate(format: "owner == %@ AND to == %@ AND unixTime == %@", owner, to, mid))
                 return result
         }
     

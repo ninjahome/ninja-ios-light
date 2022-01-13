@@ -38,7 +38,7 @@ extension IsVaildResultCode {
 
 class AgentService {
         var expireDate: String = ""
-        var expireDays: Int = 0
+        var expireDays: Float = 0
         var isActive: Bool = false
     
         public static let shared = AgentService()
@@ -55,8 +55,9 @@ class AgentService {
 
                 self.isActive = true
 
-                let expStamp = expireTime - currentTime
-                expireDays = Int(expStamp / 86400)
+//                let expStamp = expireTime - currentTime
+//                expireDays = Int(expStamp / 86400)
+                expireDays = ChatLibConvertBalance(Int(expireTime))
 
 //                if expStamp < 604800 {
 //                        return AgentStatus.almostExpire
