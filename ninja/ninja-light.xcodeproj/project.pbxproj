@@ -184,7 +184,6 @@
 		6969ECCC26134295008CB0B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6969ECD426134450008CB0B2 /* MsgViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MsgViewController.swift; sourceTree = "<group>"; };
 		6969ECDA261344CA008CB0B2 /* WalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletViewController.swift; sourceTree = "<group>"; };
-		69B8C065261C580400B4E4AC /* libbls384_256.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbls384_256.a; path = bin/libbls384_256.a; sourceTree = "<group>"; };
 		69B8C068261C582B00B4E4AC /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		69B8C069261C582B00B4E4AC /* libc++.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.1.tbd"; path = "usr/lib/libc++.1.tbd"; sourceTree = SDKROOT; };
 		69B8C06A261C582B00B4E4AC /* libc++abi.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++abi.tbd"; path = "usr/lib/libc++abi.tbd"; sourceTree = SDKROOT; };
@@ -474,7 +473,6 @@
 				69B8C069261C582B00B4E4AC /* libc++.1.tbd */,
 				69B8C068261C582B00B4E4AC /* libc++.tbd */,
 				69B8C06A261C582B00B4E4AC /* libc++abi.tbd */,
-				69B8C065261C580400B4E4AC /* libbls384_256.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
