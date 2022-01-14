@@ -53,8 +53,12 @@ public func isFirstUser() -> Bool {
         if let _ = userDefault.string(forKey: "ninja") {
                 return true
         }
-        userDefault.set("new", forKey: "ninja")
         return false
+}
+
+public func setFirstUser() {
+        let userDefault = UserDefaults.standard
+        userDefault.set("new", forKey: "ninja")
 }
 
 public func afterWallet() {

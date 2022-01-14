@@ -121,7 +121,8 @@ class MessageListViewController: UIViewController{
                 super.viewWillAppear(animated)
                 self.hideConnectingTips()
                 
-                guard Wallet.shared.loaded else {
+                guard isFirstUser() else {
+                        setFirstUser()
                         self.performSegue(withIdentifier: "CreateNewAccountSeg", sender: self)
                         return
                 }

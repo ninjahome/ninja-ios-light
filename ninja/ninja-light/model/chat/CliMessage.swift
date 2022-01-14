@@ -204,41 +204,17 @@ class CliMessage: NSObject {
         
         func PackData() -> (Data?) {
                 var data:Data?
-//                var gid:String = ""
-//                var isGroup = false
-//                if let groupId = groupId {
-//                        isGroup = true
-//                        gid = groupId
-//                }
                 
                 switch self.type {
                 case .plainTxt:
                         data = ChatLibWrapTxt(self.textData)
-//                        if isGroup {
-//                                data = ChatLibWrapTxt(self.textData)
-//                                data = ChatLib.ChatLibPackGroupTxt(gid, self.textData)
-//                        } else {
-//                                data = ChatLib.ChatLibPackPlainTxt(self.textData)
-//                        }
                 case .image:
                         data = ChatLibWrapImg(self.imgData)
-//                        if isGroup {
-//                                data = ChatLib.ChatLibPackGroupImage(gid, self.imgData)
-//                        } else {
-//                                data = ChatLib.ChatLibPackImage(self.imgData)
-//                        }
                 case .voice:
                         guard let audioData = self.audioData, audioData.duration > 1 else { //TODO::  duration?
-                                //TODO::
                                 return nil
                         }
                         data = ChatLibWrapVoice(audioData.duration, audioData.content)
-//                        if isGroup {
-//                                data = ChatLib.ChatLibPackGroupVoice(gid, audioData.content, audioData.duration)
-//                        } else {
-//                                data = ChatLib.ChatLibPackVoice(audioData.content, audioData.duration)
-//                        }
-                    
                 case .location:
                         guard let locData =  self.locationData else {
                                 //TODO::

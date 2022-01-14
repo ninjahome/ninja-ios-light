@@ -63,10 +63,10 @@ class AvatarButton: UIButton {
                                 self.setTitle(getContactText(id: avaInfo!.id), for: .normal)
                         case .wallet:
                                 guard let avaData = Wallet.shared.avatarData else {
-                                let hex = getWalletColor()
-                                self.backgroundColor = UIColor.init(hex: hex)
-                                self.setTitle(getWalletText(), for: .normal)
-                                break
+                                        let hex = getWalletColor()
+                                        self.backgroundColor = UIColor.init(hex: hex)
+                                        self.setTitle(getWalletText(), for: .normal)
+                                        break
                                 }
                                 self.setBackgroundImage(UIImage(data: avaData), for: .normal)
                         case .chatGroup:

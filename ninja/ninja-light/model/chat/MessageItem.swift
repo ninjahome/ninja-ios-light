@@ -87,7 +87,6 @@ class MessageItem: NSObject {
                 cache.deleteAll()
 
                 for msg in data {
-
                         var peerUid: String
                         if let groupId = msg.groupId {
                                 peerUid = groupId
@@ -100,28 +99,28 @@ class MessageItem: NSObject {
                         }
 
                         var msgList = cache.get(idStr: peerUid)
-
                         if msgList == nil {
                                 msgList = MessageList.init()
                         }
-
                         msgList!.append(msg)
 
                         cache.setOrAdd(idStr: peerUid, item: msgList)
-
                 }
-
         }
         
         public static func getItemByTime(mid: Int64, to: String) -> MessageItem? {
                 let owner = Wallet.shared.Addr!
                 var result: MessageItem?
-                result = try? CDManager.shared.GetOne(entity: "CDUnread",
-                                   predicate: NSPredicate(format: "owner == %@ AND to == %@ AND unixTime == %@", owner, to, mid))
+                do {
+                        result = try CDManager.shared.GetOne(entity: "CDUnread",
+                                                             predicate: NSPredicate(format: "owner == %@ AND to == %@ AND unixTime == %@", owner, to, mid))
+                } catch let err {
+                        print(err.localizedDescription)
+                }
                 return result
         }
     
-        public static func removeRead(_ uid:String){
+        public static func removeRead(_ uid: String){
                 cache.delete(idStr: uid)
                 let owner = Wallet.shared.Addr!
                 try? CDManager.shared.Delete(entity: "CDUnread",
@@ -218,7 +217,6 @@ class MessageItem: NSObject {
         }
     
         public static func addSentIM(cliMsg: CliMessage) -> MessageItem {
-
                 let msg = MessageItem.init(cliMsg: cliMsg)
 
                 var msgList = cache.get(idStr: msg.to!)

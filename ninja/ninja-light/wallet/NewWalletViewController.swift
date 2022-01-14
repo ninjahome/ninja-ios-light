@@ -25,31 +25,29 @@ class NewWalletViewController: UIViewController {
         }
     }
 
-    @IBAction func CreateWallet(_ sender: UIButton) {
-        guard let password = self.password1.text,password != ""else {
-            self.toastMessage(title: "Password can't be empty")
-            return
+        @IBAction func CreateWallet(_ sender: UIButton) {
+                guard let password = self.password1.text,password != ""else {
+                        self.toastMessage(title: "Password can't be empty")
+                        return
+                }
+                if password != self.password2.text{
+                        self.toastMessage(title: "2 passwords are not same")
+                        return
+                }
+
+                if Wallet.shared.Addr != nil {
+                        cleanAllData()
+                }
+
+                do {
+                        try Wallet.shared.New(password)
+                        ServiceDelegate.InitService()
+                        afterWallet()
+                } catch let err as NSError{
+                        self.toastMessage(title: err.localizedDescription)
+                }
+                
         }
-        if password != self.password2.text{
-            self.toastMessage(title: "2 passwords are not same")
-            return
-        }
-    
-        if Wallet.shared.Addr != nil {
-            cleanAllData()
-        }
-        
-        do {
-            try Wallet.shared.New(password)
-            
-            ServiceDelegate.InitService()
-//            _ = Wallet.shared.Active(password)
-            afterWallet()
-                                            
-        } catch let err as NSError{
-            self.toastMessage(title: err.localizedDescription)
-        }
-    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ImportScannerID" {

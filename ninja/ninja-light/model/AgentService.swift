@@ -8,33 +8,33 @@
 import Foundation
 import ChatLib
 
-enum ImportResultCode: Int {
-        case Success = 0
-        case ParseJsonErr
-        case ConnectionErr
-        case CallContractErr
-        case OtherErr
-}
-
-enum IsVaildResultCode: Int {
-        case DecodeLicenseErr = 0
-        case ConnectionErr
-        case ContractErr
-        case CallContractErr
-        case ValidTrue
-        case ValidFalse
-}
-
-extension IsVaildResultCode {
-        var localizedDescription: String {
-                switch self {
-                        case .ValidFalse:
-                                return "This license is already used."
-                        default:
-                                return ""
-                }
-        }
-}
+//enum ImportResultCode: Int {
+//        case Success = 0
+//        case ParseJsonErr
+//        case ConnectionErr
+//        case CallContractErr
+//        case OtherErr
+//}
+//
+//enum IsVaildResultCode: Int {
+//        case DecodeLicenseErr = 0
+//        case ConnectionErr
+//        case ContractErr
+//        case CallContractErr
+//        case ValidTrue
+//        case ValidFalse
+//}
+//
+//extension IsVaildResultCode {
+//        var localizedDescription: String {
+//                switch self {
+//                        case .ValidFalse:
+//                                return "This license is already used."
+//                        default:
+//                                return ""
+//                }
+//        }
+//}
 
 class AgentService {
         var expireDate: String = ""
@@ -54,19 +54,16 @@ class AgentService {
                 }
 
                 self.isActive = true
-
-//                let expStamp = expireTime - currentTime
-//                expireDays = Int(expStamp / 86400)
                 expireDays = ChatLibConvertBalance(Int(expireTime))
 
-//                if expStamp < 604800 {
-//                        return AgentStatus.almostExpire
-//                }
+                if expireDays < 5 {
+                        return AgentStatus.almostExpire
+                }
 
                 return AgentStatus.activated
         }
 
-        func decodeLicense(_ licenseCode: String) throws -> String? {
+//        func decodeLicense(_ licenseCode: String) throws -> String? {
         //        let license = ChatLib.ChatLibDecodeLicense(licenseCode)
         //        let code = ChatLib.ChatLibIsValidLicense(licenseCode)
         //        let verifyCode = IsVaildResultCode(rawValue: code)
@@ -79,10 +76,10 @@ class AgentService {
         //        default:
         //            return nil
         //        }
-                return nil
-        }
+//                return nil
+//        }
     
-        func importVaildLicense(_ license: String) throws {
+//        func importVaildLicense(_ license: String) throws {
         //        let importRes = ChatLib.ChatLibImportLicense(license)
         //        let dict = getDictionaryFromJSONString(jsonString: importRes)
         //        guard let rawVal = dict["result_code"] as? Int else {
@@ -96,7 +93,7 @@ class AgentService {
         //        default:
         //            throw NJError.agent(dict["result_message"] as! String)
         //        }
-        }
+//        }
 
         func transferLicense(to addr: String, days: Int) -> Bool {
                 var err:NSError?
