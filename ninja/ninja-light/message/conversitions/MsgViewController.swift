@@ -337,9 +337,15 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                         self.performSegue(withIdentifier: "ShowGroupDetailSeg", sender: self)
                 } else {
                         if isInContact() {
-                                self.performSegue(withIdentifier: "EditContactDetailsSEG", sender: self)
+                                let vc = instantiateViewController(vcID: "ContactDetailsVC") as! ContactDetailsViewController
+                                vc.itemUID = peerUid
+                                self.navigationController?.pushViewController(vc, animated: true)
+//                                self.performSegue(withIdentifier: "EditContactDetailsSEG", sender: self)
                         } else {
-                                self.performSegue(withIdentifier: "ShowStrangerDetailSeg", sender: self)
+                                let vc = instantiateViewController(vcID: "SearchDetailVC") as! SearchDetailViewController
+                                vc.uid = peerUid
+                                self.navigationController?.pushViewController(vc, animated: true)
+//                                self.performSegue(withIdentifier: "ShowStrangerDetailSeg", sender: self)
                         }
                 }
         }
@@ -400,15 +406,15 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         }
 
         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-                if segue.identifier == "EditContactDetailsSEG"{
-                        let vc : ContactDetailsViewController = segue.destination as! ContactDetailsViewController
-                        vc.itemUID = peerUid
-                }
-                
-                if segue.identifier == "ShowStrangerDetailSeg" {
-                        let vc:SearchDetailViewController = segue.destination as! SearchDetailViewController
-                        vc.uid = peerUid
-                }
+//                if segue.identifier == "EditContactDetailsSEG"{
+//                        let vc : ContactDetailsViewController = segue.destination as! ContactDetailsViewController
+//                        vc.itemUID = peerUid
+//                }
+//
+//                if segue.identifier == "ShowStrangerDetailSeg" {
+//                        let vc:SearchDetailViewController = segue.destination as! SearchDetailViewController
+//                        vc.uid = peerUid
+//                }
 
                 if segue.identifier == "ShowMapSeg" {
                         let vc: MapViewController = segue.destination as! MapViewController

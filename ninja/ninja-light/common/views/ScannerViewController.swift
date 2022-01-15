@@ -22,7 +22,7 @@ class ScannerViewController: UIViewController {
     override func viewDidLoad() {
                 super.viewDidLoad()
                 scanCubeView.layer.borderWidth = 2
-        scanCubeView.layer.borderColor = UIColor.init(red: 59/255.0, green: 135/255.0, blue: 127/255.0, alpha: 1).cgColor
+                scanCubeView.layer.borderColor = UIColor.init(red: 59/255.0, green: 135/255.0, blue: 127/255.0, alpha: 1).cgColor
                 captureSession = AVCaptureSession()
 
                 guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else { return }

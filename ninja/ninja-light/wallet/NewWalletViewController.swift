@@ -42,20 +42,22 @@ class NewWalletViewController: UIViewController {
                 do {
                         try Wallet.shared.New(password)
                         ServiceDelegate.InitService()
-                        afterWallet()
+                        guard isFirstUser() else {
+                                setFirstUser()
+                                self.performSegue(withIdentifier: "CreateNewAccountSeg", sender: self)
+                                return
+                        }
                 } catch let err as NSError{
                         self.toastMessage(title: err.localizedDescription)
                 }
                 
         }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ImportScannerID" {
-            let vc : ScannerViewController = segue.destination as! ScannerViewController
-            vc.delegate = self
+        
+        @IBAction func scanner(_ sender: UIButton) {
+                let vc = instantiateViewController(vcID: "ScannerVC") as! ScannerViewController
+                vc.delegate = self
+                self.present(vc, animated: true, completion: nil)
         }
-    }
-
 }
 
 extension NewWalletViewController: ScannerViewControllerDelegate {

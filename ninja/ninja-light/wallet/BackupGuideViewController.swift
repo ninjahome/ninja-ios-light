@@ -29,14 +29,16 @@ class BackupGuideViewController: UIViewController {
         
         @IBAction func backupQR(_ sender: UIButton) {
                 if qr != nil {
-                    UIImageWriteToSavedPhotosAlbum(qr!, nil, nil, nil)
-                    self.toastMessage(title: "Save success")
+                        UIImageWriteToSavedPhotosAlbum(qr!, nil, nil, nil)
+                        self.toastMessage(title: "Save success")
+                        afterWallet()
                 }
 
         }
         
         @IBAction func skipBackup(_ sender: UIButton) {
-                self.performSegue(withIdentifier: "EndBackupSEG", sender: self)
+//                self.performSegue(withIdentifier: "EndBackupSEG", sender: self)
+                afterWallet()
         }
         
         

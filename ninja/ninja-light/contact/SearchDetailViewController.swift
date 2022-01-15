@@ -8,85 +8,70 @@
 import UIKit
 
 class SearchDetailViewController: UIViewController {
-
-    
-    @IBOutlet weak var backContent: UIView!
-    @IBOutlet weak var avatar: UIButton!
-    @IBOutlet weak var uidText: UILabel!
+        @IBOutlet weak var backContent: UIView!
+        @IBOutlet weak var avatar: UIButton!
+        @IBOutlet weak var uidText: UILabel!
         
-    var uid: String?
+        var uid: String?
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
- 
-    }
+        override func viewWillAppear(_ animated: Bool) {
+                super.viewWillAppear(animated)
+                self.navigationController?.setNavigationBarHidden(true, animated: true)
+        }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        uidText.text = uid
+        override func viewDidLoad() {
+                super.viewDidLoad()
+                uidText.text = uid
         
-        let avatarText = (uid?.prefix(2))!
-        avatar.setTitle(String(avatarText), for: .normal)
+                let avatarText = (uid?.prefix(2))!
+                avatar.setTitle(String(avatarText), for: .normal)
         
-        backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
+                backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
         
-    }
+        }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-    }
+        override func viewWillDisappear(_ animated: Bool) {
+            super.viewWillDisappear(animated)
+            self.navigationController?.setNavigationBarHidden(false, animated: true)
+        }
     
-    @IBAction func backBtn(_ sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)
-    }
+        @IBAction func backBtn(_ sender: UIButton) {
+                self.navigationController?.popViewController(animated: true)
+        }
     
-    @IBAction func saveToContact(_ sender: Any) {
+        @IBAction func saveToContact(_ sender: Any) {
         
-        let contact = ContactItem.init()
-        contact.uid = self.uid
+                let contact = ContactItem.init()
+                contact.uid = self.uid
         //                contact.nickName = self.nickName.text
         //                contact.remark = remarks.text
         //                contact.avatar = self.avatar.image?.pngData()//TODO::Load avatar from netework
-        guard let err = ContactItem.UpdateContact(contact) else{
-                NotificationCenter.default.post(name:NotifyContactChanged,
+                guard let err = ContactItem.UpdateContact(contact) else{
+                        NotificationCenter.default.post(name:NotifyContactChanged,
                                                 object: nil, userInfo:nil)
-                return
-        }
+                        return
+                }
 
-        self.toastMessage(title: err.localizedDescription)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "SaveNewContactSeg" {
-
-            let contact = ContactItem.init()
-            contact.uid = self.uid
-
-            let vc = segue.destination as! ContactDetailsViewController
-            vc.itemUID = self.uid
-            vc.itemData = contact
-
+                self.toastMessage(title: err.localizedDescription)
         }
         
-        if segue.identifier == "StrangerMessageDetailSeg" {
-            guard let id = self.uid else {
-                return
-            }
-            let vc : MsgViewController = segue.destination as! MsgViewController
-            vc.peerUid = id
+        @IBAction func sendMsg(_ sender: UIButton) {
+                guard let id = self.uid else {
+                        return
+                }
+                let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController
+                vc.peerUid = id
+                self.navigationController?.pushViewController(vc, animated: true)
         }
-    }
-    
-    @IBAction func chatWith(_ sender: Any) {
-        guard self.uid != nil else {
-                return
-        }
-//        self.performSegue(withIdentifier: "ShowMessageDetailsSEG", sender: self)
+        
+        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+                if segue.identifier == "SaveNewContactSeg" {
+                        let contact = ContactItem.init()
+                        contact.uid = self.uid
 
-    }
-    
-    
+                        let vc = segue.destination as! ContactDetailsViewController
+                        vc.itemUID = self.uid
+                        vc.itemData = contact
+                }
+        }
 }

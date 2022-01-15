@@ -49,7 +49,20 @@ class GroupDetailViewController: UIViewController {
     }
         
     @IBAction func addMemberBtn(_ sender: UIButton) {
-        self.performSegue(withIdentifier: "AddGroupMemberSeg", sender: self)
+//
+            let vc = instantiateViewController(vcID: "AddGrpMemberVC") as! GroupMemberViewController
+            vc.isAddMember = true
+            if let group = groupItem {
+                vc.groupItem = group
+                vc.existMember = group.memberIds
+            }
+            
+            vc.notiMemberChange = { newGroupInfo in
+                self.groupItem = newGroupInfo
+                self.collectionView.reloadData()
+            }
+            self.navigationController?.pushViewController(vc, animated: true)
+//        self.performSegue(withIdentifier: "AddGroupMemberSeg", sender: self)
     }
     
     @IBAction func kickMemberBtn(_ sender: UIButton) {
@@ -69,19 +82,19 @@ class GroupDetailViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "AddGroupMemberSeg" {
-            let vc: GroupMemberViewController = segue.destination as! GroupMemberViewController
-            vc.isAddMember = true
-            if let group = groupItem {
-                vc.groupItem = group
-                vc.existMember = group.memberIds
-            }
-            
-            vc.notiMemberChange = { newGroupInfo in
-                self.groupItem = newGroupInfo
-                self.collectionView.reloadData()
-            }
-        }
+//        if segue.identifier == "AddGroupMemberSeg" {
+//            let vc: GroupMemberViewController = segue.destination as! GroupMemberViewController
+//            vc.isAddMember = true
+//            if let group = groupItem {
+//                vc.groupItem = group
+//                vc.existMember = group.memberIds
+//            }
+//
+//            vc.notiMemberChange = { newGroupInfo in
+//                self.groupItem = newGroupInfo
+//                self.collectionView.reloadData()
+//            }
+//        }
         
         if segue.identifier == "KickMemberSeg" {
             let vc: DeleteMemberController = segue.destination as! DeleteMemberController

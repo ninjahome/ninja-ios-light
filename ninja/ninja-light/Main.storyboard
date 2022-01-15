@@ -48,12 +48,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JjO-VG-74X" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-660.86956521739137" y="-1921.2053571428571"/>
+            <point key="canvasLocation" x="-1036" y="-2321"/>
         </scene>
         <!--New Wallet View Controller-->
         <scene sceneID="p9e-k8-P6l">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="z3r-xq-XGc" customClass="NewWalletViewController" customModule="ninja_light" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CreateWalletVC" modalPresentationStyle="fullScreen" id="z3r-xq-XGc" customClass="NewWalletViewController" customModule="ninja_light" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="EZU-Le-8qK">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -134,7 +134,7 @@
                                             <color key="titleColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
-                                            <segue destination="jap-e5-yU3" kind="show" identifier="ImportScannerID" id="Fwm-rY-BBL"/>
+                                            <action selector="scanner:" destination="z3r-xq-XGc" eventType="touchUpInside" id="Hf0-cp-Tck"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -173,18 +173,18 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lIh-JE-Cmh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="734.78260869565224" y="-2008.2589285714284"/>
+            <point key="canvasLocation" x="-62" y="-2321"/>
         </scene>
         <!--创建群聊-->
         <scene sceneID="hhm-vq-cdb">
             <objects>
-                <viewController hidesBottomBarWhenPushed="YES" id="6ck-zt-nba" customClass="GroupMemberViewController" customModule="ninja_light" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddGrpMemberVC" hidesBottomBarWhenPushed="YES" id="6ck-zt-nba" customClass="GroupMemberViewController" customModule="ninja_light" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="W1D-7B-A5G">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ez4-bV-FHO">
-                                <rect key="frame" x="0.0" y="44" width="414" height="769"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CreateGroupMemberTableViewCell" rowHeight="64" id="G7Q-YR-NSP" customClass="GroupMemberTableViewCell" customModule="ninja_light" customModuleProvider="target">
@@ -324,12 +324,11 @@
                         <outlet property="actTitle" destination="llL-g9-DXt" id="6iE-1I-APs"/>
                         <outlet property="finishBtn" destination="rA4-Xd-suW" id="iXX-T5-7cZ"/>
                         <outlet property="tableView" destination="Ez4-bV-FHO" id="2j6-by-Sob"/>
-                        <segue destination="BYZ-38-t0r" kind="show" identifier="StartGroupChatSEG" id="C99-bJ-wZY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ceq-WZ-QCJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3855.0724637681164" y="-2174.3303571428569"/>
+            <point key="canvasLocation" x="2096" y="-854"/>
         </scene>
         <!--Group Detail View Controller-->
         <scene sceneID="yrj-bf-5kQ">
@@ -340,7 +339,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="zBb-sL-yTQ">
-                                <rect key="frame" x="0.0" y="45" width="414" height="160"/>
+                                <rect key="frame" x="0.0" y="89" width="414" height="160"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="160" id="VRM-er-l8T"/>
@@ -416,7 +415,7 @@
                                 </cells>
                             </collectionView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K0z-Hx-Tyx">
-                                <rect key="frame" x="0.0" y="205" width="414" height="8"/>
+                                <rect key="frame" x="0.0" y="249" width="414" height="8"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="8" id="yck-6i-D1o"/>
@@ -427,7 +426,7 @@
                                 </state>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CHP-7X-XPt">
-                                <rect key="frame" x="0.0" y="214" width="414" height="112"/>
+                                <rect key="frame" x="0.0" y="258" width="414" height="112"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="群聊名称" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5zi-0g-LpS">
                                         <rect key="frame" x="20" y="22" width="66" height="20"/>
@@ -472,7 +471,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fnd-tV-rMZ">
-                                <rect key="frame" x="0.0" y="334" width="414" height="164"/>
+                                <rect key="frame" x="0.0" y="378" width="414" height="164"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="消息免打扰" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5gb-uV-ngE">
                                         <rect key="frame" x="20" y="20" width="82" height="20"/>
@@ -522,7 +521,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y2h-8y-sDk">
-                                <rect key="frame" x="0.0" y="506" width="414" height="390"/>
+                                <rect key="frame" x="0.0" y="550" width="414" height="346"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ARq-WA-iES">
                                         <rect key="frame" x="356" y="17" width="38" height="30"/>
@@ -539,7 +538,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="At7-ob-eIK">
-                                        <rect key="frame" x="20" y="242" width="374" height="48"/>
+                                        <rect key="frame" x="20" y="198" width="374" height="48"/>
                                         <color key="backgroundColor" red="0.95294117647058818" green="0.96078431372549022" blue="0.95686274509803915" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="SpE-t8-Snb"/>
@@ -599,13 +598,12 @@
                         <outlet property="groupNameBtn" destination="lRf-37-any" id="nip-5G-fEl"/>
                         <outlet property="groupTitle" destination="hHC-6b-WII" id="Jph-j8-rJM"/>
                         <outlet property="selfNickBtn" destination="I2H-xt-vNx" id="GZk-CU-W9O"/>
-                        <segue destination="6ck-zt-nba" kind="show" identifier="AddGroupMemberSeg" id="Pew-Ri-Krv"/>
                         <segue destination="NiN-dG-WjP" kind="show" identifier="KickMemberSeg" id="JRU-PI-GFU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Ua-PU-C1y" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4628.985507246377" y="-1775.2232142857142"/>
+            <point key="canvasLocation" x="3283" y="-2010"/>
         </scene>
         <!--消息-->
         <scene sceneID="Zs5-LX-vnG">
@@ -616,7 +614,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" separatorInsetReference="fromAutomaticInsets" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QIE-8R-ael">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -730,7 +728,7 @@
                                 </connections>
                             </tableView>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ekD-93-osk">
-                                <rect key="frame" x="0.0" y="44" width="414" height="28"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="28"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="28" id="l5S-a1-A2G"/>
                                 </constraints>
@@ -748,7 +746,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tBz-9E-sjT">
-                                <rect key="frame" x="270" y="44" width="124" height="88"/>
+                                <rect key="frame" x="270" y="88" width="124" height="88"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7pi-NO-Gcz">
                                         <rect key="frame" x="14" y="14" width="86" height="24"/>
@@ -841,18 +839,18 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="duk-Wj-rjQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2813.04347826087" y="-1349.3303571428571"/>
+            <point key="canvasLocation" x="162" y="-1187"/>
         </scene>
         <!--NickName-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" hidesBottomBarWhenPushed="YES" id="BYZ-38-t0r" customClass="MsgViewController" customModule="ninja_light" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MsgVC" modalPresentationStyle="fullScreen" hidesBottomBarWhenPushed="YES" id="BYZ-38-t0r" customClass="MsgViewController" customModule="ninja_light" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7re-F4-bQF">
-                                <rect key="frame" x="0.0" y="44" width="414" height="742"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="698"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="3w9-mv-dzv">
                                     <rect key="frame" x="0.0" y="962" width="414" height="190"/>
@@ -2118,9 +2116,7 @@
                         <outlet property="textFieldConstrain" destination="Afa-DT-Lv0" id="QEA-ij-sIH"/>
                         <outlet property="vipView" destination="Ne3-qi-xmo" id="d1d-h1-l0a"/>
                         <outlet property="voiceBtn" destination="F1h-Yt-FEz" id="t7p-Dp-Fa3"/>
-                        <segue destination="f4X-jQ-OkL" kind="show" identifier="EditContactDetailsSEG" id="L2b-bt-kYp"/>
                         <segue destination="H5K-Rj-2FP" kind="presentation" identifier="ShowMapSeg" modalPresentationStyle="fullScreen" id="VuF-HA-k2i"/>
-                        <segue destination="ddS-jL-QO7" kind="show" identifier="ShowStrangerDetailSeg" id="NDR-GO-jzh"/>
                         <segue destination="kwp-eE-p9L" kind="show" identifier="ShowGroupDetailSeg" id="lSH-z4-GLJ"/>
                     </connections>
                 </viewController>
@@ -2131,7 +2127,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3855.0724637681164" y="-1349.3303571428571"/>
+            <point key="canvasLocation" x="2096" y="-1552"/>
         </scene>
         <!--Map View Controller-->
         <scene sceneID="aGe-FQ-4jH">
@@ -2232,7 +2228,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OVt-ZA-5hF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3719" y="-1108"/>
+            <point key="canvasLocation" x="3287" y="-1187"/>
         </scene>
         <!--通讯录-->
         <scene sceneID="9nv-Z8-xG2">
@@ -2365,18 +2361,16 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableview" destination="a52-ja-YbZ" id="gmB-wN-LBC"/>
-                        <segue destination="jap-e5-yU3" kind="presentation" identifier="ShowQRScanerID" id="uQo-sy-bk4"/>
-                        <segue destination="f4X-jQ-OkL" kind="show" identifier="ShowContactDetailSeg" id="IWs-Oa-K7S"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t3B-Pz-CKB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1902.8985507246377" y="-613.39285714285711"/>
+            <point key="canvasLocation" x="161" y="110"/>
         </scene>
         <!--Contact Details View Controller-->
         <scene sceneID="8TS-Ag-2vi">
             <objects>
-                <viewController storyboardIdentifier="ContactDetailsViewController" modalPresentationStyle="fullScreen" hidesBottomBarWhenPushed="YES" id="f4X-jQ-OkL" customClass="ContactDetailsViewController" customModule="ninja_light" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ContactDetailsVC" modalPresentationStyle="fullScreen" hidesBottomBarWhenPushed="YES" id="f4X-jQ-OkL" customClass="ContactDetailsViewController" customModule="ninja_light" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="nIm-5o-bGs">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2606,12 +2600,11 @@
                         <outlet property="nickName" destination="fmu-oj-ltv" id="29g-Mv-uhC"/>
                         <outlet property="nickTextField" destination="hfa-5h-p6g" id="Ex8-zj-Esm"/>
                         <outlet property="uid" destination="0XB-yp-pa8" id="AaK-OQ-epe"/>
-                        <segue destination="BYZ-38-t0r" kind="show" identifier="ShowMessageDetailsSEG" id="b0X-Dq-dBX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vw0-8p-ToJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3719" y="-426"/>
+            <point key="canvasLocation" x="4467" y="-451"/>
         </scene>
         <!--群聊-->
         <scene sceneID="O3A-Yc-hHt">
@@ -2687,17 +2680,16 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="QVf-Zx-f7e" id="aFL-4G-AWB"/>
-                        <segue destination="BYZ-38-t0r" kind="show" identifier="GrpMsgDetailSEG" id="egw-Lg-Z84"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5bP-1n-A2W" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2726" y="-631"/>
+            <point key="canvasLocation" x="1732" y="362"/>
         </scene>
         <!--Search Detail View Controller-->
         <scene sceneID="omo-pD-z6y">
             <objects>
-                <viewController storyboardIdentifier="SearchDetailViewController" hidesBottomBarWhenPushed="YES" id="ddS-jL-QO7" customClass="SearchDetailViewController" customModule="ninja_light" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchDetailVC" hidesBottomBarWhenPushed="YES" id="ddS-jL-QO7" customClass="SearchDetailViewController" customModule="ninja_light" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0Ta-KG-Q3T">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2778,8 +2770,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="chatWith:" destination="ddS-jL-QO7" eventType="touchUpInside" id="Jo0-Az-KA1"/>
-                                    <segue destination="BYZ-38-t0r" kind="show" identifier="StrangerMessageDetailSeg" id="9Dy-xv-onu"/>
+                                    <action selector="sendMsg:" destination="ddS-jL-QO7" eventType="touchUpInside" id="WNY-MB-uGO"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ERb-SC-y41">
@@ -2837,7 +2828,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eRQ-8c-A9K" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3155" y="599"/>
+            <point key="canvasLocation" x="3287" y="-451"/>
         </scene>
         <!--好友授权-->
         <scene sceneID="gEF-Va-fKX">
@@ -2955,7 +2946,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G99-Dt-d98" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-233" y="2328"/>
+            <point key="canvasLocation" x="2041" y="3001"/>
         </scene>
         <!--输入授权账号 -->
         <scene sceneID="noK-Qx-YCv">
@@ -2985,7 +2976,7 @@
                                         </constraints>
                                         <state key="normal" image="qr"/>
                                         <connections>
-                                            <segue destination="jap-e5-yU3" kind="presentation" identifier="TransferScannerSEG" id="DFs-Dv-7Ig"/>
+                                            <action selector="scanner:" destination="7BO-FS-49a" eventType="touchUpInside" id="qRg-ix-rbN"/>
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xac-Vd-7GG">
@@ -3055,7 +3046,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BCV-DG-Vgb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="492.75362318840581" y="2419.4196428571427"/>
+            <point key="canvasLocation" x="3283" y="2624"/>
         </scene>
         <!--授权好友-->
         <scene sceneID="c9t-zW-2y9">
@@ -3197,7 +3188,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bMK-fr-AM7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1403" y="2750"/>
+            <point key="canvasLocation" x="4467" y="3001"/>
         </scene>
         <!--选择好友-->
         <scene sceneID="Epf-g7-Avb">
@@ -3280,7 +3271,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GQV-VF-VPo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="492.75362318840581" y="3101.7857142857142"/>
+            <point key="canvasLocation" x="3287" y="3301"/>
         </scene>
         <!--Agent View Controller-->
         <scene sceneID="lKk-M0-Q7n">
@@ -3517,7 +3508,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z6O-HE-hFV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="540.57971014492762" y="1737.7232142857142"/>
+            <point key="canvasLocation" x="1809" y="2790"/>
         </scene>
         <!--Destroy View Controller-->
         <scene sceneID="Uta-dq-aTU">
@@ -3656,7 +3647,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xix-FM-iFd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1732" y="1241"/>
+            <point key="canvasLocation" x="1809" y="1951"/>
         </scene>
         <!--我的ID-->
         <scene sceneID="DQS-Oo-4EZ">
@@ -3783,7 +3774,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Qo-cC-TYD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="987" y="378"/>
+            <point key="canvasLocation" x="1732" y="1130"/>
         </scene>
         <!--Avatar Edit View Controller-->
         <scene sceneID="lPJ-yW-pql">
@@ -3834,7 +3825,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sPP-GU-zsM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1218.840579710145" y="1331.9196428571429"/>
+            <point key="canvasLocation" x="1809" y="3210"/>
         </scene>
         <!--我的-->
         <scene sceneID="znx-qo-3Zi">
@@ -4097,9 +4088,8 @@
                                                     <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="O6F-ag-rsC">
-                                                    <rect key="frame" x="345" y="6" width="49" height="31"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="O6F-ag-rsC">
+                                                    <rect key="frame" x="343" y="9.5" width="51" height="31"/>
                                                     <color key="tintColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="onTintColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <connections>
@@ -4108,9 +4098,11 @@
                                                 </switch>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="O6F-ag-rsC" secondAttribute="trailing" constant="22" id="53F-5e-LGg"/>
                                                 <constraint firstItem="S5y-zv-dz8" firstAttribute="centerY" secondItem="CVL-cM-dww" secondAttribute="centerY" id="AUi-1w-rB2"/>
                                                 <constraint firstItem="gny-br-hhz" firstAttribute="centerY" secondItem="CVL-cM-dww" secondAttribute="centerY" id="R4T-54-23G"/>
                                                 <constraint firstItem="gny-br-hhz" firstAttribute="leading" secondItem="CVL-cM-dww" secondAttribute="leading" constant="20" symbolic="YES" id="VqK-TK-TET"/>
+                                                <constraint firstItem="O6F-ag-rsC" firstAttribute="centerY" secondItem="CVL-cM-dww" secondAttribute="centerY" id="hnQ-IF-lnj"/>
                                                 <constraint firstItem="S5y-zv-dz8" firstAttribute="leading" secondItem="gny-br-hhz" secondAttribute="trailing" constant="8" id="oIy-9I-dMN"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -4131,9 +4123,8 @@
                                                     <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="VYJ-p5-wji">
-                                                    <rect key="frame" x="345" y="6" width="49" height="31"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="VYJ-p5-wji">
+                                                    <rect key="frame" x="343" y="9.5" width="51" height="31"/>
                                                     <color key="tintColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="onTintColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <connections>
@@ -4142,8 +4133,10 @@
                                                 </switch>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="VYJ-p5-wji" secondAttribute="trailing" constant="22" id="2O4-82-Zsv"/>
                                                 <constraint firstItem="O6u-YO-Ffa" firstAttribute="leading" secondItem="0VZ-a5-y4q" secondAttribute="leading" constant="20" symbolic="YES" id="E7p-sl-YNp"/>
                                                 <constraint firstItem="WJJ-OZ-leT" firstAttribute="leading" secondItem="O6u-YO-Ffa" secondAttribute="trailing" constant="8" id="KFl-nB-YoR"/>
+                                                <constraint firstItem="VYJ-p5-wji" firstAttribute="centerY" secondItem="0VZ-a5-y4q" secondAttribute="centerY" id="KNd-bQ-LFH"/>
                                                 <constraint firstItem="O6u-YO-Ffa" firstAttribute="centerY" secondItem="0VZ-a5-y4q" secondAttribute="centerY" id="QO1-ho-lh3"/>
                                                 <constraint firstItem="WJJ-OZ-leT" firstAttribute="centerY" secondItem="0VZ-a5-y4q" secondAttribute="centerY" id="tdi-w2-SDE"/>
                                             </constraints>
@@ -4291,7 +4284,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U4V-uk-Vil" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-233.33333333333334" y="1148.4375"/>
+            <point key="canvasLocation" x="161" y="1513"/>
         </scene>
         <!--管理账号-->
         <scene sceneID="OSr-eZ-cwe">
@@ -4345,7 +4338,7 @@
                                         </constraints>
                                         <state key="normal" image="&gt;_icon"/>
                                         <connections>
-                                            <segue destination="jap-e5-yU3" kind="show" identifier="ShowImportScannerID" id="vCJ-qp-PCN"/>
+                                            <action selector="scanner:" destination="XmC-gT-XUb" eventType="touchUpInside" id="sQb-fy-3EZ"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -4408,7 +4401,7 @@
                                         </constraints>
                                         <state key="normal" image="&gt;_icon"/>
                                         <connections>
-                                            <segue destination="z3r-xq-XGc" kind="show" id="Whq-fA-e4i"/>
+                                            <action selector="createWallet:" destination="XmC-gT-XUb" eventType="touchUpInside" id="cKY-Jc-vFh"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -4448,7 +4441,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hKd-ek-SfO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="LfT-9O-rnp" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="987" y="1081"/>
+            <point key="canvasLocation" x="2096" y="1736"/>
         </scene>
         <!--编辑信息-->
         <scene sceneID="YqE-RE-N06">
@@ -4532,7 +4525,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4nI-XK-kqs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1651" y="599"/>
+            <point key="canvasLocation" x="2096" y="1251"/>
         </scene>
         <!--Backup Guide View Controller-->
         <scene sceneID="u2k-bN-Kov">
@@ -4633,12 +4626,11 @@
                     <connections>
                         <outlet property="address" destination="vcm-ol-Wil" id="Uhj-ZK-Vmn"/>
                         <outlet property="qrImage" destination="FyQ-8R-uWs" id="C7F-Gl-JjM"/>
-                        <segue destination="CtB-qs-3xR" kind="show" identifier="EndBackupSEG" id="Hef-SO-Mtw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RV2-8C-ZaG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2402.898550724638" y="-2080.5803571428569"/>
+            <point key="canvasLocation" x="877" y="-2321"/>
         </scene>
         <!--Author View Controller-->
         <scene sceneID="U0E-jo-MXh">
@@ -4730,7 +4722,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lXn-X5-ldu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1586.9565217391305" y="-2008.2589285714284"/>
+            <point key="canvasLocation" x="1732" y="-1819"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="xsH-Cc-VaP">
@@ -4752,7 +4744,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ULX-8x-1Y8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-233" y="-613"/>
+            <point key="canvasLocation" x="-1994" y="-326"/>
         </scene>
         <!--消息-->
         <scene sceneID="zXh-oJ-LWU">
@@ -4772,26 +4764,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rv4-td-qdD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1586.9565217391305" y="-1311.1607142857142"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="F4Y-Bi-3Uf">
-            <objects>
-                <navigationController storyboardIdentifier="NinjaNewWalletVC" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="FX8-aW-6c9" sceneMemberID="viewController">
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <toolbarItems/>
-                    <nil key="simulatedTopBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="VyG-dY-8Vo">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="z3r-xq-XGc" kind="relationship" relationship="rootViewController" id="u6b-c6-1XF"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="J4H-yq-SJZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1003" y="-1242"/>
+            <point key="canvasLocation" x="-1036" y="-1187"/>
         </scene>
         <!--通讯录-->
         <scene sceneID="5hS-YP-7qe">
@@ -4811,7 +4784,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QPa-ey-PI5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="677" y="-613"/>
+            <point key="canvasLocation" x="-1036" y="110"/>
         </scene>
         <!--我的-->
         <scene sceneID="Y8B-uS-dJh">
@@ -4831,7 +4804,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b5r-Da-i15" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-233" y="379"/>
+            <point key="canvasLocation" x="-1036" y="1513"/>
         </scene>
         <!--Password View Controller-->
         <scene sceneID="sMY-HZ-Znq">
@@ -4932,7 +4905,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MX1-va-E9P" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1181" y="-158"/>
+            <point key="canvasLocation" x="-820" y="-2847"/>
         </scene>
         <!--Code Show View Controller-->
         <scene sceneID="1U5-Ox-P1b">
@@ -4993,12 +4966,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DUb-Bp-f6t" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1174" y="-406"/>
+            <point key="canvasLocation" x="-829" y="-3060"/>
         </scene>
         <!--扫描二维码-->
         <scene sceneID="5PA-9a-t91">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="jap-e5-yU3" customClass="ScannerViewController" customModule="ninja_light" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ScannerVC" modalPresentationStyle="fullScreen" id="jap-e5-yU3" customClass="ScannerViewController" customModule="ninja_light" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="dMU-nc-aKd">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -5064,12 +5037,12 @@
                     </view>
                     <navigationItem key="navigationItem" title="扫描二维码" id="isb-33-tVl"/>
                     <connections>
-                        <outlet property="scanCubeView" destination="xva-db-6mr" id="7z8-z2-wBZ"/>
+                        <outlet property="scanCubeView" destination="xva-db-6mr" id="H0A-6Q-vLr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vFd-p5-QUg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1287" y="378"/>
+            <point key="canvasLocation" x="-62" y="-3061"/>
         </scene>
         <!--Contact Add View Controller-->
         <scene sceneID="ZfY-eo-gtB">
@@ -5119,7 +5092,7 @@
                                 </constraints>
                                 <state key="normal" image="&gt;_icon"/>
                                 <connections>
-                                    <segue destination="jap-e5-yU3" kind="presentation" identifier="ShowAddrQRID" id="5Iy-u2-gHh"/>
+                                    <action selector="scanner:" destination="vxr-X8-b54" eventType="touchUpInside" id="XZq-e5-5D8"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="扫描二维码" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cid-VX-559">
@@ -5152,13 +5125,12 @@
                     <connections>
                         <outlet property="searchAddr" destination="svs-sT-IEp" id="5LD-7N-32a"/>
                         <segue destination="ddS-jL-QO7" kind="show" identifier="SearchNewSegue" id="ujv-Sr-cw2"/>
-                        <segue destination="f4X-jQ-OkL" kind="show" identifier="SearchExistSegue" id="ltp-oS-LGt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5vQ-PR-g74" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="RSf-Kd-7N6" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2355" y="599"/>
+            <point key="canvasLocation" x="1732" y="-451"/>
         </scene>
         <!--删除群成员-->
         <scene sceneID="fp8-NX-M2O">
@@ -5169,7 +5141,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XsI-jA-2OR">
-                                <rect key="frame" x="0.0" y="44" width="414" height="769"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CreateGroupMemberTableViewCell" rowHeight="64" id="l14-z0-S9d" customClass="GroupMemberTableViewCell" customModule="ninja_light" customModuleProvider="target">
@@ -5315,7 +5287,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c0w-nH-LUk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5450.7246376811599" y="-1775.2232142857142"/>
+            <point key="canvasLocation" x="4467" y="-2010"/>
         </scene>
         <!--Alert View Controller-->
         <scene sceneID="dXm-rr-ZVA">
@@ -5401,7 +5373,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nfw-zJ-hWO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1888.4057971014495" y="-336.16071428571428"/>
+            <point key="canvasLocation" x="-1355" y="-3067"/>
         </scene>
         <!--Tryout Alert View Controller-->
         <scene sceneID="iP3-IC-8z4">
@@ -5480,7 +5452,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XqK-CA-7bO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1888" y="-116"/>
+            <point key="canvasLocation" x="-1355" y="-2847"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="bNO-Tr-O5B">
@@ -5498,19 +5470,12 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aEo-EP-Vwg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1571.0144927536232" y="-1921.2053571428571"/>
+            <point key="canvasLocation" x="-1994" y="-2321"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="BFB-Pp-bKe"/>
-        <segue reference="uQo-sy-bk4"/>
-        <segue reference="vZb-Xl-Kpt"/>
-        <segue reference="NDR-GO-jzh"/>
-        <segue reference="L2b-bt-kYp"/>
-        <segue reference="V9e-Ft-IOj"/>
-        <segue reference="Hef-SO-Mtw"/>
-        <segue reference="fgS-SB-Gkg"/>
-        <segue reference="u6b-c6-1XF"/>
+        <segue reference="acM-Ky-S9y"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="!!" width="22" height="22"/>

@@ -38,7 +38,7 @@ class WalletViewController: UITableViewController {
                 avatar.avaInfo = nil
                 
                 DispatchQueue.global().async {
-                        _ = Wallet.shared.getLatestWallt()
+                        Wallet.shared.getLatestWallt()
                         let status = AgentService.shared.getAgentStatus()
                         DispatchQueue.main.async {
                                 self.agentBtn.currentStatus = status
@@ -63,7 +63,7 @@ class WalletViewController: UITableViewController {
                                         self.vipFlag(show: true)
                                 case .initial:
                                         self.agentTime.text = "普通用户仅支持文本聊天"
-                                        self.agentTime.font = UIFont(name: "", size: 14)
+//                                        self.agentTime.font = UIFont(name: "", size: 14)
                                         self.vipBackground.layer.contents = UIImage(named: "nor_bgc")?.cgImage
                                         self.agentBtn.setImage(nil, for: .normal)
                                         self.vipFlag(show: false)

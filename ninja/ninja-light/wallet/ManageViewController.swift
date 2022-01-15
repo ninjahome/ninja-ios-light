@@ -9,31 +9,32 @@ import UIKit
 
 class ManageViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        let item = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        self.navigationItem.backBarButtonItem = item
-    }
+        override func viewDidLoad() {
+                super.viewDidLoad()
+                let item = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+                self.navigationItem.backBarButtonItem = item
+        }
     
-    @IBAction func exportAccount(_ sender: UIButton) {
+        @IBAction func exportAccount(_ sender: UIButton) {
+                if let walletJson = Wallet.shared.wJson,
+                   let walletImg = generateQRCode(from: walletJson) {
+                        NSLog("walletJson \(walletJson)")
+                        UIImageWriteToSavedPhotosAlbum(walletImg, nil, nil, nil)
+                        self.toastMessage(title: "Save success")
+                } else {
+                        self.toastMessage(title: "Save Failed")
+                }
+        }
+        @IBAction func scanner(_ sender: UIButton) {
+                let vc = instantiateViewController(vcID: "ScannerVC") as! ScannerViewController
+                vc.delegate = self
+                self.present(vc, animated: true, completion: nil)
+        }
         
-        if let walletJson = Wallet.shared.wJson,
-           let walletImg = generateQRCode(from: walletJson) {
-            NSLog("walletJson \(walletJson)")
-            UIImageWriteToSavedPhotosAlbum(walletImg, nil, nil, nil)
-            self.toastMessage(title: "Save success")
-        } else {
-            self.toastMessage(title: "Save Failed")
+        @IBAction func createWallet(_ sender: UIButton) {
+                let vc = instantiateViewController(vcID: "CreateWalletVC") as! NewWalletViewController
+                self.navigationController?.pushViewController(vc, animated: true)
         }
-
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ShowImportScannerID" {
-            let vc : ScannerViewController = segue.destination as! ScannerViewController
-            vc.delegate = self
-        }
-    }
     
 }
 

@@ -37,21 +37,6 @@ class ContactViewController: UIViewController{
                 self.reload()
         }
     
-        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-                if segue.identifier == "ShowContactDetailSeg"{
-                        let vc : ContactDetailsViewController = segue.destination as! ContactDetailsViewController
-                        guard let itemid = self.NewCodeStr else {
-                                if let idx = self.selectedRow {
-                                        let item = ContactItem.CacheArray()[idx]
-                                        vc.itemData = item
-                                }
-                                return
-                        }
-
-                        vc.itemUID = itemid
-                }
-        }
-    
         private func reload(){
                 ContactItem.LocalSavedContact()
                 self.tableview.reloadData()
@@ -77,6 +62,20 @@ extension ContactViewController:UITableViewDelegate, UITableViewDataSource{
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
                 self.selectedRow = indexPath.row
                 self.NewCodeStr = nil
-                self.performSegue(withIdentifier: "ShowContactDetailSeg", sender: self)
+                
+                let vc = instantiateViewController(vcID: "ContactDetailsVC") as! ContactDetailsViewController
+                
+                guard let itemid = self.NewCodeStr else {
+                        if let idx = self.selectedRow {
+                                let item = ContactItem.CacheArray()[idx]
+                                vc.itemData = item
+                        }
+                        return
+                }
+
+                vc.itemUID = itemid
+                
+                self.navigationController?.pushViewController(vc, animated: true)
+
         }
 }

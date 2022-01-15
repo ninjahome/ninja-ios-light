@@ -9,7 +9,7 @@ import UIKit
 
 class GroupListViewController: UIViewController {
 
-        var selectedRow: Int?
+//        var selectedRow: Int?
         @IBOutlet weak var tableView: UITableView!
         
         override func viewDidLoad() {
@@ -19,22 +19,6 @@ class GroupListViewController: UIViewController {
                 self.tableView.rowHeight = 60
                 self.tableView.tableFooterView = UIView()
                 self.reload()
-        }
-    
-        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-                if segue.identifier == "GrpMsgDetailSEG" {
-                        guard let idx = self.selectedRow else {
-                                return
-                        }
-                        guard let vc: MsgViewController = segue.destination as? MsgViewController else {
-                                return
-                        }
-                        let item = GroupItem.CacheArray()[idx]
-                        vc.groupData = item
-                        vc.IS_GROUP = true
-                        vc.peerUid = item.gid!
-                }
-
         }
         
         private func reload() {
@@ -61,7 +45,13 @@ extension GroupListViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-                self.selectedRow = indexPath.row
-                self.performSegue(withIdentifier: "GrpMsgDetailSEG", sender: self)
+//                self.selectedRow = indexPath.row
+                let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController
+                let item = GroupItem.CacheArray()[indexPath.row]
+                vc.groupData = item
+                vc.IS_GROUP = true
+                vc.peerUid = item.gid!
+                self.navigationController?.pushViewController(vc, animated: true)
+//                self.performSegue(withIdentifier: "GrpMsgDetailSEG", sender: self)
         }
 }
