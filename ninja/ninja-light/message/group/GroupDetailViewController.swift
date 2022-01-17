@@ -149,7 +149,8 @@ extension GroupDetailViewController: UICollectionViewDelegateFlowLayout, UIColle
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AvatarCollectionCell", for: indexPath) as! AvatarCollectionCell
         if let ids = groupItem?.memberIds {
             let id = ids[indexPath.row - 1] as! String
-            cell.initApperance(id: id)
+                
+                cell.initApperance(id: id, avaData: groupItem?.avatar)
 //            cell.ava = avatars[id]
 //            cell.uid = id
         }

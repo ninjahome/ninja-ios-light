@@ -25,7 +25,6 @@ class ServiceDelegate: NSObject {
                 MessageItem.loadUnread()
                 ChatItem.ReloadChatRoom()
                 dateFormatterGet.timeStyle = .medium
-                    
                 cachedLicense = Wallet.shared.liceneseExpireTime
         }
     
@@ -38,7 +37,7 @@ class ServiceDelegate: NSObject {
                 }
                 
                 // networkID 5: company 2: other
-                ChatLibInitAPP(endPoint, "a3a5c09826a246d0bfbef8084b81df1f", WebsocketSrv.shared, 5)
+                ChatLibInitAPP(endPoint, "a3a5c09826a246d0bfbef8084b81df1f", WebsocketSrv.shared, 2)
 
         }
         

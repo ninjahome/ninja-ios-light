@@ -14,15 +14,15 @@ enum AvatarButtonType {
 
 struct AvatarInfo {
         var id: String
-
-        init(id: String) {
+        var avatar: Data?
+        init(id: String, avaData: Data?) {
                 self.id = id
+                self.avatar = avaData
         }
 }
 
 class AvatarButton: UIButton {
         var type: AvatarButtonType = .chatContact
-    
 //    init(type: AvatarButtonType, info: AvatarInfo) {
 //        super.init(frame: .zero)
 //        self.type = type
@@ -58,43 +58,39 @@ class AvatarButton: UIButton {
                 didSet {
                         switch self.type {
                         case .contact, .chatContact:
-                                let hex = getContactColor(id: avaInfo!.id)
-                                self.backgroundColor = UIColor.init(hex: hex)
-                                self.setTitle(getContactText(id: avaInfo!.id), for: .normal)
+                                if let imgData = self.avaInfo?.avatar {
+                                        self.setBackgroundImage(UIImage(data: imgData), for: .normal)
+                                }
                         case .wallet:
                                 guard let avaData = Wallet.shared.avatarData else {
-                                        let hex = getWalletColor()
-                                        self.backgroundColor = UIColor.init(hex: hex)
-                                        self.setTitle(getWalletText(), for: .normal)
                                         break
                                 }
                                 self.setBackgroundImage(UIImage(data: avaData), for: .normal)
                         case .chatGroup:
                                 self.setBackgroundImage(UIImage.init(named: "ava"), for: .normal)
-                                self.setTitle(getGroupText(id: avaInfo!.id), for: .normal)
                         }
                         self.layer.masksToBounds = true
                 }
         }
     
-        func getContactColor(id: String) -> String {
-                return ContactItem.GetAvatarColor(by: id)
-        }
-
-        func getWalletColor() -> String {
-                return Wallet.GenAvatarColor()
-        }
-
-        func getWalletText() -> String {
-                return Wallet.GenAvatarText()
-        }
-
-        func getContactText(id: String) -> String {
-                return ContactItem.GetAvatarText(by: id)
-        }
-
-        func getGroupText(id: String) -> String {
-                return GroupItem.GetAvatarText(by: id)
-        }
+//        func getContactColor(id: String) -> String {
+//                return ContactItem.GetAvatarColor(by: id)
+//        }
+//
+//        func getWalletColor() -> String {
+//                return Wallet.GenAvatarColor()
+//        }
+//
+//        func getWalletText() -> String {
+//                return Wallet.GenAvatarText()
+//        }
+//
+//        func getContactText(id: String) -> String {
+//                return ContactItem.GetAvatarText(by: id)
+//        }
+//
+//        func getGroupText(id: String) -> String {
+//                return GroupItem.GetAvatarText(by: id)
+//        }
     
 }

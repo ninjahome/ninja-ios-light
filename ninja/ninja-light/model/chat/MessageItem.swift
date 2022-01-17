@@ -116,7 +116,7 @@ class MessageItem: NSObject {
                                                              predicate: NSPredicate(format: "owner == %@ AND to == %@ AND unixTime == %@", owner, to, mid))
                 } catch let err {
                         print(err.localizedDescription)
-                }
+                }                
                 return result
         }
     

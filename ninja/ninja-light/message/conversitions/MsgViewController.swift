@@ -303,7 +303,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
 
         @objc func contactUpdate(notification: NSNotification) {
                 contactData = ContactItem.cache[peerUid]
-                self.peerNickName.title = self.contactData?.nickName ?? self.peerUid
+                self.peerNickName.title = self.contactData?.alias ?? self.peerUid
         }
 
         // TODO: Update group member
@@ -384,7 +384,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                         setPeerNick()
                 } else {
                         contactData = ContactItem.cache[peerUid]
-                        self.peerNickName.title = contactData?.nickName ?? peerUid
+                        self.peerNickName.title = contactData?.alias ?? peerUid
                 }
         }
         
@@ -406,16 +406,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         }
 
         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//                if segue.identifier == "EditContactDetailsSEG"{
-//                        let vc : ContactDetailsViewController = segue.destination as! ContactDetailsViewController
-//                        vc.itemUID = peerUid
-//                }
-//
-//                if segue.identifier == "ShowStrangerDetailSeg" {
-//                        let vc:SearchDetailViewController = segue.destination as! SearchDetailViewController
-//                        vc.uid = peerUid
-//                }
-
                 if segue.identifier == "ShowMapSeg" {
                         let vc: MapViewController = segue.destination as! MapViewController
                         vc.delegate = self

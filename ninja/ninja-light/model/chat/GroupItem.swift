@@ -32,6 +32,7 @@ class GroupItem: NSObject {
         var leader: String?
         var banTalked: Bool = false
         var deleted: Bool = false
+        var avatar: Data?
 
         var memberInfos: Dictionary<String, String> = [:]
 

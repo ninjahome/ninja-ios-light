@@ -27,20 +27,17 @@ class WalletViewController: UITableViewController {
         
         override func viewWillAppear(_ animated: Bool) {
                 super.viewWillAppear(animated)
-                
-                Wallet.shared.getLatestWallt()
-                
-                address.text = Wallet.shared.Addr
-                faceIDSwitch.isOn = Wallet.shared.useFaceID
-                destroySwitch.isOn = Wallet.shared.useDestroy
-                
-                avatar.type = AvatarButtonType.wallet
-                avatar.avaInfo = nil
-                
                 DispatchQueue.global().async {
                         Wallet.shared.getLatestWallt()
                         let status = AgentService.shared.getAgentStatus()
                         DispatchQueue.main.async {
+                                self.address.text = Wallet.shared.Addr
+                                self.faceIDSwitch.isOn = Wallet.shared.useFaceID
+                                self.destroySwitch.isOn = Wallet.shared.useDestroy
+                                
+                                self.avatar.type = AvatarButtonType.wallet
+                                self.avatar.avaInfo = nil
+
                                 self.agentBtn.currentStatus = status
         //                        self.agentLabel.text = status.handleText[1]
                                 switch status {

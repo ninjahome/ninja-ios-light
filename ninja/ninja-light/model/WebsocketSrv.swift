@@ -89,9 +89,12 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
                         let wallet = Wallet.initByData(data) else {
                         return
                 }
-                if let err = Wallet.shared.UpdateWallet(w: wallet) {
-                        print(String(err.localizedDescription))
+                guard let err = Wallet.shared.UpdateWallet(w: wallet) else {
+                        //TODO:: update contact and group
+                        
+                        return
                 }
+                print(String(err.localizedDescription))
         }
         
         func getMembersOfGroup(_ p0: String?) -> Data? {

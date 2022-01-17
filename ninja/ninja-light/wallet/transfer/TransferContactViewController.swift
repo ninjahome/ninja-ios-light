@@ -54,22 +54,23 @@ class TransferContactViewController: UIViewController {
 
 extension TransferContactViewController: UITableViewDataSource, UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ContactItem.cache.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ContactTransferTableViewCell", for: indexPath)
-        if let c = cell as? ContactTransferTableViewCell {
-                let item = ContactItem.CacheArray()[indexPath.row]
-                c.initWith(details:item, idx: indexPath.row)
-                return c
+        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+                return ContactItem.cache.count
         }
-        return cell
-    }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.selectId = indexPath.row
-        self.performSegue(withIdentifier: "TransferContactSEG", sender: self)
-    }
+        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ContactTransferTableViewCell", for: indexPath)
+                if let c = cell as? ContactTransferTableViewCell {
+                        let item = ContactItem.CacheArray()[indexPath.row]
+                        let acc = AccountItem.GetAccount(item.uid!)
+                        c.initWith(details:item, idx: indexPath.row, account: acc ?? AccountItem())
+                        return c
+                }
+                return cell
+        }
+    
+        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+                self.selectId = indexPath.row
+                self.performSegue(withIdentifier: "TransferContactSEG", sender: self)
+        }
 }

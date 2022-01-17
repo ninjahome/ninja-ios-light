@@ -27,7 +27,7 @@ class GroupItemTableViewCell: UITableViewCell {
                 self.groupName.text = detail.groupName
                 guard let gid = detail.gid else { return }
                 avatar.type = AvatarButtonType.chatGroup
-                avatar.avaInfo = AvatarInfo.init(id: gid)
+                avatar.avaInfo = AvatarInfo.init(id: gid, avaData: detail.avatar)
         }
 
 }

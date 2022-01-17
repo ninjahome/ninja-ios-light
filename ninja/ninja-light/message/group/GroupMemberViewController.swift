@@ -82,7 +82,7 @@ class GroupMemberViewController: UIViewController {
                         for i in selectedIndexs {
                                 newIds.append(contacts[i].uid!)
                                 groupIds.append(contacts[i].uid!)
-                                groupNicks.append(contacts[i].nickName ?? "")
+                                groupNicks.append(contacts[i].alias ?? "")
                         }
 
                         groupItem.memberIds = groupIds as NSArray
@@ -99,7 +99,7 @@ class GroupMemberViewController: UIViewController {
 
                                 for i in selectedIndexs {
                                         groupIds.append(contacts[i].uid!)
-                                        groupNicks.append(contacts[i].nickName ?? "")
+                                        groupNicks.append(contacts[i].alias ?? "")
                                 }
 
                                 groupIds.append(Wallet.shared.Addr!)

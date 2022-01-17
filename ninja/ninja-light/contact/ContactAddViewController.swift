@@ -16,7 +16,7 @@ class ContactAddViewController: UIViewController {
         override func viewWillAppear(_ animated: Bool) {
                 super.viewWillAppear(animated)
 
-                self.navigationController?.setNavigationBarHidden(true, animated: true)
+//                self.navigationController?.setNavigationBarHidden(true, animated: true)
         }
 
         override func viewDidLoad() {
@@ -27,19 +27,33 @@ class ContactAddViewController: UIViewController {
     
         override func viewWillDisappear(_ animated: Bool) {
                 super.viewWillDisappear(animated)
-                self.navigationController?.setNavigationBarHidden(false, animated: true)
+//                self.navigationController?.setNavigationBarHidden(false, animated: true)
         }
-     
-        @IBAction func CancelAdd(_ sender: UIButton) {
+        
+        @IBAction func backBarBtn(_ sender: UIBarButtonItem) {
                 self.navigationController?.popViewController(animated: true)
         }
-
+        
         @IBAction func scanner(_ sender: UIButton) {
                 let vc = instantiateViewController(vcID: "ScannerVC") as! ScannerViewController
                 vc.delegate = self
                 self.present(vc, animated: true, completion: nil)
         }
-    
+        
+        @IBAction func search(_ sender: UIButton) {
+                guard let addr = searchAddr.text else {
+                        return
+                }
+                if ContactItem.IsValidContactID(addr) {
+                        if let item = ContactItem.GetContact(addr) {
+                                self.contactItem = item
+                                pushToExistContact()
+                        } else {
+                                self.performSegue(withIdentifier: "SearchNewSegue", sender: self)
+                        }
+                }
+        }
+        
         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
                 if segue.identifier == "SearchNewSegue" {
                         let vc: SearchDetailViewController = segue.destination as! SearchDetailViewController

@@ -18,6 +18,7 @@ class AccountItem: NSObject {
         var Avatar: Data?
         var Balance: String?
         var TouchTime: Int64?
+        var Owner: String?
         
         public static let shared = AccountItem()
         
@@ -40,10 +41,22 @@ class AccountItem: NSObject {
                 return nil
         }
         
+        public static func initByJson(_ account: JSON) -> AccountItem {
+                let acc = AccountItem()
+                acc.Nonce = account["nonce"].int64
+                acc.Addr = account["addr"].string
+                acc.NickName = account["name"].string
+                acc.Balance = account["balance"].string
+                acc.TouchTime = account["touch_time"].int64
+                acc.Owner = Wallet.shared.Addr!
+                acc.Avatar = ChatLibAccountAvatar(acc.Addr, nil)
+                return acc
+        }
+        
         public static func GetAccount(_ uid: String) -> AccountItem? {
                 var obj: AccountItem?
                 obj = try? CDManager.shared.GetOne(entity: "CDAccount",
-                                               predicate: NSPredicate(format: "addr == %@", uid))
+                                                   predicate: NSPredicate(format: "addr == %@", uid))
                 return obj
         }
 

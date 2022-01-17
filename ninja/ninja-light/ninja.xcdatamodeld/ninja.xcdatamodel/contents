@@ -6,6 +6,7 @@
         <attribute name="balance" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="nonce" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="owner" optional="YES" attributeType="String"/>
         <attribute name="touch_time" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <entity name="CDChatItem" representedClassName="CDChatItem" syncable="YES" codeGenerationType="class">
@@ -20,9 +21,7 @@
         <attribute name="endPoint" optional="YES" attributeType="String"/>
     </entity>
     <entity name="CDContact" representedClassName="CDContact" syncable="YES" codeGenerationType="class">
-        <attribute name="avaColor" optional="YES" attributeType="String"/>
-        <attribute name="avatar" optional="YES" attributeType="Binary"/>
-        <attribute name="nickName" optional="YES" attributeType="String"/>
+        <attribute name="alias" optional="YES" attributeType="String"/>
         <attribute name="owner" optional="YES" attributeType="String"/>
         <attribute name="remark" optional="YES" attributeType="String"/>
         <attribute name="uid" optional="YES" attributeType="String"/>
@@ -60,10 +59,10 @@
         <attribute name="useFaceID" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </entity>
     <elements>
-        <element name="CDAccount" positionX="-45" positionY="90" width="128" height="119"/>
+        <element name="CDAccount" positionX="-45" positionY="90" width="128" height="134"/>
         <element name="CDChatItem" positionX="-45" positionY="27" width="128" height="119"/>
         <element name="CDConfig" positionX="-36" positionY="99" width="128" height="44"/>
-        <element name="CDContact" positionX="-36" positionY="18" width="128" height="119"/>
+        <element name="CDContact" positionX="-36" positionY="18" width="128" height="89"/>
         <element name="CDGroup" positionX="-45" positionY="72" width="128" height="149"/>
         <element name="CDUnread" positionX="-54" positionY="9" width="128" height="194"/>
         <element name="CDWallet" positionX="-63" positionY="-18" width="128" height="134"/>

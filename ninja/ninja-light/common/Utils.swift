@@ -426,14 +426,14 @@ extension UIViewController {
             }
     }
 
-    func showPwdInput(title: String, placeHolder:String?, securityShow:Bool = false, type:UIKeyboardType = .default, nextAction:((String?, Bool)->Void)?) {
-        let ap = AlertPayload(title: title,
-                              placeholderTxt: placeHolder,
-                              securityShow: securityShow,
-                              keyType: type,
-                              action: nextAction)
-        LoadAlertFromStoryBoard(payload: ap)
-    }
+        func showPwdInput(title: String, placeHolder:String?, securityShow:Bool = false, type:UIKeyboardType = .default, nextAction:((String?, Bool)->Void)?) {
+                let ap = AlertPayload(title: title,
+                                      placeholderTxt: placeHolder,
+                                      securityShow: securityShow,
+                                      keyType: type,
+                                      action: nextAction)
+                LoadAlertFromStoryBoard(payload: ap)
+        }
 
     func LoadAlertFromStoryBoard(payload: AlertPayload) {
         DispatchQueue.main.async {
@@ -450,16 +450,15 @@ extension UIViewController {
         }
     }
     
-    func ShowQRAlertView(image:UIImage?){
-        guard let alertVC = instantiateViewController(vcID: "QRCodeShowViewControllerSID")
-            as? QRCodeShowViewController else{
-            return
+        func ShowQRAlertView(image:UIImage?){
+                guard let alertVC = instantiateViewController(vcID: "QRCodeShowViewControllerSID") as? QRCodeShowViewController else{
+                        return
+                }
+                alertVC.QRImage = image;
+                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert);
+                alertController.setValue(alertVC, forKey: "contentViewController");
+                self.present(alertController, animated: true, completion: nil);
         }
-        alertVC.QRImage = image;
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert);
-        alertController.setValue(alertVC, forKey: "contentViewController");
-        self.present(alertController, animated: true, completion: nil);
-    }
         
         func ShowVIPAlertView() {
                 guard let alertVC = instantiateViewController(vcID: "VIPAlertViewControllerSID") as? VIPAlertViewController else {
@@ -477,83 +476,83 @@ extension UIViewController {
                 let alertViewCtrl = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
                 alertViewCtrl.setValue(alertVC, forKey: "contentViewController")
         }
-    
-    func ShowQRAlertView(data:String){
-        guard let image = generateQRCode(from: data) else { return }
-        self.ShowQRAlertView(image: image)
-    }
+
+        func ShowQRAlertView(data:String){
+                guard let image = generateQRCode(from: data) else { return }
+                self.ShowQRAlertView(image: image)
+        }
         
-    func generateQRCode(from message: String) -> UIImage? {
+        func generateQRCode(from message: String) -> UIImage? {
             
-        guard let data = message.data(using: .utf8) else{
-                return nil
-        }
-        
-        guard let qr = CIFilter(name: "CIQRCodeGenerator",
-                                parameters: ["inputMessage":
-                                        data, "inputCorrectionLevel":"M"]) else{
-                return nil
-        }
-        
-        guard let qrImage = qr.outputImage?.transformed(by: CGAffineTransform(scaleX: 5, y: 5)) else{
-                return nil
-        }
-        let context = CIContext()
-        let cgImage = context.createCGImage(qrImage, from: qrImage.extent)
-        let uiImage = UIImage(cgImage: cgImage!)
-        return uiImage
-    }
-    
-    func generateViewImg(info: UIView) -> UIImage? {
-        var img: UIImage?
-        UIGraphicsBeginImageContextWithOptions(info.bounds.size, false, 0.0)
-        info.layer.render(in: UIGraphicsGetCurrentContext()!)
-        img = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return img
-    }
-    
-    func biometryUsage(onCompletion: @escaping(Bool) -> Void) {
-        let context = LAContext()
-        var error: NSError?
-        
-        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            let reason = "是否允许App使用您的\(context.biometryType)"
-            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { (success, authError) in
-                DispatchQueue.main.async {
-                    onCompletion(success)
+                guard let data = message.data(using: .utf8) else{
+                        return nil
                 }
-            }
-        } else {
-            self.toastMessage(title: "加载\(context.biometryType.rawValue)失败")
+                
+                guard let qr = CIFilter(name: "CIQRCodeGenerator",
+                                        parameters: ["inputMessage":
+                                                data, "inputCorrectionLevel":"M"]) else{
+                        return nil
+                }
+                
+                guard let qrImage = qr.outputImage?.transformed(by: CGAffineTransform(scaleX: 5, y: 5)) else{
+                        return nil
+                }
+                let context = CIContext()
+                let cgImage = context.createCGImage(qrImage, from: qrImage.extent)
+                let uiImage = UIImage(cgImage: cgImage!)
+                return uiImage
         }
-    }
+    
+        func generateViewImg(info: UIView) -> UIImage? {
+                var img: UIImage?
+                UIGraphicsBeginImageContextWithOptions(info.bounds.size, false, 0.0)
+                info.layer.render(in: UIGraphicsGetCurrentContext()!)
+                img = UIGraphicsGetImageFromCurrentImageContext()
+                UIGraphicsEndImageContext()
+                
+                return img
+        }
+    
+        func biometryUsage(onCompletion: @escaping(Bool) -> Void) {
+                let context = LAContext()
+                var error: NSError?
+
+                if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+                        let reason = "是否允许App使用您的\(context.biometryType)"
+                        context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { (success, authError) in
+                                DispatchQueue.main.async {
+                                        onCompletion(success)
+                                }
+                        }
+                } else {
+                        self.toastMessage(title: "加载\(context.biometryType.rawValue)失败")
+                }
+        }
 }
 
 func cleanAllData() {
 
-    ContactItem.cache.removeAll(keepingCapacity: true)
+        ContactItem.cache.removeAll(keepingCapacity: true)
 
-    ChatItem.CachedChats.deleteAll()
-    MessageItem.cache.deleteAll()
+        ChatItem.CachedChats.deleteAll()
+        MessageItem.cache.deleteAll()
 }
 
 func getAppVersion() -> String {
-    if let infoDict: [String: Any] = Bundle.main.infoDictionary {
-        if let mainVersion = infoDict["CFBundleShortVersionString"] as? String,
-           let build = infoDict["CFBundleVersion"] as? String {
-            return String("版本号："+mainVersion+"."+build)
+        if let infoDict: [String: Any] = Bundle.main.infoDictionary {
+                if let mainVersion = infoDict["CFBundleShortVersionString"] as? String,
+                   let build = infoDict["CFBundleVersion"] as? String {
+                        return String("版本号："+mainVersion+"."+build)
+                }
         }
-    }
-    
-    return "版本号"
+
+        return "版本号"
 }
 
 extension MBProgressHUD {
-    func setDetailText(msg:String) {
-        self.detailsLabel.text = msg
-    }
+        func setDetailText(msg:String) {
+                self.detailsLabel.text = msg
+        }
 }
 
 extension UIColor {
@@ -575,7 +574,6 @@ extension UIColor {
 
     convenience init(hex: String) {
         let scanner = Scanner(string: hex)
-//        scanner.scanLocation = 0
         var rgbValue: UInt64 = 0
         
         scanner.scanHexInt64(&rgbValue)

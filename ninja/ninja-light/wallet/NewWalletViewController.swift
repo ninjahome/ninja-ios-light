@@ -61,33 +61,33 @@ class NewWalletViewController: UIViewController {
 }
 
 extension NewWalletViewController: ScannerViewControllerDelegate {
-    func codeDetected(code: String) {
-        NSLog("New wallet code\(code)")
-        guard let addr = Wallet.shared.serializeWalletJson(cipher: code) else {
-            self.toastMessage(title: "invaild ninja wallet address")
-            return
-        }
-        if Wallet.shared.Addr == nil {
-            self.showPwdInput(title: "请输入密码导入账号", placeHolder: "请输入密码") { (auth, isOK) in
-                if let pwd = auth, isOK {
-                    do {
-                        
-                        WebsocketSrv.shared.Offline()
-                        
-                        try Wallet.shared.Import(cipher: code, addr: addr, auth: pwd)
-                        
-                        ServiceDelegate.InitService()
-                        
-                        afterWallet()
-                        
-                        print("new wallet \(String(describing: Wallet.shared.Addr))")
-                        
-                    } catch let err as NSError {
-                        self.toastMessage(title: err.localizedDescription)
-                    }
+        func codeDetected(code: String) {
+                NSLog("New wallet code\(code)")
+                guard let addr = Wallet.shared.serializeWalletJson(cipher: code) else {
+                        self.toastMessage(title: "invaild ninja wallet address")
+                        return
                 }
-            }
-            
+                if Wallet.shared.Addr == nil {
+                        self.showPwdInput(title: "请输入密码导入账号", placeHolder: "请输入密码") { (auth, isOK) in
+                                if let pwd = auth, isOK {
+                                        do {
+
+                                                WebsocketSrv.shared.Offline()
+
+                                                try Wallet.shared.Import(cipher: code, addr: addr, auth: pwd)
+
+                                                ContactItem.latestContactDetails()
+                                                ServiceDelegate.InitService()
+
+                                                afterWallet()
+
+                                                print("new wallet \(String(describing: Wallet.shared.Addr))")
+
+                                        } catch let err as NSError {
+                                                self.toastMessage(title: err.localizedDescription)
+                                        }
+                                }
+                        }
+                }
         }
-    }
 }

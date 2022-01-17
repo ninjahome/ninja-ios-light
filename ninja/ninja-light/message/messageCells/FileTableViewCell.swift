@@ -108,12 +108,12 @@ class FileTableViewCell: UITableViewCell {
                         avatar.avaInfo = nil
                         nickname.text = Wallet.GenAvatarText()
                 } else {
-
+                        let acc = AccountItem.GetAccount(from)
                         avatar.type = AvatarButtonType.contact
-                        avatar.avaInfo = AvatarInfo.init(id: from)
+                        avatar.avaInfo = AvatarInfo.init(id: from, avaData: acc?.Avatar)
 
                         let contactData = ContactItem.cache[from]
-                        nickname.text = contactData?.nickName ?? ContactItem.GetAvatarText(by: from)
+                        nickname.text = contactData?.alias
                 }
 
                 time.text = formatTimeStamp(by: message.timeStamp)

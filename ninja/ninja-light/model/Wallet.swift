@@ -149,22 +149,31 @@ class Wallet: NSObject {
         }
 
         func Import(cipher walletJson: String, addr: String, auth password: String) throws {
-
                 self.Addr = addr
                 self.wJson = walletJson
                 self.loaded = true
                 self.useFaceID = false
                 self.useDestroy = false
                 self.nickName = ""
+                self.nonce = 0
+                
+                var error: NSError?
+                if let data = ChatLibAccountDetail(addr, &error),
+                   let item = Wallet.initByData(data) {
+                        self.nickName = item.nickName
+                        self.nonce = item.nonce
+                        self.touchTime = item.touchTime
+                        self.liceneseExpireTime = item.liceneseExpireTime
+                        self.avatarData = item.avatarData
+                }
 
                 ServiceDelegate.InitService()
                 if let err = Active(password) {
                         print("Import Failed\(String(describing: err.localizedDescription))")
                 }
-
+                self.accountNonce()
                 try CDManager.shared.Delete(entity: "CDWallet")
                 try CDManager.shared.UpdateOrAddOne(entity: "CDWallet", m: self)
-
         }
         
         func UpdateWallet(w: Wallet) -> NJError? {

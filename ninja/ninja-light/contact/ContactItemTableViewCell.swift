@@ -21,23 +21,17 @@ class ContactItemTableViewCell: UITableViewCell {
                 super.setSelected(selected, animated: animated)
         }
 
-        func initWith(details:ContactItem, idx: Int){
-//                if details.avatar != nil{
-//                        self.avatar.image = UIImage.init(data: details.avatar!)
-//                }
-                self.nickName.text = details.nickName
-
-//            let avaName = ContactItem.GetAvatarText(by: details.uid!)
-//            avatar.setTitle(avaName, for: .normal)
-//            let hex = ContactItem.GetAvatarColor(by: details.uid!)
-//            avatar.backgroundColor = UIColor.init(hex: hex)
-//            
-            guard let uid = details.uid else {
-                return
-            }
-            avatar.type = AvatarButtonType.contact
-            avatar.avaInfo = AvatarInfo.init(id: uid)
-           
+        func initWith(details:ContactItem, idx: Int, account: AccountItem) {
+                if let alias = details.alias {
+                        self.nickName.text = alias
+                } else {
+                        self.nickName.text = account.NickName
+                }
+                guard let uid = details.uid else {
+                        return
+                }
+                avatar.type = AvatarButtonType.contact
+                avatar.avaInfo = AvatarInfo.init(id: uid, avaData: account.Avatar)
         }
     
 }

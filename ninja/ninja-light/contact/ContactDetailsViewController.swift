@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegate {        
+class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegate {
         @IBOutlet weak var backContent: UIView!
         @IBOutlet weak var avator: AvatarButton!
         @IBOutlet weak var nickName: UILabel!
@@ -20,6 +20,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
 
         var itemUID:String?
         var itemData:ContactItem?
+        var account: AccountItem?
 
         var _delegate: UIGestureRecognizerDelegate?
 
@@ -32,6 +33,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                         _delegate = self.navigationController?.interactivePopGestureRecognizer?.delegate
                         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
                 }
+                self.account = AccountItem.GetAccount(itemUID!)
         }
     
         override func viewWillDisappear(_ animated: Bool) {
@@ -46,7 +48,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 self.hideKeyboardWhenTappedAround()
                 self.populateView()
 
-                nickTextField.text = itemData?.nickName
+                nickTextField.text = itemData?.alias
                 memoTextView.text = itemData?.remark
 
                 backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
@@ -79,13 +81,13 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 }
 
                 avator.type = AvatarButtonType.chatContact
-                avator.avaInfo = AvatarInfo.init(id: uid)
+                avator.avaInfo = AvatarInfo.init(id: uid, avaData: account?.Avatar)
         }
     
         @IBAction func backBtn(_ sender: UIButton) {
                 let contact = ContactItem.init()
                 contact.uid = itemData?.uid
-                contact.nickName = self.nickTextField.text
+                contact.alias = self.nickTextField.text
                 contact.remark = self.memoTextView.text
 
                 if let err = ContactItem.UpdateContact(contact) {
@@ -147,7 +149,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                         return
                 }
                 self.uid.text = data.uid
-                self.nickName.text = data.nickName
+                self.nickName.text = data.alias
         }
 
         private func closeWindow(){

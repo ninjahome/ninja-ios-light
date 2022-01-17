@@ -52,8 +52,8 @@ extension ContactViewController:UITableViewDelegate, UITableViewDataSource{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ContactItemTableViewCell", for: indexPath)
                 if let c = cell as? ContactItemTableViewCell {
                         let item = ContactItem.CacheArray()[indexPath.row]
-
-                        c.initWith(details:item, idx: indexPath.row)
+                        let account = AccountItem.GetAccount(item.uid!)
+                        c.initWith(details: item, idx: indexPath.row, account: account ?? AccountItem())
                         return c
                 }
                 return cell

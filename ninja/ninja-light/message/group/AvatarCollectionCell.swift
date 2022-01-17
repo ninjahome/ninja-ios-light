@@ -8,16 +8,10 @@
 import UIKit
 
 class AvatarCollectionCell: UICollectionViewCell {
-//    var ava: Avatar?
-//    var uid: String?
+        @IBOutlet weak var MemberIcon: AvatarButton!
     
-    @IBOutlet weak var MemberIcon: AvatarButton!
-    
-    func initApperance(id: String) {
-        MemberIcon.type = AvatarButtonType.contact
-        MemberIcon.avaInfo = AvatarInfo.init(id: id)
-//        MemberIcon.backgroundColor = UIColor.init(hex: avatar.color)
-//        MemberIcon.setTitle(avatar.text, for: .normal)
-    }
-    
+        func initApperance(id: String, avaData: Data?) {
+                MemberIcon.type = AvatarButtonType.contact
+                MemberIcon.avaInfo = AvatarInfo.init(id: id, avaData: avaData)
+        }
 }
