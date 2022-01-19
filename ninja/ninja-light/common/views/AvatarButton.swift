@@ -58,11 +58,14 @@ class AvatarButton: UIButton {
                 didSet {
                         switch self.type {
                         case .contact, .chatContact:
-                                if let imgData = self.avaInfo?.avatar {
-                                        self.setBackgroundImage(UIImage(data: imgData), for: .normal)
+                                guard let imgData = self.avaInfo?.avatar else {
+                                        self.setBackgroundImage(UIImage(named: "logo_img"), for: .normal)
+                                        break
                                 }
+                                self.setBackgroundImage(UIImage(data: imgData), for: .normal)
                         case .wallet:
                                 guard let avaData = Wallet.shared.avatarData else {
+                                        self.setBackgroundImage(UIImage(named: "logo_img"), for: .normal)
                                         break
                                 }
                                 self.setBackgroundImage(UIImage(data: avaData), for: .normal)

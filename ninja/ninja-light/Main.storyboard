@@ -2310,14 +2310,13 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="etr-pc-ZOy" customClass="AvatarButton" customModule="ninja_light" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="etr-pc-ZOy" customClass="AvatarButton" customModule="ninja_light" customModuleProvider="target">
                                                     <rect key="frame" x="20" y="6" width="48" height="48"/>
                                                     <color key="backgroundColor" red="0.84705882352941175" green="0.84705882352941175" blue="0.84705882352941175" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="48" id="CK6-Uf-HPt"/>
                                                         <constraint firstAttribute="width" constant="48" id="tnp-jH-tbs"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                                     <state key="normal">
                                                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
@@ -4108,6 +4107,12 @@
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="&gt;_icon"/>
                                                 </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="nick" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eq2-eS-JG7">
+                                                    <rect key="frame" x="324" y="15.5" width="31" height="19.5"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                                    <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="Haf-uB-ziQ" firstAttribute="centerY" secondItem="2oW-oo-fGx" secondAttribute="centerY" id="6s4-yt-neg"/>
@@ -4115,7 +4120,9 @@
                                                 <constraint firstItem="bny-10-iR2" firstAttribute="centerY" secondItem="2oW-oo-fGx" secondAttribute="centerY" id="Aqi-Qh-eDZ"/>
                                                 <constraint firstItem="RdF-nR-ShM" firstAttribute="centerY" secondItem="2oW-oo-fGx" secondAttribute="centerY" id="HfI-kR-Q4R"/>
                                                 <constraint firstItem="RdF-nR-ShM" firstAttribute="leading" secondItem="bny-10-iR2" secondAttribute="trailing" constant="8" id="Ldp-8c-Lie"/>
+                                                <constraint firstItem="Haf-uB-ziQ" firstAttribute="leading" secondItem="Eq2-eS-JG7" secondAttribute="trailing" constant="20" id="Obn-63-dX1"/>
                                                 <constraint firstItem="bny-10-iR2" firstAttribute="leading" secondItem="2oW-oo-fGx" secondAttribute="leading" constant="20" symbolic="YES" id="RPw-LV-hZk"/>
+                                                <constraint firstItem="Eq2-eS-JG7" firstAttribute="centerY" secondItem="2oW-oo-fGx" secondAttribute="centerY" id="eyW-24-jVG"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="tintColor" red="0.52549019610000003" green="0.52549019610000003" blue="0.54117647059999996" alpha="1" colorSpace="calibratedRGB"/>
@@ -4363,6 +4370,7 @@
                         <outlet property="backGroundView" destination="bM1-cW-pjJ" id="zPN-1o-aqg"/>
                         <outlet property="destroySwitch" destination="VYJ-p5-wji" id="cVt-KI-m7n"/>
                         <outlet property="faceIDSwitch" destination="O6F-ag-rsC" id="xSg-3Y-NwM"/>
+                        <outlet property="nickName" destination="Eq2-eS-JG7" id="9Uf-ax-30B"/>
                         <outlet property="vipBackground" destination="GsN-MM-JyL" id="umT-n0-DrQ"/>
                         <outlet property="vipFlag" destination="3O3-4v-5vF" id="ptt-d1-n6P"/>
                         <outlet property="vipIcon" destination="V4B-I3-25A" id="Hyo-2H-BUu"/>

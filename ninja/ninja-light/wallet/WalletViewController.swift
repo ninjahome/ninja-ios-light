@@ -22,60 +22,25 @@ class WalletViewController: UITableViewController {
 
         @IBOutlet weak var appVersion: UILabel!
 
+        @IBOutlet weak var nickName: UILabel!
         @IBOutlet weak var vipFlag: UIImageView!
         @IBOutlet weak var vipIcon: UIImageView!
-        
-        private func updateWholeView(){
-                
-                DispatchQueue.main.async {
-                        self.address.text = Wallet.shared.Addr
-                        self.faceIDSwitch.isOn = Wallet.shared.useFaceID
-                        self.destroySwitch.isOn = Wallet.shared.useDestroy
-                        
-                        self.avatar.type = AvatarButtonType.wallet
-                        self.avatar.avaInfo = nil
 
-                        let status = AgentService.shared.getAgentStatus()
-                        self.agentBtn.currentStatus = status
-//                        self.agentLabel.text = status.handleText[1]
-                        switch status {
-                        case .activated:
-                                self.agentTime.text = String(AgentService.shared.expireDays)
-//                                        self.agentTime.tintColor = UIColor(hex: "897455")
-                                self.agentTime.font = UIFont(name: "", size: 20)
-//                                        self.agentTime.text = "\(AgentService.shared.expireDate)到期"
-                                self.vipBackground.layer.contents = UIImage(named: "VIP_BGC")?.cgImage
-                                self.agentBtn.setImage(nil, for: .normal)
-                                self.vipFlag(show: true)
-                        case .almostExpire:
-                                self.agentTime.text = String(AgentService.shared.expireDays)
-//                                        self.agentTime.tintColor = UIColor(hex: "897455")
-                                self.agentTime.font = UIFont(name: "", size: 20)
-//                                        self.agentTime.text = String(format: "%4d 天", AgentService.shared.expireDays)
-                                self.vipBackground.layer.contents = UIImage(named: "VIP_BGC")?.cgImage
-                        
-                                self.agentBtn.setImage(UIImage(named: "red"), for: .normal)
-                                self.vipFlag(show: true)
-                        case .initial:
-                                self.agentTime.text = "普通用户仅支持文本聊天"
-//                                        self.agentTime.font = UIFont(name: "", size: 14)
-                                self.vipBackground.layer.contents = UIImage(named: "nor_bgc")?.cgImage
-                                self.agentBtn.setImage(nil, for: .normal)
-                                self.vipFlag(show: false)
-                            break
-                        }
-                }
-        }
-        
         override func viewWillAppear(_ animated: Bool) {
                 super.viewWillAppear(animated)
-                balanceStatusView()
+//                balanceStatusView()
+                updateWholeView()
         }
     
         override func viewDidLoad() {
                 super.viewDidLoad()
                 appVersion.text = getAppVersion()
+                nickName.text = Wallet.shared.nickName
                 backGroundView.layer.contents = UIImage(named: "user_backg_img")?.cgImage
+                
+                self.refreshControl = UIRefreshControl()
+                refreshControl?.addTarget(self, action: #selector(self.reloadWallet(_:)), for: .valueChanged)
+                self.view.addSubview(refreshControl!)
                 
                 DispatchQueue.global().async {
                         Wallet.shared.getLatestWallt()
@@ -83,10 +48,18 @@ class WalletViewController: UITableViewController {
                 }
                 
         }
-        private func balanceStatusView(){
+        
+        @objc func reloadWallet(_ sender: Any?) {
+                DispatchQueue.global().async {
+                        Wallet.shared.getLatestWallt()
+                        self.updateWholeView()
+                }
+                self.refreshControl?.endRefreshing()
+        }
+        
+        private func balanceStatusView() {
                 let status = AgentService.shared.getAgentStatus()
                         self.agentBtn.currentStatus = status
-                        //                self.agentLabel.text = status.handleText[1]
 
                         switch status {
                         case .activated:
@@ -103,38 +76,74 @@ class WalletViewController: UITableViewController {
                 
         }
         
+        private func updateWholeView() {
+                
+                DispatchQueue.main.async {
+                        self.address.text = Wallet.shared.Addr
+                        self.faceIDSwitch.isOn = Wallet.shared.useFaceID
+                        self.destroySwitch.isOn = Wallet.shared.useDestroy
+                        
+                        self.avatar.type = AvatarButtonType.wallet
+                        self.avatar.avaInfo = nil
+
+                        let status = AgentService.shared.getAgentStatus()
+                        self.agentBtn.currentStatus = status
+                        switch status {
+                        case .activated:
+                                self.agentTime.text = String(AgentService.shared.expireDays)
+                                self.agentTime.font = UIFont(name: "", size: 20)
+                                self.vipBackground.layer.contents = UIImage(named: "VIP_BGC")?.cgImage
+                                self.agentBtn.setImage(nil, for: .normal)
+                                self.vipFlag(show: true)
+                        case .almostExpire:
+                                self.agentTime.text = String(AgentService.shared.expireDays)
+                                self.agentTime.font = UIFont(name: "", size: 20)
+                                self.vipBackground.layer.contents = UIImage(named: "VIP_BGC")?.cgImage
+                        
+                                self.agentBtn.setImage(UIImage(named: "red"), for: .normal)
+                                self.vipFlag(show: true)
+                        case .initial:
+                                self.agentTime.text = "普通用户仅支持文本聊天"
+                                self.vipBackground.layer.contents = UIImage(named: "nor_bgc")?.cgImage
+                                self.agentBtn.setImage(nil, for: .normal)
+                                self.vipFlag(show: false)
+                            break
+                        }
+                }
+        }
+        
         @IBAction func activeVIP(_ sender: UIButton) {
                 DispatchQueue.global().async {
                         Wallet.shared.getWalletFromETH()
                 }
         }
         
-    @IBAction func setUseFaceID(_ sender: UISwitch) {
-        if sender.isOn {
-            biometryUsage { (usageRes) in
-                if usageRes {
-                    self.showPwdInput(title: "请输入解锁密码", placeHolder: "请输入密码", securityShow: true) { (password, isOK) in
-                        guard let pwd = password, isOK else{
-                                return
+        @IBAction func setUseFaceID(_ sender: UISwitch) {
+                if sender.isOn {
+                        biometryUsage { (usageRes) in
+                                if usageRes {
+                                        self.showPwdInput(title: "请输入解锁密码", placeHolder: "请输入密码", securityShow: true) { (password, isOK) in
+                                                guard let pwd = password, isOK else{
+                                                        return
+                                                }
+
+                                                if !Wallet.shared.openFaceID(auth: pwd) {
+                                                        return
+                                                }
+
+                                                self.dismiss(animated: true)
+                                        }
+                                } else {
+                                        self.faceIDSwitch.isOn = !sender.isOn
+                                }
                         }
-                        
-                        if !Wallet.shared.openFaceID(auth: pwd) {
-                            return
-                        }
-                        
-                        self.dismiss(animated: true)
-                    }
                 } else {
-                    self.faceIDSwitch.isOn = !sender.isOn
+                        if let err = Wallet.shared.UpdateUseFaceID(by: sender.isOn) {
+                                faceIDSwitch.isOn = !sender.isOn
+                                self.toastMessage(title: err.localizedDescription)
+                        }
                 }
-            }
-        } else {
-            if let err = Wallet.shared.UpdateUseFaceID(by: sender.isOn) {
-                faceIDSwitch.isOn = !sender.isOn
-                self.toastMessage(title: err.localizedDescription)
-            }
         }
-    }
     
         @IBAction func setDestroy(_ sender: UISwitch) {
                 if sender.isOn {
