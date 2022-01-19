@@ -126,7 +126,7 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
         func nodeIPChanged(_ p0: String?) {
                 if let str = p0 {
                         let conf = ConfigItem.initEndPoint(str)
-                        if let err = ConfigItem.updateEndPoint(conf) {
+                        if let err = ConfigItem.updateConfig(conf) {
                                 print("update config faild:\(String(describing: err.localizedDescription))")
                         }
                 }

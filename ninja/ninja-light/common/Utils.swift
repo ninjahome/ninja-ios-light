@@ -538,15 +538,20 @@ func cleanAllData() {
         MessageItem.cache.deleteAll()
 }
 
-func getAppVersion() -> String {
+func getAppVersion() -> String? {
         if let infoDict: [String: Any] = Bundle.main.infoDictionary {
                 if let mainVersion = infoDict["CFBundleShortVersionString"] as? String,
                    let build = infoDict["CFBundleVersion"] as? String {
-                        return String("版本号："+mainVersion+"."+build)
+                        return String(mainVersion+"."+build)
                 }
         }
 
-        return "版本号"
+        return nil
+}
+
+func getSavedAppVersion() -> String? {
+        let userDefault = UserDefaults.standard
+        return userDefault.string(forKey: AppVersionKey)
 }
 
 extension MBProgressHUD {

@@ -20,20 +20,19 @@ class ConfigItem: NSObject {
         }
 
         public static func loadEndPoint() -> String? {
-                if let endPoint = ConfigItem.shared.endPoint {
-                        return endPoint
-                }
                 var inst: ConfigItem?
                 do {
                         inst = try CDManager.shared.GetOne(entity: "CDConfig", predicate: nil)
-                } catch {
-                        return nil
+                        self.shared.endPoint = inst?.endPoint
+                        return self.shared.endPoint
+                } catch let err {
+                        print(err.localizedDescription)
                 }
-
-                return inst?.endPoint
+                return nil
         }
-
-        public static func updateEndPoint(_ item: ConfigItem) -> NJError? {
+        
+        public static func updateConfig(_ item: ConfigItem) -> NJError? {
+                
                 do {
                         try CDManager.shared.UpdateOrAddOne(entity: "CDConfig", m: item, predicate: nil)
                 } catch let err {

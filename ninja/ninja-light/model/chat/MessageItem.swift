@@ -37,10 +37,11 @@ class MessageItem: NSObject {
         }
         
         public static func initByData(_ data: Data, from: String, gid: String? = nil, time: Int64) -> MessageItem? {
-                guard let typ: CMT = CMT(rawValue: Int(data[0])),
-                      let objJson = try? JSON(data: data[1...]) else {
+          
+                guard let typ = CMT(rawValue: Int(data[0])) else {
                         return nil
                 }
+                let objJson = JSON(data[1...])
                 let msgItem = MessageItem()
                 msgItem.typ = typ
                 msgItem.from = from
