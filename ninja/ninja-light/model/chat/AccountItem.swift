@@ -16,7 +16,7 @@ class AccountItem: NSObject {
         var Addr: String?
         var NickName: String?
         var Avatar: Data?
-        var Balance: String?
+        var Balance: Int64?
         var TouchTime: Int64?
         var Owner: String?
         
@@ -34,7 +34,7 @@ class AccountItem: NSObject {
                         data.NickName = objJson["name"].string
                         let str = objJson["avatar"].string
                         data.Avatar = ChatLibUnmarshalGoByte(str)
-                        data.Balance = objJson["balance"].string
+                        data.Balance = objJson["balance"].int64
                         data.TouchTime = objJson["touch_time"].int64
                         return data
                 }
@@ -42,11 +42,12 @@ class AccountItem: NSObject {
         }
         
         public static func initByJson(_ account: JSON) -> AccountItem {
+                
                 let acc = AccountItem()
                 acc.Nonce = account["nonce"].int64
                 acc.Addr = account["addr"].string
                 acc.NickName = account["name"].string
-                acc.Balance = account["balance"].string
+                acc.Balance = account["balance"].int64
                 acc.TouchTime = account["touch_time"].int64
                 acc.Owner = Wallet.shared.Addr!
                 acc.Avatar = ChatLibAccountAvatar(acc.Addr, nil)
@@ -89,7 +90,7 @@ extension AccountItem: ModelObj {
                 cObj.name = self.NickName
                 cObj.addr = self.Addr
                 cObj.avatar = self.Avatar
-                cObj.balance = self.Balance
+                cObj.balance = self.Balance ?? 0
                 
                 cObj.nonce = self.Nonce ?? 0
                 cObj.touch_time = self.TouchTime ?? 0

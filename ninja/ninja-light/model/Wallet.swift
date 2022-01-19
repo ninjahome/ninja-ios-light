@@ -57,32 +57,23 @@ class Wallet: NSObject {
         
         func getLatestWallt() {
                 var error: NSError?
-                if let data = ChatLibAccountDetail(self.Addr!, &error), error == nil {
-                        if let item = Wallet.initByData(data), let new = item.nonce {
-                                guard let old = self.nonce else {
-                                        _ = self.UpdateWallet(w: item)
-                                        return
-                                }
-                                if new > old {
-                                        _ = self.UpdateWallet(w: item)
-                                }
-                                
-                        }
+                guard let data = ChatLibAccountDetail(self.Addr!, &error) else {
+                        NSLog("-----[getLatestWallt]------>:\(error?.localizedDescription ?? "no error")")
+                        return
+                }
+                if let item = Wallet.initByData(data) {
+                        _ = self.UpdateWallet(w: item)
                 }
         }
         
-        func getLatestWalletFromChain() {
+        func getWalletFromETH() {
                 var error: NSError?
-                if let data = ChatLibAccountBalance(self.Addr!, &error), error == nil {
-                        if let item = Wallet.initByData(data), let new = item.nonce {
-                                guard let old = self.nonce else {
-                                        _ = self.UpdateWallet(w: item)
-                                        return
-                                }
-                                if new > old {
-                                        _ = self.UpdateWallet(w: item)
-                                }
-                        }
+                guard let data = ChatLibAccountBalance(self.Addr!, &error) else {
+                        NSLog("------[getWalletFromETH]----->:\(error?.localizedDescription ?? "no error")")
+                        return
+                }
+                if let item = Wallet.initByData(data) {
+                        _ = self.UpdateWallet(w: item)
                 }
         }
         
@@ -94,6 +85,7 @@ class Wallet: NSObject {
                 self.Addr = a.Addr
                 self.wJson = a.wJson
                 self.obj = a.obj
+                self.nonce = a.nonce
                 self.nickName = a.nickName
                 self.useFaceID = a.useFaceID
                 self.useDestroy = a.useDestroy
@@ -105,6 +97,7 @@ class Wallet: NSObject {
                 self.nickName = a.nickName
                 self.liceneseExpireTime = a.liceneseExpireTime
                 self.avatarData = a.avatarData
+                self.nonce = a.nonce
         }
     
         func New(_ password: String) throws {
@@ -313,6 +306,7 @@ extension Wallet: ModelObj {
                 wObj.useDestroy = self.useDestroy
                 wObj.liceneseExpireTime = self.liceneseExpireTime
                 wObj.avatar = self.avatarData
+                wObj.nonce = self.nonce ?? 0
                 self.obj = wObj
         }
 
@@ -328,6 +322,7 @@ extension Wallet: ModelObj {
                 self.useDestroy = wObj.useDestroy
                 self.liceneseExpireTime = wObj.liceneseExpireTime
                 self.avatarData = wObj.avatar
+                self.nonce = wObj.nonce
         }
     
 }

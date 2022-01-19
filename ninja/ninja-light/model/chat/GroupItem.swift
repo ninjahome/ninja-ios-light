@@ -30,8 +30,8 @@ class GroupItem: NSObject {
         var owner: String?
         var unixTime: Int64 = 0
         var leader: String?
-        var banTalked: Bool = false
-        var deleted: Bool = false
+//        var banTalked: Bool = false
+        var isDelete: Bool = false
         var avatar: Data?
 
         var memberInfos: Dictionary<String, String> = [:]
@@ -45,9 +45,9 @@ class GroupItem: NSObject {
                         let grp = GroupItem()
                         grp.gid = objJson["gid"].string
                         grp.nonce = objJson["nonce"].int64
-                        grp.owner = objJson["owner"].string
+                        grp.leader = objJson["owner"].string
                         grp.groupName = objJson["name"].string
-                        grp.deleted = objJson["deleted"].bool ?? false
+                        grp.isDelete = objJson["deleted"].bool ?? false
                         grp.memberIds = objJson["members"].arrayObject as NSArray?
                         return grp
                 }
@@ -95,7 +95,7 @@ class GroupItem: NSObject {
                         return
                 }
                 var result: [GroupItem]?
-                result = try? CDManager.shared.Get(entity: "CDGroup", predicate: NSPredicate(format: "owner == %@", owner), sort: [["groupName" : true]])
+                result = try? CDManager.shared.Get(entity: "CDGroup", predicate: NSPredicate(format: "owner == %@", owner), sort: [["name" : true]])
 
                 guard let arr = result else {
                         return
@@ -256,23 +256,23 @@ class GroupItem: NSObject {
 
         }
     
-        public static func SyncGroupFromMe(by gid: String) -> String {
-                guard let group = GroupItem.GetGroup(gid) else {
-                        return ""
-                }
-
-                var groupDict: Dictionary<String, Any> = [:]
-                groupDict["group_id"] = group.gid
-                groupDict["group_name"] = group.groupName
-                groupDict["owner_id"] = group.leader
-                groupDict["ban_talking"] = group.banTalked
-                groupDict["member_id"] = group.memberIds
-                groupDict["nick_name"] = group.memberNicks
-                let res = getJSONStringFromDictionary(dictionary: groupDict as NSDictionary)
-                print(res)
-                return res
-        }
-    
+//        public static func SyncGroupFromMe(by gid: String) -> String {
+//                guard let group = GroupItem.GetGroup(gid) else {
+//                        return ""
+//                }
+//
+//                var groupDict: Dictionary<String, Any> = [:]
+//                groupDict["group_id"] = group.gid
+//                groupDict["group_name"] = group.groupName
+//                groupDict["owner_id"] = group.leader
+//                groupDict["ban_talking"] = group.banTalked
+//                groupDict["member_id"] = group.memberIds
+//                groupDict["nick_name"] = group.memberNicks
+//                let res = getJSONStringFromDictionary(dictionary: groupDict as NSDictionary)
+//                print(res)
+//                return res
+//        }
+//
 //        public static func SyncGroup(to: String?, groupId: String?) -> NJError? {
 //                var error: NSError?
 //                
@@ -304,13 +304,13 @@ extension GroupItem: ModelObj {
                 }
                 self.UpdateSelfInfos()
                 cObj.gid = self.gid
-                cObj.groupName = self.groupName
+                cObj.name = self.groupName
                 cObj.owner = self.owner
-                cObj.memberIds = self.memberIds
-                cObj.memberNicks = self.memberNicks
+                cObj.members = self.memberIds
+//                cObj.memberNicks = self.memberNicks
                 cObj.unixTime = self.unixTime
                 cObj.leader = self.leader
-                cObj.banTalked = self.banTalked
+                cObj.isDelete = self.isDelete
 
         }
 
@@ -320,13 +320,13 @@ extension GroupItem: ModelObj {
                 }
 
                 self.gid = cObj.gid
-                self.groupName = cObj.groupName
+                self.groupName = cObj.name
                 self.owner = cObj.owner
-                self.memberIds = cObj.memberIds as? NSArray
-                self.memberNicks = cObj.memberNicks as? NSArray
+                self.memberIds = cObj.members as? NSArray
+//                self.memberNicks = cObj.memberNicks as? NSArray
                 self.unixTime = cObj.unixTime
                 self.leader = cObj.leader
-                self.banTalked = cObj.banTalked
+                self.isDelete = cObj.isDelete
 
                 self.UpdateSelfInfos()
                 //        let ids = self.memberIds!

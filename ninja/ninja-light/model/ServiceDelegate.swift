@@ -33,11 +33,11 @@ class ServiceDelegate: NSObject {
                 if let point = ConfigItem.shared.endPoint {
                         endPoint = point
                 } else {
-                        endPoint = "192.168.1.167:16666"
+                        endPoint = "192.168.1.167"
                 }
                 
                 // networkID 5: company 2: other
-                ChatLibInitAPP(endPoint, "a3a5c09826a246d0bfbef8084b81df1f", WebsocketSrv.shared, 2)
+                ChatLibInitAPP(endPoint, "a3a5c09826a246d0bfbef8084b81df1f", WebsocketSrv.shared, 5)
 
         }
         

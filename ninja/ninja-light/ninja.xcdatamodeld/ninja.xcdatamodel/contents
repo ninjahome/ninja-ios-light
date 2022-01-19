@@ -3,7 +3,7 @@
     <entity name="CDAccount" representedClassName="CDAccount" syncable="YES" codeGenerationType="class">
         <attribute name="addr" optional="YES" attributeType="String"/>
         <attribute name="avatar" optional="YES" attributeType="Binary"/>
-        <attribute name="balance" optional="YES" attributeType="String"/>
+        <attribute name="balance" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="nonce" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="owner" optional="YES" attributeType="String"/>
@@ -27,12 +27,12 @@
         <attribute name="uid" optional="YES" attributeType="String"/>
     </entity>
     <entity name="CDGroup" representedClassName="CDGroup" syncable="YES" codeGenerationType="class">
-        <attribute name="banTalked" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="gid" optional="YES" attributeType="String"/>
-        <attribute name="groupName" optional="YES" attributeType="String"/>
+        <attribute name="isDelete" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="leader" optional="YES" attributeType="String"/>
-        <attribute name="memberIds" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer"/>
-        <attribute name="memberNicks" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer"/>
+        <attribute name="members" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="nonce" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="owner" optional="YES" attributeType="String"/>
         <attribute name="unixTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
@@ -55,6 +55,7 @@
         <attribute name="jsonStr" optional="YES" attributeType="String"/>
         <attribute name="liceneseExpireTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="nick" optional="YES" attributeType="String"/>
+        <attribute name="nonce" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="useDestroy" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="useFaceID" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </entity>
@@ -65,6 +66,6 @@
         <element name="CDContact" positionX="-36" positionY="18" width="128" height="89"/>
         <element name="CDGroup" positionX="-45" positionY="72" width="128" height="149"/>
         <element name="CDUnread" positionX="-54" positionY="9" width="128" height="194"/>
-        <element name="CDWallet" positionX="-63" positionY="-18" width="128" height="134"/>
+        <element name="CDWallet" positionX="-63" positionY="-18" width="128" height="149"/>
     </elements>
 </model>

@@ -43,8 +43,24 @@ class ContactItem:NSObject{
                 }
                 return obj
         }
+        
+        public static func AddNewContact(_ contact: ContactItem) -> NJError? {
+                
+                var error: NSError?
+                ChatLibAddFriend(contact.uid, contact.alias, contact.remark, &error)
+                if ContactItem.UpdateContact(contact) == nil {
+                        NotificationCenter.default.post(name:NotifyContactChanged,
+                                                object: nil, userInfo:nil)
+                }
+                if error != nil {
+                        print(error!.localizedDescription)
+                        return NJError.contact(error!.localizedDescription)
+                }
+                
+                return nil
+        }
     
-        public static func UpdateContact(_ contact:ContactItem) -> NJError?{
+        public static func UpdateContact(_ contact:ContactItem) -> NJError? {
                 contact.owner = Wallet.shared.Addr!
                 if !(IsValidContactID(contact.uid)) {
                         return NJError.contact("invalid ninja address")
@@ -122,8 +138,113 @@ class ContactItem:NSObject{
                                 let contactItem = ContactItem.initByJson(demo: demo, uid: uid)
                                 _ = ContactItem.UpdateContact(contactItem)
                         }
+                        ContactItem.LocalSavedContact()
                 }
         }
+        
+        class func updateDetailContact(uid: String) {
+//                var err1: NSError?
+//                if let account = ChatLibAccountDetail(uid, &err1) {
+//                        let jsonAcc = JSON(account)
+//                        let accItem = AccountItem.initByJson(jsonAcc)
+//                        _ = AccountItem.UpdateOrAddAccount(accItem)
+//                }
+//
+                var err2: NSError?
+                if let friData = ChatLibFriendDetail(uid, &err2) {
+                        let friObj = JSON(friData)
+                        
+                        let acc = friObj["account"]
+                        var accItem:AccountItem?
+                        if acc.exists() {
+                                accItem = AccountItem.initByJson(acc)
+                        } else {
+                                accItem = AccountItem()
+                                accItem!.Addr = uid
+                                accItem!.Balance = 0
+                        }
+                        _ = AccountItem.UpdateOrAddAccount(accItem!)
+//                        let jsonCont = JSON(demo)
+                        let demo = friObj["demo"]
+                        let contactItem = ContactItem.initByJson(demo: demo, uid: uid)
+                        _ = ContactItem.UpdateContact(contactItem)
+                }
+        }
+        
+        public static func updateContacts() {
+                var error: NSError?
+                guard let data = ChatLibAllFriendIDs(&error) else {
+                        return
+                }
+                
+                let friendsJson = JSON(data)
+                for (k, subJson):(String, JSON) in friendsJson {
+                        print(k)
+                        print(subJson)
+                        if ContactItem.cache[k] != nil {
+                                continue
+                        }
+                        
+                        updateDetailContact(uid: k)
+                }
+                ContactItem.LocalSavedContact()
+        }
+        
+        
+        
+        public static func undateAlias(_ contact: ContactItem) {
+                var err: NSError?
+                ChatLibUpdateAlias(contact.uid, contact.alias, &err)
+                if err != nil {
+                        print(err!.localizedDescription)
+                }
+                
+                if ContactItem.UpdateContact(contact) == nil {
+                        NotificationCenter.default.post(name:NotifyContactChanged,
+                                                object: nil, userInfo:nil)
+                }
+        }
+        
+        public static func updateRemark(_ contact: ContactItem) {
+                var err: NSError?
+                ChatLibUpdateRemark(contact.uid, contact.remark, &err)
+                if err != nil {
+                        print(err!.localizedDescription)
+                }
+                
+                if ContactItem.UpdateContact(contact) == nil {
+                        NotificationCenter.default.post(name:NotifyContactChanged,
+                                                object: nil, userInfo:nil)
+                }
+        }
+        
+        public static func updateFriend(_ contact: ContactItem) {
+                var err: NSError?
+                ChatLibUpdateFriend(contact.uid, contact.alias, contact.remark, &err)
+                if err != nil {
+                        print(err!.localizedDescription)
+                }
+                
+                if ContactItem.UpdateContact(contact) == nil {
+                        NotificationCenter.default.post(name:NotifyContactChanged,
+                                                object: nil, userInfo:nil)
+                }
+        }
+        
+        public static func deleteFriend(_ id: String) {
+                var err: NSError?
+                ChatLibDeleteFriend(id, &err)
+                if err != nil {
+                        print(err!.localizedDescription)
+                }
+                
+                if ContactItem.DelContact(id) == nil {
+                        NotificationCenter.default.post(name:NotifyContactChanged,
+                                                object: nil, userInfo:nil)
+                }
+
+        }
+
         
         static func initByJson(demo: JSON, uid: String) -> ContactItem {
                 let contactItem = ContactItem()

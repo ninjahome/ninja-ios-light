@@ -65,15 +65,15 @@ extension ContactViewController:UITableViewDelegate, UITableViewDataSource{
                 
                 let vc = instantiateViewController(vcID: "ContactDetailsVC") as! ContactDetailsViewController
                 
-                guard let itemid = self.NewCodeStr else {
-                        if let idx = self.selectedRow {
-                                let item = ContactItem.CacheArray()[idx]
-                                vc.itemData = item
-                        }
-                        return
-                }
+                if let itemid = self.NewCodeStr {
+                        vc.itemUID = itemid
 
-                vc.itemUID = itemid
+                }
+                
+                if let idx = self.selectedRow {
+                        let item = ContactItem.CacheArray()[idx]
+                        vc.itemData = item
+                }
                 
                 self.navigationController?.pushViewController(vc, animated: true)
 

@@ -91,7 +91,7 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
                 }
                 guard let err = Wallet.shared.UpdateWallet(w: wallet) else {
                         //TODO:: update contact and group
-                        
+                        ContactItem.updateContacts()
                         return
                 }
                 print(String(err.localizedDescription))

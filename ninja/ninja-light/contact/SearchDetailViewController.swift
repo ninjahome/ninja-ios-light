@@ -14,22 +14,27 @@ class SearchDetailViewController: UIViewController {
         @IBOutlet weak var uidText: UILabel!
         @IBOutlet weak var nickName: UILabel!
         
+        @IBOutlet weak var alias: UITextField!
+        @IBOutlet weak var remark: UITextView!
+        
         var uid: String?
         var account: AccountItem?
         
         override func viewWillAppear(_ animated: Bool) {
                 super.viewWillAppear(animated)
                 self.navigationController?.setNavigationBarHidden(true, animated: true)
-                account = AccountItem.shared.getLatestAccount(addr: uid!)
         }
     
         override func viewDidLoad() {
                 super.viewDidLoad()
                 uidText.text = uid
+                account = AccountItem.shared.getLatestAccount(addr: uid!)
                 avatar.type = .chatContact
                 avatar.avaInfo = AvatarInfo(id: uid!, avaData: self.account?.Avatar)
                 nickName.text = account?.NickName
                 backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
+                
+                self.hideKeyboardWhenTappedAround()
         }
     
         override func viewWillDisappear(_ animated: Bool) {
@@ -42,23 +47,20 @@ class SearchDetailViewController: UIViewController {
         }
     
         @IBAction func saveToContact(_ sender: Any) {
-        
                 let contact = ContactItem.init()
                 contact.uid = self.uid
-        //                contact.nickName = self.nickName.text
-        //                contact.remark = remarks.text
-        //                contact.avatar = self.avatar.image?.pngData()//TODO::Load avatar from netework
+                contact.remark = remark.text
+                contact.alias = alias.text
                 _ = AccountItem.UpdateOrAddAccount(account!)
-                guard let err = ContactItem.UpdateContact(contact) else{
-                        NotificationCenter.default.post(name:NotifyContactChanged,
-                                                object: nil, userInfo:nil)
-                        return
-                }
-
-                self.toastMessage(title: err.localizedDescription)
+                _ = ContactItem.AddNewContact(contact)
+                startChat()
         }
         
         @IBAction func sendMsg(_ sender: UIButton) {
+                startChat()
+        }
+        
+        func startChat() {
                 guard let id = self.uid else {
                         return
                 }
@@ -67,14 +69,14 @@ class SearchDetailViewController: UIViewController {
                 self.navigationController?.pushViewController(vc, animated: true)
         }
         
-        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-                if segue.identifier == "SaveNewContactSeg" {
-                        let contact = ContactItem.init()
-                        contact.uid = self.uid
-
-                        let vc = segue.destination as! ContactDetailsViewController
-                        vc.itemUID = self.uid
-                        vc.itemData = contact
-                }
-        }
+//        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//                if segue.identifier == "SaveNewContactSeg" {
+//                        let contact = ContactItem.init()
+//                        contact.uid = self.uid
+//
+//                        let vc = segue.destination as! ContactAliasViewController
+//                        vc.itemUID = self.uid
+//                        vc.itemData = contact
+//                }
+//        }
 }

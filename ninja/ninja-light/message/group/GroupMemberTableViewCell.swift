@@ -22,11 +22,16 @@ class GroupMemberTableViewCell: UITableViewCell {
 
         var cellDelegate: CellClickDelegate?
         var index: Int?
+        
+        @IBOutlet weak var vipHint: UILabel!
+        
 
         override func prepareForReuse() {
                 super.prepareForReuse()
 
                 setSelect(selected: false)
+                vipHint.isHidden = true
+                selectBtn.isHidden = false
         }
     
         override func awakeFromNib() {
@@ -48,8 +53,14 @@ class GroupMemberTableViewCell: UITableViewCell {
                 }
 
                 self.avatar.type = AvatarButtonType.contact
-                let acc = AccountItem.GetAccount(uid)
-                self.avatar.avaInfo = AvatarInfo.init(id: uid, avaData: acc?.Avatar)
+                if let acc = AccountItem.GetAccount(uid) {
+                        self.avatar.avaInfo = AvatarInfo.init(id: uid, avaData: acc.Avatar)
+                        if Int(acc.Balance ?? 0) <= 0 {
+                                vipHint.isHidden = false
+                                selectBtn.isHidden = true
+                                self.isUserInteractionEnabled = false
+                        }
+                }
         }
     
         func initWith(group: GroupItem, idx: Int, selected: Bool) {

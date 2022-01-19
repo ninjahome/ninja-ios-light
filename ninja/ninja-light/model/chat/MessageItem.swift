@@ -53,7 +53,8 @@ class MessageItem: NSObject {
                         msgItem.payload = objJson.rawValue as? Data
                 case .voice:
                         let audiomsg = audioMsg()
-                        audiomsg.content = objJson["content"].rawValue as! Data
+                        //TODO::  
+                        audiomsg.content = objJson["content"].rawValue as? Data ?? Data()
                         audiomsg.duration = objJson["len"].int!
                         
                         msgItem.payload = audiomsg
@@ -113,7 +114,7 @@ class MessageItem: NSObject {
                 var result: MessageItem?
                 do {
                         result = try CDManager.shared.GetOne(entity: "CDUnread",
-                                                             predicate: NSPredicate(format: "owner == %@ AND to == %@ AND unixTime == %@", owner, to, mid))
+                                                             predicate: NSPredicate(format: "owner == %@ AND to == %@ AND unixTime == %@", owner, to, NSNumber(value: mid)))
                 } catch let err {
                         print(err.localizedDescription)
                 }                

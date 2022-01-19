@@ -16,12 +16,16 @@ class ContactItemTableViewCell: UITableViewCell {
             super.awakeFromNib()
                 // Initialization code
         }
+        
+        override func prepareForReuse() {
+                avatar.setImage(nil, for: .normal)
+        }
 
         override func setSelected(_ selected: Bool, animated: Bool) {
                 super.setSelected(selected, animated: animated)
         }
 
-        func initWith(details:ContactItem, idx: Int, account: AccountItem) {
+        func initWith(details: ContactItem, idx: Int, account: AccountItem) {
                 if let alias = details.alias {
                         self.nickName.text = alias
                 } else {

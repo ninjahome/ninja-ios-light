@@ -33,7 +33,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                         _delegate = self.navigationController?.interactivePopGestureRecognizer?.delegate
                         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
                 }
-                self.account = AccountItem.GetAccount(itemUID!)
+                
         }
     
         override func viewWillDisappear(_ animated: Bool) {
@@ -46,13 +46,15 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 super.viewDidLoad()
 
                 self.hideKeyboardWhenTappedAround()
+                self.account = AccountItem.GetAccount(itemUID ?? itemData!.uid!)
                 self.populateView()
 
                 nickTextField.text = itemData?.alias
                 memoTextView.text = itemData?.remark
 
                 backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
-
+                
+                
                 setAvatar()
 
                 NotificationCenter.default.addObserver(self,
@@ -60,7 +62,6 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                                                                
                                                        name: NotifyContactChanged,
                                                        object: nil)
-
         }
     
         deinit {
@@ -85,20 +86,25 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
         }
     
         @IBAction func backBtn(_ sender: UIButton) {
+                self.navigationController?.popToRootViewController(animated: true)
+        }
+        
+        @IBAction func saveChanges(_ sender: UIButton) {
                 let contact = ContactItem.init()
                 contact.uid = itemData?.uid
                 contact.alias = self.nickTextField.text
                 contact.remark = self.memoTextView.text
-
-                if let err = ContactItem.UpdateContact(contact) {
-                        NotificationCenter.default.post(name:NotifyContactChanged,
-                                                       object: contact, userInfo:nil)
-                        self.toastMessage(title: err.localizedDescription)
+                
+                if contact.alias != itemData?.alias && contact.remark != itemData?.remark {
+                        ContactItem.updateFriend(contact)
+                } else if contact.alias != itemData?.alias {
+                        ContactItem.undateAlias(contact)
+                } else if contact.remark != itemData?.remark {
+                        ContactItem.updateRemark(contact)
                 }
-
-                self.navigationController?.popToRootViewController(animated: true)
+                self.navigationController?.popViewController(animated: true)
         }
-    
+        
         @IBAction func moreBarItem(_ sender: UIButton) {
                 if deleteBtn.isHidden {
                         deleteBtn.isHidden = false
@@ -113,16 +119,18 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 guard let uid = self.uid.text else{
                         return
                 }
-
-                guard let err = ContactItem.DelContact(uid) else{
-                        NotificationCenter.default.post(name:NotifyContactChanged,
-                                                        object: nil, userInfo:nil)
-                        
-                        self.closeWindow()
-                        return
-                }
-
-                self.toastMessage(title: err.localizedDescription)
+                
+                ContactItem.deleteFriend(uid)
+                self.closeWindow()
+//                guard let err = ContactItem.DelContact(uid) else{
+//                        NotificationCenter.default.post(name:NotifyContactChanged,
+//                                                        object: nil, userInfo:nil)
+//
+//                        self.closeWindow()
+//                        return
+//                }
+//
+//                self.toastMessage(title: err.localizedDescription)
         }
     
         @IBAction func copyContactAddr(_ sender: UIButton) {
@@ -149,7 +157,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                         return
                 }
                 self.uid.text = data.uid
-                self.nickName.text = data.alias
+                self.nickName.text = account?.NickName
         }
 
         private func closeWindow(){
