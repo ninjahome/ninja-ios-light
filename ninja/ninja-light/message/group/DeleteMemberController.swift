@@ -57,9 +57,9 @@ class DeleteMemberController: UIViewController {
             return k
         })
         
-        let nicks = groupItem?.memberInfos.map({ (k: String, v: String) in
-            return v
-        })
+//        let nicks = groupItem?.memberInfos.map({ (k: String, v: String) in
+//            return v
+//        })
         
         if let err = GroupItem.KickOutUser(to: groupIds.toString(), groupId: groupItem!.gid!, leader: groupItem!.leader!, kickUserId: delIds.toString()!) {
             
@@ -68,7 +68,7 @@ class DeleteMemberController: UIViewController {
         }
         
         groupItem?.memberIds = ids! as NSArray
-        groupItem?.memberNicks = nicks! as NSArray
+//        groupItem?.memberNicks = nicks! as NSArray
         _ = GroupItem.UpdateGroup(groupItem!)
         self.notiMemberChange(groupItem!)
         self.navigationController?.popViewController(animated: true)

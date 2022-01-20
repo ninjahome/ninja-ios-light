@@ -29,7 +29,7 @@ class MesasgeItemTableViewCell: UITableViewCell {
                 super.setSelected(selected, animated: animated)
         }
 
-        func initWith(details:ChatItem, idx:Int){
+        func initWith(details: ChatItem, idx:Int){
 
                 let itemId = details.ItemID!
                 var avaData: Data?
@@ -46,7 +46,7 @@ class MesasgeItemTableViewCell: UITableViewCell {
                 avatar.avaInfo = AvatarInfo.init(id: itemId, avaData: avaData)
                 self.nickName.text = details.NickName
                 self.LastMsg.text = details.LastMsg
-                self.lastMsgTime.text = formatTimeStamp(by: details.updateTime)
+                self.lastMsgTime.text = formatMsgTimeStamp(by: details.updateTime)
 
                 if details.unreadNo > 0 {
                         self.unread.text = "\(details.unreadNo)"

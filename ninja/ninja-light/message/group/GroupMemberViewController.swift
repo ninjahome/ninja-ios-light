@@ -76,39 +76,33 @@ class GroupMemberViewController: UIViewController {
                         }
 
                         var groupIds = groupItem.memberIds as! [String]
-                        var groupNicks = groupItem.memberNicks as! [String]
+//                        var groupNicks = groupItem.memberNicks as! [String]
                         var newIds: [String] = []
 
                         for i in selectedIndexs {
                                 newIds.append(contacts[i].uid!)
                                 groupIds.append(contacts[i].uid!)
-                                groupNicks.append(contacts[i].alias ?? "")
+//                                groupNicks.append(contacts[i].alias ?? "")
                         }
 
                         groupItem.memberIds = groupIds as NSArray
-                        groupItem.memberNicks = groupNicks as NSArray
-                        groupItem.UpdateSelfInfos()
+//                        groupItem.memberNicks = groupNicks as NSArray
+//                        groupItem.UpdateSelfInfos()
 
                         self.AddMember(newIds: newIds)
-                        print("groupIds:\(groupIds).groupNicks:\(groupNicks)")
+                        print("groupIds:\(groupIds)")
 
                 } else {
                         if let contacts = contactArray {
                                 var groupIds: [String] = []
-                                var groupNicks: [String] = []
-
                                 for i in selectedIndexs {
                                         groupIds.append(contacts[i].uid!)
-                                        groupNicks.append(contacts[i].alias ?? "")
                                 }
 
-                                groupIds.append(Wallet.shared.Addr!)
-                                groupNicks.append(Wallet.shared.nickName ?? "")
-
                                 showInputDialog(title: "取个群名", message: "", textPlaceholder: "", actionText: "确定", cancelText: "暂不取名") { cancleAction in
-                                        self.CreateGroup(ids: groupIds, nicks: groupNicks, groupName: "")
+                                        self.CreateGroup(ids: groupIds, groupName: "")
                                 } actionHandler: { text in
-                                        self.CreateGroup(ids: groupIds, nicks: groupNicks, groupName: text ?? "")
+                                        self.CreateGroup(ids: groupIds, groupName: text ?? "")
                                 }
                         }
                 }
@@ -130,8 +124,7 @@ class GroupMemberViewController: UIViewController {
                 self.toastMessage(title: "Save GroupItem failed \(String(describing: error.localizedDescription))")
         }
 
-        fileprivate func CreateGroup(ids: [String], nicks: [String], groupName: String) {
-        
+        fileprivate func CreateGroup(ids: [String], groupName: String) {
                 guard let groupId = GroupItem.NewGroup(ids: ids, groupName: groupName) else {
                         self.toastMessage(title: "Created group failed")
                         return
@@ -140,25 +133,25 @@ class GroupMemberViewController: UIViewController {
                 groupItem.gid = groupId
                 groupItem.groupName = groupName
                 groupItem.memberIds = ids as NSArray
-                groupItem.memberNicks = nicks as NSArray
+//                groupItem.memberNicks = nicks as NSArray
                 groupItem.owner = Wallet.shared.Addr
                 groupItem.leader = Wallet.shared.Addr
                 groupItem.unixTime = Int64(Date().timeIntervalSince1970)
-                groupItem.UpdateSelfInfos()
+                groupItem.avatar = GroupItem.getGroupAvatar(ids: ids)
+//                groupItem.UpdateSelfInfos()
 
                 guard let err = GroupItem.UpdateGroup(groupItem) else {
                         let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController
                         vc.peerUid = groupItem.gid!
                         vc.groupData = groupItem
                         vc.IS_GROUP = true
-//                        self.performSegue(withIdentifier: "StartGroupChatSEG", sender: self)
                         self.navigationController?.pushViewController(vc, animated: true)
                         return
                 }
                 self.toastMessage(title: "Save GroupItem failed \(String(describing: err.localizedDescription))")
         }
     
-        private func reload(){
+        private func reload() {
                 ContactItem.LocalSavedContact()
                 self.tableView.reloadData()
         }
@@ -173,91 +166,80 @@ class GroupMemberViewController: UIViewController {
                 }
         }
 
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "StartGroupChatSEG" {
-//            let vc: MsgViewController = segue.destination as! MsgViewController
-//            vc.peerUid = groupItem.gid!
-//            vc.groupData = groupItem
-//            vc.IS_GROUP = true
-//        }
-//    }
 }
 
 extension GroupMemberViewController: UITableViewDelegate, UITableViewDataSource {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let contacts = contactArray else {
-            return 0
+        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+                guard let contacts = contactArray else {
+                        return 0
+                }
+                return contacts.count
         }
-        return contacts.count
-    }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CreateGroupMemberTableViewCell", for: indexPath)
-        
-        guard let contacts = contactArray else {
-            return cell
+        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "CreateGroupMemberTableViewCell", for: indexPath)
+
+                guard let contacts = contactArray else {
+                        return cell
+                }
+
+                if let c = cell as? GroupMemberTableViewCell {
+                        let item = contacts[indexPath.row]
+                        let selected = selectedIndexs.contains(indexPath.row)
+
+                        c.initWith(details: item, idx: indexPath.row, selected: selected)
+                        c.cellDelegate = self
+
+                        return c
+                }
+                return cell
         }
-        
-        if let c = cell as? GroupMemberTableViewCell {
-            let item = contacts[indexPath.row]
-            
-            let selected = selectedIndexs.contains(indexPath.row)
-            
-            c.initWith(details: item, idx: indexPath.row, selected: selected)
-            c.cellDelegate = self
-            
-            return c
-        }
-        
-        return cell
-    }
-    
 }
 
 extension GroupMemberViewController : CellClickDelegate {
     
-    func addDidClick(_ idx: Int) {
-        
-        if !selectedIndexs.contains(idx) {
-            selectedIndexs.append(idx)
+        func addDidClick(_ idx: Int) {
+
+                if !selectedIndexs.contains(idx) {
+                        selectedIndexs.append(idx)
+                }
+
+                if isAddMember {
+                        if selectedIndexs.count > 0 {
+                                self.setEnable = true
+                        }
+                } else {
+                        if selectedIndexs.count > 1 {
+                                self.setEnable = true
+                        }
+                }
+
+                enableOrDisableCompleteBtn(number: selectedIndexs.count)
+
+                print("selected list \(selectedIndexs)")
         }
-        
-        if isAddMember {
-            if selectedIndexs.count > 0 {
-                self.setEnable = true
-            }
-        } else {
-            if selectedIndexs.count > 1 {
-                self.setEnable = true
-            }
-        }
-        
-        enableOrDisableCompleteBtn(number: selectedIndexs.count)
-        
-        print("selected list \(selectedIndexs)")
-    }
     
-    func delDidClick(_ idx: Int) {
-        
-        if let existedIdx = selectedIndexs.firstIndex(of: idx) {
-            selectedIndexs.remove(at: existedIdx)
+        func delDidClick(_ idx: Int) {
+
+                if let existedIdx = selectedIndexs.firstIndex(of: idx) {
+                        selectedIndexs.remove(at: existedIdx)
+                }
+
+                if isAddMember {
+                        if selectedIndexs.count < 1 {
+                                self.setEnable = false
+                        }
+                } else {
+                        if selectedIndexs.count < 2 {
+                                self.setEnable = false
+                        }
+                }
+
+                enableOrDisableCompleteBtn(number: selectedIndexs.count)
+
+                print("selected list \(selectedIndexs)")
+
         }
-        
-        if isAddMember {
-            if selectedIndexs.count < 1 {
-                self.setEnable = false
-            }
-        } else {
-            if selectedIndexs.count < 2 {
-                self.setEnable = false
-            }
-        }
-        
-        enableOrDisableCompleteBtn(number: selectedIndexs.count)
-        
-        print("selected list \(selectedIndexs)")
-    
-    }
 
 }

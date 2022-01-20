@@ -98,7 +98,7 @@ var cellMsg: MessageItem?
 
                 }
 
-                time.text = formatTimeStamp(by: message.timeStamp)
+                time.text = formatMsgTimeStamp(by: message.timeStamp)
         }
 
 }

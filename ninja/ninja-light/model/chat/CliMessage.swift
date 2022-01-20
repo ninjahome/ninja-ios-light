@@ -121,7 +121,8 @@ class CliMessage: NSObject {
 
         override init() {
                 super.init()
-                self.timestamp = Int64(Date().timeIntervalSince1970)
+                
+                self.timestamp = ChatLibNowInMilliSeconds()
         }
 
         init(to:String, txtData: String, groupId: String? = nil) {
@@ -129,7 +130,7 @@ class CliMessage: NSObject {
                 self.type = .plainTxt
                 self.textData = txtData
                 self.groupId = groupId
-                self.timestamp = Int64(Date().timeIntervalSince1970)
+                self.timestamp = ChatLibNowInMilliSeconds()
         }
 
         init(to: String, audioD: Data, length: Int, groupId: String? = nil) {
@@ -141,7 +142,7 @@ class CliMessage: NSObject {
                 audio.duration = length
                 self.audioData = audio
                 self.groupId = groupId
-                self.timestamp = Int64(Date().timeIntervalSince1970)
+                self.timestamp = ChatLibNowInMilliSeconds()
         }
 
         init(to: String, imgData:Data, groupId: String? = nil) {
@@ -149,7 +150,7 @@ class CliMessage: NSObject {
                 self.type = .image
                 self.imgData = imgData
                 self.groupId = groupId
-                self.timestamp = Int64(Date().timeIntervalSince1970)
+                self.timestamp = ChatLibNowInMilliSeconds()
         }
         
         init(to: String, videoUrl: URL, groupId: String? = nil) {
@@ -164,7 +165,7 @@ class CliMessage: NSObject {
                 
                 self.videoData = video
                 self.groupId = groupId
-                self.timestamp = Int64(Date().timeIntervalSince1970)
+                self.timestamp = ChatLibNowInMilliSeconds()
         }
         
         init(to: String, fileUrl: URL, groupId: String? = nil) {
@@ -177,7 +178,7 @@ class CliMessage: NSObject {
                 
                 self.fileData = file
                 self.groupId = groupId
-                self.timestamp = Int64(Date().timeIntervalSince1970)
+                self.timestamp = ChatLibNowInMilliSeconds()
         }
 
         init(to: String, locationData: locationMsg, groupId: String? = nil) {
@@ -185,7 +186,7 @@ class CliMessage: NSObject {
                 self.type = .location
                 self.locationData = locationData
                 self.groupId = groupId
-                self.timestamp = Int64(Date().timeIntervalSince1970)
+                self.timestamp = ChatLibNowInMilliSeconds()
         }
 
         init(to: String, la: Float, lo: Float, describe: String, groupId: String? = nil) {
@@ -199,7 +200,7 @@ class CliMessage: NSObject {
 
                 self.locationData = loca
                 self.groupId = groupId
-                self.timestamp = Int64(Date().timeIntervalSince1970)
+                self.timestamp = ChatLibNowInMilliSeconds()
         }
         
         func PackData() -> (Data?) {

@@ -74,7 +74,7 @@ class MessageTableViewCell: UITableViewCell {
                         nickname.text = contactData?.alias
                 }
                 
-                time.text = formatTimeStamp(by: message.timeStamp)
+                time.text = formatMsgTimeStamp(by: message.timeStamp)
         }
 
 }

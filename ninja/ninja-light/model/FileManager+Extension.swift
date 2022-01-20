@@ -18,10 +18,10 @@ extension FileManager {
                 return cachesPath
         }
         
-        static func TmpDirectory() -> URL {
-                let tmpDir = fileManager.urls(for: .itemReplacementDirectory, in: .userDomainMask)[0]
-                return tmpDir
-        }
+//        static func TmpDirectory() -> URL {
+//                let tmpDir = fileManager.urls(for: .itemReplacementDirectory, in: .userDomainMask)[0]
+//                return tmpDir
+//        }
         
         @discardableResult
         static func createFolder(_ folderName :String) -> URL {

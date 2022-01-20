@@ -41,7 +41,6 @@ class MessageItem: NSObject {
                 guard let typ = CMT(rawValue: Int(data[0])) else {
                         return nil
                 }
-                let objJson = JSON(data[1...])
                 let msgItem = MessageItem()
                 msgItem.typ = typ
                 msgItem.from = from
@@ -49,31 +48,55 @@ class MessageItem: NSObject {
                 msgItem.groupId = gid
                 switch typ {
                 case .plainTxt:
-                        msgItem.payload = objJson.string
+                        msgItem.payload = String(data: data[1...], encoding: .utf8)
                 case .image:
-                        msgItem.payload = objJson.rawValue as? Data
+                        msgItem.payload = data[1...]
                 case .voice:
                         let audiomsg = audioMsg()
-                        //TODO::  
-                        audiomsg.content = objJson["content"].rawValue as? Data ?? Data()
-                        audiomsg.duration = objJson["len"].int!
                         
+                        let objJson = JSON(data[1...])
+                        audiomsg.content = objJson["content"].rawValue as? Data ?? Data()
+                        audiomsg.duration = objJson["len"].int ?? 0
                         msgItem.payload = audiomsg
                 case .location:
                         let locMsg = locationMsg()
-                        locMsg.str = objJson["name"].string!
+                        let objJson = JSON(data[1...])
+                        locMsg.str = objJson["name"].string ?? ""
                         locMsg.la = objJson["lat"].floatValue
                         locMsg.lo = objJson["long"].floatValue
-                        
                         msgItem.payload = locMsg
-                case .video:
-                        return nil
                 case .contact:
                         return nil
-                case .file:
-                        return nil
+                case .file, .video:
+                        let objJson = JSON(data[1...])
+                        let suffix = objJson["suffix"].string
+                        if mimeTypeIsVideo(suffix ?? "") {
+                                msgItem.typ = .video
+                                msgItem.payload = wrapVideMsg(objJson: objJson)
+                        } else {
+                                msgItem.payload = wrapFileMsg(objJson: objJson)
+                        }
                 }
                 return msgItem
+        }
+        
+        fileprivate class func wrapFileMsg(objJson: JSON) -> fileMsg {
+                let file = fileMsg()
+                file.name = objJson["name"].string!
+                let fileData = objJson["content"].rawValue as? Data ?? Data()
+                let dirURL = VideoFileManager.createVideoURL(name: file.name)
+                let url = FileManager.writeFile(content: fileData, folderPath: dirURL, fileName: file.name)
+                file.url = url
+                return file
+        }
+        
+        fileprivate class func wrapVideMsg(objJson: JSON) -> videoMsg {
+                let video = videoMsg()
+                video.name = objJson["name"].string!
+                let url = VideoFileManager.createVideoURL(name: video.name)
+                video.url = url.path
+                video.thumbnailImg = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)?.pngData() ?? Data()
+                return video
         }
 
         public static func loadUnread() {
@@ -195,7 +218,7 @@ class MessageItem: NSObject {
                 }
 
                 self.typ = cliMsg.type
-                self.timeStamp = cliMsg.timestamp ?? Int64(Date().timeIntervalSince1970)
+                self.timeStamp = cliMsg.timestamp!
                 self.isOut = true
                 self.groupId = cliMsg.groupId
 

@@ -22,7 +22,7 @@ class ContactItemTableViewCell: UITableViewCell {
         }
 
         func initWith(details: ContactItem, idx: Int, account: AccountItem) {
-                if let alias = details.alias {
+                if let alias = details.alias, alias != "" {
                         self.nickName.text = alias
                 } else {
                         self.nickName.text = account.NickName

@@ -83,7 +83,7 @@ class VoiceTableViewCell: UITableViewCell {
                         nickname.text = contactData?.alias
                 }
                 
-                time.text = formatTimeStamp(by: message.timeStamp)
+                time.text = formatMsgTimeStamp(by: message.timeStamp)
         }
     
         func setBtn(isOut: Bool, data: Data, long: Int) {

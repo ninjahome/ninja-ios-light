@@ -51,7 +51,8 @@ class WalletViewController: UITableViewController {
         
         @objc func reloadWallet(_ sender: Any?) {
                 DispatchQueue.global().async {
-                        Wallet.shared.getLatestWallt()
+                        Wallet.shared.getWalletFromETH()
+//                        Wallet.shared.getLatestWallt()
                         self.updateWholeView()
                 }
                 self.refreshControl?.endRefreshing()
@@ -113,9 +114,9 @@ class WalletViewController: UITableViewController {
         }
         
         @IBAction func activeVIP(_ sender: UIButton) {
-                DispatchQueue.global().async {
-                        Wallet.shared.getWalletFromETH()
-                }
+//                DispatchQueue.global().async {
+//                        Wallet.shared.getWalletFromETH()
+//                }
         }
         
         @IBAction func setUseFaceID(_ sender: UISwitch) {

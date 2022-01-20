@@ -71,7 +71,7 @@ class WebsocketSrv: NSObject {
                 }
                 
                 var err: NSError? = nil
-                ChatLibSend(cliMsg.timestamp ?? Int64(Date().timeIntervalSince1970), cliMsg.to, data, isGroup, &err)
+                ChatLibSend(cliMsg.timestamp!, cliMsg.to, data, isGroup, &err)
                 if err != nil {
                         onCompletion(false)
                         print("send msg error\(String(describing: err?.localizedDescription))")

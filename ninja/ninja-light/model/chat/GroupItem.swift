@@ -9,6 +9,7 @@ import Foundation
 import CoreData
 import ChatLib
 import SwiftyJSON
+import UIKit
 
 struct memberInfo {
         var id: String
@@ -26,7 +27,7 @@ class GroupItem: NSObject {
         var gid: String?
         var groupName: String?
         var memberIds: NSArray?
-        var memberNicks: NSArray?
+//        var memberNicks: NSArray?
         var owner: String?
         var unixTime: Int64 = 0
         var leader: String?
@@ -110,6 +111,22 @@ class GroupItem: NSObject {
         public static func CacheArray() -> [GroupItem] {
                 return Array(cache.values)
         }
+        
+        public static func getGroupAvatar(ids: [String]) -> Data? {
+                let defaultAvatar = UIImage(named: "logo_img")!.pngData()!
+                var avatarList: [Data]?
+                for i in 0..<min(ids.count, 9) {
+                        let acc = AccountItem.GetAccount(ids[i])
+                        avatarList?.append(acc?.Avatar ?? defaultAvatar)
+                }
+                let jsonData = JSON(avatarList!).rawValue as! Data
+                var err: NSError?
+                let avatar = ChatLibGroupImage(jsonData, &err)
+                if err != nil {
+                        NSLog("---[GroupImage]---\(err?.localizedDescription ?? "")")
+                }
+                return avatar
+        }
 
         public static func NewGroup(ids: [String], groupName: String?) -> String? {
                 var error: NSError?
@@ -181,7 +198,7 @@ class GroupItem: NSObject {
                 }
 
                 group.memberIds = newIds as NSArray
-                group.memberNicks = nicks as NSArray
+//                group.memberNicks = nicks as NSArray
 
                 if let err = GroupItem.UpdateGroup(group) {
                         throw NJError.coreData("kick out update group failed.\(String(describing: err.localizedDescription))")
@@ -231,12 +248,12 @@ class GroupItem: NSObject {
                                 return key
                         }
 
-                        let nicks = group.memberInfos.map { (key: String, value: String) in
-                                return value
-                        }
+//                        let nicks = group.memberInfos.map { (key: String, value: String) in
+//                                return value
+//                        }
 
                         group.memberIds = newIds as NSArray
-                        group.memberNicks = nicks as NSArray
+//                        group.memberNicks = nicks as NSArray
 
                         if let err = GroupItem.UpdateGroup(group) {
                                 throw NJError.coreData("quit group update group failed.\(String(describing: err.localizedDescription))")
@@ -302,7 +319,7 @@ extension GroupItem: ModelObj {
                 guard let cObj = obj as? CDGroup else {
                         throw NJError.coreData("Cast to CDGroup failed")
                 }
-                self.UpdateSelfInfos()
+//                self.UpdateSelfInfos()
                 cObj.gid = self.gid
                 cObj.name = self.groupName
                 cObj.owner = self.owner
@@ -328,7 +345,7 @@ extension GroupItem: ModelObj {
                 self.leader = cObj.leader
                 self.isDelete = cObj.isDelete
 
-                self.UpdateSelfInfos()
+//                self.UpdateSelfInfos()
                 //        let ids = self.memberIds!
                 //        let nicks = self.memberNicks!
                 //        let count = min(ids.count, nicks.count)
@@ -339,16 +356,15 @@ extension GroupItem: ModelObj {
 
         }
 
-    func UpdateSelfInfos() {
-        let ids = self.memberIds!
-        let nicks = self.memberNicks!
-        let count = min(ids.count, nicks.count)
-        
-        for i in 0 ..< count {
-            self.memberInfos[ids[i] as! String] = nicks[i] as? String
-        }
+//        func UpdateSelfInfos() {
+//                let ids = self.memberIds!
+//                let nicks = self.memberNicks!
+//                let count = min(ids.count, nicks.count)
 
-    }
+//                for i in 0 ..< ids.count {
+//                        self.memberInfos[ids[i] as! String] = nicks[i] as? String
+//                }
+//        }
 
 
 }

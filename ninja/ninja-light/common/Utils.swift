@@ -11,6 +11,15 @@ import MBProgressHUD
 import LocalAuthentication
 import MobileCoreServices
 
+func mimeTypeIsVideo(_ suffix: String) -> Bool {
+        if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension,
+                                                           suffix as NSString,
+                                                           nil)?.takeRetainedValue() {
+                return UTTypeConformsTo(uti, kUTTypeAudio)
+        }
+        return false
+}
+
 extension URL {
         func mimeType() -> String {
                 let pathExtension = self.pathExtension
@@ -136,6 +145,13 @@ func dispatch_async_safely_to_queue(_ queue: DispatchQueue, _ block: @escaping (
                         block()
                 }
         }
+}
+
+public func formatMsgTimeStamp(by timeStamp: Int64) -> String {
+        let time = Date.init(timeIntervalSince1970: TimeInterval(timeStamp/1000))
+        dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
+
+        return dateFormatterGet.string(from: time)
 }
 
 public func formatTimeStamp(by timeStamp: Int64) -> String {
