@@ -104,14 +104,8 @@ class MessageListViewController: UIViewController{
         
         @objc func wsOnlineErr(notification: NSNotification) {
                 print("WSOnline error....")
-//                self.showConnErrorTips()
         }
    
-//        @objc func reloadChatRoom(_ sender: Any?) {
-//                connNetwork()
-//                self.refreshControl.endRefreshing()
-//        }
-
         func connNetwork() {
                 WebsocketSrv.shared.Online()
                 self.showConnectingTips()

@@ -21,12 +21,12 @@ extension MsgViewController: UITextViewDelegate {
             cliMsg.type = .plainTxt
             if IS_GROUP {
                 cliMsg.groupId = self.peerUid
-                guard let group = groupData,
-                      let ids = group.memberIds as? [String] else {
-                    self.toastMessage(title: "Can not find group info")
-                    return false
-                }
-                cliMsg.to = ids.toString()
+//                guard let group = groupData,
+//                      let ids = group.memberIds as? [String] else {
+//                    self.toastMessage(title: "Can not find group info")
+//                    return false
+//                }
+                    cliMsg.to = self.peerUid
                 cliMsg.textData = msg
                 
             } else {

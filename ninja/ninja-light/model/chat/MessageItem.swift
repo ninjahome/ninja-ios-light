@@ -28,7 +28,7 @@ class MessageItem: NSObject {
         var isOut: Bool = false
         var groupId: String?
         var status: sendingStatus = .sent
-        var avatarInfo: Avatar?
+//        var avatarInfo: Avatar?
 
         public static var cache = LockCache<MessageList>()
 
@@ -284,8 +284,8 @@ class MessageItem: NSObject {
                         try? CDManager.shared.UpdateOrAddOne(entity: "CDUnread", m: msg,
                                                          predicate: NSPredicate(format: "owner == %@ AND unixTime == %@",
                                                                                 owner, NSNumber(value: msg.timeStamp)))
-
-
+                        NotificationCenter.default.post(name: NotifyMessageAdded,
+                                                        object: self, userInfo: [NotiKey: peerUid!])
                         for item in msgs {
                                 print(item.status)
                                 print(item.typ)

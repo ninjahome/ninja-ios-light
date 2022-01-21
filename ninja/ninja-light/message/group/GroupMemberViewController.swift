@@ -129,17 +129,19 @@ class GroupMemberViewController: UIViewController {
                         self.toastMessage(title: "Created group failed")
                         return
                 }
-
+                let wallet = Wallet.shared.Addr!
                 groupItem.gid = groupId
                 groupItem.groupName = groupName
                 groupItem.memberIds = ids as NSArray
 //                groupItem.memberNicks = nicks as NSArray
-                groupItem.owner = Wallet.shared.Addr
-                groupItem.leader = Wallet.shared.Addr
+                groupItem.owner = wallet
+                groupItem.leader = wallet
                 groupItem.unixTime = Int64(Date().timeIntervalSince1970)
-                groupItem.avatar = GroupItem.getGroupAvatar(ids: ids)
+                var allIds: [String] = ids
+                allIds.append(wallet)
+                groupItem.avatar = GroupItem.getGroupAvatar(ids: allIds)
 //                groupItem.UpdateSelfInfos()
-
+                
                 guard let err = GroupItem.UpdateGroup(groupItem) else {
                         let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController
                         vc.peerUid = groupItem.gid!

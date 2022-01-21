@@ -49,10 +49,35 @@ class GroupItem: NSObject {
                         grp.leader = objJson["owner"].string
                         grp.groupName = objJson["name"].string
                         grp.isDelete = objJson["deleted"].bool ?? false
-                        grp.memberIds = objJson["members"].arrayObject as NSArray?
+                        guard let memIds = objJson["members"].dictionaryObject?.keys else {
+                                return nil
+                        }
+                        var ids = [String]()
+                        for k in memIds {
+                                let uid = String(k)
+                                ids.append(uid)
+                        }
+                        grp.memberIds = ids as NSArray
+                        grp.owner = Wallet.shared.Addr!
                         return grp
                 }
                 return nil
+        }
+        
+        public static func getMembersOfGroup(gid: String) -> Data? {
+                guard let grpItem = GroupItem.GetGroup(gid) else {
+                        return nil
+                }
+                
+                var ids: [String] = grpItem.memberIds as! [String]
+                ids.append(grpItem.leader!)
+                
+                let jsonStr = JSON(ids).description
+                guard let data = jsonStr.data(using: .utf8) else {
+                        return nil
+                }
+
+                return data
         }
     
         public static func GetGroup(_ gid: String) -> GroupItem? {
@@ -114,23 +139,29 @@ class GroupItem: NSObject {
         
         public static func getGroupAvatar(ids: [String]) -> Data? {
                 let defaultAvatar = UIImage(named: "logo_img")!.pngData()!
-                var avatarList: [Data]?
+//                var avatarList = [Data]()
                 for i in 0..<min(ids.count, 9) {
-                        let acc = AccountItem.GetAccount(ids[i])
-                        avatarList?.append(acc?.Avatar ?? defaultAvatar)
+                        if let acc = AccountItem.GetAccount(ids[i]) {
+                                let data = acc.Avatar ?? defaultAvatar
+                                ChatLibAddImg(data)
+                        } else {
+                                let data = Wallet.shared.avatarData ?? defaultAvatar
+                                ChatLibAddImg(data)
+                        }
+                        
                 }
-                let jsonData = JSON(avatarList!).rawValue as! Data
                 var err: NSError?
-                let avatar = ChatLibGroupImage(jsonData, &err)
-                if err != nil {
-                        NSLog("---[GroupImage]---\(err?.localizedDescription ?? "")")
+                if let avatar = ChatLibCommitImg(&err) {
+                        return avatar
                 }
-                return avatar
+                NSLog("---[group image]---\(err?.localizedDescription ?? "")")
+                return nil
         }
 
         public static func NewGroup(ids: [String], groupName: String?) -> String? {
                 var error: NSError?
-                guard let data = ChatLibUnmarshalGoByte(ids.toString()) else {
+                let jsonStr = JSON(ids).description
+                guard let data = jsonStr.data(using: .utf8) else {
                         return nil
                 }
                 let gid = ChatLibCreateGroup(groupName, data, &error)
@@ -140,6 +171,34 @@ class GroupItem: NSObject {
                         return nil
                 }
                 return gid
+        }
+        
+        public static func syncGroup(_ gid: String?) -> GroupItem? {
+                var err: NSError?
+                guard let data = ChatLibGroupMeta(gid, &err) else {
+                        return nil
+                }
+                guard let item = GroupItem.initByData(data) else {
+                        return nil
+                }
+                if AccountItem.GetAccount(item.leader!) == nil {
+                        _ = AccountItem.shared.getLatestAccount(addr: item.leader!)
+                }
+                
+                guard let memIds = item.memberIds else {
+                        return nil
+                }
+                
+                for i in memIds {
+                        if AccountItem.GetAccount(i as! String) == nil {
+                                _ = AccountItem.shared.getLatestAccount(addr: i as! String)
+                        }
+                }
+                
+                if let err = UpdateGroup(item) {
+                        NSLog("---[update grp]---\(err.localizedDescription ?? "")")
+                }
+                return item
         }
     
         public static func AddMemberToGroup(group: GroupItem, newIds: [String]) -> NJError? {
@@ -193,9 +252,9 @@ class GroupItem: NSObject {
                         return key
                 }
 
-                let nicks = group.memberInfos.map { (key: String, value: String) in
-                        return value
-                }
+//                let nicks = group.memberInfos.map { (key: String, value: String) in
+//                        return value
+//                }
 
                 group.memberIds = newIds as NSArray
 //                group.memberNicks = nicks as NSArray

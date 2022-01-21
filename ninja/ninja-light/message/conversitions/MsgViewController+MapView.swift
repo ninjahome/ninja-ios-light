@@ -9,26 +9,22 @@ import Foundation
 import UIKit
 
 extension MsgViewController: MapViewControllerDelegate {
-    func sendLocation(location: locationMsg) {
-        print("send location msg:\(location.la)\(location.lo)\(location.str)")
-        let cliMsg = CliMessage.init()
-        if IS_GROUP {
-            cliMsg.groupId = self.peerUid
-            guard let group = groupData,
-                  let ids = group.memberIds as? [String] else {
-                return
-            }
-            cliMsg.to = ids.toString()
-            cliMsg.locationData = location
-            
-        } else {
-            cliMsg.to = peerUid
-            cliMsg.locationData = location
-        }
-        cliMsg.type = .location
-        
-        sendAllTypeMessage(cliMsg)
+        func sendLocation(location: locationMsg) {
+                print("send location msg:\(location.la)\(location.lo)\(location.str)")
+                let cliMsg = CliMessage.init()
+                if IS_GROUP {
+                        cliMsg.groupId = peerUid
+                        cliMsg.to = peerUid
+                        cliMsg.locationData = location
 
-    }
+                } else {
+                        cliMsg.to = peerUid
+                        cliMsg.locationData = location
+                }
+                cliMsg.type = .location
+
+                sendAllTypeMessage(cliMsg)
+
+        }
 }
 

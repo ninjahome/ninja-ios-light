@@ -76,7 +76,11 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 audioRecorder.delegate = self
                 messageTableView.delegate = self
                 messageTableView.dataSource = self
+                
                 vipView.layer.contents = UIImage(named: "bgc")?.cgImage
+                if Wallet.shared.liceneseExpireTime > 0 {
+                        vipView.isHidden = true
+                }
                 self.hideKeyboardWhenTappedAround()
 
                 NotificationCenter.default.addObserver(self,
@@ -367,7 +371,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                         self.voiceBtn.setImage(UIImage(named: "key_icon"), for: .normal)
                         self.sender.isHidden = true
                         self.recordBtn.isHidden = false
-
                         isTextType = false
                 } else {
                         self.voiceBtn.setImage(UIImage(named: "voice_icon"), for: .normal)
@@ -375,7 +378,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                         self.recordBtn.isHidden = true
                         isTextType = true
                 }
-
         }
 
         private func populateView() {
@@ -391,7 +393,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         fileprivate func setPeerNick() {
                 var count: String = "?"
                 if let memberCount = self.groupData?.memberIds?.count {
-                        count = String(memberCount)
+                        count = String(memberCount+1)
                 }
                 self.peerNickName.title = "\(self.groupData?.groupName ?? "群聊")(\(count))"
         }
@@ -440,7 +442,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 if rowCount > 1 {
                         let bottomIndexPath = IndexPath.init(row: rowCount - 1, section: 0)
                         self.messageTableView.scrollToRow(at: bottomIndexPath, at: .bottom, animated: animated)
-
                 }
         }
 

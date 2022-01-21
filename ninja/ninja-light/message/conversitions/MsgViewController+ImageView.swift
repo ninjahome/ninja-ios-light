@@ -10,9 +10,10 @@ import UIKit
 import MobileCoreServices.UTType
 
 extension MsgViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-                picker.dismiss(animated: true, completion: nil)
-        }
+//        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+//                self.dismiss(animated: true, completion: nil)
+//                picker.dismiss(animated: true, completion: nil)
+//        }
         
         func imagePickerController(_ picker: UIImagePickerController,
                                    didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -46,10 +47,7 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                 
                 var cliMsg: CliMessage?
                 if IS_GROUP {
-                        guard let group = groupData, let ids = group.memberIds as? [String] else {
-                                return
-                        }
-                        cliMsg = CliMessage.init(to: ids.toString()!, imgData: imagedata!, groupId: peerUid)
+                        cliMsg = CliMessage.init(to: peerUid, imgData: imagedata!, groupId: peerUid)
                 } else {
                         cliMsg = CliMessage.init(to: peerUid, imgData: imagedata!, groupId: nil)
                 }
@@ -69,10 +67,10 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                 
                 var cliMsg: CliMessage?
                 if IS_GROUP {
-                        guard let group = groupData, let ids = group.memberIds as? [String] else {
-                                return
-                        }
-                        cliMsg = CliMessage.init(to: ids.toString()!, videoUrl: dirURL, groupId: peerUid)
+//                        guard let group = groupData, let ids = group.memberIds as? [String] else {
+//                                return
+//                        }
+                        cliMsg = CliMessage.init(to: peerUid, videoUrl: dirURL, groupId: peerUid)
                 } else {
                         cliMsg = CliMessage.init(to: peerUid, videoUrl: dirURL, groupId: nil)
                 }

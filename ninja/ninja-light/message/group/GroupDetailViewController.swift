@@ -7,79 +7,78 @@
 
 import UIKit
 
-struct Avatar {
-    var color: String
-    var text: String
-    
-    init(_ c: String, _ t: String) {
-        self.color = c
-        self.text = t
-    }
-}
+//struct Avatar {
+//        var color: String
+//        var text: String
+//
+//        init(_ c: String, _ t: String) {
+//                self.color = c
+//                self.text = t
+//        }
+//}
 
 class GroupDetailViewController: UIViewController {
     
-    var groupItem: GroupItem?
+        var groupItem: GroupItem?
 //    var avatars: Dictionary<String, Avatar> = [:]
     
-    @IBOutlet weak var groupTitle: UINavigationItem!
-    @IBOutlet weak var collectionView: UICollectionView!
-    
-    @IBOutlet weak var deleteMemberLabel: UILabel!
-    @IBOutlet weak var deleteMemberBtn: UIButton!
-    
-    @IBOutlet weak var groupNameBtn: UIButton!
-    @IBOutlet weak var selfNickBtn: UIButton!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        
-        groupTitle.title = groupItem?.groupName
+        @IBOutlet weak var groupTitle: UINavigationItem!
+        @IBOutlet weak var collectionView: UICollectionView!
 
-        self.collectionView.reloadData()
-        if let group = groupItem, group.leader != Wallet.shared.Addr {
-            deleteMemberBtn.isHidden = true
-            deleteMemberLabel.isHidden = true
-        }
-        
-        groupNameBtn.setTitle(groupItem?.groupName, for: .normal)
-        selfNickBtn.setTitle(groupItem?.memberInfos[Wallet.shared.Addr!], for: .normal)
-    }
-        
-    @IBAction func addMemberBtn(_ sender: UIButton) {
-//
-            let vc = instantiateViewController(vcID: "AddGrpMemberVC") as! GroupMemberViewController
-            vc.isAddMember = true
-            if let group = groupItem {
-                vc.groupItem = group
-                vc.existMember = group.memberIds
-            }
-            
-            vc.notiMemberChange = { newGroupInfo in
-                self.groupItem = newGroupInfo
+        @IBOutlet weak var deleteMemberLabel: UILabel!
+        @IBOutlet weak var deleteMemberBtn: UIButton!
+
+        @IBOutlet weak var groupNameBtn: UIButton!
+        @IBOutlet weak var selfNickBtn: UIButton!
+    
+        override func viewDidLoad() {
+                super.viewDidLoad()
+                collectionView.delegate = self
+                collectionView.dataSource = self
+
+                groupTitle.title = groupItem?.groupName
+
                 self.collectionView.reloadData()
-            }
-            self.navigationController?.pushViewController(vc, animated: true)
-//        self.performSegue(withIdentifier: "AddGroupMemberSeg", sender: self)
-    }
-    
-    @IBAction func kickMemberBtn(_ sender: UIButton) {
-        self.performSegue(withIdentifier: "KickMemberSeg", sender: self)
-    }
-    
-    @IBAction func quitOrDismissGroup(_ sender: UIButton) {
-        
-        if let group = groupItem {
-            let err = GroupItem.QuitGroup(groupItem: group)
-            if err != nil {
-                self.toastMessage(title: "quit group error.\(String(describing: err?.localizedDescription))")
-            }
+                if let group = groupItem, group.leader != Wallet.shared.Addr {
+                        deleteMemberBtn.isHidden = true
+                        deleteMemberLabel.isHidden = true
+                }
+
+                groupNameBtn.setTitle(groupItem?.groupName, for: .normal)
+                selfNickBtn.setTitle(groupItem?.memberInfos[Wallet.shared.Addr!], for: .normal)
         }
         
-        self.navigationController?.popToRootViewController(animated: true)
-    }
+        @IBAction func addMemberBtn(_ sender: UIButton) {
+//
+                let vc = instantiateViewController(vcID: "AddGrpMemberVC") as! GroupMemberViewController
+                vc.isAddMember = true
+                if let group = groupItem {
+                        vc.groupItem = group
+                        vc.existMember = group.memberIds
+                }
+
+                vc.notiMemberChange = { newGroupInfo in
+                        self.groupItem = newGroupInfo
+                        self.collectionView.reloadData()
+                }
+                self.navigationController?.pushViewController(vc, animated: true)
+//        self.performSegue(withIdentifier: "AddGroupMemberSeg", sender: self)
+        }
+    
+        @IBAction func kickMemberBtn(_ sender: UIButton) {
+                self.performSegue(withIdentifier: "KickMemberSeg", sender: self)
+        }
+    
+        @IBAction func quitOrDismissGroup(_ sender: UIButton) {
+
+                if let group = groupItem {
+                        let err = GroupItem.QuitGroup(groupItem: group)
+                        if err != nil {
+                                self.toastMessage(title: "quit group error.\(String(describing: err?.localizedDescription))")
+                        }
+                }
+                self.navigationController?.popToRootViewController(animated: true)
+        }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 //        if segue.identifier == "AddGroupMemberSeg" {

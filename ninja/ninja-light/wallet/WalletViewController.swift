@@ -62,19 +62,19 @@ class WalletViewController: UITableViewController {
                 let status = AgentService.shared.getAgentStatus()
                         self.agentBtn.currentStatus = status
 
-                        switch status {
-                        case .activated:
-                                self.agentTime.text = "\(AgentService.shared.expireDate)到期"
-                                self.vipFlag(show: true)
-                        case .almostExpire:
-                                self.agentTime.text = String(format: "%4d 天", AgentService.shared.expireDays)
-                                self.vipFlag(show: true)
-                        case .initial:
-                                self.agentTime.text = "普通用户仅支持文本聊天"
-                                self.vipFlag(show: false)
-                        break
-                        }
-                
+//                        switch status {
+//                        case .activated:
+//                                self.agentTime.text = "\(AgentService.shared.expireDate)到期"
+//                                self.vipFlag(show: true)
+//                        case .almostExpire:
+//                                self.agentTime.text = String(format: "%4d 天", AgentService.shared.expireDays)
+//                                self.vipFlag(show: true)
+//                        case .initial:
+//                                self.agentTime.text = "普通用户仅支持文本聊天"
+//                                self.vipFlag(show: false)
+//                        break
+//                        }
+//
         }
         
         private func updateWholeView() {
@@ -91,13 +91,14 @@ class WalletViewController: UITableViewController {
                         self.agentBtn.currentStatus = status
                         switch status {
                         case .activated:
-                                self.agentTime.text = String(AgentService.shared.expireDays)
+                                self.agentTime.text = String(format: "%.2f", AgentService.shared.expireDays)
+                        
                                 self.agentTime.font = UIFont(name: "", size: 20)
                                 self.vipBackground.layer.contents = UIImage(named: "VIP_BGC")?.cgImage
                                 self.agentBtn.setImage(nil, for: .normal)
                                 self.vipFlag(show: true)
                         case .almostExpire:
-                                self.agentTime.text = String(AgentService.shared.expireDays)
+                                self.agentTime.text = String(format: "%.2f", AgentService.shared.expireDays)
                                 self.agentTime.font = UIFont(name: "", size: 20)
                                 self.vipBackground.layer.contents = UIImage(named: "VIP_BGC")?.cgImage
                         

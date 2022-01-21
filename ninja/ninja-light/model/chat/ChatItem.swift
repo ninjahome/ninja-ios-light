@@ -181,7 +181,8 @@ extension ChatItem:ModelObj{
                         self.NickName = contact.alias
         //            self.ImageData = contact.avatar
                 }
-                
+                let item = self.ItemID
+                let cac = GroupItem.cache
                 if let group = GroupItem.cache[self.ItemID!] {
                         self.NickName = group.groupName
                 }

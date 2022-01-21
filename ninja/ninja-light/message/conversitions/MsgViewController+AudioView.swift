@@ -42,11 +42,11 @@ extension MsgViewController: RecordAudioDelegate {
         cliMsg.type = .voice
         if IS_GROUP {
             cliMsg.groupId = self.peerUid
-            guard let group = groupData,
-                  let ids = group.memberIds as? [String] else {
-                return
-            }
-            cliMsg.to = ids.toString()
+//            guard let group = groupData,
+//                  let ids = group.memberIds as? [String] else {
+//                return
+//            }
+                cliMsg.to = self.peerUid
         } else {
             cliMsg.to = peerUid
         }

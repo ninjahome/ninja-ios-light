@@ -98,7 +98,11 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
         }
         
         func getMembersOfGroup(_ p0: String?) -> Data? {
-                return nil
+                guard let gid = p0 else {
+                        return nil
+                }
+                let data = GroupItem.getMembersOfGroup(gid: gid)
+                return data
         }
         
         func groupUpdate(_ p0: Data?) {
@@ -111,7 +115,10 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
         }
         
         func grpIM(_ from: String?, gid: String?, cryptKey: Data?, decoded: Data?, payload: Data?, time: Int64) throws {
-                if let f = from, let d = decoded {
+                if let f = from, let d = decoded, let grpId = gid {
+                        if GroupItem.GetGroup(grpId) == nil {
+                                _ = GroupItem.syncGroup(grpId)
+                        }
                         MessageItem.receiveMsg(from: f, gid: gid, msgData: d, time: time)
                 }
         }
