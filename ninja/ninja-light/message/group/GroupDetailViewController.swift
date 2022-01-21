@@ -7,21 +7,8 @@
 
 import UIKit
 
-//struct Avatar {
-//        var color: String
-//        var text: String
-//
-//        init(_ c: String, _ t: String) {
-//                self.color = c
-//                self.text = t
-//        }
-//}
-
 class GroupDetailViewController: UIViewController {
-    
-        var groupItem: GroupItem?
-//    var avatars: Dictionary<String, Avatar> = [:]
-    
+
         @IBOutlet weak var groupTitle: UINavigationItem!
         @IBOutlet weak var collectionView: UICollectionView!
 
@@ -31,6 +18,7 @@ class GroupDetailViewController: UIViewController {
         @IBOutlet weak var groupNameBtn: UIButton!
         @IBOutlet weak var selfNickBtn: UIButton!
     
+        var groupItem: GroupItem?
         override func viewDidLoad() {
                 super.viewDidLoad()
                 collectionView.delegate = self
@@ -49,7 +37,6 @@ class GroupDetailViewController: UIViewController {
         }
         
         @IBAction func addMemberBtn(_ sender: UIButton) {
-//
                 let vc = instantiateViewController(vcID: "AddGrpMemberVC") as! GroupMemberViewController
                 vc.isAddMember = true
                 if let group = groupItem {
@@ -62,7 +49,6 @@ class GroupDetailViewController: UIViewController {
                         self.collectionView.reloadData()
                 }
                 self.navigationController?.pushViewController(vc, animated: true)
-//        self.performSegue(withIdentifier: "AddGroupMemberSeg", sender: self)
         }
     
         @IBAction func kickMemberBtn(_ sender: UIButton) {
@@ -80,81 +66,47 @@ class GroupDetailViewController: UIViewController {
                 self.navigationController?.popToRootViewController(animated: true)
         }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "AddGroupMemberSeg" {
-//            let vc: GroupMemberViewController = segue.destination as! GroupMemberViewController
-//            vc.isAddMember = true
-//            if let group = groupItem {
-//                vc.groupItem = group
-//                vc.existMember = group.memberIds
-//            }
-//
-//            vc.notiMemberChange = { newGroupInfo in
-//                self.groupItem = newGroupInfo
-//                self.collectionView.reloadData()
-//            }
-//        }
-        
-        if segue.identifier == "KickMemberSeg" {
-            let vc: DeleteMemberController = segue.destination as! DeleteMemberController
-            vc.groupItem = groupItem
-            vc.existMember = groupItem?.memberIds
-            
-            vc.notiMemberChange = { newGroupInfo in
-                self.groupItem = newGroupInfo
-                self.collectionView.reloadData()
-            }
+        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+                if segue.identifier == "KickMemberSeg" {
+                        let vc: DeleteMemberController = segue.destination as! DeleteMemberController
+                        vc.groupItem = groupItem
+                        vc.existMember = groupItem?.memberIds
 
+                        vc.notiMemberChange = { newGroupInfo in
+                                self.groupItem = newGroupInfo
+                                self.collectionView.reloadData()
+                        }
+                }
         }
-        
-    }
-    
-//    func getAvatars() {
-//        guard let group = groupItem else {
-//            return
-//        }
-//
-//        for (id, nick) in group.memberInfos {
-//            let color = ContactItem.GetAvatarColor(by: id)
-//            let avaText = GroupItem.GetAvatarText(by: nick != "" ? nick : id)
-//
-//            self.avatars[id] = Avatar.init(color, avaText)
-//        }
-//
-//    }
-
 }
 
 extension GroupDetailViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        if let idCount = groupItem?.memberInfos.count {
-            print("\(idCount)")
-            return idCount+1
+        func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+                if let idCount = groupItem?.memberIds?.count {
+                        print("\(idCount+1)")
+                        return idCount+2
+                }
+                return 1
         }
-        
-        return 1
 
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        if indexPath.row == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddCollectionCell", for: indexPath) as! AddCollectionCell
-            return cell
-        }
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AvatarCollectionCell", for: indexPath) as! AvatarCollectionCell
-        if let ids = groupItem?.memberIds {
-            let id = ids[indexPath.row - 1] as! String
+        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+                if indexPath.row == 0 {
+                        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddCollectionCell", for: indexPath) as! AddCollectionCell
+                        return cell
+                }
                 
-                cell.initApperance(id: id, avaData: groupItem?.avatar)
-//            cell.ava = avatars[id]
-//            cell.uid = id
-        }
-        return cell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AvatarCollectionCell", for: indexPath) as! AvatarCollectionCell
+                
+                if let group = groupItem {
+                        var ids: [String] = group.memberIds as! [String]
+                        ids.append(group.leader!)
         
-    }
-    
+                        let id = ids[indexPath.row - 1]
+                        cell.initApperance(id: id)
+                }
+
+                return cell
+        }
+
 }

@@ -34,7 +34,6 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                                 break
                         }
                 }
-
         }
         
         private func imageDidSelected(img: UIImage) {
