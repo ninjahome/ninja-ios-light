@@ -13,7 +13,6 @@ class ServiceDelegate: NSObject {
         public static let workQueue = DispatchQueue.init(label: "Serivce Queue", qos: .utility)
         public static let DevTypeIOS = 1
         public static let Debug = true
-        public static var cachedLicense:Int64 = 0
         override init() {
                 super.init()
         }
@@ -24,7 +23,6 @@ class ServiceDelegate: NSObject {
                 MessageItem.loadUnread()
                 ChatItem.ReloadChatRoom()
                 dateFormatterGet.timeStyle = .medium
-                cachedLicense = Wallet.shared.liceneseExpireTime
         }
         
         public static func InitAPP() {

@@ -21,14 +21,14 @@ class Wallet: NSObject {
         var avatarData: Data?
         var touchTime: Int64?
         var nonce: Int64?
-
+        
         public static let shared = Wallet()
-
+        
         lazy var loaded: Bool = {
                 do {
                         var inst: Wallet?
                         inst = try CDManager.shared.GetOne(entity: "CDWallet",
-                                                       predicate: nil)
+                                                           predicate: nil)
                         if inst == nil {
                                 return false
                         }
@@ -36,7 +36,7 @@ class Wallet: NSObject {
                 } catch {
                         return false
                 }
-
+                
                 return self.obj != nil
         }()
         
@@ -53,6 +53,10 @@ class Wallet: NSObject {
                         return data
                 }
                 return nil
+        }
+        
+        public func isStillVip()->Bool{
+                return Int64(Date().timeIntervalSince1970) < self.liceneseExpireTime
         }
         
         func getLatestWallt() {
@@ -99,13 +103,13 @@ class Wallet: NSObject {
                 self.avatarData = a.avatarData
                 self.nonce = a.nonce
         }
-    
+        
         func New(_ password: String) throws {
                 let walletJson =  ChatLibNewWallet(password)
                 if walletJson == "" {
                         throw NJError.wallet("Create Wallet Failed")
                 }
-
+                
                 let addr = ChatLibWalletAddress()
                 if addr == ""{
                         throw NJError.wallet("Create Wallet Failed")
@@ -117,11 +121,11 @@ class Wallet: NSObject {
                 self.useDestroy = false
                 self.nickName = ""
                 self.liceneseExpireTime = 0
-
+                
                 try CDManager.shared.Delete(entity: "CDWallet")
                 try CDManager.shared.AddEntity(entity: "CDWallet", m: self)
         }
-
+        
         func IsActive() -> Bool {
                 return ChatLibWalletIsOpen()
         }
@@ -131,16 +135,16 @@ class Wallet: NSObject {
                 ChatLibActiveWallet(self.wJson, password, &error)
                 return error
         }
-
+        
         func serializeWalletJson(cipher walletJson: String) -> String? {
                 let walletData = walletJson.data(using: .utf8)!
                 let json = try? JSONSerialization.jsonObject(with: walletData, options: .mutableContainers) as? [String: Any]
-
+                
                 let addr = json?["address"] as? String
-
+                
                 return addr
         }
-
+        
         func Import(cipher walletJson: String, addr: String, auth password: String) throws {
                 self.Addr = addr
                 self.wJson = walletJson
@@ -159,7 +163,7 @@ class Wallet: NSObject {
                         self.liceneseExpireTime = item.liceneseExpireTime
                         self.avatarData = item.avatarData
                 }
-
+                
                 ServiceDelegate.InitService()
                 if let err = Active(password) {
                         print("Import Failed\(String(describing: err.localizedDescription))")
@@ -178,7 +182,7 @@ class Wallet: NSObject {
                 }
                 return nil
         }
-
+        
         func UpdateNick(by nick: String) -> NJError? {
                 self.nickName = nick
                 do {
@@ -188,20 +192,20 @@ class Wallet: NSObject {
                 }
                 return nil
         }
-
+        
         func openDestroy(auth: String) -> Bool {
                 if DeriveAesKey() == auth {
                         return false
                 }
-
+                
                 SetDestroyKey(auth: auth)
                 if UpdateUseDestroy(by: true) != nil {
                         return false
                 }
-
+                
                 return true
         }
-
+        
         func UpdateUseDestroy(by use: Bool) -> NJError? {
                 self.useDestroy = use
                 do {
@@ -211,7 +215,7 @@ class Wallet: NSObject {
                 }
                 return nil
         }
-
+        
         func UpdateUseFaceID(by use: Bool) -> NJError? {
                 self.useFaceID = use
                 do {
@@ -251,30 +255,30 @@ class Wallet: NSObject {
                 }
                 return NJError.wallet(error?.localizedDescription ?? "update avatar in chain faild")
         }
-
+        
         func openFaceID(auth: String) -> Bool {
                 guard let _ = Active(auth) else {
                         SetAesKey(auth: auth)
-                            if UpdateUseFaceID(by: true) != nil {
-                                    return false
-                            }
-                            return true
+                        if UpdateUseFaceID(by: true) != nil {
+                                return false
+                        }
+                        return true
                 }
                 return false
         }
-
+        
         func IsValidWalletJson(_ walletJson: String) -> Bool {
                 guard let qrData: Data = ((walletJson).data(using: .utf8)) else {
                         return false
                 }
                 let json = try? JSONSerialization.jsonObject(with: qrData, options: .mutableContainers) as? [String: Any]
-
+                
                 if json?["address"] != nil {
                         return true
                 }
                 return false
         }
-
+        
         static func GenAvatarColor() -> String {
                 guard let addr = Wallet.shared.Addr else {
                         return AvatarColors[12]
@@ -282,7 +286,7 @@ class Wallet: NSObject {
                 let idx = ChatLibIconIndex(addr, 12)
                 return AvatarColors[Int(idx)]
         }
-
+        
         static func GenAvatarText() -> String {
                 let addr = Wallet.shared.Addr!
                 guard let nick = Wallet.shared.nickName, nick != "" else {
@@ -290,7 +294,7 @@ class Wallet: NSObject {
                 }
                 return String(nick.prefix(2))
         }
-
+        
 }
 
 extension Wallet: ModelObj {
@@ -309,7 +313,7 @@ extension Wallet: ModelObj {
                 wObj.nonce = self.nonce ?? 0
                 self.obj = wObj
         }
-
+        
         func initByObj(obj: NSManagedObject) throws {
                 guard let wObj = obj as? CDWallet else {
                         throw NJError.coreData("Cast to CDWallet failed")
@@ -324,5 +328,5 @@ extension Wallet: ModelObj {
                 self.avatarData = wObj.avatar
                 self.nonce = wObj.nonce
         }
-    
+        
 }
