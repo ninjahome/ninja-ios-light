@@ -2910,6 +2910,7 @@
                         <outlet property="nickName" destination="vrh-KU-M3P" id="ZSW-WR-0xI"/>
                         <outlet property="remark" destination="Yz2-Nn-Vw3" id="PZY-dL-9ux"/>
                         <outlet property="uidText" destination="eWy-sS-Uft" id="Z09-5E-2ox"/>
+                        <outlet property="vipFlagImgView" destination="n9X-vh-4ic" id="CwF-wT-tWj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eRQ-8c-A9K" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

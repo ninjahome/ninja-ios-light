@@ -13,7 +13,7 @@ class SearchDetailViewController: UIViewController {
         @IBOutlet weak var avatar: AvatarButton!
         @IBOutlet weak var uidText: UILabel!
         @IBOutlet weak var nickName: UILabel!
-        
+        @IBOutlet weak var vipFlagImgView: UIImageView!
         @IBOutlet weak var alias: UITextField!
         @IBOutlet weak var remark: UITextView!
         
@@ -35,6 +35,7 @@ class SearchDetailViewController: UIViewController {
                 backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
                 
                 self.hideKeyboardWhenTappedAround()
+                vipFlagImgView.isHidden = Wallet.shared.isStillVip()
         }
     
         override func viewWillDisappear(_ animated: Bool) {
