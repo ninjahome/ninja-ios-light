@@ -13,12 +13,11 @@ class ServiceDelegate: NSObject {
         public static let workQueue = DispatchQueue.init(label: "Serivce Queue", qos: .utility)
         public static let DevTypeIOS = 1
         public static let Debug = true
-        public static var deviceToken:String?
         public static var cachedLicense:Int64 = 0
         override init() {
                 super.init()
         }
-    
+        
         public static func InitService() {
                 ContactItem.LocalSavedContact()
                 GroupItem.LocalSavedGroup()
@@ -27,7 +26,7 @@ class ServiceDelegate: NSObject {
                 dateFormatterGet.timeStyle = .medium
                 cachedLicense = Wallet.shared.liceneseExpireTime
         }
-    
+        
         public static func InitAPP() {
                 
                 let endPoint = ConfigItem.loadEndPoint() ?? ""
@@ -37,15 +36,14 @@ class ServiceDelegate: NSObject {
                 if current != saved {
                         NSLog("----[Current Version]---\(current ?? "no current")----[Saved Version]---\(saved ?? "no saved")")
                         
-                        //Tips:: 
+                        //Tips::
                         let userDefault = UserDefaults.standard
                         userDefault.set(current, forKey: AppVersionKey)
                 }
                 // networkID 5: company 2: other
-                ChatLibInitAPP(endPoint, "a3a5c09826a246d0bfbef8084b81df1f", WebsocketSrv.shared, 5)
+                ChatLibInitAPP(endPoint, "a3a5c09826a246d0bfbef8084b81df1f", WebsocketSrv.shared, 6)
         }
-        
-        public static func GetLicense() {
-//                ChatLib.ChatLibReloadLicense(cachedLicense)
+        public static func InitPushParam(deviceToken:String) {
+                ChatLibSetPushParam(deviceToken, DevTypeIOS, Debug)
         }
 }
