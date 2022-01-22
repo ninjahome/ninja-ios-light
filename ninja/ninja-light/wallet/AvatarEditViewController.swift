@@ -9,15 +9,25 @@ import UIKit
 
 class AvatarEditViewController: UIViewController {
 
+        @IBOutlet weak var vipFlagImgView: UIImageView!
+        @IBOutlet weak var avatarChangeButton: UIButton!
         @IBOutlet weak var avatarImg: UIImageView!
         override func viewDidLoad() {
                 super.viewDidLoad()
                 if let data = Wallet.shared.avatarData {
                         avatarImg.image = UIImage(data: data)
+                }else{
+                        avatarImg.image = UIImage(named:"logo_img")
                 }
+                vipFlagImgView.isHidden = Wallet.shared.isStillVip()
         }
         
         @IBAction func changeAvatar(_ sender: UIButton) {
+                if !Wallet.shared.isStillVip(){
+                        showVipModalViewController()
+                        return
+                }
+                
                 let vc = UIImagePickerController()
                 vc.sourceType = .photoLibrary
                 vc.mediaTypes = ["public.image"]
@@ -35,19 +45,30 @@ extension AvatarEditViewController: UIImagePickerControllerDelegate & UINavigati
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
                 picker.dismiss(animated: true, completion: nil)
                 if let img = info[.editedImage] as? UIImage {
-                        
                         imageDidSelected(img: img)
                 }
         }
         
         private func imageDidSelected(img: UIImage) {
+                
                 self.avatarImg.image = img
-                guard let imagedata = img.compress else {
-                        self.toastMessage(title: "Image size out of limit")
-                        return
+                
+                let maxSzie = ServiceDelegate.MaxAvatarSize()
+                var imgData = Data(img.jpegData(compressionQuality: 1)!)
+                
+                let imageSize: Int = imgData.count
+                if imageSize > (maxSzie){
+                        let compressedData = img.toQuality(qaulity: CGFloat(maxSzie/imageSize))
+                        NSLog("image[\(imageSize)] need to compress to[\(compressedData?.count ?? 0)]")
+                        guard let d = compressedData else {
+                                self.toastMessage(title: "Image size out of limit")
+                                return
+                        }
+                        imgData = d
                 }
                 
-                if let err = Wallet.shared.UpdateAvatarData(by: imagedata) {
+                
+                if let err = Wallet.shared.UpdateAvatarData(by: imgData) {
                         self.toastMessage(title: err.localizedDescription)
                 }
         }

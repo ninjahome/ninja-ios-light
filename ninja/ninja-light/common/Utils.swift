@@ -273,6 +273,10 @@ extension UIImage {
                 }
                 return jpegData(compressionQuality: 1)
         }
+        
+        func toQuality(qaulity:CGFloat) -> Data?{
+                return jpegData(compressionQuality: qaulity)
+        }
 }
 
 extension UIViewController {

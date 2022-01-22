@@ -44,4 +44,8 @@ class ServiceDelegate: NSObject {
         public static func InitPushParam(deviceToken:String) {
                 ChatLibSetPushParam(deviceToken, DevTypeIOS, Debug)
         }
+        
+        public static func MaxAvatarSize()->Int{
+                return (1<<17)//TODO::change to go lib api
+        }
 }

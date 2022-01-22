@@ -3872,42 +3872,53 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QQm-yT-km9">
-                                <rect key="frame" x="0.0" y="196" width="414" height="414"/>
+                                <rect key="frame" x="20" y="149" width="374" height="374"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="QQm-yT-km9" secondAttribute="height" multiplier="1:1" id="mF3-hs-1Um"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ngV-dR-S67">
-                                <rect key="frame" x="125" y="634" width="164" height="42"/>
+                                <rect key="frame" x="125" y="547" width="164" height="42"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="42" id="0LJ-sq-Ec5"/>
                                     <constraint firstAttribute="width" constant="164" id="zmr-bm-AYQ"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="更换头像" backgroundImage="img">
+                                <state key="normal" title="更换头像" backgroundImage="avatarEdit">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <action selector="changeAvatar:" destination="8ai-NX-vay" eventType="touchUpInside" id="Hfh-w7-OIm"/>
                                 </connections>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VIP" translatesAutoresizingMaskIntoConstraints="NO" id="nEV-iU-nU8">
+                                <rect key="frame" x="259" y="547" width="30" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="UoR-lE-zkr"/>
+                                    <constraint firstAttribute="height" constant="16" id="brZ-vX-4EP"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="H4J-aF-fRU"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="ngV-dR-S67" firstAttribute="centerX" secondItem="BRU-1U-8S8" secondAttribute="centerX" id="3eI-se-MAz"/>
-                            <constraint firstItem="H4J-aF-fRU" firstAttribute="trailing" secondItem="QQm-yT-km9" secondAttribute="trailing" id="5Sc-2X-epI"/>
+                            <constraint firstItem="H4J-aF-fRU" firstAttribute="trailing" secondItem="QQm-yT-km9" secondAttribute="trailing" constant="20" id="5Sc-2X-epI"/>
+                            <constraint firstItem="nEV-iU-nU8" firstAttribute="top" secondItem="ngV-dR-S67" secondAttribute="top" id="GdR-qq-czZ"/>
                             <constraint firstItem="ngV-dR-S67" firstAttribute="top" secondItem="QQm-yT-km9" secondAttribute="bottom" constant="24" id="i39-Rk-V6c"/>
-                            <constraint firstItem="QQm-yT-km9" firstAttribute="leading" secondItem="H4J-aF-fRU" secondAttribute="leading" id="t8r-iA-uiq"/>
-                            <constraint firstItem="QQm-yT-km9" firstAttribute="centerY" secondItem="BRU-1U-8S8" secondAttribute="centerY" multiplier="0.9" id="u9K-OW-abm"/>
+                            <constraint firstItem="QQm-yT-km9" firstAttribute="leading" secondItem="H4J-aF-fRU" secondAttribute="leading" constant="20" id="t8r-iA-uiq"/>
+                            <constraint firstItem="ngV-dR-S67" firstAttribute="trailing" secondItem="nEV-iU-nU8" secondAttribute="trailing" id="tkB-hY-ydq"/>
+                            <constraint firstItem="QQm-yT-km9" firstAttribute="centerY" secondItem="BRU-1U-8S8" secondAttribute="centerY" multiplier="0.75" id="u9K-OW-abm"/>
                             <constraint firstItem="QQm-yT-km9" firstAttribute="centerX" secondItem="BRU-1U-8S8" secondAttribute="centerX" id="yjV-WV-83a"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="OUS-zv-LPI"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="avatarChangeButton" destination="ngV-dR-S67" id="FHW-AI-Xec"/>
                         <outlet property="avatarImg" destination="QQm-yT-km9" id="Uof-KO-Q7W"/>
+                        <outlet property="vipFlagImgView" destination="nEV-iU-nU8" id="AuE-Cv-645"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sPP-GU-zsM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -5612,6 +5623,7 @@
         <image name="add" width="56" height="56"/>
         <image name="addPhoto_icon" width="28" height="28"/>
         <image name="add_icon" width="58" height="58"/>
+        <image name="avatarEdit" width="146" height="42"/>
         <image name="back_icon" width="28" height="28"/>
         <image name="booooom_icon" width="21" height="21"/>
         <image name="cem" width="58" height="58"/>
@@ -5625,7 +5637,6 @@
         <image name="file_icon" width="58" height="58"/>
         <image name="groupC_img" width="42" height="42"/>
         <image name="group_chat_icon" width="22" height="22"/>
-        <image name="img" width="146" height="42"/>
         <image name="logo_img" width="122" height="122"/>
         <image name="map_img" width="182" height="81"/>
         <image name="message_pick_icon" width="24" height="24"/>

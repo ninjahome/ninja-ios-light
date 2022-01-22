@@ -1,14 +1,17 @@
 {
   "images" : [
     {
+      "filename" : "avatarEdit.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "avatarEdit@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "avatarEdit@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
