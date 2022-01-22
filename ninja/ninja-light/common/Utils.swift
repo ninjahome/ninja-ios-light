@@ -544,6 +544,12 @@ extension UIViewController {
                         self.toastMessage(title: "加载\(context.biometryType.rawValue)失败")
                 }
         }
+        
+        func showVipModalViewController() {
+            let modalViewController = instantiateViewController(vcID:"ShowVipNoticeVC")
+            modalViewController.modalPresentationStyle = .popover
+                present(modalViewController, animated: true, completion: nil)
+        }
 }
 
 func cleanAllData() {

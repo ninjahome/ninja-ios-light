@@ -45,8 +45,13 @@ class SearchDetailViewController: UIViewController {
         @IBAction func backBtn(_ sender: UIButton) {
                 self.navigationController?.popViewController(animated: true)
         }
-    
+        
         @IBAction func saveToContact(_ sender: Any) {
+                
+                if !Wallet.shared.isStillVip(){
+                        showVipModalViewController()
+                        return
+                }
                 let contact = ContactItem.init()
                 contact.uid = self.uid
                 contact.remark = remark.text
