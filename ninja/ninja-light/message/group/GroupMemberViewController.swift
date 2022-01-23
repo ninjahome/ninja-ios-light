@@ -139,8 +139,9 @@ class GroupMemberViewController: UIViewController {
                 groupItem.unixTime = Int64(Date().timeIntervalSince1970)
                 var allIds: [String] = ids
                 allIds.append(wallet)
-                groupItem.avatar = GroupItem.getGroupAvatar(ids: allIds)
-//                groupItem.UpdateSelfInfos()
+                if let grpImg = GroupItem.getGroupAvatar(ids: allIds){
+                        groupItem.avatar = grpImg
+                }
                 
                 guard let err = GroupItem.UpdateGroup(groupItem) else {
                         let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController

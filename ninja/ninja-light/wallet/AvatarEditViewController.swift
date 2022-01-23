@@ -51,10 +51,10 @@ extension AvatarEditViewController: UIImagePickerControllerDelegate & UINavigati
         
         private func imageDidSelected(img: UIImage) {
                 self.avatarImg.image = img
-                let maxSzie = ServiceDelegate.MaxAvatarSize()
                 var imgData = Data(img.jpegData(compressionQuality: 1)!)
                 
                 let imageSize: Int = imgData.count
+                let maxSzie = ServiceDelegate.MaxAvatarSize()
                 if imageSize > (maxSzie){
                         let compressedData =  ServiceDelegate.CompressImg(origin: imgData, targetSize: maxSzie)
                         NSLog("maxSzie is[\(maxSzie)] image[\(imageSize)] need to compress to[\(compressedData?.count ?? 0)]")

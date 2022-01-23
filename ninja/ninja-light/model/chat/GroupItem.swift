@@ -138,17 +138,23 @@ class GroupItem: NSObject {
         }
         
         public static func getGroupAvatar(ids: [String]) -> Data? {
-                let defaultAvatar = UIImage(named: "logo_img")!.pngData()!
-//                var avatarList = [Data]()
-                for i in 0..<min(ids.count, 9) {
-                        if let acc = AccountItem.GetAccount(ids[i]) {
-                                let data = acc.Avatar ?? defaultAvatar
-                                ChatLibAddImg(data)
-                        } else {
-                                let data = Wallet.shared.avatarData ?? defaultAvatar
-                                ChatLibAddImg(data)
+                let defaultAvatarData = Data(UIImage(named: "logo_img")!.jpegData(compressionQuality: 1)!)
+                var counter = 0
+                var imgData = defaultAvatarData
+                for id in ids{
+                        counter += 1
+                        if counter > 9{
+                                break
                         }
                         
+                        if id == Wallet.shared.Addr && Wallet.shared.avatarData != nil{
+                                imgData = Wallet.shared.avatarData!
+                        }else{
+                                if let data = AccountItem.GetAccount(id)?.Avatar{
+                                        imgData = data
+                                }
+                        }
+                        ChatLibAddImg(imgData)
                 }
                 var err: NSError?
                 if let avatar = ChatLibCommitImg(&err) {
@@ -387,6 +393,7 @@ extension GroupItem: ModelObj {
                 cObj.unixTime = self.unixTime
                 cObj.leader = self.leader
                 cObj.isDelete = self.isDelete
+                cObj.avatar = self.avatar
 
         }
 
@@ -402,8 +409,8 @@ extension GroupItem: ModelObj {
 //                self.memberNicks = cObj.memberNicks as? NSArray
                 self.unixTime = cObj.unixTime
                 self.leader = cObj.leader
+                self.avatar = cObj.avatar
                 self.isDelete = cObj.isDelete
-
 //                self.UpdateSelfInfos()
                 //        let ids = self.memberIds!
                 //        let nicks = self.memberNicks!

@@ -70,7 +70,11 @@ class AvatarButton: UIButton {
                                 }
                                 self.setBackgroundImage(UIImage(data: avaData), for: .normal)
                         case .chatGroup:
-                                self.setBackgroundImage(UIImage.init(named: "ava"), for: .normal)
+                                if let imgData = self.avaInfo?.avatar {
+                                        self.setBackgroundImage(UIImage(data: imgData), for: .normal)
+                                }else{
+                                        self.setBackgroundImage(UIImage.init(named: "ava"), for: .normal)
+                                }
                         }
                         self.layer.masksToBounds = true
                 }
