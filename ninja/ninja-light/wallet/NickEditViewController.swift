@@ -15,6 +15,7 @@ class NickEditViewController: UIViewController {
         var returnHost: editHost?
 
         @IBOutlet weak var nickText: UITextField!
+        @IBOutlet weak var vipFlagImgView: UIImageView!
         @IBOutlet weak var avatar: AvatarButton!
     
         override func viewDidLoad() {
@@ -27,11 +28,16 @@ class NickEditViewController: UIViewController {
                 avatar.type = AvatarButtonType.wallet
                 avatar.avaInfo = nil
                 self.hideKeyboardWhenTappedAround()
+                vipFlagImgView.isHidden = Wallet.shared.isStillVip()
         }
     
         @IBAction func saveNick(_ sender: UIButton) {
 
                 guard let nickStr = nickText.text else {
+                        return
+                }
+                if Wallet.shared.isStillVip(){
+                        showVipModalViewController()
                         return
                 }
                 if AgentService.shared.expireDays > 0 {

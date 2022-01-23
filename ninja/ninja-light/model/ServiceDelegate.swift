@@ -46,6 +46,6 @@ class ServiceDelegate: NSObject {
         }
         
         public static func MaxAvatarSize()->Int{
-                return (1<<17)//TODO::change to go lib api
+                return ChatLibMaxAvatarSize()
         }
 }
