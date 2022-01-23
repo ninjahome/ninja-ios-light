@@ -18,8 +18,6 @@ class AuthorViewController: UIViewController {
         
         @IBOutlet weak var avatar: UIImageView!
         @IBOutlet weak var nick: UILabel!
-        
-        var walletDelegate: WalletDelegate?
     
         override func viewDidLoad() {
                 super.viewDidLoad()
@@ -98,7 +96,7 @@ class AuthorViewController: UIViewController {
                                         self.hideKeyboardWhenTappedAround()
                                         Wallet.shared.accountNonce()
                                         self.dismiss(animated: true) {
-                                                self.walletDelegate?.OpenSuccess()
+                                                        WebsocketSrv.shared.Online()
                                         }
                                 }
                                 MessageItem.deleteMsgOneWeek()

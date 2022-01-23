@@ -72,6 +72,7 @@ public func setFirstUser() {
 }
 
 public func afterWallet() {
+        WebsocketSrv.shared.Online()
         if #available(iOS 13.0, *) {
                 let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
                 sceneDelegate.window!.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")

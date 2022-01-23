@@ -155,10 +155,9 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
         }
         
         func webSocketDidOnline() {
+                NSLog("------>>> socket online success")
                 NotificationCenter.default.post(name: NotifyWebsocketOnline,
                                                                 object: self,
                                                                 userInfo: nil)
         }
-        
-        
 }

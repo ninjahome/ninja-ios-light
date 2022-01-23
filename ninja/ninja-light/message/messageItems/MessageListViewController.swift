@@ -28,6 +28,7 @@ class MessageListViewController: UIViewController{
                 super.viewDidLoad()
                 tableView.rowHeight = 80
                 tableView.tableFooterView = UIView()
+                showConnectingTips()
 //                refreshControl.addTarget(self, action: #selector(self.reloadChatRoom(_:)), for: .valueChanged)
 //                tableView.addSubview(refreshControl)
 
@@ -65,9 +66,7 @@ class MessageListViewController: UIViewController{
         }
 
         @IBAction func moreAction(_ sender: UIBarButtonItem) {
-
                 toggleAddItem(currentStatus: moreActionContent.isHidden)
-
         }
 
         func toggleAddItem(currentStatus isHidden: Bool) {
@@ -105,12 +104,6 @@ class MessageListViewController: UIViewController{
         @objc func wsOnlineErr(notification: NSNotification) {
                 print("WSOnline error....")
         }
-   
-        func connNetwork() {
-                WebsocketSrv.shared.Online()
-                self.showConnectingTips()
-        }
-    
         override func viewWillAppear(_ animated: Bool) {
                 super.viewWillAppear(animated)
                 self.hideConnectingTips()
@@ -167,14 +160,6 @@ class MessageListViewController: UIViewController{
                         vc.IS_GROUP = item.isGroup
                         return
                 }
-                if segue.identifier == "ShowAutherSEG"{
-
-                        guard let vc = segue.destination as? AuthorViewController else {
-                                return
-                        }
-                        vc.walletDelegate = self
-                        return
-                }
         }
 }
 
@@ -207,12 +192,5 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
                         tableView.deleteRows(at: [indexPath], with: .fade)
                         ChatItem.remove(item.ItemID!)
                 }
-        }
-}
-
-extension MessageListViewController: WalletDelegate {
-        func OpenSuccess() {
-//                ServiceDelegate.GetLicense()
-                connNetwork()
         }
 }

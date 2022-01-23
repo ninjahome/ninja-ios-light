@@ -4846,7 +4846,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="xsH-Cc-VaP">
             <objects>
-                <tabBarController storyboardIdentifier="NinjaHomeTabVC" automaticallyAdjustsScrollViewInsets="NO" id="q08-v5-4FK" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="NinjaHomeTabVC" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="q08-v5-4FK" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ilY-AF-VSO">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
