@@ -48,4 +48,13 @@ class ServiceDelegate: NSObject {
         public static func MaxAvatarSize()->Int{
                 return ChatLibMaxAvatarSize()
         }
+        
+        public static func CompressImg(origin:Data, targetSize:Int)->Data?{
+                var err:NSError?
+                guard let newData = ChatLibCompressImg(origin, targetSize, &err) else{
+                        NSLog("compress image failed:\(err?.localizedDescription ?? "<->")")
+                        return nil
+                }
+                return newData
+        }
 }

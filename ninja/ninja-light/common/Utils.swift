@@ -10,6 +10,7 @@ import UIKit
 import MBProgressHUD
 import LocalAuthentication
 import MobileCoreServices
+import ChatLib
 
 func mimeTypeIsVideo(_ suffix: String) -> Bool {
         if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension,
@@ -272,10 +273,6 @@ extension UIImage {
                         return jpegData(compressionQuality: 256/len)
                 }
                 return jpegData(compressionQuality: 1)
-        }
-        
-        func toQuality(qaulity:CGFloat) -> Data?{
-                return jpegData(compressionQuality: qaulity)
         }
 }
 

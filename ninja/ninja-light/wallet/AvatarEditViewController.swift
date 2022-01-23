@@ -50,23 +50,20 @@ extension AvatarEditViewController: UIImagePickerControllerDelegate & UINavigati
         }
         
         private func imageDidSelected(img: UIImage) {
-                
                 self.avatarImg.image = img
-                
                 let maxSzie = ServiceDelegate.MaxAvatarSize()
                 var imgData = Data(img.jpegData(compressionQuality: 1)!)
                 
                 let imageSize: Int = imgData.count
                 if imageSize > (maxSzie){
-                        let compressedData = img.toQuality(qaulity: CGFloat(maxSzie/imageSize))
-                        NSLog("image[\(imageSize)] need to compress to[\(compressedData?.count ?? 0)]")
+                        let compressedData =  ServiceDelegate.CompressImg(origin: imgData, targetSize: maxSzie)
+                        NSLog("maxSzie is[\(maxSzie)] image[\(imageSize)] need to compress to[\(compressedData?.count ?? 0)]")
                         guard let d = compressedData else {
                                 self.toastMessage(title: "Image size out of limit")
                                 return
                         }
                         imgData = d
                 }
-                
                 
                 if let err = Wallet.shared.UpdateAvatarData(by: imgData) {
                         self.toastMessage(title: err.localizedDescription)
