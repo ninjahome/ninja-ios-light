@@ -83,6 +83,7 @@ class WalletViewController: UITableViewController {
                         self.address.text = Wallet.shared.Addr
                         self.faceIDSwitch.isOn = Wallet.shared.useFaceID
                         self.destroySwitch.isOn = Wallet.shared.useDestroy
+                        self.nickName.text = Wallet.shared.nickName
                         
                         self.avatar.type = AvatarButtonType.wallet
                         self.avatar.avaInfo = nil

@@ -36,7 +36,7 @@ class NickEditViewController: UIViewController {
                 guard let nickStr = nickText.text else {
                         return
                 }
-                if Wallet.shared.isStillVip(){
+                if !Wallet.shared.isStillVip(){
                         showVipModalViewController()
                         return
                 }
