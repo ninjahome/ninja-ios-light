@@ -296,8 +296,9 @@ class MessageItem: NSObject {
     
         public static func receivedIM(msg: MessageItem) {
                 var peerUid: String
-
+                var isGroup: Bool = false
                 if let groupId = msg.groupId {
+                        isGroup = true
                         peerUid = groupId
                 } else {
                         peerUid = msg.from!
@@ -315,8 +316,19 @@ class MessageItem: NSObject {
                 cache.setOrAdd(idStr: peerUid, item: msgList)
 
                 try? CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
+               
+                ChatItem.updateLastMsg(peerUid: peerUid,
+                                       msg: msg.coinvertToLastMsg(),
+                                       time: msg.timeStamp,
+                                       unread: 1,
+                                       isGroup: isGroup)
+                
                 NotificationCenter.default.post(name: NotifyMessageAdded,
                                                 object: self, userInfo: [NotiKey: peerUid])
+                
+                NotificationCenter.default.post(name:NotifyMsgSumChanged,
+                                                object: self,
+                                                userInfo:[NotiKey: peerUid])
         }
         
         public static func receiveMsg(from: String, gid: String? = nil, msgData: Data, time: Int64) {

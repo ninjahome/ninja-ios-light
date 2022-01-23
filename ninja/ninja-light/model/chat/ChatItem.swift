@@ -57,6 +57,7 @@ class ChatItem: NSObject{
                         if let groupItem = GroupItem.cache[peerUid] {
                                 chat.NickName = groupItem.groupName
                         } else {
+                                //TODO:: load group information from blockchain
                                 return
                         }
                 } else {
@@ -64,6 +65,7 @@ class ChatItem: NSObject{
                                 chat.NickName = contact.alias
         //                chat.ImageData = contact.avatar
                         }
+                        //TODO::load new contact from blockchain
                 }
 
                 chat.updateTime = time
