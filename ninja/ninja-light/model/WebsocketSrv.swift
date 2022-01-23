@@ -131,12 +131,15 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
         }
         
         func nodeIPChanged(_ p0: String?) {
-                if let str = p0 {
-                        let conf = ConfigItem.initEndPoint(str)
-                        if let err = ConfigItem.updateConfig(conf) {
-                                print("update config faild:\(String(describing: err.localizedDescription))")
-                        }
+                guard let newIP = p0 else{
+                        print("------->>>[nodeIPChanged] no valid ip address")
+                        return
                 }
+                let conf = ConfigItem.initEndPoint(newIP)
+                if let err = ConfigItem.updateConfig(conf) {
+                        print("update config faild:\(String(describing: err.localizedDescription))")
+                }
+                WebsocketSrv.shared.Online()
         }
         
         func peerIM(_ from: String?, decoded: Data?, payload: Data?, time: Int64) throws {
