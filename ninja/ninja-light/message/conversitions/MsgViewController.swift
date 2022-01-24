@@ -386,7 +386,12 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                         setPeerNick()
                 } else {
                         contactData = ContactItem.cache[peerUid]
-                        self.peerNickName.title = contactData?.alias ?? peerUid
+                        if let alias = contactData?.alias {
+                                self.peerNickName.title = alias
+                        } else {
+                                let acc = AccountItem.GetAccount(peerUid)
+                                self.peerNickName.title = acc?.NickName ?? peerUid
+                        }
                 }
         }
         
@@ -406,7 +411,11 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
 
                 self.performSegue(withIdentifier: "ShowMapSeg", sender: self)
         }
-
+        
+        @IBAction func vipGuideBtn(_ sender: UIButton) {
+                showVipModalViewController()
+        }
+        
         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
                 if segue.identifier == "ShowMapSeg" {
                         let vc: MapViewController = segue.destination as! MapViewController

@@ -29,8 +29,6 @@ class MessageListViewController: UIViewController{
                 tableView.rowHeight = 80
                 tableView.tableFooterView = UIView()
                 showConnectingTips()
-//                refreshControl.addTarget(self, action: #selector(self.reloadChatRoom(_:)), for: .valueChanged)
-//                tableView.addSubview(refreshControl)
 
                 sortedArray = ChatItem.SortedArra()
 
@@ -51,6 +49,10 @@ class MessageListViewController: UIViewController{
                 NotificationCenter.default.addObserver(self,
                                                        selector: #selector(wsOnlineErr(notification:)),
                                                        name: NotifyOnlineError,
+                                                       object: nil)
+                NotificationCenter.default.addObserver(self,
+                                                       selector:#selector(contactUpdate(notification:)),
+                                                       name: NotifyContactChanged,
                                                        object: nil)
 
         }
@@ -104,6 +106,11 @@ class MessageListViewController: UIViewController{
         @objc func wsOnlineErr(notification: NSNotification) {
                 print("WSOnline error....")
         }
+        
+        @objc func contactUpdate(notification: NSNotification) {
+                
+        }
+        
         override func viewWillAppear(_ animated: Bool) {
                 super.viewWillAppear(animated)
                 self.hideConnectingTips()
@@ -172,9 +179,9 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
 
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MesasgeItemTableViewCell", for: indexPath)
-                if let c = cell as? MesasgeItemTableViewCell{
+                if let c = cell as? MesasgeItemTableViewCell {
                         let item = sortedArray[indexPath.row]
-                        c.initWith(details:item, idx: indexPath.row)
+                        c.initWith(details: item, idx: indexPath.row)
                         return c
                 }
                 return cell

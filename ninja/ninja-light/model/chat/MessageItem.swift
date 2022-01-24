@@ -316,12 +316,11 @@ class MessageItem: NSObject {
                 cache.setOrAdd(idStr: peerUid, item: msgList)
 
                 try? CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
-               
-                ChatItem.updateLastMsg(peerUid: peerUid,
-                                       msg: msg.coinvertToLastMsg(),
-                                       time: msg.timeStamp,
-                                       unread: 1,
-                                       isGroup: isGroup)
+                if isGroup {
+                        ChatItem.updateLastGroupMsg(groupId: peerUid, msg: msg.coinvertToLastMsg(), time: msg.timeStamp, unread: 1)
+                } else {
+                        ChatItem.updateLastPeerMsg(peerUid: peerUid, msg: msg.coinvertToLastMsg(), time: msg.timeStamp, unread: 1)
+                }
                 
                 NotificationCenter.default.post(name: NotifyMessageAdded,
                                                 object: self, userInfo: [NotiKey: peerUid])

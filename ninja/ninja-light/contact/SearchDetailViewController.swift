@@ -28,7 +28,7 @@ class SearchDetailViewController: UIViewController {
         override func viewDidLoad() {
                 super.viewDidLoad()
                 uidText.text = uid
-                account = AccountItem.shared.getLatestAccount(addr: uid!)
+                account = AccountItem.getLatestAccount(addr: uid!)
                 avatar.type = .chatContact
                 avatar.avaInfo = AvatarInfo(id: uid!, avaData: self.account?.Avatar)
                 nickName.text = account?.NickName
@@ -63,6 +63,7 @@ class SearchDetailViewController: UIViewController {
         }
         
         @IBAction func sendMsg(_ sender: UIButton) {
+                _ = AccountItem.UpdateOrAddAccount(account!)
                 startChat()
         }
         

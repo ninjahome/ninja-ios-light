@@ -21,8 +21,8 @@ class BackupGuideViewController: UIViewController {
         }
         
         func getQRCode() -> UIImage? {
-                guard let addr = Wallet.shared.Addr else { return nil }
-                let qrImg = generateQRCode(from: addr)
+                guard let wJson = Wallet.shared.wJson else { return nil }
+                let qrImg = generateQRCode(from: wJson)
                 self.qr = qrImg
                 return qrImg
         }
@@ -33,7 +33,6 @@ class BackupGuideViewController: UIViewController {
                         self.toastMessage(title: "Save success")
                         afterWallet()
                 }
-
         }
         
         @IBAction func skipBackup(_ sender: UIButton) {

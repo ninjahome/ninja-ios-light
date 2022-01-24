@@ -43,31 +43,30 @@ class ChatItem: NSObject{
                 }
         
         }
-    
-        public static func updateLastMsg(peerUid:String, msg:String, time:Int64, unread no:Int, isGroup: Bool = false) {
+        
+        class func updateLastPeerMsg(peerUid: String, msg: String, time: Int64, unread no: Int) {
                 let chat = CachedChats.get(idStr: peerUid) ?? ChatItem.init()
                 chat.ItemID = peerUid
-                chat.isGroup = isGroup
+                chat.isGroup = false
                 
                 if chat.updateTime > time {
                         return
                 }
                 
-                if isGroup {
-                        if let groupItem = GroupItem.cache[peerUid] {
-                                chat.NickName = groupItem.groupName
+                if let contact = ContactItem.cache[peerUid] {
+                        if let alias = contact.alias {
+                                chat.NickName = alias
                         } else {
-                                //TODO:: load group information from blockchain
-                                return
+                                let localAcc = AccountItem.GetAccount(peerUid)
+                                chat.NickName = localAcc?.NickName ?? peerUid
                         }
                 } else {
-                        if let contact = ContactItem.cache[peerUid] {
-                                chat.NickName = contact.alias
-        //                chat.ImageData = contact.avatar
+                        if let acc = AccountItem.getLatestAccount(addr: peerUid) {
+                                _ = AccountItem.UpdateOrAddAccount(acc)
+                                chat.NickName = acc.NickName
                         }
-                        //TODO::load new contact from blockchain
                 }
-
+                
                 chat.updateTime = time
                 chat.unreadNo += no
                 chat.LastMsg = msg
@@ -78,37 +77,47 @@ class ChatItem: NSObject{
                 CachedChats.setOrAdd(idStr: peerUid, item: chat)
                 
                 let owner = Wallet.shared.Addr!
-                if chat.isGroup {
-                        try? CDManager.shared.UpdateOrAddOne(entity: "CDChatItem",
-                                                             m: chat,
-                                                             predicate: NSPredicate(format: "groupId == %@ AND owner == %@", peerUid, owner))
-                } else {
-                        try? CDManager.shared.UpdateOrAddOne(entity: "CDChatItem",
-                                                             m: chat,
-                                                             predicate: NSPredicate(format: "uid == %@ AND owner == %@", peerUid, owner))
-                }
+                try? CDManager.shared.UpdateOrAddOne(entity: "CDChatItem",
+                                                     m: chat,
+                                                     predicate: NSPredicate(format: "uid == %@ AND owner == %@", peerUid, owner))
+                
                 NotificationCenter.default.post(name:NotifyMsgSumChanged,
                                                     object: self, userInfo:nil)
         }
-
-    
-        public static func updateAllLastMsg(msg:[String:ChatItem])throws {
-                    
-                let array = Array(msg.values)
-                guard array.count > 0 else {
+        
+        public static func updateLastGroupMsg(groupId: String, msg: String, time: Int64, unread no:Int) {
+                let chat = CachedChats.get(idStr: groupId) ?? ChatItem.init()
+                chat.ItemID = groupId
+                chat.isGroup = true
+                
+                if chat.updateTime > time {
                         return
                 }
                 
-                try CDManager.shared.AddBatch(entity: "CDChatItem", m: array)
-                for (uid, obj) in msg {
-                        updateLastMsg(peerUid: uid, msg: obj.LastMsg!, time: obj.updateTime, unread: obj.unreadNo)
+                if let groupItem = GroupItem.cache[groupId] {
+                        chat.NickName = groupItem.groupName
+                } else {
+                        let gItem = GroupItem.syncGroup(groupId)
+                        chat.NickName = gItem?.groupName
                 }
                 
+                chat.updateTime = time
+                chat.unreadNo += no
+                chat.LastMsg = msg
+                
+                chat.cObj?.unreadNo = Int32(chat.unreadNo)
+                chat.cObj?.lastMsg = chat.LastMsg
+
+                CachedChats.setOrAdd(idStr: groupId, item: chat)
+                
+                let owner = Wallet.shared.Addr!
+                try? CDManager.shared.UpdateOrAddOne(entity: "CDChatItem",
+                                                     m: chat,
+                                                     predicate: NSPredicate(format: "groupId == %@ AND owner == %@", groupId, owner))
                 NotificationCenter.default.post(name:NotifyMsgSumChanged,
-                                                object: self,
-                                                userInfo:nil)
+                                                    object: self, userInfo:nil)
         }
-    
+        
         public static func SortedArra() -> [ChatItem] {
                 var sortedArray = CachedChats.getValues()
                 guard sortedArray.count > 1 else {
@@ -140,7 +149,7 @@ class ChatItem: NSObject{
         }
 }
 
-extension ChatItem:ModelObj{
+extension ChatItem: ModelObj {
 
         func fullFillObj(obj: NSManagedObject) throws {
                 guard let cObj = obj as? CDChatItem else {
@@ -179,12 +188,14 @@ extension ChatItem:ModelObj{
                 self.unreadNo = Int(cObj.unreadNo)
                 self.cObj = cObj
                 
-                if let contact = ContactItem.cache[self.ItemID!] {
-                        self.NickName = contact.alias
-        //            self.ImageData = contact.avatar
+                if let contact = ContactItem.cache[self.ItemID!],
+                   let alias = contact.alias {
+                        self.NickName = alias
+                } else {
+                        let acc = AccountItem.GetAccount(self.ItemID!)
+                        self.NickName = acc?.NickName ?? self.ItemID!
                 }
-                let item = self.ItemID
-                let cac = GroupItem.cache
+
                 if let group = GroupItem.cache[self.ItemID!] {
                         self.NickName = group.groupName
                 }

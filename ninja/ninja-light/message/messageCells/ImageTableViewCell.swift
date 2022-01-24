@@ -85,17 +85,20 @@ var cellMsg: MessageItem?
                         avatar.type = AvatarButtonType.wallet
                         avatar.avaInfo = nil
 
-                        nickname.text = Wallet.GenAvatarText()
+                        nickname.text = Wallet.shared.nickName ?? Wallet.GenAvatarText()
 
                 } else {
 
                         avatar.type = AvatarButtonType.contact
                         let acc = AccountItem.GetAccount(from)
                         avatar.avaInfo = AvatarInfo.init(id: from, avaData: acc?.Avatar)
-
-                        let contactData = ContactItem.cache[from]
-                        nickname.text = contactData?.alias
-
+                        
+                        if let contactData = ContactItem.cache[from],
+                           let alias = contactData.alias {
+                                nickname.text = alias
+                        } else {
+                                nickname.text = acc?.NickName
+                        }
                 }
 
                 time.text = formatMsgTimeStamp(by: message.timeStamp)

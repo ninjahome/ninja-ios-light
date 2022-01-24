@@ -29,7 +29,7 @@ class MesasgeItemTableViewCell: UITableViewCell {
                 super.setSelected(selected, animated: animated)
         }
 
-        func initWith(details: ChatItem, idx:Int){
+        func initWith(details: ChatItem, idx:Int) {
 
                 let itemId = details.ItemID!
                 var avaData: Data?

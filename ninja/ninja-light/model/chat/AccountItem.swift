@@ -72,10 +72,11 @@ class AccountItem: NSObject {
                 return nil
         }
         
-        func getLatestAccount(addr: String) -> AccountItem? {
+        public static func getLatestAccount(addr: String) -> AccountItem? {
                 var error: NSError?
                 if let data = ChatLibAccountDetail(addr, &error), error == nil {
                         let item = AccountItem.initByData(data)
+                        
                         return item
                 }
                 return nil

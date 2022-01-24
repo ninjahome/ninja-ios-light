@@ -44,7 +44,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
   
         override func viewDidLoad() {
                 super.viewDidLoad()
-
+                
                 self.hideKeyboardWhenTappedAround()
                 self.account = AccountItem.GetAccount(itemUID ?? itemData!.uid!)
                 self.populateView()
@@ -56,12 +56,17 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 
                 
                 setAvatar()
-
-                NotificationCenter.default.addObserver(self,
-                                                       selector:#selector(notifiAction(notification:)),
-                                                               
-                                                       name: NotifyContactChanged,
-                                                       object: nil)
+                
+                DispatchQueue.global().async {
+                        self.account = AccountItem.getLatestAccount(addr: self.itemUID ?? self.itemData!.uid!)
+                        DispatchQueue.main.async {
+                                NotificationCenter.default.addObserver(self,
+                                                                       selector:#selector(self.notifiAction(notification:)),
+                                                                       name: NotifyContactChanged,
+                                                                       object: nil)
+                        }
+                }
+                
         }
     
         deinit {

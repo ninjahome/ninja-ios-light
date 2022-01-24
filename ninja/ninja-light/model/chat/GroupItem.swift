@@ -188,7 +188,7 @@ class GroupItem: NSObject {
                         return nil
                 }
                 if AccountItem.GetAccount(item.leader!) == nil {
-                        _ = AccountItem.shared.getLatestAccount(addr: item.leader!)
+                        _ = AccountItem.getLatestAccount(addr: item.leader!)
                 }
                 
                 guard let memIds = item.memberIds else {
@@ -197,7 +197,7 @@ class GroupItem: NSObject {
                 
                 for i in memIds {
                         if AccountItem.GetAccount(i as! String) == nil {
-                                _ = AccountItem.shared.getLatestAccount(addr: i as! String)
+                                _ = AccountItem.getLatestAccount(addr: i as! String)
                         }
                 }
                 
