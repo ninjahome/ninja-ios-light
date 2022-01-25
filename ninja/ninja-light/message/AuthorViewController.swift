@@ -76,10 +76,10 @@ class AuthorViewController: UIViewController {
                                         self.dismiss(animated: true, completion: nil)
                                 }
 
-                        } catch let err {
+                        } catch _ {
                                 DispatchQueue.main.async {
                                         self.hideIndicator()
-                                        self.tips.text = err.localizedDescription
+                                        self.tips.text = "wallet open failed"
                                         self.hideKeyboardWhenTappedAround()
                                 }
                         }
@@ -90,7 +90,7 @@ class AuthorViewController: UIViewController {
                 self.showIndicator(withTitle: "", and: "opening")
 
                 DispatchQueue.global().async {
-                        guard let err = Wallet.shared.Active(pwd) else {
+                        guard let _ = Wallet.shared.Active(pwd) else {
                                 DispatchQueue.main.async {
                                         self.hideIndicator()
                                         self.hideKeyboardWhenTappedAround()
@@ -103,7 +103,7 @@ class AuthorViewController: UIViewController {
                                 return
                         }
                         DispatchQueue.main.async {
-                                self.tips.text = err.localizedDescription
+                                self.tips.text = "wallet open failed"
                                 self.hideIndicator()
                                 self.hideKeyboardWhenTappedAround()
                         }

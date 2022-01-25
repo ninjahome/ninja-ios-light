@@ -60,15 +60,16 @@ extension URL {
 
 public func isFirstUser() -> Bool {
         let userDefault = UserDefaults.standard
-        if let _ = userDefault.string(forKey: "ninja") {
-                return true
+        if let firstUser = userDefault.string(forKey: "ninja") {
+                NSLog("---[First Uset]---\(firstUser)")
+                return false
         }
-        return false
+        return true
 }
 
 public func setFirstUser() {
         let userDefault = UserDefaults.standard
-        userDefault.set("new", forKey: "ninja")
+        userDefault.set("old", forKey: "ninja")
 }
 
 public func afterWallet() {

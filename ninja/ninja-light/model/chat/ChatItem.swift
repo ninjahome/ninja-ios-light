@@ -43,8 +43,17 @@ class ChatItem: NSObject{
                 }
         
         }
+
+        public static func getTotalUnreadNo() -> Int {
+                let items = CachedChats.getValues()
+                var total = 0
+                for i in items {
+                        total += i.unreadNo
+                }
+                return total
+        }
         
-        class func updateLastPeerMsg(peerUid: String, msg: String, time: Int64, unread no: Int) {
+        public static func updateLastPeerMsg(peerUid: String, msg: String, time: Int64, unread no: Int) {
                 let chat = CachedChats.get(idStr: peerUid) ?? ChatItem.init()
                 chat.ItemID = peerUid
                 chat.isGroup = false
@@ -61,9 +70,13 @@ class ChatItem: NSObject{
                                 chat.NickName = localAcc?.NickName ?? peerUid
                         }
                 } else {
-                        if let acc = AccountItem.getLatestAccount(addr: peerUid) {
-                                _ = AccountItem.UpdateOrAddAccount(acc)
+                        if let acc = AccountItem.GetAccount(peerUid) {
                                 chat.NickName = acc.NickName
+                        } else {
+                                if let latest = AccountItem.getLatestAccount(addr: peerUid) {
+                                        _ = AccountItem.UpdateOrAddAccount(latest)
+                                        chat.NickName = latest.NickName
+                                }
                         }
                 }
                 

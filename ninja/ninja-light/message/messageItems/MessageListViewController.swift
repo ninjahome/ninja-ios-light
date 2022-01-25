@@ -82,6 +82,15 @@ class MessageListViewController: UIViewController{
                 }
 
         }
+        
+        func updateMsgBadge() {
+                let total = ChatItem.getTotalUnreadNo()
+                var totalStr: String?
+                if total != 0 {
+                        totalStr = String(total)
+                }
+                self.navigationController?.tabBarItem.badgeValue = totalStr
+        }
     
     //MARK: - object c
         @objc func wsOffline(notification: NSNotification) {
@@ -99,6 +108,7 @@ class MessageListViewController: UIViewController{
                         self?.sortedArray = ChatItem.SortedArra()
                         DispatchQueue.main.async {
                                 self?.tableView.reloadData()
+                                self?.updateMsgBadge()
                         }
                 }
         }
@@ -114,7 +124,7 @@ class MessageListViewController: UIViewController{
         override func viewWillAppear(_ animated: Bool) {
                 super.viewWillAppear(animated)
                 self.hideConnectingTips()
-
+                updateMsgBadge()
                 guard Wallet.shared.IsActive() else {
                         self.performSegue(withIdentifier: "ShowAutherSEG", sender: self)
                         return

@@ -862,16 +862,16 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="698"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="3w9-mv-dzv">
-                                    <rect key="frame" x="0.0" y="1090.5" width="414" height="0.0"/>
+                                    <rect key="frame" x="0.0" y="1038" width="414" height="0.0"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="messageCellL" id="5rW-UB-bsV" customClass="MessageTableViewCell" customModule="ninja_light" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.5" width="414" height="57.5"/>
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5rW-UB-bsV" id="yGB-dk-rYo">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="57.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g8H-IS-X6b" customClass="AvatarButton" customModule="ninja_light" customModuleProvider="target">
@@ -907,10 +907,10 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" verticalHuggingPriority="240" translatesAutoresizingMaskIntoConstraints="NO" id="hef-dp-duc" customClass="UIImageView">
-                                                    <rect key="frame" x="56" y="24.5" width="50" height="25"/>
+                                                    <rect key="frame" x="56" y="24.5" width="50" height="11.5"/>
                                                     <subviews>
                                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="17" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yca-Ng-0TC">
-                                                            <rect key="frame" x="14" y="4" width="29" height="17"/>
+                                                            <rect key="frame" x="14" y="4" width="29" height="3.5"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -950,10 +950,10 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="messageCell" id="YYr-oE-UYm" customClass="MessageTableViewCell" customModule="ninja_light" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="102" width="414" height="57.5"/>
+                                        <rect key="frame" x="0.0" y="88.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="YYr-oE-UYm" id="62F-6g-Y7I">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="57.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z4D-Ao-8Wp" customClass="AvatarButton" customModule="ninja_light" customModuleProvider="target">
@@ -989,10 +989,10 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" horizontalHuggingPriority="240" verticalHuggingPriority="240" translatesAutoresizingMaskIntoConstraints="NO" id="VwL-sc-YrW" customClass="UIImageView">
-                                                    <rect key="frame" x="308" y="24.5" width="50" height="25"/>
+                                                    <rect key="frame" x="308" y="24.5" width="50" height="11.5"/>
                                                     <subviews>
                                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="17" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="FUJ-Sd-VgS">
-                                                            <rect key="frame" x="7" y="4" width="29" height="17"/>
+                                                            <rect key="frame" x="7" y="4" width="29" height="3.5"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <color key="textColor" red="0.14901960784313725" green="0.14509803921568626" blue="0.23529411764705882" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -1009,7 +1009,7 @@
                                                     </constraints>
                                                 </view>
                                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="qV7-2O-9EB">
-                                                    <rect key="frame" x="280" y="27" width="20" height="20"/>
+                                                    <rect key="frame" x="280" y="20.5" width="20" height="20"/>
                                                 </activityIndicatorView>
                                             </subviews>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1038,10 +1038,10 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="voiceCellL" id="HIG-cg-fA6" customClass="VoiceTableViewCell" customModule="ninja_light" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="159.5" width="414" height="69.5"/>
+                                        <rect key="frame" x="0.0" y="132.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="HIG-cg-fA6" id="Oyy-Gb-BUr">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="69.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WQC-0h-HzZ" customClass="AvatarButton" customModule="ninja_light" customModuleProvider="target">
@@ -1077,10 +1077,10 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" horizontalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="eg7-fJ-lez" customClass="UIImageView">
-                                                    <rect key="frame" x="56" y="24.5" width="80" height="37"/>
+                                                    <rect key="frame" x="56" y="24.5" width="80" height="11.5"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="760" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y2h-A6-Wd6">
-                                                            <rect key="frame" x="0.0" y="1.5" width="80" height="34"/>
+                                                            <rect key="frame" x="0.0" y="1.5" width="80" height="8.5"/>
                                                             <state key="normal">
                                                                 <color key="titleColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                             </state>
@@ -1120,7 +1120,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="voiceCell" id="uqq-x9-4zG" customClass="VoiceTableViewCell" customModule="ninja_light" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="229" width="414" height="69.5"/>
+                                        <rect key="frame" x="0.0" y="176.5" width="414" height="69.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="uqq-x9-4zG" id="a7X-c3-OxC">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="69.5"/>
@@ -1208,7 +1208,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="imageCellL" id="Vgu-3W-kZN" customClass="ImageTableViewCell" customModule="ninja_light" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="298.5" width="414" height="232.5"/>
+                                        <rect key="frame" x="0.0" y="246" width="414" height="232.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Vgu-3W-kZN" id="nMZ-di-Hnh">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="232.5"/>
@@ -1290,7 +1290,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="imageCell" id="tqe-EI-Z9j" customClass="ImageTableViewCell" customModule="ninja_light" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="531" width="414" height="232.5"/>
+                                        <rect key="frame" x="0.0" y="478.5" width="414" height="232.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tqe-EI-Z9j" id="Yei-mM-QRr">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="232.5"/>
@@ -1386,7 +1386,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="locationCellL" id="x50-P8-eG4" customClass="LocationTableViewCell" customModule="ninja_light" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="763.5" width="414" height="172.5"/>
+                                        <rect key="frame" x="0.0" y="711" width="414" height="172.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="x50-P8-eG4" id="piv-h5-bF7">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="172.5"/>
@@ -1485,10 +1485,10 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="locationCell" id="UpK-ZG-JPQ" customClass="LocationTableViewCell" customModule="ninja_light" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="936" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="883.5" width="414" height="172.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="UpK-ZG-JPQ" id="O5V-3H-VaX">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="172.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VJ0-5A-vPA" customClass="AvatarButton" customModule="ninja_light" customModuleProvider="target">
@@ -1524,7 +1524,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c7O-tC-47W" customClass="UIImageView">
-                                                    <rect key="frame" x="158" y="24.5" width="200" height="11.5"/>
+                                                    <rect key="frame" x="158" y="24.5" width="200" height="140"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="17E-uM-asi">
                                                             <rect key="frame" x="12" y="4" width="176" height="44"/>
@@ -1536,7 +1536,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qV5-cS-9aj">
-                                                            <rect key="frame" x="0.0" y="-69.5" width="200" height="81"/>
+                                                            <rect key="frame" x="0.0" y="59" width="200" height="81"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="81" id="TId-ce-WsG"/>
                                                             </constraints>
@@ -1584,17 +1584,17 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="fileCellL" id="5cl-OU-tkr" customClass="FileTableViewCell" customModule="ninja_light" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="980" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="1056" width="414" height="192.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5cl-OU-tkr" id="1vd-ZP-IzP">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="192.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GCX-sb-xws" customClass="UIImageView">
-                                                    <rect key="frame" x="56" y="24.5" width="200" height="11.5"/>
+                                                    <rect key="frame" x="56" y="24.5" width="200" height="160"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hLC-M6-w2h">
-                                                            <rect key="frame" x="0.0" y="0.0" width="200" height="11.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="200" height="160"/>
                                                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                             <state key="normal" title=" " image="vedio_icon"/>
@@ -1669,10 +1669,10 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="fileCell" id="L2F-Fc-ved" customClass="FileTableViewCell" customModule="ninja_light" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="1024" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="1248.5" width="414" height="192.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="L2F-Fc-ved" id="bUT-U8-N08">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="192.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QZ9-2o-PMC" customClass="AvatarButton" customModule="ninja_light" customModuleProvider="target">
@@ -1708,10 +1708,10 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J2x-e4-Sea" customClass="UIImageView">
-                                                    <rect key="frame" x="158" y="24.5" width="200" height="11.5"/>
+                                                    <rect key="frame" x="158" y="24.5" width="200" height="160"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wDR-of-VDH">
-                                                            <rect key="frame" x="0.0" y="0.0" width="200" height="11.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="200" height="160"/>
                                                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                             <state key="normal" title=" " image="vedio_icon"/>
@@ -3336,7 +3336,7 @@
                                                         <constraint firstAttribute="width" constant="48" id="pai-tc-fO1"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
-                                                    <state key="normal" title="豆豆">
+                                                    <state key="normal">
                                                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
                                                     <userDefinedRuntimeAttributes>
