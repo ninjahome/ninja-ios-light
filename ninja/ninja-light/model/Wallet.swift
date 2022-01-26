@@ -241,7 +241,7 @@ class Wallet: NSObject {
         }
         
         func UpdateAvatarData(by data: Data) -> NJError? {
-                self.avatarData = data
+                self.avatarData = compressImage(data)
                 var error: NSError?
                 if ChatLibUpdateAvatar(data, &error), error == nil {
                         do {

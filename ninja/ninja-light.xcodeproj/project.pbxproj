@@ -764,7 +764,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/bin",
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/ninja-light/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -799,7 +798,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/bin",
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/ninja-light/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;

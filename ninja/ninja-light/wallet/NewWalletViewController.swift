@@ -42,11 +42,10 @@ class NewWalletViewController: UIViewController {
                 do {
                         try Wallet.shared.New(password)
                         ServiceDelegate.InitService()
-                        guard isFirstUser() else {
+                        if isFirstUser() {
                                 setFirstUser()
-                                self.performSegue(withIdentifier: "CreateNewAccountSeg", sender: self)
-                                return
                         }
+                        self.performSegue(withIdentifier: "CreateNewAccountSeg", sender: self)
                 } catch let err as NSError{
                         self.toastMessage(title: err.localizedDescription)
                 }
