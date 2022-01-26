@@ -18,6 +18,7 @@ class BackupGuideViewController: UIViewController {
                 super.viewDidLoad()
                 self.view.layer.contents = UIImage(named: "bg-img")?.cgImage
                 qrImage.image = getQRCode()
+                address.text = Wallet.shared.Addr!
         }
         
         func getQRCode() -> UIImage? {

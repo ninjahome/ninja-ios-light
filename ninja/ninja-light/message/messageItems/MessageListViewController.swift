@@ -129,7 +129,6 @@ class MessageListViewController: UIViewController{
                         self.performSegue(withIdentifier: "ShowAutherSEG", sender: self)
                         return
                 }
-//                print("wallet is active")
 
                 self.sortedArray = ChatItem.SortedArra()
                 DispatchQueue.main.async {

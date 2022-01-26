@@ -94,7 +94,7 @@ class ChatItem: NSObject{
                                                      m: chat,
                                                      predicate: NSPredicate(format: "uid == %@ AND owner == %@", peerUid, owner))
                 
-                NotificationCenter.default.post(name:NotifyMsgSumChanged,
+                NotificationCenter.default.post(name: NotifyMsgSumChanged,
                                                     object: self, userInfo:nil)
         }
         
@@ -202,7 +202,7 @@ extension ChatItem: ModelObj {
                 self.cObj = cObj
                 
                 if let contact = ContactItem.cache[self.ItemID!],
-                   let alias = contact.alias {
+                   let alias = contact.alias, alias != "" {
                         self.NickName = alias
                 } else {
                         let acc = AccountItem.GetAccount(self.ItemID!)

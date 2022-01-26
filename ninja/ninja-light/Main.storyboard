@@ -1221,13 +1221,13 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" relation="lessThanOrEqual" constant="200" id="3Sv-CF-xpO"/>
-                                                                <constraint firstAttribute="height" constant="200" id="LuE-J3-lsS"/>
+                                                                <constraint firstAttribute="height" constant="200" id="MUG-xf-ift"/>
                                                             </constraints>
                                                         </imageView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="FVc-f8-DQh"/>
+                                                        <constraint firstAttribute="width" constant="200" id="FVc-f8-DQh"/>
                                                         <constraint firstItem="Oas-Xp-4MA" firstAttribute="top" secondItem="aFN-hZ-tFV" secondAttribute="top" id="HvH-Ts-jmr"/>
                                                         <constraint firstItem="Oas-Xp-4MA" firstAttribute="leading" secondItem="aFN-hZ-tFV" secondAttribute="leading" id="NLp-ro-y07"/>
                                                         <constraint firstAttribute="trailing" secondItem="Oas-Xp-4MA" secondAttribute="trailing" id="dlS-fL-Tiw"/>
@@ -1334,7 +1334,7 @@
                                                         <imageView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iGb-ym-e3r">
                                                             <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="200" id="L4S-jC-mm5"/>
+                                                                <constraint firstAttribute="width" constant="200" id="L4S-jC-mm5"/>
                                                                 <constraint firstAttribute="height" constant="200" id="WMQ-AY-aPn"/>
                                                             </constraints>
                                                         </imageView>
