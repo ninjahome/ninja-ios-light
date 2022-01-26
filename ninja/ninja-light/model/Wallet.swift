@@ -55,7 +55,7 @@ class Wallet: NSObject {
                 return nil
         }
         
-        public func isStillVip()->Bool{
+        public func isStillVip() -> Bool {
                 return Int64(Date().timeIntervalSince1970) < self.liceneseExpireTime
         }
         

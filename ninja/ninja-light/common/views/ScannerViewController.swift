@@ -139,11 +139,11 @@ extension ScannerViewController: AVCaptureMetadataOutputObjectsDelegate, UIImage
                 }
                 
                 self.dismiss(animated: true) {
-                        if codeStr != "" {
+//                        if codeStr != "" {
                                 self.delegate?.codeDetected(code: codeStr)
-                        } else {
-                                self.toastMessage(title: "invaild ninja qr code")
-                        }
+//                        } else {
+//                                self.toastMessage(title: "invaild ninja qr code")
+//                        }
                 }
 //                self.navigationController?.popViewController(animated: true)
         }

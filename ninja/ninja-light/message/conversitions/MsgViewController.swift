@@ -33,7 +33,12 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         @IBOutlet weak var msgTableConstrain: NSLayoutConstraint!
 
         @IBOutlet weak var messageTableView: UITableView!
-    
+        
+        @IBOutlet weak var voiceVipImg: UIImageView!
+        @IBOutlet weak var cameraVipImg: UIImageView!
+        @IBOutlet weak var imageVipimg: UIImageView!
+        @IBOutlet weak var fileVipImg: UIImageView!
+        
         var IS_GROUP: Bool = false
 
         var messages: [MessageItem] = []
@@ -52,7 +57,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         override func viewWillAppear(_ animated: Bool) {
                 super.viewWillAppear(animated)
                 populateView()
-
                 DispatchQueue.main.async {
                         self.scrollToBottom()
                 }
@@ -119,6 +123,15 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         deinit {
                 NotificationCenter.default.removeObserver(self)
         }
+        
+        func vipRelatedUI() {
+                if Wallet.shared.isStillVip() {
+                        voiceVipImg.isHidden = true
+                        imageVipimg.isHidden = true
+                        cameraVipImg.isHidden = true
+                        fileVipImg.isHidden = true
+                }
+        }
 
         @IBAction func moreMsgType(_ sender: UIButton) {
                 mutiMsgType.isHidden = false
@@ -129,27 +142,34 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         }
 
         @IBAction func camera(_ sender: UIButton) {
-                if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                        let cameraPicker = UIImagePickerController()
-                        cameraPicker.delegate = self
-                        cameraPicker.allowsEditing = true
-                        cameraPicker.sourceType = .camera
-                        cameraPicker.mediaTypes = ["public.movie", "public.image"]
-                        present(cameraPicker, animated: true, completion: nil)
+                if Wallet.shared.isStillVip() {
+                        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                                let cameraPicker = UIImagePickerController()
+                                cameraPicker.delegate = self
+                                cameraPicker.allowsEditing = true
+                                cameraPicker.sourceType = .camera
+                                cameraPicker.mediaTypes = ["public.movie", "public.image"]
+                                present(cameraPicker, animated: true, completion: nil)
+                        } else {
+                                toastMessage(title: "无相机访问权限")
+                        }
                 } else {
-                        toastMessage(title: "无相机访问权限")
+                        showVipModalViewController()
                 }
-
         }
     
         @IBAction func album(_ sender: UIButton) {
-                let vc = UIImagePickerController()
-                vc.sourceType = .photoLibrary
-                vc.mediaTypes = ["public.movie", "public.image"]
-                vc.videoQuality = .typeMedium
-                vc.delegate = self
-                vc.allowsEditing = true
-                present(vc, animated: true, completion: nil)
+                if Wallet.shared.isStillVip() {
+                        let vc = UIImagePickerController()
+                        vc.sourceType = .photoLibrary
+                        vc.mediaTypes = ["public.movie", "public.image"]
+                        vc.videoQuality = .typeMedium
+                        vc.delegate = self
+                        vc.allowsEditing = true
+                        present(vc, animated: true, completion: nil)
+                } else {
+                        showVipModalViewController()
+                }
         }
     
         @IBAction func location(_ sender: UIButton) {
@@ -367,20 +387,25 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         @IBAction func voiceBtn(_ sender: UIButton) {
-                if isTextType {
-                        self.voiceBtn.setImage(UIImage(named: "key_icon"), for: .normal)
-                        self.sender.isHidden = true
-                        self.recordBtn.isHidden = false
-                        isTextType = false
+                if Wallet.shared.isStillVip() {
+                        if isTextType {
+                                self.voiceBtn.setImage(UIImage(named: "key_icon"), for: .normal)
+                                self.sender.isHidden = true
+                                self.recordBtn.isHidden = false
+                                isTextType = false
+                        } else {
+                                self.voiceBtn.setImage(UIImage(named: "voice_icon"), for: .normal)
+                                self.sender.isHidden = false
+                                self.recordBtn.isHidden = true
+                                isTextType = true
+                        }
                 } else {
-                        self.voiceBtn.setImage(UIImage(named: "voice_icon"), for: .normal)
-                        self.sender.isHidden = false
-                        self.recordBtn.isHidden = true
-                        isTextType = true
+                        showVipModalViewController()
                 }
         }
 
         private func populateView() {
+                vipRelatedUI()
                 if IS_GROUP {
                         groupData = GroupItem.cache[peerUid]
                         setPeerNick()

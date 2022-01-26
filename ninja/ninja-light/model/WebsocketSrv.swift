@@ -147,6 +147,8 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
                                 _ = AccountItem.getLatestAccount(addr: f)
                         }
                         MessageItem.receiveMsg(from: f, gid: nil, msgData: d, time: time)
+                } else {
+                        print("++++++peer IM losted")
                 }
         }
         

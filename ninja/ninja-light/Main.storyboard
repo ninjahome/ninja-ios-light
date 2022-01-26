@@ -1879,9 +1879,18 @@
                                             <action selector="voiceBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GAK-rc-nhk"/>
                                         </connections>
                                     </button>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VIP" translatesAutoresizingMaskIntoConstraints="NO" id="KvQ-mq-2Ae">
+                                        <rect key="frame" x="24" y="12" width="22" height="12"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="12" id="cD0-3D-cOT"/>
+                                            <constraint firstAttribute="width" constant="22" id="ojl-yb-n06"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="KvQ-mq-2Ae" firstAttribute="trailing" secondItem="F1h-Yt-FEz" secondAttribute="trailing" id="8bP-NE-aIU"/>
+                                    <constraint firstItem="KvQ-mq-2Ae" firstAttribute="top" secondItem="F1h-Yt-FEz" secondAttribute="top" id="9Cr-Wb-kzP"/>
                                     <constraint firstAttribute="trailing" secondItem="bP2-Ah-UQS" secondAttribute="trailing" constant="10" id="9vv-YT-TXS"/>
                                     <constraint firstItem="F1h-Yt-FEz" firstAttribute="leading" secondItem="Y24-Lx-MjM" secondAttribute="leading" constant="10" id="Jwi-jW-oK2"/>
                                     <constraint firstItem="qyV-3Y-1Op" firstAttribute="top" secondItem="Y24-Lx-MjM" secondAttribute="top" constant="12" id="K9Q-Mc-5SR"/>
@@ -1988,11 +1997,20 @@
                                                         <color key="textColor" red="0.18039215689999999" green="0.18039215689999999" blue="0.18039215689999999" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VIP" translatesAutoresizingMaskIntoConstraints="NO" id="OSN-Sg-KOR">
+                                                        <rect key="frame" x="41.5" y="4" width="26" height="14"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="26" id="2xm-1n-RYm"/>
+                                                            <constraint firstAttribute="height" constant="14" id="69e-GN-tLZ"/>
+                                                        </constraints>
+                                                    </imageView>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstItem="Nmb-Pf-rgF" firstAttribute="top" secondItem="mTb-ne-GJP" secondAttribute="top" constant="4" id="A6G-1G-4bE"/>
+                                                    <constraint firstItem="OSN-Sg-KOR" firstAttribute="trailing" secondItem="Nmb-Pf-rgF" secondAttribute="trailing" id="CLx-F1-IHY"/>
                                                     <constraint firstItem="Jcf-u6-hxO" firstAttribute="centerX" secondItem="mTb-ne-GJP" secondAttribute="centerX" id="U5f-du-UGK"/>
+                                                    <constraint firstItem="OSN-Sg-KOR" firstAttribute="top" secondItem="Nmb-Pf-rgF" secondAttribute="top" id="btD-p7-Xiz"/>
                                                     <constraint firstItem="Jcf-u6-hxO" firstAttribute="top" secondItem="Nmb-Pf-rgF" secondAttribute="bottom" constant="9" id="g2B-F0-ijQ"/>
                                                     <constraint firstItem="Nmb-Pf-rgF" firstAttribute="centerX" secondItem="mTb-ne-GJP" secondAttribute="centerX" id="pU0-MR-dIx"/>
                                                 </constraints>
@@ -2011,6 +2029,13 @@
                                                             <action selector="camera:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Gjr-o7-fFe"/>
                                                         </connections>
                                                     </button>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VIP" translatesAutoresizingMaskIntoConstraints="NO" id="Iy2-PV-NrJ">
+                                                        <rect key="frame" x="41.5" y="4" width="26" height="14"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="26" id="5D1-0P-85t"/>
+                                                            <constraint firstAttribute="height" constant="14" id="xce-NA-DpD"/>
+                                                        </constraints>
+                                                    </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="拍摄" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="imP-6e-L1a">
                                                         <rect key="frame" x="24" y="71" width="29" height="17"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -2023,6 +2048,8 @@
                                                     <constraint firstItem="MPn-1m-myj" firstAttribute="centerX" secondItem="GES-BF-oe8" secondAttribute="centerX" id="3Lg-GX-cZh"/>
                                                     <constraint firstItem="imP-6e-L1a" firstAttribute="top" secondItem="MPn-1m-myj" secondAttribute="bottom" constant="9" id="TAP-q0-B9h"/>
                                                     <constraint firstItem="MPn-1m-myj" firstAttribute="top" secondItem="GES-BF-oe8" secondAttribute="top" constant="4" id="k4u-mm-SGr"/>
+                                                    <constraint firstItem="Iy2-PV-NrJ" firstAttribute="top" secondItem="MPn-1m-myj" secondAttribute="top" id="rch-pL-HIY"/>
+                                                    <constraint firstItem="Iy2-PV-NrJ" firstAttribute="trailing" secondItem="MPn-1m-myj" secondAttribute="trailing" id="s0o-4L-C3F"/>
                                                     <constraint firstItem="imP-6e-L1a" firstAttribute="centerX" secondItem="GES-BF-oe8" secondAttribute="centerX" id="u23-mt-PfP"/>
                                                 </constraints>
                                             </view>
@@ -2040,6 +2067,13 @@
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                     </button>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VIP" translatesAutoresizingMaskIntoConstraints="NO" id="oxd-OO-bxa">
+                                                        <rect key="frame" x="41.5" y="4" width="26" height="14"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="14" id="WLb-0z-tPL"/>
+                                                            <constraint firstAttribute="width" constant="26" id="qeq-Kf-hRN"/>
+                                                        </constraints>
+                                                    </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="文件" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ou-5G-Kz4">
                                                         <rect key="frame" x="24" y="71" width="29" height="17"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -2052,7 +2086,9 @@
                                                     <constraint firstItem="j5t-Pl-bZA" firstAttribute="centerX" secondItem="w6F-E1-HPZ" secondAttribute="centerX" id="3LN-GZ-WSF"/>
                                                     <constraint firstItem="j5t-Pl-bZA" firstAttribute="top" secondItem="w6F-E1-HPZ" secondAttribute="top" constant="4" id="F4e-i1-31v"/>
                                                     <constraint firstItem="7ou-5G-Kz4" firstAttribute="top" secondItem="j5t-Pl-bZA" secondAttribute="bottom" constant="9" id="W4a-FS-kLb"/>
+                                                    <constraint firstItem="oxd-OO-bxa" firstAttribute="trailing" secondItem="j5t-Pl-bZA" secondAttribute="trailing" id="jZx-kM-TcE"/>
                                                     <constraint firstItem="7ou-5G-Kz4" firstAttribute="centerX" secondItem="w6F-E1-HPZ" secondAttribute="centerX" id="roX-r2-A2d"/>
+                                                    <constraint firstItem="oxd-OO-bxa" firstAttribute="top" secondItem="j5t-Pl-bZA" secondAttribute="top" id="ybU-xC-e0C"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -2144,6 +2180,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="cameraVipImg" destination="Iy2-PV-NrJ" id="7zm-0i-mFh"/>
+                        <outlet property="fileVipImg" destination="oxd-OO-bxa" id="2xj-z6-ZjL"/>
+                        <outlet property="imageVipimg" destination="OSN-Sg-KOR" id="n2m-fL-8X0"/>
                         <outlet property="messageTableView" destination="7re-F4-bQF" id="GdZ-Pn-DbW"/>
                         <outlet property="msgTableConstrain" destination="EzW-Fk-pMw" id="bcU-sb-2ZA"/>
                         <outlet property="mutiMsgType" destination="v9o-6f-8jL" id="5hj-Y9-yGO"/>
@@ -2157,6 +2196,7 @@
                         <outlet property="textFieldConstrain" destination="Afa-DT-Lv0" id="QEA-ij-sIH"/>
                         <outlet property="vipView" destination="Ne3-qi-xmo" id="d1d-h1-l0a"/>
                         <outlet property="voiceBtn" destination="F1h-Yt-FEz" id="t7p-Dp-Fa3"/>
+                        <outlet property="voiceVipImg" destination="KvQ-mq-2Ae" id="GPr-LQ-ATs"/>
                         <segue destination="H5K-Rj-2FP" kind="presentation" identifier="ShowMapSeg" modalPresentationStyle="fullScreen" id="VuF-HA-k2i"/>
                         <segue destination="kwp-eE-p9L" kind="show" identifier="ShowGroupDetailSeg" id="lSH-z4-GLJ"/>
                     </connections>
@@ -2168,7 +2208,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1561" y="-782"/>
+            <point key="canvasLocation" x="1560.8695652173915" y="-782.14285714285711"/>
         </scene>
         <!--Map View Controller-->
         <scene sceneID="aGe-FQ-4jH">
