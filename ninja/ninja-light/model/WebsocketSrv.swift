@@ -14,7 +14,6 @@ class WebsocketSrv: NSObject {
         public static var shared = WebsocketSrv()
 
         public static let netQueue = DispatchQueue.init(label: "Connect Queue", qos: .userInteractive)
-
         public static let textMsgQueue = DispatchQueue.init(label: "Sending Text Queue")
         public static let imageMsgQueue = DispatchQueue.init(label: "Sending Image Queue")
         public static let voiceMsgQueue = DispatchQueue.init(label: "Sending Voice Queue")

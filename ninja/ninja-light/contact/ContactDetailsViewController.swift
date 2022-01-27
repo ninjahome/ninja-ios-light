@@ -47,20 +47,15 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 
                 self.hideKeyboardWhenTappedAround()
                 
-                account = AccountItem.GetAccount(itemUID ?? itemData!.uid!)
-                _ = AccountItem.UpdateOrAddAccount(account!)
-                self.populateView()
-
-                nickTextField.text = itemData?.alias
-                memoTextView.text = itemData?.remark
-
-                backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
+                account = AccountItem.GetAccount(self.itemUID ?? self.itemData!.uid!)
                 
+                self.populateView()
                 
                 setAvatar()
                 
                 DispatchQueue.global().async {
                         self.account = AccountItem.getLatestAccount(addr: self.itemUID ?? self.itemData!.uid!)
+                        _ = AccountItem.UpdateOrAddAccount(self.account!)
                         DispatchQueue.main.async {
                                 NotificationCenter.default.addObserver(self,
                                                                        selector:#selector(self.notifiAction(notification:)),
@@ -68,7 +63,6 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                                                                        object: nil)
                         }
                 }
-                
         }
     
         deinit {
@@ -165,6 +159,9 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 }
                 self.uid.text = data.uid
                 self.nickName.text = account?.NickName
+                nickTextField.text = itemData?.alias
+                memoTextView.text = itemData?.remark
+                backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
         }
 
         private func closeWindow() {

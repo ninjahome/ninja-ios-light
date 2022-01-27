@@ -49,6 +49,7 @@ class FileTableViewCell: UITableViewCell {
                                 cliMsg = CliMessage.init(to: msg.to!, videoUrl: URL(fileURLWithPath: videoData.url), groupId: msg.groupId!)
                         }
                         if let fileData = msg.payload as? fileMsg {
+                                openFileBtn.isHidden = true
                                 cliMsg = CliMessage.init(to: msg.to!, fileUrl: fileData.url!, groupId: msg.groupId!)
                         }
                         guard let resendCli = cliMsg else {

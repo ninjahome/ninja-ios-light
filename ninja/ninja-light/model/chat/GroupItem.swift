@@ -58,6 +58,11 @@ class GroupItem: NSObject {
                                 ids.append(uid)
                         }
                         grp.memberIds = ids as NSArray
+                        var allIds = ids
+                        allIds.append(grp.leader!)
+                        if let grpImg = GroupItem.getGroupAvatar(ids: allIds) {
+                                grp.avatar = grpImg
+                        }
                         grp.owner = Wallet.shared.Addr!
                         return grp
                 }

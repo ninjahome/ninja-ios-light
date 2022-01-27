@@ -139,7 +139,7 @@ class GroupMemberViewController: UIViewController {
                 groupItem.unixTime = Int64(Date().timeIntervalSince1970)
                 var allIds: [String] = ids
                 allIds.append(wallet)
-                if let grpImg = GroupItem.getGroupAvatar(ids: allIds){
+                if let grpImg = GroupItem.getGroupAvatar(ids: allIds) {
                         groupItem.avatar = grpImg
                 }
                 

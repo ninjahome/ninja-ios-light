@@ -7,6 +7,7 @@
 
 import UIKit
 import AVFoundation
+import MobileCoreServices
 
 class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         
@@ -174,7 +175,11 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         
         @IBAction func file(_ sender: UIButton) {
                 if Wallet.shared.isStillVip() {
-                        
+                        let vc = UIDocumentPickerViewController(documentTypes: [kUTTypeMovie as String, kUTTypeImage as String, kUTTypeZipArchive as String, kUTTypePDF as String, kUTTypeText as String], in: .import)
+                        vc.delegate = self
+                        vc.allowsMultipleSelection = false
+                        vc.shouldShowFileExtensions = true
+                        present(vc, animated: true, completion: nil)
                 } else {
                         showVipModalViewController()
                 }
