@@ -79,7 +79,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
                 // to restore the scene back to its current state.
 
                 // Save changes in the application's managed object context when the application transitions to the background.
-                UIApplication.shared.applicationIconBadgeNumber = 0
+//                UIApplication.shared.applicationIconBadgeNumber = 0
+                updateBadgeNum()
                 CDManager.shared.saveContext()
                 WebsocketSrv.shared.Offline()
                 AudioFilesManager.deleteAllRecordingFiles()

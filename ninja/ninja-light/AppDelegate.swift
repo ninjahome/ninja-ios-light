@@ -116,6 +116,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         func applicationWillResignActive(_ application: UIApplication) {
+                updateBadgeNum()
                 CDManager.shared.saveContext()
                 WebsocketSrv.shared.Offline()
         }

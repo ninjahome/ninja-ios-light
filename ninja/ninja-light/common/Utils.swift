@@ -20,6 +20,11 @@ extension NSLayoutConstraint {
     }
 }
 
+func updateBadgeNum() {
+        let total = ChatItem.getTotalUnreadNo()
+        UIApplication.shared.applicationIconBadgeNumber = total
+}
+
 func compressImage(_ origin: Data?) -> Data? {
         guard let size = origin?.count else {
                 return nil
