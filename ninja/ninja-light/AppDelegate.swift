@@ -116,7 +116,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         func applicationWillResignActive(_ application: UIApplication) {
-                updateBadgeNum()
                 CDManager.shared.saveContext()
                 WebsocketSrv.shared.Offline()
         }
@@ -132,6 +131,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 AudioFilesManager.deleteAllRecordingFiles()
         }
         
+        func applicationWillEnterForeground(_ application: UIApplication) {
+                UserDefaults(suiteName: "group.com.hop.ninja.light")?.set(1, forKey: "count")
+                
+                UIApplication.shared.applicationIconBadgeNumber = 0
+        }
         
 }
-
