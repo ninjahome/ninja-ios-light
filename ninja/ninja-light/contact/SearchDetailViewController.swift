@@ -29,6 +29,7 @@ class SearchDetailViewController: UIViewController {
                 super.viewDidLoad()
                 uidText.text = uid
                 account = AccountItem.getLatestAccount(addr: uid!)
+                _ = AccountItem.UpdateOrAddAccount(account!)
                 avatar.type = .chatContact
                 avatar.avaInfo = AvatarInfo(id: uid!, avaData: self.account?.Avatar)
                 nickName.text = account?.NickName
@@ -63,7 +64,6 @@ class SearchDetailViewController: UIViewController {
         }
         
         @IBAction func sendMsg(_ sender: UIButton) {
-                _ = AccountItem.UpdateOrAddAccount(account!)
                 startChat()
         }
         

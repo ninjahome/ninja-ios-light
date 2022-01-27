@@ -12,7 +12,7 @@ import ChatLib
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
         public let DevTypeIOS = 1
-        public let Debug = true
+        public let Debug = false
         
         var window: UIWindow?
         

@@ -46,7 +46,9 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 super.viewDidLoad()
                 
                 self.hideKeyboardWhenTappedAround()
-                self.account = AccountItem.GetAccount(itemUID ?? itemData!.uid!)
+                
+                account = AccountItem.GetAccount(itemUID ?? itemData!.uid!)
+                _ = AccountItem.UpdateOrAddAccount(account!)
                 self.populateView()
 
                 nickTextField.text = itemData?.alias
@@ -165,7 +167,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 self.nickName.text = account?.NickName
         }
 
-        private func closeWindow(){
+        private func closeWindow() {
                 self.dismiss(animated: true)
                 self.navigationController?.popViewController(animated: true)
         }
@@ -179,5 +181,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
             
                 self.navigationController?.pushViewController(vc, animated: true)
         }
+        
+        
     
 }

@@ -2066,6 +2066,9 @@
                                                         <state key="normal" title="Button" image="file_icon">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="file:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Agm-Oc-6nb"/>
+                                                        </connections>
                                                     </button>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VIP" translatesAutoresizingMaskIntoConstraints="NO" id="oxd-OO-bxa">
                                                         <rect key="frame" x="41.5" y="4" width="26" height="14"/>

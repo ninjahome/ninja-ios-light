@@ -42,7 +42,7 @@ class ServiceDelegate: NSObject {
                 ChatLibInitAPP(endPoint, "a3a5c09826a246d0bfbef8084b81df1f", WebsocketSrv.shared, 2)
         }
         public static func InitPushParam(deviceToken:String) {
-                ChatLibSetPushParam(deviceToken, DevTypeIOS, Debug)
+                ChatLibSetPushParam(deviceToken, DevTypeIOS)
         }
         
         public static func MaxAvatarSize()->Int{

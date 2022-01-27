@@ -171,6 +171,14 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                         showVipModalViewController()
                 }
         }
+        
+        @IBAction func file(_ sender: UIButton) {
+                if Wallet.shared.isStillVip() {
+                        
+                } else {
+                        showVipModalViewController()
+                }
+        }
     
         @IBAction func location(_ sender: UIButton) {
                 self.isLocalMsg = false
