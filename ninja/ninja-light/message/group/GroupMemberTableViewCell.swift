@@ -63,7 +63,7 @@ class GroupMemberTableViewCell: UITableViewCell {
         func initWith(group: GroupItem, idx: Int, selected: Bool) {
                 self.index = idx
 
-                let id = group.memberIds![idx] as! String
+                let id = group.memberIds[idx]
 //                let nick = group.memberNicks![idx] as! String
                 setSelect(selected: selected)
 

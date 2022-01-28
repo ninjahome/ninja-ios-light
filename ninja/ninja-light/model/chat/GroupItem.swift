@@ -26,7 +26,7 @@ class GroupItem: NSObject {
         var nonce: Int64?
         var gid: String?
         var groupName: String?
-        var memberIds: NSArray?
+        var memberIds: [String] = []
 //        var memberNicks: NSArray?
         var owner: String?
         var unixTime: Int64 = 0
@@ -52,17 +52,12 @@ class GroupItem: NSObject {
                         guard let memIds = objJson["members"].dictionaryObject?.keys else {
                                 return nil
                         }
-                        var ids = [String]()
+                        var ids : [String] = []
                         for k in memIds {
                                 let uid = String(k)
                                 ids.append(uid)
                         }
-                        grp.memberIds = ids as NSArray
-                        var allIds = ids
-                        allIds.append(grp.leader!)
-                        if let grpImg = GroupItem.getGroupAvatar(ids: allIds) {
-                                grp.avatar = grpImg
-                        }
+                        grp.memberIds = ids
                         grp.owner = Wallet.shared.Addr!
                         return grp
                 }
@@ -74,7 +69,7 @@ class GroupItem: NSObject {
                         return nil
                 }
                 
-                var ids: [String] = grpItem.memberIds as! [String]
+                var ids: [String] = grpItem.memberIds
                 ids.append(grpItem.leader!)
                 
                 let jsonStr = JSON(ids).description
@@ -189,33 +184,38 @@ class GroupItem: NSObject {
                 guard let data = ChatLibGroupMeta(gid, &err) else {
                         return nil
                 }
-                guard let item = GroupItem.initByData(data) else {
+                guard let group = GroupItem.initByData(data) else {
                         return nil
                 }
-                if AccountItem.GetAccount(item.leader!) == nil {
-                        _ = AccountItem.getLatestAccount(addr: item.leader!)
+                if AccountItem.GetAccount(group.leader!) == nil {
+                        _ = AccountItem.getLatestAccount(addr: group.leader!)
                 }
                 
-                guard let memIds = item.memberIds else {
-                        return nil
+ 
+                for i in group.memberIds {
+                        if AccountItem.GetAccount(i ) == nil {
+                                _ = AccountItem.getLatestAccount(addr: i )
+                        }
                 }
-                
-                for i in memIds {
-                        if AccountItem.GetAccount(i as! String) == nil {
-                                _ = AccountItem.getLatestAccount(addr: i as! String)
+                if group.avatar == nil{
+                        var allIds = group.memberIds
+                        allIds.append(group.leader!)
+                        if let grpImg = GroupItem.getGroupAvatar(ids: allIds) {
+                                group.avatar = grpImg
                         }
                 }
                 
-                if let err = UpdateGroup(item) {
+                
+                if let err = UpdateGroup(group) {
                         NSLog("---[update grp]---\(err.localizedDescription ?? "")")
                 }
-                return item
+                return group
         }
     
         public static func AddMemberToGroup(group: GroupItem, newIds: [String]) -> NJError? {
                 var error: NSError?
-                let to = group.memberIds as? Array<String>
-                let idsData = ChatLibUnmarshalGoByte(to?.toString())
+                let to = group.memberIds
+                let idsData = ChatLibUnmarshalGoByte(to.toString())
 //                let nicks = group.memberNicks as! [String]
                 ChatLibAddGroupMembers(group.gid, idsData, &error)
         
@@ -267,7 +267,7 @@ class GroupItem: NSObject {
 //                        return value
 //                }
 
-                group.memberIds = newIds as NSArray
+                group.memberIds = newIds
 //                group.memberNicks = nicks as NSArray
 
                 if let err = GroupItem.UpdateGroup(group) {
@@ -322,7 +322,7 @@ class GroupItem: NSObject {
 //                                return value
 //                        }
 
-                        group.memberIds = newIds as NSArray
+                        group.memberIds = newIds
 //                        group.memberNicks = nicks as NSArray
 
                         if let err = GroupItem.UpdateGroup(group) {
@@ -393,7 +393,7 @@ extension GroupItem: ModelObj {
                 cObj.gid = self.gid
                 cObj.name = self.groupName
                 cObj.owner = self.owner
-                cObj.members = self.memberIds
+                cObj.members = self.memberIds as NSObject
 //                cObj.memberNicks = self.memberNicks
                 cObj.unixTime = self.unixTime
                 cObj.leader = self.leader
@@ -410,7 +410,7 @@ extension GroupItem: ModelObj {
                 self.gid = cObj.gid
                 self.groupName = cObj.name
                 self.owner = cObj.owner
-                self.memberIds = cObj.members as? NSArray
+                self.memberIds = cObj.members as? [String] ?? []
 //                self.memberNicks = cObj.memberNicks as? NSArray
                 self.unixTime = cObj.unixTime
                 self.leader = cObj.leader

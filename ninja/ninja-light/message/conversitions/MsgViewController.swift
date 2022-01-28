@@ -435,7 +435,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         
         fileprivate func setPeerNick() {
                 var count: String = "?"
-                if let memberCount = self.groupData?.memberIds?.count {
+                if let memberCount = self.groupData?.memberIds.count {
                         count = String(memberCount+1)
                 }
                 self.peerNickName.title = "\(self.groupData?.groupName ?? "群聊")(\(count))"

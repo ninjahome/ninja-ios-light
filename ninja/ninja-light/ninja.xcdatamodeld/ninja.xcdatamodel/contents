@@ -10,10 +10,10 @@
         <attribute name="touch_time" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <entity name="CDChatItem" representedClassName="CDChatItem" syncable="YES" codeGenerationType="class">
-        <attribute name="groupId" optional="YES" attributeType="String"/>
+        <attribute name="isGrp" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="lastMsg" optional="YES" attributeType="String"/>
         <attribute name="owner" optional="YES" attributeType="String"/>
-        <attribute name="uid" optional="YES" attributeType="String"/>
+        <attribute name="peerID" optional="YES" attributeType="String"/>
         <attribute name="unreadNo" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="updateTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>

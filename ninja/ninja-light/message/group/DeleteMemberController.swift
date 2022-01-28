@@ -15,7 +15,7 @@ class DeleteMemberController: UIViewController {
     var selectedIndexs = [Int]()
     var setEnable: Bool = false
 
-    var existMember: NSArray?
+    var existMember: [String] = []
     var groupItem: GroupItem?
     
     var notiMemberChange: NotiGroupChange!
@@ -40,17 +40,14 @@ class DeleteMemberController: UIViewController {
             return
         }
         
-        guard let exists = existMember else {
-            return
-        }
         
-        let groupIds = groupItem?.memberIds as! [String]
+            let groupIds = groupItem?.memberIds
 //        var groupNicks = groupItem?.memberNicks as! [String]
         var delIds: [String] = []
         
         for i in selectedIndexs {
-            delIds.append(exists[i] as! String)
-            groupItem?.memberInfos.removeValue(forKey: exists[i] as! String)
+                delIds.append(existMember[i] )
+                groupItem?.memberInfos.removeValue(forKey: existMember[i] )
         }
         
         let ids = groupItem?.memberInfos.map({ (k: String, v: String) in
@@ -61,13 +58,13 @@ class DeleteMemberController: UIViewController {
 //            return v
 //        })
         
-        if let err = GroupItem.KickOutUser(to: groupIds.toString(), groupId: groupItem!.gid!, leader: groupItem!.leader!, kickUserId: delIds.toString()!) {
+            if let err = GroupItem.KickOutUser(to: groupIds?.toString(), groupId: groupItem!.gid!, leader: groupItem!.leader!, kickUserId: delIds.toString()!) {
             
             self.toastMessage(title: "kick faild: \(String(describing: err.localizedDescription))")
             return
         }
         
-        groupItem?.memberIds = ids! as NSArray
+            groupItem?.memberIds = ids ?? []
 //        groupItem?.memberNicks = nicks! as NSArray
         _ = GroupItem.UpdateGroup(groupItem!)
         self.notiMemberChange(groupItem!)
@@ -92,12 +89,7 @@ class DeleteMemberController: UIViewController {
 extension DeleteMemberController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if let exist = existMember {
-            return exist.count
-        }
-        
-        return 0
+        return existMember.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

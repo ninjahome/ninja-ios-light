@@ -20,7 +20,7 @@ class GroupMemberViewController: UIViewController {
         var contactArray: [ContactItem]?
         var isAddMember: Bool = false
         var isDelMember: Bool = false
-        var existMember: NSArray?
+        var existMember: [String] = []
 
         var groupItem: GroupItem = GroupItem.init()
 
@@ -47,10 +47,8 @@ class GroupMemberViewController: UIViewController {
                 var contacts = ContactItem.CacheArray()
 
                 if isAddMember {
-                        if let exists = existMember {
-                                contacts.removeAll { cont in
-                                        exists.contains(cont.uid!)
-                                }
+                        contacts.removeAll { cont in
+                                existMember.contains(cont.uid!)
                         }
                 } else {
                         contacts.removeAll { cont in
@@ -75,7 +73,7 @@ class GroupMemberViewController: UIViewController {
                                 return
                         }
 
-                        var groupIds = groupItem.memberIds as! [String]
+                        var groupIds = groupItem.memberIds
 //                        var groupNicks = groupItem.memberNicks as! [String]
                         var newIds: [String] = []
 
@@ -85,7 +83,7 @@ class GroupMemberViewController: UIViewController {
 //                                groupNicks.append(contacts[i].alias ?? "")
                         }
 
-                        groupItem.memberIds = groupIds as NSArray
+                        groupItem.memberIds = groupIds
 //                        groupItem.memberNicks = groupNicks as NSArray
 //                        groupItem.UpdateSelfInfos()
 
@@ -132,7 +130,7 @@ class GroupMemberViewController: UIViewController {
                 let wallet = Wallet.shared.Addr!
                 groupItem.gid = groupId
                 groupItem.groupName = groupName
-                groupItem.memberIds = ids as NSArray
+                groupItem.memberIds = ids 
 //                groupItem.memberNicks = nicks as NSArray
                 groupItem.owner = wallet
                 groupItem.leader = wallet

@@ -70,7 +70,7 @@ class GroupDetailViewController: UIViewController {
                 if segue.identifier == "KickMemberSeg" {
                         let vc: DeleteMemberController = segue.destination as! DeleteMemberController
                         vc.groupItem = groupItem
-                        vc.existMember = groupItem?.memberIds
+                        vc.existMember = groupItem?.memberIds ?? []
 
                         vc.notiMemberChange = { newGroupInfo in
                                 self.groupItem = newGroupInfo
@@ -83,7 +83,7 @@ class GroupDetailViewController: UIViewController {
 extension GroupDetailViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
         func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-                if let idCount = groupItem?.memberIds?.count {
+                if let idCount = groupItem?.memberIds.count {
                         print("\(idCount+1)")
                         return idCount+2
                 }
@@ -99,7 +99,7 @@ extension GroupDetailViewController: UICollectionViewDelegateFlowLayout, UIColle
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AvatarCollectionCell", for: indexPath) as! AvatarCollectionCell
                 
                 if let group = groupItem {
-                        var ids: [String] = group.memberIds as! [String]
+                        var ids: [String] = group.memberIds
                         ids.append(group.leader!)
         
                         let id = ids[indexPath.row - 1]

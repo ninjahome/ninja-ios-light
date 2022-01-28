@@ -92,7 +92,7 @@ class ChatItem: NSObject{
                 let owner = Wallet.shared.Addr!
                 try? CDManager.shared.UpdateOrAddOne(entity: "CDChatItem",
                                                      m: chat,
-                                                     predicate: NSPredicate(format: "uid == %@ AND owner == %@", peerUid, owner))
+                                                     predicate: NSPredicate(format: "peerID == %@ AND owner == %@", peerUid, owner))
                 
                 NotificationCenter.default.post(name: NotifyMsgSumChanged,
                                                     object: self, userInfo:nil)
@@ -126,7 +126,7 @@ class ChatItem: NSObject{
                 let owner = Wallet.shared.Addr!
                 try? CDManager.shared.UpdateOrAddOne(entity: "CDChatItem",
                                                      m: chat,
-                                                     predicate: NSPredicate(format: "groupId == %@ AND owner == %@", groupId, owner))
+                                                     predicate: NSPredicate(format: "peerID == %@ AND owner == %@", groupId, owner))
                 NotificationCenter.default.post(name:NotifyMsgSumChanged,
                                                     object: self, userInfo:nil)
         }
@@ -154,11 +154,11 @@ class ChatItem: NSObject{
                                                 userInfo:nil)
         }
 
-        public static func remove(_ uid:String) {
+        public static func remove(_ pid:String) {
                 let owner = Wallet.shared.Addr!
                 try? CDManager.shared.Delete(entity: "CDChatItem",
-                                             predicate: NSPredicate(format: "owner == %@ AND (uid == %@ OR groupId == %@)", owner, uid, uid))
-                CachedChats.delete(idStr: uid)
+                                             predicate: NSPredicate(format: "owner == %@ AND peerID == %@ ", owner, pid))
+                CachedChats.delete(idStr: pid)
         }
 }
 
@@ -172,11 +172,12 @@ extension ChatItem: ModelObj {
                 let owner = Wallet.shared.Addr!
 
                 if isGroup {
-                        cObj.groupId = self.ItemID
+                        cObj.isGrp = true
                 } else {
-                        cObj.uid = self.ItemID
+                        cObj.isGrp = false
                 }
-
+                
+                cObj.peerID = self.ItemID
                 cObj.owner = owner
                 cObj.lastMsg = self.LastMsg
                 cObj.updateTime = self.updateTime
@@ -188,28 +189,25 @@ extension ChatItem: ModelObj {
                 guard let cObj = obj as? CDChatItem else {
                         throw NJError.coreData("cast to chat item obj failed")
                 }
-                
-                if let gid = cObj.groupId {
-                        self.ItemID = gid
-                        self.isGroup = true
-                } else {
-                        self.ItemID = cObj.uid
+                guard let pid = cObj.peerID else{
+                        throw NJError.coreData("the chat item has no peer id")
                 }
-                
+                self.ItemID = pid
+                self.isGroup = cObj.isGrp
                 self.LastMsg = cObj.lastMsg
                 self.updateTime = cObj.updateTime
                 self.unreadNo = Int(cObj.unreadNo)
                 self.cObj = cObj
                 
-                if let contact = ContactItem.cache[self.ItemID!],
+                if let contact = ContactItem.cache[pid],
                    let alias = contact.alias, alias != "" {
                         self.NickName = alias
                 } else {
-                        let acc = AccountItem.GetAccount(self.ItemID!)
-                        self.NickName = acc?.NickName ?? self.ItemID!
+                        let acc = AccountItem.GetAccount(pid)
+                        self.NickName = acc?.NickName ?? pid
                 }
 
-                if let group = GroupItem.cache[self.ItemID!] {
+                if let group = GroupItem.cache[pid] {
                         self.NickName = group.groupName
                 }
         }
