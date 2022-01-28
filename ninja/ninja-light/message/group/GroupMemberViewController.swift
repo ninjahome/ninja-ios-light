@@ -113,7 +113,7 @@ class GroupMemberViewController: UIViewController {
                         return
                 }
 
-                guard let error = GroupItem.UpdateGroup(groupItem) else {
+                guard let error = GroupItem.updateGroupMetaInDB(groupItem) else {
                         self.notiMemberChange(groupItem)
                         self.navigationController?.popViewController(animated: true)
                         return
@@ -141,7 +141,7 @@ class GroupMemberViewController: UIViewController {
                         groupItem.avatar = grpImg
                 }
                 
-                guard let err = GroupItem.UpdateGroup(groupItem) else {
+                guard let err = GroupItem.updateGroupMetaInDB(groupItem) else {
                         let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController
                         vc.peerUid = groupItem.gid!
                         vc.groupData = groupItem

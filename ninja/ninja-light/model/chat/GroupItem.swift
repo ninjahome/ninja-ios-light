@@ -41,13 +41,6 @@ class GroupItem: NSObject {
                 super.init()
         }
         
-        public static func initByData(_ data: Data) -> GroupItem? {
-                guard let objJson = try? JSON(data: data) else{
-                        return nil
-                }
-                return initByJson(json: objJson)
-        }
-        
         public static func initByJson(json objJson:JSON) -> GroupItem?{
                 guard let memIds = objJson["members"].dictionaryObject?.keys else {
                         return nil
@@ -67,6 +60,25 @@ class GroupItem: NSObject {
                 }
                 grp.memberIds = ids
                 grp.owner = Wallet.shared.Addr!
+                
+                if AccountItem.GetAccount(grp.leader!) == nil {
+                        _ = AccountItem.loadAccountDetailFromChain(addr: grp.leader!)
+                }
+                
+                for i in grp.memberIds {
+                        if AccountItem.GetAccount(i) == nil {
+                                _ = AccountItem.loadAccountDetailFromChain(addr: i )
+                        }
+                }
+                
+                if grp.avatar == nil{
+                        var allIds = grp.memberIds
+                        allIds.append(grp.leader!)
+                        if let grpImg = GroupItem.getGroupAvatar(ids: allIds) {
+                                grp.avatar = grpImg
+                        }
+                }
+                
                 return grp
         }
         
@@ -98,7 +110,7 @@ class GroupItem: NSObject {
                 return obj
         }
         
-        public static func UpdateGroup(_ group: GroupItem) -> NJError? {
+        public static func updateGroupMetaInDB(_ group: GroupItem) -> NJError? {
                 group.owner = Wallet.shared.Addr
                 
                 do {
@@ -193,16 +205,19 @@ class GroupItem: NSObject {
                         return NJError.group("pasrse group array message failed") as NSError
                 }
                 
-                for (index,groupJson):(String, JSON) in grpArr {
-                        guard let item = GroupItem.initByJson(json: groupJson) else{
+                for (index, groupJson):(String, JSON) in grpArr {
+                        
+                        guard let group = GroupItem.initByJson(json: groupJson) else{
                                 NSLog("------>>>[syncAllGroupDataAtOnce]failed parse group item[\(index)]")
                                 continue
                         }
                         
-                        if let err = UpdateGroup(item) {
-                                NSLog("------>>>[syncAllGroupDataAtOnce]\(err.localizedDescription ?? "")")
-                                return err as NSError
+                        if let err = updateGroupMetaInDB(group) {
+                                NSLog("---[update grp]---\(err.localizedDescription ?? "")")
+                                continue
                         }
+                        
+                        GroupItem.cache[group.gid!] = group
                 }
                 
                 return nil
@@ -236,29 +251,14 @@ class GroupItem: NSObject {
                 guard let data = ChatLibGroupMeta(groupID, &err) else {
                         return nil
                 }
-                
-                guard let group = GroupItem.initByData(data) else {
+                guard let objJson = try? JSON(data: data) else{
                         return nil
                 }
-                if AccountItem.GetAccount(group.leader!) == nil {
-                        _ = AccountItem.loadAccountDetailFromChain(addr: group.leader!)
+                guard let group = GroupItem.initByJson(json: objJson) else {
+                        return nil
                 }
                 
-                for i in group.memberIds {
-                        if AccountItem.GetAccount(i) == nil {
-                                _ = AccountItem.loadAccountDetailFromChain(addr: i )
-                        }
-                }
-                
-                if group.avatar == nil{
-                        var allIds = group.memberIds
-                        allIds.append(group.leader!)
-                        if let grpImg = GroupItem.getGroupAvatar(ids: allIds) {
-                                group.avatar = grpImg
-                        }
-                }
-                
-                if let err = UpdateGroup(group) {
+                if let err = updateGroupMetaInDB(group) {
                         NSLog("---[update grp]---\(err.localizedDescription ?? "")")
                 }
                 
@@ -325,7 +325,7 @@ class GroupItem: NSObject {
                 group.memberIds = newIds
                 //                group.memberNicks = nicks as NSArray
                 
-                if let err = GroupItem.UpdateGroup(group) {
+                if let err = GroupItem.updateGroupMetaInDB(group) {
                         throw NJError.coreData("kick out update group failed.\(String(describing: err.localizedDescription))")
                 }
                 
@@ -380,7 +380,7 @@ class GroupItem: NSObject {
                         group.memberIds = newIds
                         //                        group.memberNicks = nicks as NSArray
                         
-                        if let err = GroupItem.UpdateGroup(group) {
+                        if let err = GroupItem.updateGroupMetaInDB(group) {
                                 throw NJError.coreData("quit group update group failed.\(String(describing: err.localizedDescription))")
                         }
                         
@@ -481,16 +481,4 @@ extension GroupItem: ModelObj {
                 //        }
                 
         }
-        
-        //        func UpdateSelfInfos() {
-        //                let ids = self.memberIds!
-        //                let nicks = self.memberNicks!
-        //                let count = min(ids.count, nicks.count)
-        
-        //                for i in 0 ..< ids.count {
-        //                        self.memberInfos[ids[i] as! String] = nicks[i] as? String
-        //                }
-        //        }
-        
-        
 }

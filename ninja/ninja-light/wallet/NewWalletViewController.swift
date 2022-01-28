@@ -70,14 +70,17 @@ extension NewWalletViewController: ScannerViewControllerDelegate {
                         self.showPwdInput(title: "请输入密码导入账号", placeHolder: "请输入密码") { (auth, isOK) in
                                 if let pwd = auth, isOK {
                                         do {
-
+                                                
+                                                
                                                 WebsocketSrv.shared.Offline()
 
                                                 try Wallet.shared.Import(cipher: code, addr: addr, auth: pwd)
-                                                if let err = GroupItem.syncAllGroupDataAtOnce(){
+                                                
+                                                //TODO:: show process bar and run following logic in back ground
+c                                                if let err = GroupItem.syncAllGroupDataAtOnce(){
                                                         NSLog("------>>> sync group metas when import account:", err.localizedDescription)
                                                 }
-                                                //TODO:: use it in back ground and show tips
+                                                
                                                 ContactItem.latestContactDetails()
                                                 ServiceDelegate.InitService()
 

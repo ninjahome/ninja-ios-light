@@ -104,12 +104,14 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
         }
         
         func groupUpdate(_ p0: Data?) {
-                if let data = p0,
-                   let grpItem = GroupItem.initByData(data) {
-                        if let err = GroupItem.UpdateGroup(grpItem) {
-                                print("update grp faild:\(String(describing: err.localizedDescription))")
-                        }
-                }
+                //TODO:: the logic is not fixed
+//                guard let data = p0
+//                if let data = p0,
+//                   let grpItem = GroupItem.initByData(data) {
+//                        if let err = GroupItem.updateGroupMetaInDB(grpItem) {
+//                                print("update grp faild:\(String(describing: err.localizedDescription))")
+//                        }
+//                }
         }
         
         func grpIM(_ from: String?, gid: String?, cryptKey: Data?, decoded: Data?, payload: Data?, time: Int64) throws {
