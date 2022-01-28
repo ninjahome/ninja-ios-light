@@ -153,7 +153,7 @@ class WalletViewController: UITableViewController {
                         self.performSegue(withIdentifier: "ShowDestroySEG", sender: self)
                 } else {
                         if let err = Wallet.shared.UpdateUseDestroy(by: false) {
-                                destroySwitch.isOn = false
+                                destroySwitch.isOn = true
                                 self.toastMessage(title: err.localizedDescription)
                         }
                 }
@@ -182,6 +182,8 @@ class WalletViewController: UITableViewController {
                         vc.returnHost = {[weak self] res in
                                 self?.avatar.avaInfo = nil
                         }
+                }else if "ShowDestroySEG" == segue.identifier, let vc = segue.destination as? DestroyViewController{
+                        vc.statusResultDelegate = self
                 }
         }
         
@@ -195,4 +197,10 @@ class WalletViewController: UITableViewController {
                 }
         }
 
+}
+
+extension WalletViewController:SetupDestroyDelegate{
+        func DestroyStatusResult(status : Bool){
+                destroySwitch.isOn = status
+        }
 }
