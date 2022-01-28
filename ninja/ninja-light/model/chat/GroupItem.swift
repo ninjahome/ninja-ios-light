@@ -142,18 +142,16 @@ class GroupItem: NSObject {
                 var counter = 0
                 var imgData = defaultAvatarData
                 for id in ids{
-                        counter += 1
-                        if counter > 9{
+                        if counter >= 9{
                                 break
                         }
                         
-                        if id == Wallet.shared.Addr && Wallet.shared.avatarData != nil{
-                                imgData = Wallet.shared.avatarData!
+                        if id == Wallet.shared.Addr{
+                                imgData = Wallet.shared.avatarData ?? defaultAvatarData
                         }else{
-                                if let data = AccountItem.GetAccount(id)?.Avatar{
-                                        imgData = data
-                                }
+                                imgData = AccountItem.GetAccount(id)?.Avatar ?? defaultAvatarData
                         }
+                        counter += 1
                         ChatLibAddImg(imgData)
                 }
                 var err: NSError?
@@ -193,10 +191,11 @@ class GroupItem: NSObject {
                 
  
                 for i in group.memberIds {
-                        if AccountItem.GetAccount(i ) == nil {
+                        if AccountItem.GetAccount(i) == nil {
                                 _ = AccountItem.loadAccountDetailFromChain(addr: i )
                         }
                 }
+                
                 if group.avatar == nil{
                         var allIds = group.memberIds
                         allIds.append(group.leader!)

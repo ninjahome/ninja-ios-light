@@ -28,6 +28,7 @@ class AccountItem: NSObject {
         
         public static func initByOnlineMeta(_ obj: Data) -> AccountItem? {
                 guard let objJson = try? JSON(data: obj) else{
+                        print("------>>account details:=> failed to convert raw data to json object")
                         return nil
                 }
                 
@@ -68,6 +69,7 @@ class AccountItem: NSObject {
                                                             m: item,
                                                             predicate: NSPredicate(format: "addr == %@", item.Addr!))
                 } catch let err {
+                        print("------>> account details: update local database by class object failed")
                         return NJError.account(err.localizedDescription)
                 }
                 return nil
@@ -84,7 +86,7 @@ class AccountItem: NSObject {
                         _ = UpdateOrAddAccount(newItem)
                         return newItem
                 }
-                
+                print("------>> load account detail from chain err:\(error!.localizedDescription)")
                 return nil
         }
 }
