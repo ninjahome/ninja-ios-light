@@ -68,7 +68,7 @@ class FileTableViewCell: UITableViewCell {
         }
         
         @IBAction func openFileOrPlayVideo(_ sender: UIButton) {
-                if let msg = cellMsg {
+                if cellMsg != nil {
 //                        if let videoData = msg.payload as? videoMsg {
 //                                playVideo(url: URL(fileURLWithPath: videoData.url))
 //                        }
