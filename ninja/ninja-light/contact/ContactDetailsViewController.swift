@@ -54,7 +54,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 setAvatar()
                 
                 DispatchQueue.global().async {
-                        self.account = AccountItem.getLatestAccount(addr: self.itemUID ?? self.itemData!.uid!)
+                        self.account = AccountItem.loadAccountDetailFromChain(addr: self.itemUID ?? self.itemData!.uid!)
                         _ = AccountItem.UpdateOrAddAccount(self.account!)
                         DispatchQueue.main.async {
                                 NotificationCenter.default.addObserver(self,

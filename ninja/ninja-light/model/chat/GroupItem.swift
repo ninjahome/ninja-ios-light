@@ -188,13 +188,13 @@ class GroupItem: NSObject {
                         return nil
                 }
                 if AccountItem.GetAccount(group.leader!) == nil {
-                        _ = AccountItem.getLatestAccount(addr: group.leader!)
+                        _ = AccountItem.loadAccountDetailFromChain(addr: group.leader!)
                 }
                 
  
                 for i in group.memberIds {
                         if AccountItem.GetAccount(i ) == nil {
-                                _ = AccountItem.getLatestAccount(addr: i )
+                                _ = AccountItem.loadAccountDetailFromChain(addr: i )
                         }
                 }
                 if group.avatar == nil{

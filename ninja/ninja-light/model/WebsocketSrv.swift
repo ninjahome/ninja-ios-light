@@ -143,7 +143,7 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
         func peerIM(_ from: String?, decoded: Data?, payload: Data?, time: Int64) throws {
                 if let f = from, let d = decoded {
                         if AccountItem.GetAccount(f) == nil {
-                                _ = AccountItem.getLatestAccount(addr: f)
+                                _ = AccountItem.loadAccountDetailFromChain(addr: f)
                         }
                         MessageItem.receiveMsg(from: f, gid: nil, msgData: d, time: time)
                 } else {

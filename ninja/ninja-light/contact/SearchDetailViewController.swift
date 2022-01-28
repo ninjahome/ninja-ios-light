@@ -28,7 +28,7 @@ class SearchDetailViewController: UIViewController {
         override func viewDidLoad() {
                 super.viewDidLoad()
                 uidText.text = uid
-                account = AccountItem.getLatestAccount(addr: uid!)
+                account = AccountItem.loadAccountDetailFromChain(addr: uid!)
                 _ = AccountItem.UpdateOrAddAccount(account!)
                 avatar.type = .chatContact
                 avatar.avaInfo = AvatarInfo(id: uid!, avaData: self.account?.Avatar)

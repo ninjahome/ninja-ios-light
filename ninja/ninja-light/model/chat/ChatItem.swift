@@ -73,7 +73,7 @@ class ChatItem: NSObject{
                         if let acc = AccountItem.GetAccount(peerUid) {
                                 chat.NickName = acc.NickName
                         } else {
-                                if let latest = AccountItem.getLatestAccount(addr: peerUid) {
+                                if let latest = AccountItem.loadAccountDetailFromChain(addr: peerUid) {
                                         _ = AccountItem.UpdateOrAddAccount(latest)
                                         chat.NickName = latest.NickName
                                 }

@@ -16,7 +16,7 @@ class AvatarCollectionCell: UICollectionViewCell {
                 if let contact = AccountItem.GetAccount(id) {
                         avaData = contact.Avatar
                 } else {
-                        let latest = AccountItem.getLatestAccount(addr: id)
+                        let latest = AccountItem.loadAccountDetailFromChain(addr: id)
                         avaData = latest?.Avatar
                 }
                 MemberIcon.avaInfo = AvatarInfo.init(id: id, avaData: avaData)

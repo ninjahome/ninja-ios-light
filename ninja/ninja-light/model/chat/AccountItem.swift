@@ -26,23 +26,24 @@ class AccountItem: NSObject {
                 super.init()
         }
         
-        public static func initByData(_ obj: Data) -> AccountItem? {
-                if let objJson = try? JSON(data: obj) {
-                        let data = AccountItem()
-                        data.Addr = objJson["addr"].string
-                        data.Nonce = objJson["nonce"].int64
-                        data.NickName = objJson["name"].string
-                        let str = objJson["avatar"].string
-                        data.Avatar = ChatLibUnmarshalGoByte(str)
-                        data.Balance = objJson["balance"].int64
-                        data.TouchTime = objJson["touch_time"].int64
-                        return data
+        public static func initByOnlineMeta(_ obj: Data) -> AccountItem? {
+                guard let objJson = try? JSON(data: obj) else{
+                        return nil
                 }
-                return nil
+                
+                let data = AccountItem()
+                data.Addr = objJson["addr"].string
+                data.Nonce = objJson["nonce"].int64
+                data.NickName = objJson["name"].string
+                let str = objJson["avatar"].string
+                data.Avatar = ChatLibUnmarshalGoByte(str)
+                data.Balance = objJson["balance"].int64
+                data.TouchTime = objJson["touch_time"].int64
+                return data
+                
         }
         
         public static func initByJson(_ account: JSON) -> AccountItem {
-                
                 let acc = AccountItem()
                 acc.Nonce = account["nonce"].int64
                 acc.Addr = account["addr"].string
@@ -60,25 +61,30 @@ class AccountItem: NSObject {
                                                    predicate: NSPredicate(format: "addr == %@", uid))
                 return obj
         }
-
+        
         public static func UpdateOrAddAccount(_ item: AccountItem) -> NJError? {
                 do {
-                    try CDManager.shared.UpdateOrAddOne(entity: "CDAccount",
-                                                        m: item,
-                                                        predicate: NSPredicate(format: "addr == %@", item.Addr!))
+                        try CDManager.shared.UpdateOrAddOne(entity: "CDAccount",
+                                                            m: item,
+                                                            predicate: NSPredicate(format: "addr == %@", item.Addr!))
                 } catch let err {
-                    return NJError.account(err.localizedDescription)
+                        return NJError.account(err.localizedDescription)
                 }
                 return nil
         }
         
-        public static func getLatestAccount(addr: String) -> AccountItem? {
+        public static func loadAccountDetailFromChain(addr: String) -> AccountItem? {
                 var error: NSError?
+                
                 if let data = ChatLibAccountDetail(addr, &error), error == nil {
-                        let item = AccountItem.initByData(data)
+                        guard let newItem = AccountItem.initByOnlineMeta(data) else{
+                                return nil
+                        }
                         
-                        return item
+                        _ = UpdateOrAddAccount(newItem)
+                        return newItem
                 }
+                
                 return nil
         }
 }
