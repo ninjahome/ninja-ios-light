@@ -74,8 +74,9 @@ extension NewWalletViewController: ScannerViewControllerDelegate {
                                                 WebsocketSrv.shared.Offline()
 
                                                 try Wallet.shared.Import(cipher: code, addr: addr, auth: pwd)
-
-                                                //TODO:: load group infos
+                                                if let err = GroupItem.syncAllGroupDataAtOnce(){
+                                                        NSLog("------>>> sync group metas when import account:", err.localizedDescription)
+                                                }
                                                 //TODO:: use it in back ground and show tips
                                                 ContactItem.latestContactDetails()
                                                 ServiceDelegate.InitService()

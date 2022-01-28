@@ -110,7 +110,7 @@ class ChatItem: NSObject{
                 if let groupItem = GroupItem.cache[groupId] {
                         chat.NickName = groupItem.groupName
                 } else {
-                        let gItem = GroupItem.syncGroup(groupId)
+                        let gItem = GroupItem.syncGroupMetaBy(groupID: groupId)
                         chat.NickName = gItem?.groupName
                 }
                 

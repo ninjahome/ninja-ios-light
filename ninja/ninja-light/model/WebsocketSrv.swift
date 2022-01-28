@@ -88,7 +88,7 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
                         return
                 }
                 guard let err = Wallet.shared.UpdateWallet(w: wallet) else {
-                        //TODO:: update contact and group
+                        _ = GroupItem.updatePartialGroup()
                         ContactItem.updateContacts()
                         return
                 }
@@ -114,10 +114,10 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
         
         func grpIM(_ from: String?, gid: String?, cryptKey: Data?, decoded: Data?, payload: Data?, time: Int64) throws {
                 if let f = from, let d = decoded, let grpId = gid {
-                        if GroupItem.GetGroup(grpId) == nil {
-                                _ = GroupItem.syncGroup(grpId)
-                        }
-                        MessageItem.receiveMsg(from: f, gid: gid, msgData: d, time: time)
+//                        if GroupItem.GetGroup(grpId) == nil {
+//                                _ = GroupItem.syncGroupMetaBy(groupID: grpId)
+//                        }
+                        MessageItem.receiveMsg(from: f, gid: grpId, msgData: d, time: time)
                 }
         }
         
