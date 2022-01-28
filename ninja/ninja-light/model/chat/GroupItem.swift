@@ -223,6 +223,8 @@ class GroupItem: NSObject {
                 return nil
         }
         
+        
+        //TODO:: to be tested
         public static func updatePartialGroup() -> NSError?{
                 var err: NSError?
                 
