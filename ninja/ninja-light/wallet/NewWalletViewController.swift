@@ -77,7 +77,7 @@ extension NewWalletViewController: ScannerViewControllerDelegate {
                                                 try Wallet.shared.Import(cipher: code, addr: addr, auth: pwd)
                                                 
                                                 //TODO:: show process bar and run following logic in back ground
-c                                                if let err = GroupItem.syncAllGroupDataAtOnce(){
+                                                if let err = GroupItem.syncAllGroupDataAtOnce(){
                                                         NSLog("------>>> sync group metas when import account:", err.localizedDescription)
                                                 }
                                                 
