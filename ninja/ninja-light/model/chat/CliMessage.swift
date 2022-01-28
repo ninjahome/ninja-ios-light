@@ -68,7 +68,7 @@ class videoMsg: NSObject, NSCoding {
 
 class fileMsg: NSObject, NSCoding {
         var name: String = ""
-        var url: URL?
+        var url: String = ""
         
         func encode(with coder: NSCoder) {
                 coder.encode(name, forKey: "name")
@@ -77,7 +77,7 @@ class fileMsg: NSObject, NSCoding {
 
         required init?(coder: NSCoder) {
                 self.name = coder.decodeObject(forKey: "name") as! String
-                self.url = coder.decodeObject(forKey: "url") as? URL
+                self.url = coder.decodeObject(forKey: "url") as? String ?? ""
         }
 
         override init() {
@@ -174,6 +174,7 @@ class CliMessage: NSObject {
                 
                 let file = fileMsg.init()
                 file.name = fileUrl.lastPathComponent
+                file.url = fileUrl.path
 //                file.url = fileUrl
                 
                 self.fileData = file
@@ -225,8 +226,14 @@ class CliMessage: NSObject {
                         data = ChatLibWrapLocation(locData.str, Double(locData.lo), Double(locData.la))
 
                 case .file:
-                        //TODO::
-                        return nil
+                        let url = URL(fileURLWithPath: self.fileData!.url)
+                        guard let fileD = FileManager.readFile(url: url) else {
+                                return nil
+                        }
+                        let size = fileD.count
+                        let suffix = url.pathExtension
+                        let name = self.fileData?.name
+                        data = ChatLibWrapFile(name, suffix, size, fileD)
                 case .video:
                         let url = URL(fileURLWithPath: self.videoData!.url)
                         guard let videoD = VideoFileManager.readVideoData(videoURL: url) else {

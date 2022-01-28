@@ -83,19 +83,27 @@ class MessageItem: NSObject {
         fileprivate class func wrapFileMsg(objJson: JSON) -> fileMsg {
                 let file = fileMsg()
                 file.name = objJson["name"].string!
-                let fileData = objJson["content"].rawValue as? Data ?? Data()
-                let dirURL = VideoFileManager.createVideoURL(name: file.name)
-                let url = FileManager.writeFile(content: fileData, folderPath: dirURL, fileName: file.name)
-                file.url = url
+                let filestr = objJson["content"].string
+                
+                let dirURL = FileManager.createURL(name: file.name)
+                if let fileData = ChatLibUnmarshalGoByte(filestr),
+                   let url = FileManager.writeFile(content: fileData, path: dirURL) {
+                        file.url = url.path
+                }
                 return file
         }
         
         fileprivate class func wrapVideMsg(objJson: JSON) -> videoMsg {
                 let video = videoMsg()
                 video.name = objJson["name"].string!
-                let url = VideoFileManager.createVideoURL(name: video.name)
-                video.url = url.path
-                video.thumbnailImg = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)?.pngData() ?? Data()
+                let videostr = objJson["content"].string
+                let dirUrl = VideoFileManager.createVideoURL(name: video.name)
+                if let videoData = ChatLibUnmarshalGoByte(videostr),
+                   let url = FileManager.writeFile(content: videoData, path: dirUrl) {
+                        video.url = url.path
+                        video.thumbnailImg = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)?.pngData() ?? Data()
+                }
+                
                 return video
         }
 
@@ -375,6 +383,8 @@ extension MessageItem: ModelObj {
                         uObj.media = self.payload as? NSObject
                 case .video:
                         uObj.media = self.payload as? NSObject
+                case .file:
+                        uObj.media = self.payload as? NSObject
                 default:
                         print("full fill msg: no such type")
                 }
@@ -405,6 +415,8 @@ extension MessageItem: ModelObj {
                         self.payload = uObj.media as? locationMsg
                 case .video:
                         self.payload = uObj.media as? videoMsg
+                case .file:
+                        self.payload = uObj.media as? fileMsg
                 default:
                         print("init by msg obj: no such type")
                 }

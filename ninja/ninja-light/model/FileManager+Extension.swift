@@ -38,11 +38,10 @@ extension FileManager {
                 return folder
         }
         
-        static func writeFile(content: Data, folderPath: URL, fileName: String) -> URL? {
-                let filePath = folderPath.appendingPathComponent(fileName)
-                let success = fileManager.createFile(atPath: filePath.path, contents: content, attributes: .none)
+        static func writeFile(content: Data, path: URL) -> URL? {
+                let success = fileManager.createFile(atPath: path.path, contents: content, attributes: .none)
                 if success {
-                        return filePath
+                        return path
                 }
                 return nil
         }
@@ -83,6 +82,11 @@ extension FileManager {
 //                let origin = from.appendingPathComponent(fileName)
                 let direct = to
                 return try fileManager.copyItem(at: origin, to: direct)
+        }
+        
+        static func createURL(name: String) -> URL {
+                let dir = FileManager.createFolder(njFileFolder)
+                return dir.appendingPathComponent(name)
         }
         
         static func judgeFileOrFolderExists(filePath: String) -> Bool {

@@ -58,6 +58,7 @@
 		08B64A0027A255E100D0677F /* MsgViewController+FileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B649FF27A255E000D0677F /* MsgViewController+FileView.swift */; };
 		08B64A1927A29AB200D0677F /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B64A1827A29AB200D0677F /* NotificationService.swift */; };
 		08B64A1D27A29AB200D0677F /* NotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 08B64A1627A29AB200D0677F /* NotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		08B64A2327A3745700D0677F /* VideoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B64A2227A3745700D0677F /* VideoTableViewCell.swift */; };
 		08B74A5F26AFF31B00D6F0F8 /* LocationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B74A5E26AFF31B00D6F0F8 /* LocationUtils.swift */; };
 		08B74A6726B3B90D00D6F0F8 /* GroupMemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B74A6626B3B90D00D6F0F8 /* GroupMemberViewController.swift */; };
 		08B74A6B26B637D800D6F0F8 /* GroupMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B74A6A26B637D800D6F0F8 /* GroupMemberTableViewCell.swift */; };
@@ -183,12 +184,10 @@
 		0886B1B4277B044100257C15 /* GroupItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupItemTableViewCell.swift; sourceTree = "<group>"; };
 		088C3C592678560E00E5A715 /* ShowImageDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowImageDetail.swift; sourceTree = "<group>"; };
 		08B649FF27A255E000D0677F /* MsgViewController+FileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MsgViewController+FileView.swift"; sourceTree = "<group>"; };
-		08B64A0727A2928E00D0677F /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
-		08B64A0927A2928E00D0677F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		08B64A1627A29AB200D0677F /* NotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		08B64A1827A29AB200D0677F /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		08B64A1A27A29AB200D0677F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		08B64A2127A29D8400D0677F /* NotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NotificationServiceExtension.entitlements; sourceTree = "<group>"; };
+		08B64A2227A3745700D0677F /* VideoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTableViewCell.swift; sourceTree = "<group>"; };
 		08B74A5E26AFF31B00D6F0F8 /* LocationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationUtils.swift; sourceTree = "<group>"; };
 		08B74A6626B3B90D00D6F0F8 /* GroupMemberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberViewController.swift; sourceTree = "<group>"; };
 		08B74A6A26B637D800D6F0F8 /* GroupMemberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberTableViewCell.swift; sourceTree = "<group>"; };
@@ -354,16 +353,6 @@
 			path = image;
 			sourceTree = "<group>";
 		};
-		08B64A0627A2928E00D0677F /* NotificationServiceExtension */ = {
-			isa = PBXGroup;
-			children = (
-				08B64A2127A29D8400D0677F /* NotificationServiceExtension.entitlements */,
-				08B64A0727A2928E00D0677F /* NotificationService.swift */,
-				08B64A0927A2928E00D0677F /* Info.plist */,
-			);
-			path = NotificationServiceExtension;
-			sourceTree = "<group>";
-		};
 		08B64A1727A29AB200D0677F /* NotificationServiceExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -403,6 +392,7 @@
 				08F0FA8F26884C2000C5C1DF /* ImageTableViewCell.swift */,
 				08F0FA9526884C5C00C5C1DF /* LocationTableViewCell.swift */,
 				0860D5C42761FDD000E53FDA /* FileTableViewCell.swift */,
+				08B64A2227A3745700D0677F /* VideoTableViewCell.swift */,
 			);
 			path = messageCells;
 			sourceTree = "<group>";
@@ -412,7 +402,6 @@
 			children = (
 				69B8C0B2261C627E00B4E4AC /* Cartfile */,
 				6969ECBA26134294008CB0B2 /* ninja-light */,
-				08B64A0627A2928E00D0677F /* NotificationServiceExtension */,
 				08B64A1727A29AB200D0677F /* NotificationServiceExtension */,
 				6969ECB926134294008CB0B2 /* Products */,
 				69F8D10F261B3626009D7AF3 /* Frameworks */,
@@ -694,6 +683,7 @@
 				08B74A6726B3B90D00D6F0F8 /* GroupMemberViewController.swift in Sources */,
 				0818D88426FD6FC1002BF3B9 /* DestroyViewController.swift in Sources */,
 				08781E93275F0A120084D80A /* MsgViewController+AudioView.swift in Sources */,
+				08B64A2327A3745700D0677F /* VideoTableViewCell.swift in Sources */,
 				6969ECD526134450008CB0B2 /* MsgViewController.swift in Sources */,
 				0825C21D26CF5887003E0EF3 /* DeleteMemberController.swift in Sources */,
 				69F8D107261AA7FE009D7AF3 /* CoreData.swift in Sources */,

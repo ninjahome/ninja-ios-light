@@ -1,20 +1,20 @@
 //
-//  FileTableViewCell.swift
+//  VideoTableViewCell.swift
 //  ninja-light
 //
-//  Created by 郭晓芙 on 2021/12/9.
+//  Created by 郭晓芙 on 2022/1/28.
 //
 
 import UIKit
 import AVKit
 import AVFoundation
 
-class FileTableViewCell: UITableViewCell {
+class VideoTableViewCell: UITableViewCell {
 
         @IBOutlet weak var msgBackgroundView: UIImageView!
 //        @IBOutlet weak var thumbtailImage: UIImageView!
 
-        @IBOutlet weak var openFileBtn: UIButton!
+        @IBOutlet weak var playVideBtn: UIButton!
         @IBOutlet weak var avatar: AvatarButton!
         @IBOutlet weak var nickname: UILabel!
         @IBOutlet weak var time: UILabel!
@@ -48,9 +48,6 @@ class FileTableViewCell: UITableViewCell {
                         if let videoData = msg.payload as? videoMsg {
                                 cliMsg = CliMessage.init(to: msg.to!, videoUrl: URL(fileURLWithPath: videoData.url), groupId: msg.groupId!)
                         }
-                        if let fileData = msg.payload as? fileMsg {
-                                cliMsg = CliMessage.init(to: msg.to!, fileUrl: URL(fileURLWithPath: fileData.url), groupId: msg.groupId!)
-                        }
                         guard let resendCli = cliMsg else {
                                 return
                         }
@@ -67,11 +64,11 @@ class FileTableViewCell: UITableViewCell {
                 }
         }
         
-        @IBAction func openFileOrPlayVideo(_ sender: UIButton) {
+        @IBAction func PlayVideo(_ sender: UIButton) {
                 if let msg = cellMsg {
-//                        if let videoData = msg.payload as? videoMsg {
-//                                playVideo(url: URL(fileURLWithPath: videoData.url))
-//                        }
+                        if let videoData = msg.payload as? videoMsg {
+                                playVideo(url: URL(fileURLWithPath: videoData.url))
+                        }
                 }
         }
 
@@ -84,12 +81,12 @@ class FileTableViewCell: UITableViewCell {
                         return
                 }
                 
-//                if cellMsg?.typ == .video {
-//                        if let video = cellMsg?.payload as? videoMsg,
-//                           let image = UIImage(data: video.thumbnailImg) {
-//                                openFileBtn.layer.contents = image.cgImage
-//                        }
-//                }
+                if cellMsg?.typ == .video {
+                        if let video = cellMsg?.payload as? videoMsg,
+                           let image = UIImage(data: video.thumbnailImg) {
+                                playVideBtn.layer.contents = image.cgImage
+                        }
+                }
 
                 if message.isOut {
                         switch message.status {
@@ -122,16 +119,16 @@ class FileTableViewCell: UITableViewCell {
         }
         
 
-//        func playVideo(url: URL) {
-//                let size = VideoFileManager.getVideoSize(videoURL: url)
-//                print("video size\(size)")
-//                let player = AVPlayer(url: url)
-//                let vc = AVPlayerViewController()
-//                vc.player = player
-//                let window = getKeyWindow()
-//                window?.rootViewController?.present(vc, animated: true, completion: {
-//                        vc.player?.play()
-//                })
-//        }
+        func playVideo(url: URL) {
+                let size = VideoFileManager.getVideoSize(videoURL: url)
+                print("video size\(size)")
+                let player = AVPlayer(url: url)
+                let vc = AVPlayerViewController()
+                vc.player = player
+                let window = getKeyWindow()
+                window?.rootViewController?.present(vc, animated: true, completion: {
+                        vc.player?.play()
+                })
+        }
 
 }

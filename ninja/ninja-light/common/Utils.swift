@@ -45,7 +45,7 @@ func mimeTypeIsVideo(_ suffix: String) -> Bool {
         if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension,
                                                            suffix as NSString,
                                                            nil)?.takeRetainedValue() {
-                return UTTypeConformsTo(uti, kUTTypeAudio)
+                return UTTypeConformsTo(uti, kUTTypeMovie)
         }
         return false
 }

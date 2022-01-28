@@ -22,11 +22,12 @@ extension MsgViewController: UIDocumentPickerDelegate {
         private func documentFromURL(pickedURL: URL) {
                 let name = pickedURL.lastPathComponent
                 let dirURL = VideoFileManager.createVideoURL(name: name)
-                
-                do {
-                        try FileManager.copyFile(fileName: name, origin: pickedURL, to: dirURL)
-                } catch let err {
-                        print("faild copy to sandbox\(err.localizedDescription)")
+                if !FileManager.judgeFileOrFolderExists(filePath: dirURL.path) {
+                        do {
+                                try FileManager.copyFile(fileName: name, origin: pickedURL, to: dirURL)
+                        } catch let err {
+                                print("faild copy to sandbox\(err.localizedDescription)")
+                        }
                 }
                 
                 var cliMsg: CliMessage?
@@ -36,6 +37,5 @@ extension MsgViewController: UIDocumentPickerDelegate {
                         cliMsg = CliMessage.init(to: peerUid, fileUrl: dirURL, groupId: nil)
                 }
                 sendAllTypeMessage(cliMsg!)
-
         }
 }
