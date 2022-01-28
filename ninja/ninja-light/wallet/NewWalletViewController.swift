@@ -75,6 +75,8 @@ extension NewWalletViewController: ScannerViewControllerDelegate {
 
                                                 try Wallet.shared.Import(cipher: code, addr: addr, auth: pwd)
 
+                                                //TODO:: load group infos
+                                                //TODO:: use it in back ground and show tips
                                                 ContactItem.latestContactDetails()
                                                 ServiceDelegate.InitService()
 
