@@ -63,12 +63,17 @@ class ChatItem: NSObject{
                 }
                 
                 if let contact = ContactItem.cache[peerUid] {
-                        if let alias = contact.alias {
+                        if let alias = contact.alias, !alias.isEmpty {
                                 chat.NickName = alias
                         } else {
                                 let localAcc = AccountItem.GetAccount(peerUid)
-                                chat.NickName = localAcc?.NickName ?? peerUid
+                                if let nick = localAcc?.NickName, !nick.isEmpty{
+                                        chat.NickName = nick
+                                }else{
+                                        chat.NickName = peerUid
+                                }
                         }
+                        
                 } else {
                         if let acc = AccountItem.GetAccount(peerUid) {
                                 chat.NickName = acc.NickName
