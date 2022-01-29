@@ -15,7 +15,7 @@ class ConfirmTransferViewController: UIViewController {
     @IBOutlet weak var confirmBtn: UIButton!
     
     var transAddress: String?
-    var expireDays: Float?
+    var expireDays: Double?
     
     override func viewDidLoad() {
         super.viewDidLoad()

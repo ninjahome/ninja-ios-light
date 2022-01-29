@@ -38,7 +38,7 @@ import ChatLib
 
 class AgentService {
         var expireDate: String = ""
-        var expireDays: Float = 0
+        var expireDays: Double = 0
         var isActive: Bool = false
     
         public static let shared = AgentService()
