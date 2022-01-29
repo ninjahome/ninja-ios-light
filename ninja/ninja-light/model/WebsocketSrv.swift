@@ -12,18 +12,18 @@ import UIKit
 
 class WebsocketSrv: NSObject {
         public static var shared = WebsocketSrv()
-
+        
         public static let netQueue = DispatchQueue.init(label: "Connect Queue", qos: .userInteractive)
         public static let textMsgQueue = DispatchQueue.init(label: "Sending Text Queue")
         public static let imageMsgQueue = DispatchQueue.init(label: "Sending Image Queue")
         public static let voiceMsgQueue = DispatchQueue.init(label: "Sending Voice Queue")
         public static let locationMsgQueue = DispatchQueue.init(label: "Sending Location Queue")
-
+        
         override init() {
                 super.init()
         }
-    
-    
+        
+        
         func Online() {
                 WebsocketSrv.netQueue.async {
                         var err: NSError? = nil
@@ -36,13 +36,13 @@ class WebsocketSrv: NSObject {
                         }
                 }
         }
-    
+        
         func Offline() {
                 ChatLibWSOffline()
         }
-    
-        func SendIMMsg(cliMsg: CliMessage, retry: Bool = false, onStart: @escaping()-> Void, onCompletion: @escaping(Bool) -> Void) {
         
+        func SendIMMsg(cliMsg: CliMessage, retry: Bool = false, onStart: @escaping()-> Void, onCompletion: @escaping(Bool) -> Void) {
+                
                 var isGroup: Bool = false
                 var peerID:String
                 if let groupId = cliMsg.groupId {
@@ -63,7 +63,7 @@ class WebsocketSrv: NSObject {
                                 ChatItem.updateLastPeerMsg(peerUid: peerID, msg: msg.coinvertToLastMsg(), time: msg.timeStamp, unread: 0)
                         }
                 }
-        
+                
                 guard let data =  cliMsg.PackData() else{
                         return
                 }
@@ -83,16 +83,10 @@ class WebsocketSrv: NSObject {
 
 extension WebsocketSrv: ChatLibUICallBackProtocol {
         func accountUpdate(_ p0: Data?) {
-                guard let data = p0,
-                        let wallet = Wallet.initByData(data) else {
+                guard let data = p0 else {
                         return
                 }
-                guard let err = Wallet.shared.UpdateWallet(w: wallet) else {
-                        _ = GroupItem.updatePartialGroup()
-                        CombineConntact.updatePatialContacts()
-                        return
-                }
-                print(String(err.localizedDescription))
+                ServiceDelegate.SyncChainData(data: data)
         }
         
         func getMembersOfGroup(_ p0: String?) -> Data? {
@@ -105,20 +99,20 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
         
         func groupUpdate(_ p0: Data?) {
                 //TODO:: the logic is not fixed
-//                guard let data = p0
-//                if let data = p0,
-//                   let grpItem = GroupItem.initByData(data) {
-//                        if let err = GroupItem.updateGroupMetaInDB(grpItem) {
-//                                print("update grp faild:\(String(describing: err.localizedDescription))")
-//                        }
-//                }
+                //                guard let data = p0
+                //                if let data = p0,
+                //                   let grpItem = GroupItem.initByData(data) {
+                //                        if let err = GroupItem.updateGroupMetaInDB(grpItem) {
+                //                                print("update grp faild:\(String(describing: err.localizedDescription))")
+                //                        }
+                //                }
         }
         
         func grpIM(_ from: String?, gid: String?, cryptKey: Data?, decoded: Data?, payload: Data?, time: Int64) throws {
                 if let f = from, let d = decoded, let grpId = gid {
-//                        if GroupItem.GetGroup(grpId) == nil {
-//                                _ = GroupItem.syncGroupMetaBy(groupID: grpId)
-//                        }
+                        //                        if GroupItem.GetGroup(grpId) == nil {
+                        //                                _ = GroupItem.syncGroupMetaBy(groupID: grpId)
+                        //                        }
                         MessageItem.receiveMsg(from: f, gid: grpId, msgData: d, time: time)
                 }
         }
@@ -155,14 +149,14 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
         
         func webSocketClosed() {
                 NotificationCenter.default.post(name: NotifyWebsocketOffline,
-                                                                object: self,
-                                                                userInfo: nil)
+                                                object: self,
+                                                userInfo: nil)
         }
         
         func webSocketDidOnline() {
                 NSLog("------>>> socket online success")
                 NotificationCenter.default.post(name: NotifyWebsocketOnline,
-                                                                object: self,
-                                                                userInfo: nil)
+                                                object: self,
+                                                userInfo: nil)
         }
 }

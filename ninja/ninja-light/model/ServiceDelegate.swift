@@ -13,9 +13,7 @@ class ServiceDelegate: NSObject {
         public static let workQueue = DispatchQueue.init(label: "Serivce Queue", qos: .utility)
         public static let DevTypeIOS = 1
         public static let Debug = true
-        override init() {
-                super.init()
-        }
+        
         
         public static func InitService() {
                 CombineConntact.ReloadSavedContact()
@@ -52,9 +50,24 @@ class ServiceDelegate: NSObject {
         public static func CompressImg(origin:Data, targetSize:Int)->Data?{
                 var err:NSError?
                 guard let newData = ChatLibCompressImg(origin, targetSize, &err) else{
-                        NSLog("compress image failed:\(err?.localizedDescription ?? "<->")")
+                        NSLog("------>>>compress image failed:\(err?.localizedDescription ?? "<->")")
                         return nil
                 }
                 return newData
+        }
+        
+        public static func SyncChainData(data:Data){
+                workQueue.async {
+                        
+                        if let wallet = Wallet.initByData(data){
+                               let err = Wallet.shared.UpdateWallet(w: wallet)
+                                if err != nil{
+                                        NSLog("------>>>compress image failed:\(err?.localizedDescription ?? "<->")")
+                                }
+                        }
+                        
+                        _ = GroupItem.updatePartialGroup()
+                        CombineConntact.updatePatialContacts()
+                }
         }
 }

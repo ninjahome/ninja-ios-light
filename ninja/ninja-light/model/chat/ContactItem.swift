@@ -107,33 +107,6 @@ class ContactItem:NSObject{
                 return Array(cache.values).sortedByPinyin()!
         }
         
-
-        
-//        class func updateDetailContact(uid: String) {
-//                
-//                var err2: NSError?
-//                if let friData = ChatLibFriendDetail(uid, &err2) {
-//                        let friObj = JSON(friData)
-//                        
-//                        let acc = friObj["account"]
-//                        var accItem:AccountItem?
-//                        if acc.exists() {
-//                                accItem = AccountItem.initByJson(acc)
-//                        } else {
-//                                accItem = AccountItem()
-//                                accItem!.Addr = uid
-//                                accItem!.Balance = 0
-//                        }
-//                        _ = AccountItem.UpdateOrAddAccount(accItem!)
-////                        let jsonCont = JSON(demo)
-//                        let demo = friObj["demo"]
-//                        let contactItem = ContactItem.initByJson(demo: demo, uid: uid)
-//                        _ = ContactItem.UpdateContact(contactItem)
-//                }
-//        }
-// 
-        
-        
         public static func undateAlias(_ contact: ContactItem) {
                 var err: NSError?
                 ChatLibUpdateAlias(contact.uid, contact.alias, &err)
@@ -210,44 +183,6 @@ class ContactItem:NSObject{
                 }
                 return nickName
         }
-
-//    public static func GetAvatarColor(by uid: String) -> String {
-//        let obj = ContactItem.cache[uid]
-//
-//        guard let bobj = obj else {
-//            return AvatarColors[12]
-//        }
-//
-//        guard let color = bobj.avacolor else {
-//            let colorNum = ChatLibIconIndex(uid, 12)
-//            let genColor = AvatarColors[Int(colorNum)]
-//            obj?.avacolor = genColor
-//            _ = UpdateContact(obj!)
-//
-//            return genColor
-//        }
-//
-//        return color
-//
-//    }
-
-//    public static func GetAvatarText(by uid: String) -> String {
-//        let obj = ContactItem.cache[uid]
-//        let addrCut = uid.prefix(2)
-//
-//        guard let bobj = obj else {
-//            return String(addrCut)
-//        }
-//
-//        guard let nick = bobj.nickName, nick != "" else {
-//            return String(addrCut)
-//        }
-//
-//        let nickcut = nick.prefix(2)
-//        return String(nickcut)
-//            return ""
-//    }
-
 }
 
 extension ContactItem: ModelObj {

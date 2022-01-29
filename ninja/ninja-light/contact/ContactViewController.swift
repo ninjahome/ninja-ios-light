@@ -28,10 +28,6 @@ class ContactViewController: UIViewController{
         }
         
         @objc func notifiAction(notification:NSNotification){
-                self.reload()
-        }
-    
-        private func reload(){
                 self.tableview.reloadData()
         }
 }
