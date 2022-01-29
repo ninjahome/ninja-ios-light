@@ -11,6 +11,7 @@ class AgentViewController: UIViewController {
     
         var license: String?
         @IBOutlet weak var collectionView: UICollectionView!
+        @IBOutlet weak var serviceId: UILabel!
         
         override func viewDidLoad() {
                 super.viewDidLoad()
@@ -23,6 +24,12 @@ class AgentViewController: UIViewController {
                 self.navigationController?.popViewController(animated: true)
         }
 
+        @IBAction func copyId(_ sender: UIButton) {
+                if let text = serviceId.text {
+                        UIPasteboard.general.string = text
+                        self.toastMessage(title: "Copy Success")
+                }
+        }
 }
 
 extension AgentViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
