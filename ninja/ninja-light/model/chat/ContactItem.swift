@@ -32,7 +32,14 @@ class ContactItem:NSObject{
 //                        return self.alias?.transformToCapitalized()
 //                }
 //        }
-
+        
+        public func isSanme(_ obj:ContactItem?) -> Bool{
+                return obj != nil &&
+                self.alias == obj?.alias &&
+                self.uid == obj?.uid &&
+                self.remark == obj?.remark
+        }
+        
         public static func GetContact(_ uid:String) -> ContactItem? {
                 var obj:ContactItem?
                 let owner = Wallet.shared.Addr!
@@ -92,25 +99,6 @@ class ContactItem:NSObject{
                 return nil
         }
     
-        public static func LocalSavedContact() {
-                cache = [:]
-                guard let owner = Wallet.shared.Addr else{
-                        return
-                }
-                var result:[ContactItem]?
-                result = try? CDManager.shared.Get(entity: "CDContact",
-                                                   predicate: NSPredicate(format:"owner == %@", owner) ,
-                                                   sort: [["alias" : true]])
-                guard let arr = result else {
-                        return
-                }
-
-                for obj in arr {
-//                        obj.sortPinyin = obj.getSortPinyin()
-                        cache[obj.uid!] = obj
-                }
-        }
-    
         public static func IsValidContactID(_ uid:String?) -> Bool {
                 return ChatLibIsValidNinjaAddr(uid)
         }
@@ -119,72 +107,31 @@ class ContactItem:NSObject{
                 return Array(cache.values).sortedByPinyin()!
         }
         
-        public static func syncAllContactDataAtOnce() {
-                var error: NSError?
-                
-                guard let data = ChatLibSyncFriendWithDetails(&error)else{
-                        NSLog("------>>> ChatLibSyncFriendWithDetails failed:\(error!.localizedDescription)")
-                        return
-                }
-                
-                guard let allContactJson = try? JSON(data: data) else{
-                        NSLog("------>>> failed to parse the syncing friend data to json dirction")
-                        return
-                }
-                
-                for (uid, contact):(String,JSON) in allContactJson {
-                        _ = CombineConntact.SaveDataOnChain(json:contact, uid:uid)
-                }
-        }
+
         
-        class func updateDetailContact(uid: String) {
-//                var err1: NSError?
-//                if let account = ChatLibAccountDetail(uid, &err1) {
-//                        let jsonAcc = JSON(account)
-//                        let accItem = AccountItem.initByJson(jsonAcc)
-//                        _ = AccountItem.UpdateOrAddAccount(accItem)
+//        class func updateDetailContact(uid: String) {
+//                
+//                var err2: NSError?
+//                if let friData = ChatLibFriendDetail(uid, &err2) {
+//                        let friObj = JSON(friData)
+//                        
+//                        let acc = friObj["account"]
+//                        var accItem:AccountItem?
+//                        if acc.exists() {
+//                                accItem = AccountItem.initByJson(acc)
+//                        } else {
+//                                accItem = AccountItem()
+//                                accItem!.Addr = uid
+//                                accItem!.Balance = 0
+//                        }
+//                        _ = AccountItem.UpdateOrAddAccount(accItem!)
+////                        let jsonCont = JSON(demo)
+//                        let demo = friObj["demo"]
+//                        let contactItem = ContactItem.initByJson(demo: demo, uid: uid)
+//                        _ = ContactItem.UpdateContact(contactItem)
 //                }
-//
-                var err2: NSError?
-                if let friData = ChatLibFriendDetail(uid, &err2) {
-                        let friObj = JSON(friData)
-                        
-                        let acc = friObj["account"]
-                        var accItem:AccountItem?
-                        if acc.exists() {
-                                accItem = AccountItem.initByJson(acc)
-                        } else {
-                                accItem = AccountItem()
-                                accItem!.Addr = uid
-                                accItem!.Balance = 0
-                        }
-                        _ = AccountItem.UpdateOrAddAccount(accItem!)
-//                        let jsonCont = JSON(demo)
-                        let demo = friObj["demo"]
-                        let contactItem = ContactItem.initByJson(demo: demo, uid: uid)
-                        _ = ContactItem.UpdateContact(contactItem)
-                }
-        }
-        
-        public static func updateContacts() {
-                var error: NSError?
-                guard let data = ChatLibAllFriendIDs(&error) else {
-                        return
-                }
-                
-                let friendsJson = JSON(data)
-                for (k, subJson):(String, JSON) in friendsJson {
-                        print(k)
-                        print(subJson)
-                        if ContactItem.cache[k] != nil {
-                                continue
-                        }
-                        
-                        updateDetailContact(uid: k)
-                }
-                ContactItem.LocalSavedContact()
-        }
-        
+//        }
+// 
         
         
         public static func undateAlias(_ contact: ContactItem) {

@@ -17,7 +17,7 @@ class CombineConntact: NSObject{
         
         public static var cache:[String:CombineConntact]=[:]
         
-        public static func LocalSavedContact() {
+        public static func ReloadSavedContact() {
                 cache = [:]
                 
                 guard let owner = Wallet.shared.Addr else{
@@ -46,6 +46,60 @@ class CombineConntact: NSObject{
                         }
                         
                         cache[obj.uid!] = cc
+                }
+        }
+        
+        public static func updatePatialContacts() {
+                var error: NSError?
+                guard let data = ChatLibAllFriendIDs(&error) else {
+                        return
+                }
+                
+                let friendsJson = JSON(data)
+                for (friID, subJson):(String, JSON) in friendsJson {
+                        let contact = cache[friID]
+                        let newItem = ContactItem.initByJson(demo: subJson, uid: friID)
+                       
+                        if newItem.isSanme(contact?.contact){
+                                continue
+                        }
+                        
+                        NSLog("------>>>friend[\(friID)] contact changed and need to sync:")
+                        
+                        if let c = contact{
+                                c.contact = newItem
+                                _ = ContactItem.UpdateContact(newItem)
+                        }
+                        
+                        var err:NSError?
+                        guard let data = ChatLibFriendDetail(friID, &err) else{
+                                NSLog("------>>> sync friend details err:\(err?.localizedDescription ?? "<->")")
+                                continue
+                        }
+                        guard let jsonObj = try? JSON(data: data) else{
+                                NSLog("------>>> parse friend details to json object failed")
+                                continue
+                        }
+                        let newContact = SaveDataOnChain(json: jsonObj, uid: friID)
+                        cache[friID] = newContact
+                }
+        }
+        
+        public static func syncAllContactDataAtOnce() {
+                var error: NSError?
+                
+                guard let data = ChatLibSyncFriendWithDetails(&error)else{
+                        NSLog("------>>> ChatLibSyncFriendWithDetails failed:\(error!.localizedDescription)")
+                        return
+                }
+                
+                guard let allContactJson = try? JSON(data: data) else{
+                        NSLog("------>>> failed to parse the syncing friend data to json dirction")
+                        return
+                }
+                
+                for (uid, contact):(String,JSON) in allContactJson {
+                        _ = CombineConntact.SaveDataOnChain(json:contact, uid:uid)
                 }
         }
         

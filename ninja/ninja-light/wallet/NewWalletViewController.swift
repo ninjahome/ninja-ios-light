@@ -81,7 +81,7 @@ extension NewWalletViewController: ScannerViewControllerDelegate {
                                                         NSLog("------>>> sync group metas when import account:", err.localizedDescription)
                                                 }
                                                 
-                                                ContactItem.syncAllContactDataAtOnce()
+                                                CombineConntact.syncAllContactDataAtOnce()
                                                 ServiceDelegate.InitService()
 
                                                 afterWallet()

@@ -21,14 +21,8 @@ class ContactViewController: UIViewController{
                                                        object: nil)
                 self.tableview.rowHeight = 60
                 self.tableview.tableFooterView = UIView()
-                self.reload()
         }
 
-        override func viewWillAppear(_ animated: Bool) {
-                super.viewWillAppear(animated)
-                self.reload()
-        }
-        
         deinit {
                 NotificationCenter.default.removeObserver(self)
         }
@@ -38,7 +32,6 @@ class ContactViewController: UIViewController{
         }
     
         private func reload(){
-                ContactItem.LocalSavedContact()
                 self.tableview.reloadData()
         }
 }

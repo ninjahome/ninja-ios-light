@@ -153,7 +153,6 @@ class GroupMemberViewController: UIViewController {
         }
     
         private func reload() {
-                ContactItem.LocalSavedContact()
                 self.tableView.reloadData()
         }
         

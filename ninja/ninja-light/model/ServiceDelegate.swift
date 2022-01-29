@@ -18,7 +18,7 @@ class ServiceDelegate: NSObject {
         }
         
         public static func InitService() {
-                ContactItem.LocalSavedContact()
+                CombineConntact.ReloadSavedContact()
                 GroupItem.LocalSavedGroup()
                 MessageItem.loadUnread()
                 ChatItem.ReloadChatRoom()

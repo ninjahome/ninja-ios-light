@@ -89,7 +89,7 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
                 }
                 guard let err = Wallet.shared.UpdateWallet(w: wallet) else {
                         _ = GroupItem.updatePartialGroup()
-                        ContactItem.updateContacts()
+                        CombineConntact.updatePatialContacts()
                         return
                 }
                 print(String(err.localizedDescription))

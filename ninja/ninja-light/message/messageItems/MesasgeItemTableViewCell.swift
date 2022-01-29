@@ -45,9 +45,9 @@ class MesasgeItemTableViewCell: UITableViewCell {
                         avatar.type = AvatarButtonType.chatContact
                         let acc = CombineConntact.cache[itemId]
                         avaData = acc?.account?.Avatar
-                        if let alias = acc?.contact?.alias{
+                        if let alias = acc?.contact?.alias, !alias.isEmpty{
                                 nickName = alias
-                        }else if let name = acc?.account?.NickName{
+                        }else if let name = acc?.account?.NickName, !name.isEmpty{
                                 nickName = name
                         }
                 }

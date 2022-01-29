@@ -70,7 +70,7 @@ class AuthorViewController: UIViewController {
                                 _ = Wallet.shared.Active(auth)
 
                                 ChatItem.ReloadChatRoom()
-                                ContactItem.LocalSavedContact()
+                                CombineConntact.ReloadSavedContact()
 
                                 DispatchQueue.main.async {
                                         self.dismiss(animated: true, completion: nil)
