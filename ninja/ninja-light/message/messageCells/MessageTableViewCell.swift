@@ -67,17 +67,10 @@ class MessageTableViewCell: UITableViewCell {
                         msgBackgroundView.image = img
                     
                         avatar.type = AvatarButtonType.contact
-                        let acc = AccountItem.GetAccount(from)
-                        avatar.avaInfo = AvatarInfo.init(id: from, avaData: acc?.Avatar)
-
-                        if let contactData = ContactItem.cache[from],
-                           let alias = contactData.alias {
-                                nickname.text = alias
-                        } else {
-                                let acc = AccountItem.GetAccount(from)
-                                nickname.text = acc?.NickName
-                        }
                         
+                        let contactData = CombineConntact.cache[from]
+                        avatar.avaInfo = AvatarInfo.init(id: from, avaData: contactData?.account?.Avatar)
+                        nickname.text = contactData?.GetNickName() ?? contactData?.peerID                        
                 }
                 
                 time.text = formatMsgTimeStamp(by: message.timeStamp)

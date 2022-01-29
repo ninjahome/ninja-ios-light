@@ -8,26 +8,15 @@
 import UIKit
 
 class ContactAddViewController: UIViewController {
-    
+        
         @IBOutlet weak var searchAddr: UITextField!
-    
-        var contactItem: ContactItem?
-    
-        override func viewWillAppear(_ animated: Bool) {
-                super.viewWillAppear(animated)
-
-//                self.navigationController?.setNavigationBarHidden(true, animated: true)
-        }
-
+        
+        var contactID: String?
+        
         override func viewDidLoad() {
                 super.viewDidLoad()
                 searchAddr.delegate = self
                 self.hideKeyboardWhenTappedAround()
-        }
-    
-        override func viewWillDisappear(_ animated: Bool) {
-                super.viewWillDisappear(animated)
-//                self.navigationController?.setNavigationBarHidden(false, animated: true)
         }
         
         @IBAction func backBarBtn(_ sender: UIBarButtonItem) {
@@ -44,46 +33,43 @@ class ContactAddViewController: UIViewController {
                 guard let addr = searchAddr.text else {
                         return
                 }
-                if ContactItem.IsValidContactID(addr) {
-                        if let item = ContactItem.GetContact(addr) {
-                                self.contactItem = item
-                                pushToExistContact()
-                        } else {
-                                self.performSegue(withIdentifier: "SearchNewSegue", sender: self)
-                        }
+                guard ContactItem.IsValidContactID(addr) else{
+                        self.toastMessage(title: "invalid ninja address")
+                        return
                 }
+                
+                self.contactID = addr
+                processByPeerID()
         }
         
         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
                 if segue.identifier == "SearchNewSegue" {
                         let vc: SearchDetailViewController = segue.destination as! SearchDetailViewController
-                        vc.uid = self.searchAddr.text
+                        vc.uid = self.contactID!
                 }
         }
         
-        func pushToExistContact() {
+        private func processByPeerID(){
+                guard let _ = CombineConntact.cache[self.contactID!] else{
+                        self.performSegue(withIdentifier: "SearchNewSegue", sender: self)
+                        return
+                }
                 let vc = instantiateViewController(vcID: "ContactDetailsVC") as! ContactDetailsViewController
-                vc.itemData = self.contactItem
-                
+                vc.peerID = self.contactID!
                 self.navigationController?.pushViewController(vc, animated: true)
         }
 }
 
 extension ContactAddViewController: ScannerViewControllerDelegate {
         func codeDetected(code: String) {
-                NSLog("\(code)")
-                if ContactItem.IsValidContactID(code) {
-                        if let item = ContactItem.GetContact(code) {
-                                self.contactItem = item
-                                pushToExistContact()
-                        } else {
-                                self.searchAddr.text = code
-                                self.performSegue(withIdentifier: "SearchNewSegue", sender: self)
-                        }
-                } else {
+                NSLog("------>>> scaned user code=[\(code)]")
+                self.searchAddr.text = code
+                guard ContactItem.IsValidContactID(code) else{
                         self.toastMessage(title: "invalid ninja address")
                         return
                 }
+                self.contactID = code
+                processByPeerID()
         }
 }
 
@@ -92,19 +78,11 @@ extension ContactAddViewController: UITextFieldDelegate {
                 guard let addr = textField.text else {
                         return false
                 }
-                if ContactItem.IsValidContactID(addr) {
-                        if let item = ContactItem.GetContact(addr) {
-                                self.contactItem = item
-                                pushToExistContact()
-                        } else {
-                                self.performSegue(withIdentifier: "SearchNewSegue", sender: self)
-                        }
-
-                        return true
+                guard ContactItem.IsValidContactID(addr) else{
+                        return false
                 }
-
-                return false
-
+                self.contactID = addr
+                processByPeerID()
+                return true
         }
-
 }

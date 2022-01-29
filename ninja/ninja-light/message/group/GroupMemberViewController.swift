@@ -17,7 +17,7 @@ class GroupMemberViewController: UIViewController {
 
         var selectedIndexs = [Int]()
         var setEnable: Bool = false
-        var contactArray: [ContactItem]?
+        var contactArray: [CombineConntact] = []
         var isAddMember: Bool = false
         var isDelMember: Bool = false
         var existMember: [String] = []
@@ -43,16 +43,16 @@ class GroupMemberViewController: UIViewController {
                 self.reload()
         }
     
-        fileprivate func contactsFilter() -> [ContactItem] {
-                var contacts = ContactItem.CacheArray()
+        fileprivate func contactsFilter() -> [CombineConntact] {
+                var contacts = CombineConntact.CacheArray()
 
                 if isAddMember {
                         contacts.removeAll { cont in
-                                existMember.contains(cont.uid!)
+                                existMember.contains(cont.peerID)
                         }
                 } else {
                         contacts.removeAll { cont in
-                                cont.uid == Wallet.shared.Addr
+                                cont.peerID == Wallet.shared.Addr
                         }
                 }
 
@@ -69,32 +69,23 @@ class GroupMemberViewController: UIViewController {
                 }
         
                 if isAddMember {
-                        guard let contacts = contactArray else {
-                                return
-                        }
-
+                       
                         var groupIds = groupItem.memberIds
-//                        var groupNicks = groupItem.memberNicks as! [String]
                         var newIds: [String] = []
-
                         for i in selectedIndexs {
-                                newIds.append(contacts[i].uid!)
-                                groupIds.append(contacts[i].uid!)
-//                                groupNicks.append(contacts[i].alias ?? "")
+                                newIds.append(contactArray[i].peerID)
+                                groupIds.append(contactArray[i].peerID)
                         }
 
                         groupItem.memberIds = groupIds
-//                        groupItem.memberNicks = groupNicks as NSArray
-//                        groupItem.UpdateSelfInfos()
 
                         self.AddMember(newIds: newIds)
                         print("groupIds:\(groupIds)")
 
                 } else {
-                        if let contacts = contactArray {
                                 var groupIds: [String] = []
                                 for i in selectedIndexs {
-                                        groupIds.append(contacts[i].uid!)
+                                        groupIds.append(contactArray[i].peerID)
                                 }
 
                                 showInputDialog(title: "取个群名", message: "", textPlaceholder: "", actionText: "确定", cancelText: "暂不取名") { cancleAction in
@@ -102,7 +93,6 @@ class GroupMemberViewController: UIViewController {
                                 } actionHandler: { text in
                                         self.CreateGroup(ids: groupIds, groupName: text ?? "")
                                 }
-                        }
                 }
         }
     
@@ -171,21 +161,14 @@ class GroupMemberViewController: UIViewController {
 extension GroupMemberViewController: UITableViewDelegate, UITableViewDataSource {
     
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-                guard let contacts = contactArray else {
-                        return 0
-                }
-                return contacts.count
+                                return contactArray.count
         }
     
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "CreateGroupMemberTableViewCell", for: indexPath)
 
-                guard let contacts = contactArray else {
-                        return cell
-                }
-
-                if let c = cell as? GroupMemberTableViewCell {
-                        let item = contacts[indexPath.row]
+               if let c = cell as? GroupMemberTableViewCell {
+                        let item = contactArray[indexPath.row]
                         let selected = selectedIndexs.contains(indexPath.row)
 
                         c.initWith(details: item, idx: indexPath.row, selected: selected)

@@ -8,25 +8,21 @@
 import UIKit
 
 class ContactTransferTableViewCell: UITableViewCell {
-
+        
         @IBOutlet weak var nickName: UILabel!
         @IBOutlet weak var avatar: AvatarButton!
-
+        
         override func awakeFromNib() {
                 super.awakeFromNib()
         }
-
+        
         override func setSelected(_ selected: Bool, animated: Bool) {
                 super.setSelected(selected, animated: animated)
         }
-
-        func initWith(details:ContactItem, idx: Int, account: AccountItem){
-                self.nickName.text = details.alias
-
-                guard let uid = details.uid else {
-                        return
-                }
+        
+        func initWith(details:CombineConntact, idx: Int){
+                self.nickName.text = details.GetNickName() ?? details.peerID
                 avatar.type = AvatarButtonType.chatContact
-                avatar.avaInfo = AvatarInfo.init(id: uid, avaData: account.Avatar)
-    }
+                avatar.avaInfo = AvatarInfo.init(id: details.peerID, avaData: details.account?.Avatar)
+        }
 }

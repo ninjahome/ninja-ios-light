@@ -11,27 +11,33 @@ import ChatLib
 import SwiftyJSON
 
 class ContactItem:NSObject{
-        public static var cache:[String:ContactItem]=[:]
-    
-        var uid: String?
+        
+        var uid: String = ""
         var remark: String?
-        var owner: String?
         var alias: String?
-
+        
+        //TODO:: sort by alphabet
         var sortPinyin:String?
-
-//        func getSortPinyin() -> String? {
-//                guard let nick = self.alias, nick != "" else {
-//
-//                        return self.uid?.transformToCapitalized()
-//                }
-//
-//                if nick.isIncludeChinese() {
-//                        return nick.transformToPinyinHead()
-//                } else {
-//                        return self.alias?.transformToCapitalized()
-//                }
-//        }
+        
+        init(pid:String, alias:String?, remark:String?){
+                super.init()
+                self.uid = pid
+                self.alias = alias
+                self.remark = remark
+        }
+        
+        //        func getSortPinyin() -> String? {
+        //                guard let nick = self.alias, nick != "" else {
+        //
+        //                        return self.uid?.transformToCapitalized()
+        //                }
+        //
+        //                if nick.isIncludeChinese() {
+        //                        return nick.transformToPinyinHead()
+        //                } else {
+        //                        return self.alias?.transformToCapitalized()
+        //                }
+        //        }
         
         public func isSanme(_ obj:ContactItem?) -> Bool{
                 return obj != nil &&
@@ -40,149 +46,73 @@ class ContactItem:NSObject{
                 self.remark == obj?.remark
         }
         
-        public static func GetContact(_ uid:String) -> ContactItem? {
-                var obj:ContactItem?
-                let owner = Wallet.shared.Addr!
-                obj = try? CDManager.shared.GetOne(entity: "CDContact",
-                                                   predicate:NSPredicate(format: "uid == %@ AND owner == %@", uid, owner))
-                if obj != nil{
-                        cache[obj!.uid!] = obj
+        public func removeFromChainAndLocalDB() -> NJError?{
+                var err: NSError?
+                ChatLibDeleteFriend(self.uid, &err)
+                if err != nil {
+                        return NJError.contact(err!.localizedDescription)
                 }
-                return obj
+                
+                let owner = Wallet.shared.Addr!
+                do {
+                        try CDManager.shared.Delete(entity: "CDContact",
+                                                    predicate: NSPredicate(format: "uid == %@ AND owner == %@", self.uid, owner)
+                        )
+                } catch let err {
+                        return NJError.contact(err.localizedDescription)
+                }
+                return nil
         }
+        
+//        public static func GetContact(_ uid:String) -> ContactItem? {//TODO:: make this useless
+//                var obj:ContactItem?
+//                let owner = Wallet.shared.Addr!
+//                obj = try? CDManager.shared.GetOne(entity: "CDContact",
+//                                                   predicate:NSPredicate(format: "uid == %@ AND owner == %@", uid, owner))
+//                if obj != nil{
+//                        cache[obj!.uid!] = obj
+//                }
+//                return obj
+//        }
         
         public static func AddNewContact(_ contact: ContactItem) -> NJError? {
                 
                 var error: NSError?
                 ChatLibAddFriend(contact.uid, contact.alias, contact.remark, &error)
-                if ContactItem.UpdateContact(contact) == nil {
-                        NotificationCenter.default.post(name:NotifyContactChanged,
-                                                object: nil, userInfo:nil)
-                }
-                if error != nil {
-                        print(error!.localizedDescription)
+                if error != nil{
+                        NSLog("------>>>add new contract failed[\(error!.localizedDescription)]")
                         return NJError.contact(error!.localizedDescription)
                 }
-                
-                return nil
+                return ContactItem.UpdateContact(contact)
         }
-    
+        
         public static func UpdateContact(_ contact:ContactItem) -> NJError? {
-                contact.owner = Wallet.shared.Addr!
+                let owner = Wallet.shared.Addr!
                 if !(IsValidContactID(contact.uid)) {
                         return NJError.contact("invalid ninja address")
                 }
                 do {
                         try CDManager.shared.UpdateOrAddOne(entity: "CDContact",
-                                                m: contact,
-                                                predicate: NSPredicate(format: "uid == %@ AND owner == %@", contact.uid!, contact.owner!))
-                        cache[contact.uid!] = contact
+                                                            m: contact,
+                                                            predicate: NSPredicate(format: "uid == %@ AND owner == %@", contact.uid, owner))
+                        
+                        NotificationCenter.default.post(name:NotifyContactChanged,
+                                                        object: nil, userInfo:nil)
                 } catch let err {
                         return NJError.contact(err.localizedDescription)
                 }
                 return nil
         }
-    
-        public static func DelContact(_ uid:String) -> NJError?{
-                let owner = Wallet.shared.Addr!
-                        do {
-                                try CDManager.shared.Delete(entity: "CDContact",
-                                                            predicate: NSPredicate(format: "uid == %@ AND owner == %@", uid, owner)
-                        )
-                        cache.removeValue(forKey: uid)
-
-                        ChatItem.remove(uid)
-                        MessageItem.removeRead(uid)
-                } catch let err {
-                        return NJError.contact(err.localizedDescription)
-                }
-                return nil
-        }
-    
+        
         public static func IsValidContactID(_ uid:String?) -> Bool {
                 return ChatLibIsValidNinjaAddr(uid)
         }
-
-        public static func CacheArray() -> [ContactItem] {
-                return Array(cache.values).sortedByPinyin()!
-        }
         
-        public static func undateAlias(_ contact: ContactItem) {
-                var err: NSError?
-                ChatLibUpdateAlias(contact.uid, contact.alias, &err)
-                if err != nil {
-                        print(err!.localizedDescription)
-                }
-                
-                if ContactItem.UpdateContact(contact) == nil {
-                        NotificationCenter.default.post(name:NotifyContactChanged,
-                                                object: nil, userInfo:nil)
-                }
-        }
-        
-        public static func updateRemark(_ contact: ContactItem) {
-                var err: NSError?
-                ChatLibUpdateRemark(contact.uid, contact.remark, &err)
-                if err != nil {
-                        print(err!.localizedDescription)
-                }
-                
-                if ContactItem.UpdateContact(contact) == nil {
-                        NotificationCenter.default.post(name:NotifyContactChanged,
-                                                object: nil, userInfo:nil)
-                }
-        }
-        
-        public static func updateFriend(_ contact: ContactItem) {
-                var err: NSError?
-                ChatLibUpdateFriend(contact.uid, contact.alias, contact.remark, &err)
-                if err != nil {
-                        print(err!.localizedDescription)
-                }
-                
-                if ContactItem.UpdateContact(contact) == nil {
-                        NotificationCenter.default.post(name:NotifyContactChanged,
-                                                object: nil, userInfo:nil)
-                }
-        }
-        
-        public static func deleteFriend(_ id: String) {
-                var err: NSError?
-                ChatLibDeleteFriend(id, &err)
-                if err != nil {
-                        print(err!.localizedDescription)
-                }
-                
-                if ContactItem.DelContact(id) == nil {
-                        NotificationCenter.default.post(name:NotifyContactChanged,
-                                                object: nil, userInfo:nil)
-                }
-
-        }
-
         
         static func initByJson(demo: JSON, uid: String) -> ContactItem {
-                let contactItem = ContactItem()
-                contactItem.uid = uid
-                contactItem.alias = demo["alias"].string
-                contactItem.remark = demo["remark"].string
-                contactItem.owner = Wallet.shared.Addr!
-                return contactItem
+                return ContactItem(pid: uid, alias: demo["alias"].string, remark: demo["remark"].string)
         }
         
-        public static func GetNickName(uid: String) -> String {
-                var nickName = uid
-                if let contact = ContactItem.cache[uid],
-                   let alias = contact.alias, alias != "" {
-                        nickName = alias
-                } else {
-                        if let acc = AccountItem.GetAccount(uid),
-                           let nick = acc.NickName, nick != "" {
-                                nickName = nick
-                        }
-                }
-                return nickName
-        }
 }
 
 extension ContactItem: ModelObj {
@@ -194,17 +124,16 @@ extension ContactItem: ModelObj {
                 cObj.uid = self.uid
                 cObj.alias = self.alias
                 cObj.remark = self.remark
-                cObj.owner = self.owner
+                cObj.owner = Wallet.shared.Addr!
         }
-    
+        
         func initByObj(obj: NSManagedObject) throws {
                 guard let cObj = obj as? CDContact else{
                         throw NJError.coreData("Cast to CDContact failed")
                 }
-                self.uid = cObj.uid
+                self.uid = cObj.uid!
                 self.alias = cObj.alias
                 self.remark = cObj.remark
-                self.owner = cObj.owner
         }
-    
+        
 }

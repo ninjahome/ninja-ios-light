@@ -87,7 +87,9 @@ class VideoTableViewCell: UITableViewCell {
                                 playVideBtn.layer.contents = image.cgImage
                         }
                 }
-
+                
+                let contactData = CombineConntact.cache[from]
+                
                 if message.isOut {
                         switch message.status {
                         case .faild:
@@ -103,16 +105,9 @@ class VideoTableViewCell: UITableViewCell {
                         avatar.avaInfo = nil
                         nickname.text = Wallet.shared.nickName ?? Wallet.GenAvatarText()
                 } else {
-                        let acc = AccountItem.GetAccount(from)
                         avatar.type = AvatarButtonType.contact
-                        avatar.avaInfo = AvatarInfo.init(id: from, avaData: acc?.Avatar)
-
-                        if let contactData = ContactItem.cache[from],
-                           let alias = contactData.alias {
-                                nickname.text = alias
-                        } else {
-                                nickname.text = acc?.NickName
-                        }
+                        avatar.avaInfo = AvatarInfo.init(id: from, avaData: contactData?.account?.Avatar)
+                        nickname.text = contactData?.GetNickName() ?? contactData?.peerID
                 }
 
                 time.text = formatMsgTimeStamp(by: message.timeStamp)

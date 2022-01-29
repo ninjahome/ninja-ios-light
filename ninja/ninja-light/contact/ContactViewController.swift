@@ -11,6 +11,7 @@ class ContactViewController: UIViewController{
 
         var selectedRow:Int?
         var NewCodeStr:String?
+        var dataArry:[CombineConntact] = []
         @IBOutlet weak var tableview: UITableView!
 
         override func viewDidLoad() {
@@ -21,6 +22,7 @@ class ContactViewController: UIViewController{
                                                        object: nil)
                 self.tableview.rowHeight = 60
                 self.tableview.tableFooterView = UIView()
+                dataArry =  CombineConntact.CacheArray()
         }
 
         deinit {
@@ -29,20 +31,20 @@ class ContactViewController: UIViewController{
         
         @objc func notifiAction(notification:NSNotification){
                 self.tableview.reloadData()
+                dataArry =  CombineConntact.CacheArray()
         }
 }
 
 extension ContactViewController:UITableViewDelegate, UITableViewDataSource{
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-                return ContactItem.cache.count
+                return CombineConntact.cache.count
         }
         
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ContactItemTableViewCell", for: indexPath)
                 if let c = cell as? ContactItemTableViewCell {
-                        let item = ContactItem.CacheArray()[indexPath.row]
-                        let account = AccountItem.GetAccount(item.uid!)
-                        c.initWith(details: item, idx: indexPath.row, account: account ?? AccountItem())
+                        let item = self.dataArry[indexPath.row]
+                        c.initWith(details: item)
                         return c
                 }
                 return cell
@@ -55,16 +57,14 @@ extension ContactViewController:UITableViewDelegate, UITableViewDataSource{
                 let vc = instantiateViewController(vcID: "ContactDetailsVC") as! ContactDetailsViewController
                 
                 if let itemid = self.NewCodeStr {
-                        vc.itemUID = itemid
+                        vc.peerID = itemid
 
                 }
                 
                 if let idx = self.selectedRow {
-                        let item = ContactItem.CacheArray()[idx]
-                        vc.itemData = item
+                        vc.peerID = self.dataArry[idx].peerID
                 }
                 
                 self.navigationController?.pushViewController(vc, animated: true)
-
         }
 }

@@ -17,33 +17,41 @@ class SearchDetailViewController: UIViewController {
         @IBOutlet weak var alias: UITextField!
         @IBOutlet weak var remark: UITextView!
         
-        var uid: String?
-        var account: AccountItem?
+        var uid: String = ""
+        private var accountData: AccountItem?
         
         override func viewWillAppear(_ animated: Bool) {
                 super.viewWillAppear(animated)
                 self.navigationController?.setNavigationBarHidden(true, animated: true)
         }
-    
+        
         override func viewDidLoad() {
                 super.viewDidLoad()
                 uidText.text = uid
-                account = AccountItem.loadAccountDetailFromChain(addr: uid!)
-                _ = AccountItem.UpdateOrAddAccount(account!)
-                avatar.type = .chatContact
-                avatar.avaInfo = AvatarInfo(id: uid!, avaData: self.account?.Avatar)
-                nickName.text = account?.NickName
-                backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
-                
                 self.hideKeyboardWhenTappedAround()
+                self.showIndicator(withTitle: "waiting", and: "loading from chain")
+                ServiceDelegate.workQueue.async {
+                        self.accountData = AccountItem.loadAccountDetailFromChain(addr: self.uid)
+                        DispatchQueue.main.async {
+                                self.hideIndicator()
+                                self.populateView()
+                        }
+                }
+        }
+        
+        private func populateView(){
+                avatar.type = .chatContact
+                avatar.avaInfo = AvatarInfo(id: uid, avaData: accountData?.Avatar)
+                nickName.text = accountData?.NickName
+                backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
                 vipFlagImgView.isHidden = Wallet.shared.isStillVip()
         }
-    
+        
         override func viewWillDisappear(_ animated: Bool) {
-            super.viewWillDisappear(animated)
-            self.navigationController?.setNavigationBarHidden(false, animated: true)
+                super.viewWillDisappear(animated)
+                self.navigationController?.setNavigationBarHidden(false, animated: true)
         }
-    
+        
         @IBAction func backBtn(_ sender: UIButton) {
                 self.navigationController?.popViewController(animated: true)
         }
@@ -54,13 +62,23 @@ class SearchDetailViewController: UIViewController {
                         showVipModalViewController()
                         return
                 }
-                let contact = ContactItem.init()
-                contact.uid = self.uid
-                contact.remark = remark.text
-                contact.alias = alias.text
-                _ = AccountItem.UpdateOrAddAccount(account!)
-                _ = ContactItem.AddNewContact(contact)
-                startChat()
+                self.showIndicator(withTitle: "waiting", and: "sync to Chain")
+                ServiceDelegate.workQueue.async {
+                        let contact = ContactItem.init(pid: self.uid, alias: self.alias.text, remark: self.remark.text)
+                        let cc = CombineConntact()
+                        cc.peerID = self.uid
+                        cc.account = self.accountData
+                        cc.contact = contact
+                        let err = cc.SyncNewItemToChain()
+                        DispatchQueue.main.async {
+                                self.hideIndicator()
+                                if let e = err{
+                                        self.ShowTips(msg: e.localizedDescription)
+                                        return
+                                }
+                                self.startChat()
+                        }
+                }
         }
         
         @IBAction func sendMsg(_ sender: UIButton) {
@@ -68,22 +86,8 @@ class SearchDetailViewController: UIViewController {
         }
         
         func startChat() {
-                guard let id = self.uid else {
-                        return
-                }
                 let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController
-                vc.peerUid = id
+                vc.peerUid = self.uid
                 self.navigationController?.pushViewController(vc, animated: true)
         }
-        
-//        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//                if segue.identifier == "SaveNewContactSeg" {
-//                        let contact = ContactItem.init()
-//                        contact.uid = self.uid
-//
-//                        let vc = segue.destination as! ContactAliasViewController
-//                        vc.itemUID = self.uid
-//                        vc.itemData = contact
-//                }
-//        }
 }

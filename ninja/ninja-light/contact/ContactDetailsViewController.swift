@@ -8,102 +8,83 @@
 import UIKit
 
 class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegate {
+        
         @IBOutlet weak var backContent: UIView!
         @IBOutlet weak var avator: AvatarButton!
         @IBOutlet weak var nickName: UILabel!
         @IBOutlet weak var uid: UILabel!
         @IBOutlet weak var deleteBtn: UIButton!
         @IBOutlet weak var moreBtn: UIButton!
-
+        
         @IBOutlet weak var nickTextField: UITextField!
         @IBOutlet weak var memoTextView: UITextView!
-
-        var itemUID:String?
-        var itemData:ContactItem?
-        var account: AccountItem?
-
+        
+        var peerID:String = ""
+        private var contactData:CombineConntact?
+        
         var _delegate: UIGestureRecognizerDelegate?
-
+        
         override func viewWillAppear(_ animated: Bool) {
                 super.viewWillAppear(animated)
-
+                
                 self.navigationController?.setNavigationBarHidden(true, animated: true)
-
+                
                 if (self.navigationController?.viewControllers.count)! >= 1 {
                         _delegate = self.navigationController?.interactivePopGestureRecognizer?.delegate
                         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
                 }
-                
         }
-    
+        
         override func viewWillDisappear(_ animated: Bool) {
                 super.viewWillDisappear(animated)
                 self.navigationController?.setNavigationBarHidden(false, animated: true)
                 self.navigationController?.interactivePopGestureRecognizer?.delegate = _delegate
         }
-  
+        
         override func viewDidLoad() {
                 super.viewDidLoad()
-                
                 self.hideKeyboardWhenTappedAround()
+                NotificationCenter.default.addObserver(self,
+                                                       selector:#selector(self.notifiAction(notification:)),
+                                                       name: NotifyContactChanged,
+                                                       object: nil)
                 
-                account = AccountItem.GetAccount(self.itemUID ?? self.itemData!.uid!)
-                
-                self.populateView()
-                
-                setAvatar()
-                
-                DispatchQueue.global().async {
-                        self.account = AccountItem.loadAccountDetailFromChain(addr: self.itemUID ?? self.itemData!.uid!)
-                        _ = AccountItem.UpdateOrAddAccount(self.account!)
+                self.showIndicator(withTitle: "waiting", and: "loading contact")
+                ServiceDelegate.workQueue.async {
+                        self.contactData = CombineConntact.LoadOneContact(pid: self.peerID)
                         DispatchQueue.main.async {
-                                NotificationCenter.default.addObserver(self,
-                                                                       selector:#selector(self.notifiAction(notification:)),
-                                                                       name: NotifyContactChanged,
-                                                                       object: nil)
+                                self.hideIndicator()
+                                self.populateView()
                         }
                 }
         }
-    
+        
         deinit {
                 NotificationCenter.default.removeObserver(self)
         }
-
-        @objc func notifiAction(notification:NSNotification){
-                if let data = notification.object as? ContactItem {
-                        self.itemData = data
-                        self.populateView()
-                        self.setAvatar()
+        
+        
+        @objc func notifiAction(notification:NSNotification){//TODO:: need to test
+                if let data = notification.object as? CombineConntact {
+                        self.contactData = data
                 }
         }
-    
-        private func setAvatar() {
-                guard let uid = itemData?.uid else {
-                        return
-                }
-
-                avator.type = AvatarButtonType.chatContact
-                avator.avaInfo = AvatarInfo.init(id: uid, avaData: account?.Avatar)
-        }
-    
+        
         @IBAction func backBtn(_ sender: UIButton) {
                 self.navigationController?.popToRootViewController(animated: true)
         }
         
         @IBAction func saveChanges(_ sender: UIButton) {
-                let contact = ContactItem.init()
-                contact.uid = itemData?.uid
-                contact.alias = self.nickTextField.text
-                contact.remark = self.memoTextView.text
-                
-                if contact.alias != itemData?.alias && contact.remark != itemData?.remark {
-                        ContactItem.updateFriend(contact)
-                } else if contact.alias != itemData?.alias {
-                        ContactItem.undateAlias(contact)
-                } else if contact.remark != itemData?.remark {
-                        ContactItem.updateRemark(contact)
+                guard let obj = self.contactData else{
+                        self.toastMessage(title: "no valid contact data")
+                        return
                 }
-                self.navigationController?.popViewController(animated: true)
+                
+                self.showIndicator(withTitle: "waiting", and: "saving contact")
+                ServiceDelegate.workQueue.async {
+                        let err = obj.updateByUI(alias:self.nickTextField.text, remark:self.memoTextView.text)
+                        self.closeOrShowErrorTips(err:err)
+                }
         }
         
         @IBAction func moreBarItem(_ sender: UIButton) {
@@ -115,70 +96,63 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                         moreBtn.setImage(UIImage(named: "more_icon"), for: .normal)
                 }
         }
-    
+        
         @IBAction func deleteContact(_ sender: UIButton) {
-                guard let uid = self.uid.text else{
+                guard let obj = self.contactData else{
+                        self.toastMessage(title: "no valid contact data")
                         return
                 }
                 
-                ContactItem.deleteFriend(uid)
-                self.closeWindow()
-//                guard let err = ContactItem.DelContact(uid) else{
-//                        NotificationCenter.default.post(name:NotifyContactChanged,
-//                                                        object: nil, userInfo:nil)
-//
-//                        self.closeWindow()
-//                        return
-//                }
-//
-//                self.toastMessage(title: err.localizedDescription)
+                self.showIndicator(withTitle: "waiting", and: "deleting contact")
+                ServiceDelegate.workQueue.async {
+                        let err =  obj.removeFromChain()
+                        self.closeOrShowErrorTips(err:err)
+                }
         }
-    
+        
         @IBAction func copyContactAddr(_ sender: UIButton) {
-                UIPasteboard.general.string = itemData?.uid
+                UIPasteboard.general.string = self.peerID
                 self.toastMessage(title: "Copy Success")
         }
-
+        
         @IBAction func contactQRAlert(_ sender: UIButton) {
-                if let uid = itemData?.uid {
-                        ShowQRAlertView(data: uid)
-                }
+                ShowQRAlertView(data: self.peerID)
         }
-    
+        
         private func populateView() {
-                if let newUid = self.itemUID {
-                        if let obj = ContactItem.GetContact(newUid){
-                                self.itemData = obj
-                        }else{
-                                self.uid.text = newUid
-                        }
-                }
-
-                guard let data = self.itemData else {
+                self.uid.text = self.peerID
+                guard let data = self.contactData else {
                         return
                 }
-                self.uid.text = data.uid
-                self.nickName.text = account?.NickName
-                nickTextField.text = itemData?.alias
-                memoTextView.text = itemData?.remark
+                self.nickName.text = data.account?.NickName
+                nickTextField.text = data.contact?.alias
+                memoTextView.text = data.contact?.remark
                 backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
+                
+                avator.type = AvatarButtonType.chatContact
+                avator.avaInfo = AvatarInfo.init(id: self.peerID, avaData: contactData?.account?.Avatar)
         }
-
-        private func closeWindow() {
-                self.dismiss(animated: true)
-                self.navigationController?.popViewController(animated: true)
+        
+        private func closeOrShowErrorTips(err:NJError?) {DispatchQueue.main.async {
+                self.hideIndicator()
+                
+                guard let e = err else{
+                        self.dismiss(animated: true)
+                        self.navigationController?.popViewController(animated: true)
+                        return
+                }
+                
+                self.ShowTips(msg: e.localizedDescription)
         }
-
+        }
+        
         @IBAction func StartChat(_ sender: UIButton) {
                 guard self.uid.text != nil else{
                         return
                 }
                 let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController
                 vc.peerUid = self.uid.text!
-            
+                
                 self.navigationController?.pushViewController(vc, animated: true)
         }
-        
-        
-    
 }

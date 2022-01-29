@@ -586,8 +586,7 @@ extension UIViewController {
 
 func cleanAllData() {
 
-        ContactItem.cache.removeAll(keepingCapacity: true)
-
+        CombineConntact.cache.removeAll(keepingCapacity: true)
         ChatItem.CachedChats.deleteAll()
         MessageItem.cache.deleteAll()
 }

@@ -42,37 +42,26 @@ class GroupMemberTableViewCell: UITableViewCell {
                 super.setSelected(selected, animated: animated)
         }
 
-        func initWith(details: ContactItem, idx: Int, selected: Bool) {
+        func initWith(details: CombineConntact, idx: Int, selected: Bool) {
                 self.index = idx
                 setSelect(selected: selected)
-                guard let uid = details.uid else {
-                        return
-                }
                 self.avatar.type = AvatarButtonType.contact
-                self.nickName.text = ContactItem.GetNickName(uid: uid)
-                if let acc = AccountItem.GetAccount(uid) {
-                        self.avatar.avaInfo = AvatarInfo.init(id: uid, avaData: acc.Avatar)
-                        if Int(acc.Balance ?? 0) <= 0 {
-                                vipHint.isHidden = false
-                                selectBtn.isHidden = true
-                                self.isUserInteractionEnabled = false
-                        }
-                }
+                self.nickName.text = details.GetNickName() ?? details.peerID
+                self.avatar.avaInfo = AvatarInfo.init(id: details.peerID, avaData: details.account?.Avatar)
+                let isVip = details.isVIP()
+                vipHint.isHidden = isVip
+                selectBtn.isHidden = !isVip
+                self.isUserInteractionEnabled = isVip
         }
     
         func initWith(group: GroupItem, idx: Int, selected: Bool) {
                 self.index = idx
-
                 let id = group.memberIds[idx]
-//                let nick = group.memberNicks![idx] as! String
                 setSelect(selected: selected)
-
-//                self.nickName.text = nick != "" ? nick: id
-
                 self.avatar.type = AvatarButtonType.contact
-                let acc = AccountItem.GetAccount(id)
-                self.nickName.text = ContactItem.GetNickName(uid: id)
-                self.avatar.avaInfo = AvatarInfo.init(id: id, avaData: acc?.Avatar)
+                let acc = CombineConntact.cache[id]
+                self.nickName.text = acc?.GetNickName() ?? acc?.peerID
+                self.avatar.avaInfo = AvatarInfo.init(id: id, avaData: acc?.account?.Avatar)
         }
     
         @IBAction func addToGroupList(_ sender: UIButton) {

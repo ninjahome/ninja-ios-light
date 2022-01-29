@@ -23,16 +23,16 @@ struct AvatarInfo {
 
 class AvatarButton: UIButton {
         var type: AvatarButtonType = .chatContact
-//    init(type: AvatarButtonType, info: AvatarInfo) {
-//        super.init(frame: .zero)
-//        self.type = type
-//        self.avaInfo = info
-//    }
-//    
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-    
+        //    init(type: AvatarButtonType, info: AvatarInfo) {
+        //        super.init(frame: .zero)
+        //        self.type = type
+        //        self.avaInfo = info
+        //    }
+        //
+        //    required init?(coder: NSCoder) {
+        //        fatalError("init(coder:) has not been implemented")
+        //    }
+        
         override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
                 super.touchesEnded(touches, with: event)
                 switch type {
@@ -40,10 +40,10 @@ class AvatarButton: UIButton {
                         guard let info = avaInfo else {
                                 return
                         }
-
-                        if let item = ContactItem.cache[info.id] {
+                        
+                        if let item = CombineConntact.cache[info.id] {
                                 let vc = instantiateViewController(storyboardName: "Main", viewControllerIdentifier: "ContactDetailsVC") as! ContactDetailsViewController
-                                vc.itemData = item
+                                vc.peerID = item.peerID
                                 UIViewController.topMostInApp?.navigationController?.pushViewController(vc, animated: true)
                         } else {
                                 let vc = instantiateViewController(storyboardName: "Main", viewControllerIdentifier: "SearchDetailVC") as! SearchDetailViewController
@@ -53,7 +53,7 @@ class AvatarButton: UIButton {
                 default: break
                 }
         }
-    
+        
         var avaInfo: AvatarInfo? {
                 didSet {
                         switch self.type {
@@ -79,25 +79,25 @@ class AvatarButton: UIButton {
                         self.layer.masksToBounds = true
                 }
         }
-    
-//        func getContactColor(id: String) -> String {
-//                return ContactItem.GetAvatarColor(by: id)
-//        }
-//
-//        func getWalletColor() -> String {
-//                return Wallet.GenAvatarColor()
-//        }
-//
-//        func getWalletText() -> String {
-//                return Wallet.GenAvatarText()
-//        }
-//
-//        func getContactText(id: String) -> String {
-//                return ContactItem.GetAvatarText(by: id)
-//        }
-//
-//        func getGroupText(id: String) -> String {
-//                return GroupItem.GetAvatarText(by: id)
-//        }
-    
+        
+        //        func getContactColor(id: String) -> String {
+        //                return ContactItem.GetAvatarColor(by: id)
+        //        }
+        //
+        //        func getWalletColor() -> String {
+        //                return Wallet.GenAvatarColor()
+        //        }
+        //
+        //        func getWalletText() -> String {
+        //                return Wallet.GenAvatarText()
+        //        }
+        //
+        //        func getContactText(id: String) -> String {
+        //                return ContactItem.GetAvatarText(by: id)
+        //        }
+        //
+        //        func getGroupText(id: String) -> String {
+        //                return GroupItem.GetAvatarText(by: id)
+        //        }
+        
 }

@@ -21,14 +21,9 @@ class ContactItemTableViewCell: UITableViewCell {
                 super.setSelected(selected, animated: animated)
         }
 
-        func initWith(details: ContactItem, idx: Int, account: AccountItem) {
-                
-                guard let uid = details.uid else {
-                        return
-                }
-                self.nickName.text = ContactItem.GetNickName(uid: uid)
+        func initWith(details: CombineConntact) {
+                self.nickName.text = details.GetNickName() ?? details.peerID
                 avatar.type = AvatarButtonType.contact
-                avatar.avaInfo = AvatarInfo.init(id: uid, avaData: account.Avatar)
+                avatar.avaInfo = AvatarInfo.init(id: details.peerID, avaData: details.account?.Avatar)
         }
-    
 }

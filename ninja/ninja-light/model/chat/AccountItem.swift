@@ -52,7 +52,14 @@ class AccountItem: NSObject {
                 acc.Balance = account["balance"].int64
                 acc.TouchTime = account["touch_time"].int64
                 acc.Owner = Wallet.shared.Addr!
-                acc.Avatar = ChatLibAccountAvatar(acc.Addr, nil)
+                
+                let str = account["avatar"].string ?? ""
+                if str == ""{
+                        acc.Avatar = ChatLibAccountAvatar(acc.Addr, nil)
+                }else{
+                        acc.Avatar = ChatLibUnmarshalGoByte(str)
+                }
+               
                 return acc
         }
         

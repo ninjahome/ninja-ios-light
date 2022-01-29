@@ -35,6 +35,7 @@ class LocationTableViewCell: UITableViewCell {
                 guard let from = message.from else {
                         return
                 }
+                let contactData = CombineConntact.cache[from]
 
                 msgBackgroundView.layer.cornerRadius = 8
                 msgBackgroundView.clipsToBounds = true
@@ -60,15 +61,8 @@ class LocationTableViewCell: UITableViewCell {
                         miniMapLeading.constant = 8
                     
                         avatar.type = AvatarButtonType.contact
-                        let acc = AccountItem.GetAccount(from)
-                        avatar.avaInfo = AvatarInfo.init(id: from, avaData: acc?.Avatar)
-
-                        if let contactData = ContactItem.cache[from],
-                           let alias = contactData.alias {
-                                nickname.text = alias
-                        } else {
-                                nickname.text = acc?.NickName
-                        }
+                        avatar.avaInfo = AvatarInfo.init(id: from, avaData: contactData?.account?.Avatar)
+                        nickname.text = contactData?.GetNickName() ?? contactData?.peerID
                 }
                 
                 time.text = formatMsgTimeStamp(by: message.timeStamp)
