@@ -67,7 +67,7 @@ extension NewWalletViewController: ScannerViewControllerDelegate {
                         return
                 }
                 if Wallet.shared.Addr == nil {
-                        self.showPwdInput(title: "请输入密码导入账号", placeHolder: "请输入密码") { (auth, isOK) in
+                        self.showPwdInput(title: "请输入密码导入账号", placeHolder: "请输入密码", securityShow: true) { (auth, isOK) in
                                 if let pwd = auth, isOK {
                                         do {
                                                 
