@@ -49,8 +49,8 @@ class GroupMemberTableViewCell: UITableViewCell {
                         return
                 }
                 self.avatar.type = AvatarButtonType.contact
+                self.nickName.text = ContactItem.GetNickName(uid: uid)
                 if let acc = AccountItem.GetAccount(uid) {
-                        self.nickName.text = details.alias != "" ? details.alias : acc.NickName
                         self.avatar.avaInfo = AvatarInfo.init(id: uid, avaData: acc.Avatar)
                         if Int(acc.Balance ?? 0) <= 0 {
                                 vipHint.isHidden = false
@@ -71,8 +71,7 @@ class GroupMemberTableViewCell: UITableViewCell {
 
                 self.avatar.type = AvatarButtonType.contact
                 let acc = AccountItem.GetAccount(id)
-                let contact = ContactItem.cache[id]
-                self.nickName.text = contact?.alias ?? acc?.NickName
+                self.nickName.text = ContactItem.GetNickName(uid: id)
                 self.avatar.avaInfo = AvatarInfo.init(id: id, avaData: acc?.Avatar)
         }
     

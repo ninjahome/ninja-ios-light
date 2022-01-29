@@ -254,6 +254,20 @@ class ContactItem:NSObject{
                 contactItem.owner = Wallet.shared.Addr!
                 return contactItem
         }
+        
+        public static func GetNickName(uid: String) -> String {
+                var nickName = uid
+                if let contact = ContactItem.cache[uid],
+                   let alias = contact.alias, alias != "" {
+                        nickName = alias
+                } else {
+                        if let acc = AccountItem.GetAccount(uid),
+                           let nick = acc.NickName, nick != "" {
+                                nickName = nick
+                        }
+                }
+                return nickName
+        }
 
 //    public static func GetAvatarColor(by uid: String) -> String {
 //        let obj = ContactItem.cache[uid]

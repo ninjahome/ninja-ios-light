@@ -339,8 +339,8 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         }
 
         @objc func contactUpdate(notification: NSNotification) {
-                contactData = ContactItem.cache[peerUid]
-                self.peerNickName.title = self.contactData?.alias ?? self.peerUid
+//                contactData = ContactItem.cache[peerUid]
+                self.peerNickName.title = ContactItem.GetNickName(uid: peerUid)
         }
 
         // TODO: Update group member
@@ -423,13 +423,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                         groupData = GroupItem.cache[peerUid]
                         setPeerNick()
                 } else {
-                        contactData = ContactItem.cache[peerUid]
-                        if let alias = contactData?.alias {
-                                self.peerNickName.title = alias
-                        } else {
-                                let acc = AccountItem.GetAccount(peerUid)
-                                self.peerNickName.title = acc?.NickName ?? peerUid
-                        }
+                        self.peerNickName.title =  ContactItem.GetNickName(uid: peerUid)
                 }
         }
         

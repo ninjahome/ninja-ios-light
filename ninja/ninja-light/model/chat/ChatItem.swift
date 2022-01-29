@@ -199,13 +199,7 @@ extension ChatItem: ModelObj {
                 self.unreadNo = Int(cObj.unreadNo)
                 self.cObj = cObj
                 
-                if let contact = ContactItem.cache[pid],
-                   let alias = contact.alias, alias != "" {
-                        self.NickName = alias
-                } else {
-                        let acc = AccountItem.GetAccount(pid)
-                        self.NickName = acc?.NickName ?? pid
-                }
+                self.NickName = ContactItem.GetNickName(uid: pid)
 
                 if let group = GroupItem.cache[pid] {
                         self.NickName = group.groupName

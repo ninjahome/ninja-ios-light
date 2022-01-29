@@ -22,14 +22,11 @@ class ContactItemTableViewCell: UITableViewCell {
         }
 
         func initWith(details: ContactItem, idx: Int, account: AccountItem) {
-                if let alias = details.alias, alias != "" {
-                        self.nickName.text = alias
-                } else {
-                        self.nickName.text = account.NickName
-                }
+                
                 guard let uid = details.uid else {
                         return
                 }
+                self.nickName.text = ContactItem.GetNickName(uid: uid)
                 avatar.type = AvatarButtonType.contact
                 avatar.avaInfo = AvatarInfo.init(id: uid, avaData: account.Avatar)
         }
