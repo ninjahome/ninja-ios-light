@@ -31,20 +31,29 @@ class MesasgeItemTableViewCell: UITableViewCell {
 
         func initWith(details: ChatItem, idx:Int) {
 
-                let itemId = details.ItemID!
+                let itemId = details.ItemID
                 var avaData: Data?
+                var nickName:String?
+                
                 if details.isGroup {
                         avatar.type = AvatarButtonType.chatGroup
-                        let grp = GroupItem.GetGroup(itemId)
+                        let grp = GroupItem.GetGroup(itemId)//TODO::
                         avaData = grp?.avatar
+                        nickName = grp?.groupName
                 } else {
+                        
                         avatar.type = AvatarButtonType.chatContact
-                        let acc = AccountItem.GetAccount(itemId)
-                        avaData = acc?.Avatar
+                        let acc = CombineConntact.cache[itemId]
+                        avaData = acc?.account?.Avatar
+                        if let alias = acc?.contact?.alias{
+                                nickName = alias
+                        }else if let name = acc?.account?.NickName{
+                                nickName = name
+                        }
                 }
 
                 avatar.avaInfo = AvatarInfo.init(id: itemId, avaData: avaData)
-                self.nickName.text = details.NickName
+                self.nickName.text = nickName ?? itemId
                 self.LastMsg.text = details.LastMsg
                 self.lastMsgTime.text = formatMsgTimeStamp(by: details.updateTime)
 

@@ -172,7 +172,7 @@ class MessageListViewController: UIViewController{
 
                         let item = sortedArray[idx]
                         item.resetUnread()
-                        vc.peerUid = item.ItemID!
+                        vc.peerUid = item.ItemID
                         vc.IS_GROUP = item.isGroup
                         return
                 }
@@ -206,7 +206,7 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
                         let item = sortedArray[indexPath.row]
                         sortedArray.remove(at: indexPath.row)
                         tableView.deleteRows(at: [indexPath], with: .fade)
-                        ChatItem.remove(item.ItemID!)
+                        ChatItem.remove(item.ItemID)
                 }
         }
 }

@@ -12,9 +12,7 @@ class ChatItem: NSObject{
         public static var CachedChats = LockCache<ChatItem>()
 
         var cObj:CDChatItem?
-        var ItemID:String?
-        var ImageData:Data?
-        var NickName:String?
+        var ItemID:String = ""
         var LastMsg:String?
         var updateTime:Int64 = 0
         var unreadNo:Int = 0
@@ -32,14 +30,14 @@ class ChatItem: NSObject{
                 
                 for obj in data {
                         if obj.isGroup {
-                                let group = GroupItem.cache[obj.ItemID!]
+                                let group = GroupItem.cache[obj.ItemID]
                                 if group == nil {
-                                        ChatItem.remove(obj.ItemID!)
+                                        ChatItem.remove(obj.ItemID)
                                         continue
                                 }
                         }
         //            CachedChats[obj.ItemID!] = obj
-                    CachedChats.setOrAdd(idStr: obj.ItemID!, item: obj)
+                        CachedChats.setOrAdd(idStr: obj.ItemID, item: obj)
                 }
         
         }
@@ -60,29 +58,6 @@ class ChatItem: NSObject{
                 
                 if chat.updateTime > time {
                         return
-                }
-                
-                if let contact = ContactItem.cache[peerUid] {
-                        if let alias = contact.alias, !alias.isEmpty {
-                                chat.NickName = alias
-                        } else {
-                                let localAcc = AccountItem.GetAccount(peerUid)
-                                if let nick = localAcc?.NickName, !nick.isEmpty{
-                                        chat.NickName = nick
-                                }else{
-                                        chat.NickName = peerUid
-                                }
-                        }
-                        
-                } else {
-                        if let acc = AccountItem.GetAccount(peerUid) {
-                                chat.NickName = acc.NickName
-                        } else {
-                                if let latest = AccountItem.loadAccountDetailFromChain(addr: peerUid) {
-                                        _ = AccountItem.UpdateOrAddAccount(latest)
-                                        chat.NickName = latest.NickName
-                                }
-                        }
                 }
                 
                 chat.updateTime = time
@@ -111,13 +86,7 @@ class ChatItem: NSObject{
                 if chat.updateTime > time {
                         return
                 }
-                
-                if let groupItem = GroupItem.cache[groupId] {
-                        chat.NickName = groupItem.groupName
-                } else {
-                        let gItem = GroupItem.syncGroupMetaBy(groupID: groupId)
-                        chat.NickName = gItem?.groupName
-                }
+      
                 
                 chat.updateTime = time
                 chat.unreadNo += no
@@ -203,11 +172,5 @@ extension ChatItem: ModelObj {
                 self.updateTime = cObj.updateTime
                 self.unreadNo = Int(cObj.unreadNo)
                 self.cObj = cObj
-                
-                self.NickName = ContactItem.GetNickName(uid: pid)
-
-                if let group = GroupItem.cache[pid] {
-                        self.NickName = group.groupName
-                }
         }
 }

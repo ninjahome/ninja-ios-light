@@ -56,7 +56,7 @@ class AccountItem: NSObject {
                 return acc
         }
         
-        public static func GetAccount(_ uid: String) -> AccountItem? {
+        public static func GetAccount(_ uid: String) -> AccountItem? {//TODO:: remove this usage
                 var obj: AccountItem?
                 obj = try? CDManager.shared.GetOne(entity: "CDAccount",
                                                    predicate: NSPredicate(format: "addr == %@", uid))
@@ -72,6 +72,27 @@ class AccountItem: NSObject {
                         print("------>> account details: update local database by class object failed")
                         return NJError.account(err.localizedDescription)
                 }
+                return nil
+        }
+        
+        public static func load(pid:String)->AccountItem?{
+                var obj: AccountItem?
+                obj = try? CDManager.shared.GetOne(entity: "CDAccount",
+                                                   predicate: NSPredicate(format: "addr == %@", pid))
+                if let item = obj{
+                        return item
+                }
+                var error: NSError?
+                
+                if let data = ChatLibAccountDetail(pid, &error), error == nil {
+                        guard let newItem = AccountItem.initByOnlineMeta(data) else{
+                                return nil
+                        }
+                        
+                        _ = UpdateOrAddAccount(newItem)
+                        return newItem
+                }
+                
                 return nil
         }
         

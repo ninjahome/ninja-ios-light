@@ -119,26 +119,21 @@ class ContactItem:NSObject{
                 return Array(cache.values).sortedByPinyin()!
         }
         
-        public static func latestContactDetails() {
+        public static func syncAllContactDataAtOnce() {
                 var error: NSError?
-                if let data = ChatLibSyncFriendWithDetails(&error),
-                        let objJson = try? JSON(data: data) {
-                        guard let keys = objJson.dictionaryObject?.keys else {
-                                return
-                        }
-                        for k in keys {
-                                let uid = String(k)
-                                let peerObj = objJson[uid]
-                                
-                                let account = peerObj["account"]
-                                let accItem = AccountItem.initByJson(account)
-                                _ = AccountItem.UpdateOrAddAccount(accItem)
-                                
-                                let demo = peerObj["demo"]
-                                let contactItem = ContactItem.initByJson(demo: demo, uid: uid)
-                                _ = ContactItem.UpdateContact(contactItem)
-                        }
-                        ContactItem.LocalSavedContact()
+                
+                guard let data = ChatLibSyncFriendWithDetails(&error)else{
+                        NSLog("------>>> ChatLibSyncFriendWithDetails failed:\(error!.localizedDescription)")
+                        return
+                }
+                
+                guard let allContactJson = try? JSON(data: data) else{
+                        NSLog("------>>> failed to parse the syncing friend data to json dirction")
+                        return
+                }
+                
+                for (uid, contact):(String,JSON) in allContactJson {
+                        _ = CombineConntact.SaveDataOnChain(json:contact, uid:uid)
                 }
         }
         

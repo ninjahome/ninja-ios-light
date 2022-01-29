@@ -73,6 +73,7 @@
 		08F0FA8D268839F200C5C1DF /* VoiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F0FA8C268839F200C5C1DF /* VoiceTableViewCell.swift */; };
 		08F0FA9026884C2000C5C1DF /* ImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F0FA8F26884C2000C5C1DF /* ImageTableViewCell.swift */; };
 		08F0FA9626884C5C00C5C1DF /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F0FA9526884C5C00C5C1DF /* LocationTableViewCell.swift */; };
+		2B01182227A5508B00C88116 /* CombineConntact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01182127A5508B00C88116 /* CombineConntact.swift */; };
 		6953EAF82622C12F008EC2F0 /* AuthorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6953EAF72622C12F008EC2F0 /* AuthorViewController.swift */; };
 		6969ECBC26134294008CB0B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969ECBB26134294008CB0B2 /* AppDelegate.swift */; };
 		6969ECBE26134294008CB0B2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969ECBD26134294008CB0B2 /* SceneDelegate.swift */; };
@@ -202,6 +203,7 @@
 		08F0FA8C268839F200C5C1DF /* VoiceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceTableViewCell.swift; sourceTree = "<group>"; };
 		08F0FA8F26884C2000C5C1DF /* ImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTableViewCell.swift; sourceTree = "<group>"; };
 		08F0FA9526884C5C00C5C1DF /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
+		2B01182127A5508B00C88116 /* CombineConntact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineConntact.swift; sourceTree = "<group>"; };
 		694D55C52766F5B60044E580 /* MBProgressHUD.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MBProgressHUD.xcframework; path = Carthage/Build/MBProgressHUD.xcframework; sourceTree = "<group>"; };
 		694D55C62766F5B60044E580 /* SwiftyJSON.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = SwiftyJSON.xcframework; path = Carthage/Build/SwiftyJSON.xcframework; sourceTree = "<group>"; };
 		6953EAF72622C12F008EC2F0 /* AuthorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorViewController.swift; sourceTree = "<group>"; };
@@ -321,6 +323,7 @@
 			children = (
 				0825C21026BF9638003E0EF3 /* GroupItem.swift */,
 				69B8C100261DC42D00B4E4AC /* ContactItem.swift */,
+				2B01182127A5508B00C88116 /* CombineConntact.swift */,
 				69B8C0DB261D334100B4E4AC /* ChatItem.swift */,
 				69B8C0E0261D334900B4E4AC /* MessageItem.swift */,
 				69B8C0EE261DA17B00B4E4AC /* CliMessage.swift */,
@@ -680,6 +683,7 @@
 				0823F78A26565186000DA4DB /* KeychainItemAccessibility.swift in Sources */,
 				0818D888270165FA002BF3B9 /* TransferViewController.swift in Sources */,
 				08781E8D275F09A60084D80A /* MsgViewController+ImageView.swift in Sources */,
+				2B01182227A5508B00C88116 /* CombineConntact.swift in Sources */,
 				08B74A6726B3B90D00D6F0F8 /* GroupMemberViewController.swift in Sources */,
 				0818D88426FD6FC1002BF3B9 /* DestroyViewController.swift in Sources */,
 				08781E93275F0A120084D80A /* MsgViewController+AudioView.swift in Sources */,
