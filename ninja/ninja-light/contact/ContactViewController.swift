@@ -29,9 +29,10 @@ class ContactViewController: UIViewController{
                 NotificationCenter.default.removeObserver(self)
         }
         
-        @objc func notifiAction(notification:NSNotification){
+        @objc func notifiAction(notification:NSNotification){DispatchQueue.main.async { 
                 self.tableview.reloadData()
-                dataArry =  CombineConntact.CacheArray()
+                self.dataArry =  CombineConntact.CacheArray()
+        }
         }
 }
 
