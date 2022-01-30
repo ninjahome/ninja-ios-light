@@ -62,41 +62,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 
         }
         
-        func getNotificationSettings() {
-                UNUserNotificationCenter.current().getNotificationSettings { settings in
-                        guard settings.authorizationStatus == .authorized else { return }
+        func getPushNotifications() {
+                let center = UNUserNotificationCenter.current()
+                center.removeAllPendingNotificationRequests()
+                center.delegate = self
+                
+                center.getNotificationSettings { settings in
+                        print("------>>>Notification settings: \(settings)")
                         
-                        DispatchQueue.main.sync {
-                                UIApplication.shared.registerForRemoteNotifications()
+                        switch settings.authorizationStatus {
+                        case .notDetermined:
+                                center.requestAuthorization(options: [.provisional, .alert, .badge, .sound], completionHandler: {(granted, error) in
+                                        if let err = error{
+                                                print("------>>> request notification err:[\(err.localizedDescription)]")
+                                        }
+                                        print("------>>>granted resut:[\(granted)]")
+                                        guard granted else{
+                                                return
+                                        }
+                                        DispatchQueue.main.sync {
+                                                UIApplication.shared.registerForRemoteNotifications()
+                                        }
+                                })
+                        case .authorized:
+                                DispatchQueue.main.async {
+                                        UIApplication.shared.registerForRemoteNotifications()
+                                }
+                        case .denied:
+                                print("Permission denied.")
+                                // The user has not given permission. Maybe you can display a message remembering why permission is required.
+                        default:
+                                ServiceDelegate.InitPushParam(deviceToken: "")
+                                break
                         }
-                        print("Notification settings: \(settings)")
                 }
         }
         
         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
                 
                 ServiceDelegate.InitAPP()
-                // Override point for customization after application launch.
-                if Wallet.shared.loaded {
-                        ServiceDelegate.InitService()
-                        window?.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
-                } else {
-                        if isFirstUser() {
-                                window?.rootViewController = instantiateViewController(vcID: "NinjaGuideVC")
-                        } else {
-                                window?.rootViewController = instantiateViewController(vcID: "NinjaNewWalletVC")
-                        }
-                }
-                window?.makeKeyAndVisible()
-                
-                UNUserNotificationCenter.current().delegate = self
-                
-                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound, .carPlay]) { (granted, error) in
-                        print("granted \(granted)")
-                        guard granted else { return }
-                        
-                }
-                self.getNotificationSettings()
+                self.getPushNotifications()
                 return true
         }
         
