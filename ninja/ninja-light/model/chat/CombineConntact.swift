@@ -80,8 +80,6 @@ class CombineConntact: NSObject{
                 }
                 
                 CombineConntact.cache.removeValue(forKey: self.peerID)
-                NotificationCenter.default.post(name:NotifyContactChanged,
-                                                object: nil, userInfo:nil)
                 
                 //TODO:: need a full test
                 ChatItem.remove(self.peerID)
@@ -154,7 +152,7 @@ class CombineConntact: NSObject{
                 return Array(cache.values)//.sortedByPinyin()!
         }
         
-        public static func LoadOneContact(pid:String?) ->CombineConntact?{
+        public static func fetchContactFromChain(pid:String?) ->CombineConntact?{
                 guard let peerID = pid else{
                         return nil
                 }
@@ -168,6 +166,7 @@ class CombineConntact: NSObject{
                         return nil
                 }
                 let newContact = SaveDataOnChain(json: jsonObj, uid: peerID)
+                
                 cache[peerID] = newContact
                 return newContact
         }
@@ -178,6 +177,7 @@ class CombineConntact: NSObject{
                         return
                 }
                 
+                var changeNO = 0
                 let friendsJson = JSON(data)
                 for (friID, subJson):(String, JSON) in friendsJson {
                         let contact = cache[friID]
@@ -186,16 +186,25 @@ class CombineConntact: NSObject{
                         if newItem.isSanme(contact?.contact){
                                 continue
                         }
-                        
+                        changeNO += 1
                         NSLog("------>>>friend[\(friID)] contact changed and need to sync:")
                         
                         if let c = contact{
                                 c.contact = newItem
                                 _ = ContactItem.UpdateContact(newItem)
+                                continue
                         }
                         
-                        let _ = LoadOneContact(pid: friID)
+                        let _ = fetchContactFromChain(pid: friID)
                 }
+                
+                guard changeNO > 0 else{
+                        return
+                }
+                
+                NSLog("------>>>total[\(changeNO)] contact changed")
+                NotificationCenter.default.post(name:NotifyContactChanged,
+                                                object: nil, userInfo:nil)
         }
         
         public static func syncAllContactDataAtOnce() {

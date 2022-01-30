@@ -53,7 +53,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 
                 ServiceDelegate.workQueue.async {
                         
-                        guard let data = CombineConntact.LoadOneContact(pid: self.peerID)else{
+                        guard let data = CombineConntact.fetchContactFromChain(pid: self.peerID)else{
                                 self.hideIndicator()
                                 return
                         }
@@ -148,6 +148,8 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 self.hideIndicator()
                 
                 guard let e = err else{
+                        NotificationCenter.default.post(name:NotifyContactChanged,
+                                                        object: nil, userInfo:nil)
                         self.dismiss(animated: true)
                         self.navigationController?.popViewController(animated: true)
                         return

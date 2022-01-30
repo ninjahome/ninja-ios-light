@@ -67,18 +67,7 @@ class ContactItem:NSObject{
                 }
                 return nil
         }
-        
-//        public static func GetContact(_ uid:String) -> ContactItem? {//TODO:: make this useless
-//                var obj:ContactItem?
-//                let owner = Wallet.shared.Addr!
-//                obj = try? CDManager.shared.GetOne(entity: "CDContact",
-//                                                   predicate:NSPredicate(format: "uid == %@ AND owner == %@", uid, owner))
-//                if obj != nil{
-//                        cache[obj!.uid!] = obj
-//                }
-//                return obj
-//        }
-        
+
         public static func AddNewContact(_ contact: ContactItem) -> NJError? {
                 
                 var error: NSError?
@@ -99,9 +88,6 @@ class ContactItem:NSObject{
                         try CDManager.shared.UpdateOrAddOne(entity: "CDContact",
                                                             m: contact,
                                                             predicate: NSPredicate(format: "uid == %@ AND owner == %@", contact.uid, owner))
-                        
-                        NotificationCenter.default.post(name:NotifyContactChanged,
-                                                        object: nil, userInfo:nil)
                 } catch let err {
                         return NJError.contact(err.localizedDescription)
                 }

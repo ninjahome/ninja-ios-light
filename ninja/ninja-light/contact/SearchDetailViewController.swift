@@ -77,6 +77,9 @@ class SearchDetailViewController: UIViewController {
                                         self.ShowTips(msg: e.localizedDescription)
                                         return
                                 }
+                                
+                                NotificationCenter.default.post(name:NotifyContactChanged,
+                                                                object: nil, userInfo:nil)
                                 self.startChat()
                         }
                 }
