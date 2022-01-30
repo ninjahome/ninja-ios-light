@@ -29,7 +29,7 @@ class SearchDetailViewController: UIViewController {
                 super.viewDidLoad()
                 uidText.text = uid
                 self.hideKeyboardWhenTappedAround()
-                self.showIndicator(withTitle: "waiting", and: "loading from chain")
+                self.showIndicator(withTitle: "loading", and: "account data on chain")
                 ServiceDelegate.workQueue.async {
                         self.accountData = AccountItem.loadAccountDetailFromChain(addr: self.uid)
                         DispatchQueue.main.async {
@@ -64,7 +64,7 @@ class SearchDetailViewController: UIViewController {
                 }
                 
                 let contact = ContactItem.init(pid: self.uid, alias: self.alias.text, remark: self.remark.text)
-                self.showIndicator(withTitle: "waiting", and: "sync to Chain")
+                self.showIndicator(withTitle: "waiting", and: "save to Chain")
                 ServiceDelegate.workQueue.async {
                         let cc = CombineConntact()
                         cc.peerID = self.uid

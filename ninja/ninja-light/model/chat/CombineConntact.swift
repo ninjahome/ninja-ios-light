@@ -113,7 +113,12 @@ class CombineConntact: NSObject{
                         return nil
                 }
                 
-                return AccountItem.UpdateOrAddAccount(account)
+                if let err = AccountItem.UpdateOrAddAccount(account){
+                        return err
+                }
+                CombineConntact.cache[self.peerID] = self
+                
+                return nil
         }
         
         public static func ReloadSavedContact() {
