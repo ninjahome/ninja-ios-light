@@ -28,16 +28,15 @@ class MessageItem: NSObject {
         var isOut: Bool = false
         var groupId: String?
         var status: sendingStatus = .sent
-//        var avatarInfo: Avatar?
-
+        
         public static var cache = LockCache<MessageList>()
-
+        
         override init() {
                 super.init()
         }
         
         public static func initByData(_ data: Data, from: String, gid: String? = nil, time: Int64) -> MessageItem? {
-          
+                
                 guard let typ = CMT(rawValue: Int(data[0])) else {
                         return nil
                 }
@@ -106,19 +105,19 @@ class MessageItem: NSObject {
                 
                 return video
         }
-
+        
         public static func loadUnread() {
                 guard let owner = Wallet.shared.Addr else {
                         return
                 }
                 var result:[MessageItem]?
                 result = try? CDManager.shared.Get(entity: "CDUnread",
-                                   predicate: NSPredicate(format: "owner == %@", owner))
+                                                   predicate: NSPredicate(format: "owner == %@", owner))
                 guard let data = result else{
                         return
                 }
                 cache.deleteAll()
-
+                
                 for msg in data {
                         var peerUid: String
                         if let groupId = msg.groupId {
@@ -130,13 +129,13 @@ class MessageItem: NSObject {
                                         peerUid = msg.from!
                                 }
                         }
-
+                        
                         var msgList = cache.get(idStr: peerUid)
                         if msgList == nil {
                                 msgList = MessageList.init()
                         }
                         msgList!.append(msg)
-
+                        
                         cache.setOrAdd(idStr: peerUid, item: msgList)
                 }
         }
@@ -149,25 +148,25 @@ class MessageItem: NSObject {
                                                              predicate: NSPredicate(format: "owner == %@ AND to == %@ AND unixTime == %@", owner, to, NSNumber(value: mid)))
                 } catch let err {
                         print(err.localizedDescription)
-                }                
+                }
                 return result
         }
-    
+        
         public static func removeRead(_ uid: String){
                 cache.delete(idStr: uid)
                 let owner = Wallet.shared.Addr!
                 try? CDManager.shared.Delete(entity: "CDUnread",
-                        predicate: NSPredicate(format: "owner == %@ AND (from == %@ OR to == %@)",
-                                               owner, uid, uid))
+                                             predicate: NSPredicate(format: "owner == %@ AND (from == %@ OR to == %@)",
+                                                                    owner, uid, uid))
         }
-
+        
         public static func removeAllRead() {
                 cache.deleteAll()
                 let owner = Wallet.shared.Addr!
                 try? CDManager.shared.Delete(entity: "CDUnread",
-                        predicate: NSPredicate(format: "owner == %@", owner))
+                                             predicate: NSPredicate(format: "owner == %@", owner))
         }
-
+        
         func coinvertToLastMsg() -> String{
                 switch self.typ {
                 case .plainTxt:
@@ -194,7 +193,7 @@ class MessageItem: NSObject {
                 self.to = cliMsg.to
                 self.typ = cliMsg.type
                 self.groupId = cliMsg.groupId
-
+                
                 switch self.typ {
                 case .plainTxt:
                         self.payload = cliMsg.textData
@@ -211,25 +210,25 @@ class MessageItem: NSObject {
                 default:
                         print("init MESSAGE error: undefined type")
                 }
-
+                
                 self.isOut = out
         }
-    
+        
         init(cliMsg: CliMessage) {
                 let sender = Wallet.shared.Addr!
                 self.from = sender
-
+                
                 if let groupid = cliMsg.groupId {
                         self.to = groupid
                 } else {
                         self.to = cliMsg.to
                 }
-
+                
                 self.typ = cliMsg.type
                 self.timeStamp = cliMsg.timestamp!
                 self.isOut = true
                 self.groupId = cliMsg.groupId
-
+                
                 switch self.typ {
                 case .plainTxt:
                         self.payload = cliMsg.textData
@@ -248,17 +247,17 @@ class MessageItem: NSObject {
                 }
                 self.status = .sending
         }
-    
+        
         public static func addSentIM(cliMsg: CliMessage) -> MessageItem {
                 let msg = MessageItem.init(cliMsg: cliMsg)
-
+                
                 var msgList = cache.get(idStr: msg.to!)
                 if msgList == nil {
                         msgList = []
                 }
                 msgList?.append(msg)
                 cache.setOrAdd(idStr: msg.to!, item: msgList)
-
+                
                 try? CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
                 return msg
         }
@@ -273,14 +272,14 @@ class MessageItem: NSObject {
                 } else {
                         msg.status = .faild
                 }
-
+                
                 var peerUid: String?
                 if let gid = msg.groupId {
                         peerUid = gid
                 } else {
                         peerUid = msg.to
                 }
-
+                
                 if var msgs = MessageItem.cache.get(idStr: peerUid!) {
                         for (index, item) in msgs.enumerated() {
                                 if item.timeStamp == msg.timeStamp {
@@ -290,8 +289,8 @@ class MessageItem: NSObject {
                         }
                         MessageItem.cache.setOrAdd(idStr: peerUid!, item: msgs)
                         try? CDManager.shared.UpdateOrAddOne(entity: "CDUnread", m: msg,
-                                                         predicate: NSPredicate(format: "owner == %@ AND unixTime == %@",
-                                                                                owner, NSNumber(value: msg.timeStamp)))
+                                                             predicate: NSPredicate(format: "owner == %@ AND unixTime == %@",
+                                                                                    owner, NSNumber(value: msg.timeStamp)))
                         NotificationCenter.default.post(name: NotifyMessageAdded,
                                                         object: self, userInfo: [NotiKey: peerUid!])
                         for item in msgs {
@@ -299,57 +298,48 @@ class MessageItem: NSObject {
                                 print(item.typ)
                         }
                 }
-
+                
         }
-    
-        public static func receivedIM(msg: MessageItem) {
-                var peerUid: String
-                var isGroup: Bool = false
-                if let groupId = msg.groupId {
-                        isGroup = true
-                        peerUid = groupId
-                } else {
-                        peerUid = msg.from!
-                }
-
-                var msgList = cache.get(idStr: peerUid)
+        
+        private static func cacheNewMsg(pid:String, msg:MessageItem){
+                var msgList = cache.get(idStr: pid)
                 if msgList == nil {
                         msgList = []
                 }
-
+                
                 msgList?.append(msg)
                 msgList?.sort(by: { (a, b) -> Bool in
                         return a.timeStamp < b.timeStamp
                 })
-                cache.setOrAdd(idStr: peerUid, item: msgList)
-
-                try? CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
-                if isGroup {
-                        ChatItem.updateLastGroupMsg(groupId: peerUid, msg: msg.coinvertToLastMsg(), time: msg.timeStamp, unread: 1)
-                } else {
-                        ChatItem.updateLastPeerMsg(peerUid: peerUid, msg: msg.coinvertToLastMsg(), time: msg.timeStamp, unread: 1)
-                }
+                cache.setOrAdd(idStr: pid, item: msgList)
                 
                 NotificationCenter.default.post(name: NotifyMessageAdded,
-                                                object: self, userInfo: [NotiKey: peerUid])
-                
-                NotificationCenter.default.post(name:NotifyMsgSumChanged,
-                                                object: self,
-                                                userInfo:[NotiKey: peerUid])
+                                                object: self, userInfo: [NotiKey: pid])
         }
         
         public static func receiveMsg(from: String, gid: String? = nil, msgData: Data, time: Int64) {
-                if let msgItem = MessageItem.initByData(msgData, from: from, gid: gid, time: time) {
-                        MessageItem.receivedIM(msg: msgItem)
+                
+                guard let msgItem = MessageItem.initByData(msgData, from: from, gid: gid, time: time) else{
+                        return
                 }
                 
+                do{
+                        try CDManager.shared.AddEntity(entity: "CDUnread", m: msgItem)
+                        
+                }catch let err{
+                        NSLog("------>>> save new message failed:[\(err.localizedDescription)]")
+                        return
+                }
+                
+                let peerUid = gid ?? from
+                cacheNewMsg(pid: peerUid, msg: msgItem)
+                
+                ChatItem.updateLatestrMsg(pid: peerUid,
+                                           msg: msgItem.coinvertToLastMsg(),
+                                           time: msgItem.timeStamp,
+                                           unread: 1,
+                                           isGrp: gid != nil)
         }
-        
-
-//        public static func saveUnread(_ msg:[MessageItem]) throws {
-//                try CDManager.shared.AddBatch(entity: "CDUnread", m: msg)
-//                loadUnread()
-//        }
 
         public static func deleteMsgOneWeek() {
                 let owner = Wallet.shared.Addr!
@@ -371,7 +361,7 @@ extension MessageItem: ModelObj {
                 uObj.type = Int16(self.typ.rawValue)
                 uObj.from = self.from
                 uObj.isOut = self.isOut
-
+                
                 switch self.typ {
                 case .plainTxt:
                         uObj.message = self.payload as? String
@@ -394,16 +384,16 @@ extension MessageItem: ModelObj {
                 uObj.status = self.status.rawValue
                 uObj.groupId = self.groupId
         }
-    
+        
         func initByObj(obj: NSManagedObject) throws {
                 guard let uObj = obj as? CDUnread else {
                         throw NJError.coreData("cast to unread item obj failed")
                 }
                 self.typ = CMT(rawValue: Int(uObj.type)) ?? CMT(rawValue: 1)!
-
+                
                 self.from = uObj.from
                 self.isOut = uObj.isOut
-
+                
                 switch self.typ {
                 case .plainTxt:
                         self.payload = uObj.message
@@ -425,7 +415,7 @@ extension MessageItem: ModelObj {
                 self.status = sendingStatus(rawValue: uObj.status) ?? .sent
                 self.groupId = uObj.groupId
         }
-    
+        
 }
 
 extension MessageList {

@@ -10,14 +10,28 @@ import CoreData
 
 class ChatItem: NSObject{
         public static var CachedChats = LockCache<ChatItem>()
-
+        
         var cObj:CDChatItem?
         var ItemID:String = ""
         var LastMsg:String?
         var updateTime:Int64 = 0
         var unreadNo:Int = 0
         var isGroup: Bool = false
-    
+        
+        override init(){
+                super.init()
+        }
+        
+        init(id:String, time:Int64, msg:String, isGrp:Bool, unread:Int=1){
+                super.init()
+                self.ItemID = id
+                self.updateTime = time
+                self.LastMsg = msg
+                self.isGroup = isGrp
+                self.unreadNo = unread
+        }
+        
+        
         public static func ReloadChatRoom() {
                 var result:[ChatItem]?
                 let owner = Wallet.shared.Addr!
@@ -29,19 +43,20 @@ class ChatItem: NSObject{
                 }
                 
                 for obj in data {
-                        if obj.isGroup {
-                                let group = GroupItem.cache[obj.ItemID]
-                                if group == nil {
-                                        ChatItem.remove(obj.ItemID)
-                                        continue
-                                }
-                        }
-        //            CachedChats[obj.ItemID!] = obj
+                        //TODO:: group chat Item chat later
+                        
+//                        if obj.isGroup {
+//                                let group = GroupItem.cache[obj.ItemID]
+//                                if group == nil {
+//                                        ChatItem.remove(obj.ItemID)
+//                                        continue
+//                                }
+//                        }
                         CachedChats.setOrAdd(idStr: obj.ItemID, item: obj)
                 }
-        
+                
         }
-
+        
         public static func getTotalUnreadNo() -> Int {
                 let items = CachedChats.getValues()
                 var total = 0
@@ -51,59 +66,32 @@ class ChatItem: NSObject{
                 return total
         }
         
-        public static func updateLastPeerMsg(peerUid: String, msg: String, time: Int64, unread no: Int) {
-                let chat = CachedChats.get(idStr: peerUid) ?? ChatItem.init()
-                chat.ItemID = peerUid
-                chat.isGroup = false
-                
-                if chat.updateTime > time {
-                        return
+        public static func updateLatestrMsg(pid: String, msg: String, time: Int64, unread no: Int, isGrp:Bool) {
+                var chat = CachedChats.get(idStr: pid)
+                if let c = chat{
+                        if c.updateTime > time {
+                                return
+                        }
+                        c.updateTime = time
+                        c.LastMsg = msg
+                        c.unreadNo += no
+                        c.cObj?.unreadNo = Int32(c.unreadNo)
+                        c.cObj?.lastMsg = c.LastMsg
+                }else{
+                        chat = ChatItem.init(id: pid, time: time, msg: msg, isGrp: isGrp, unread:no)
                 }
                 
-                chat.updateTime = time
-                chat.unreadNo += no
-                chat.LastMsg = msg
-                
-                chat.cObj?.unreadNo = Int32(chat.unreadNo)
-                chat.cObj?.lastMsg = chat.LastMsg
-
-                CachedChats.setOrAdd(idStr: peerUid, item: chat)
+                CachedChats.setOrAdd(idStr: pid, item: chat)
                 
                 let owner = Wallet.shared.Addr!
                 try? CDManager.shared.UpdateOrAddOne(entity: "CDChatItem",
-                                                     m: chat,
-                                                     predicate: NSPredicate(format: "peerID == %@ AND owner == %@", peerUid, owner))
+                                                     m: chat!,
+                                                     predicate: NSPredicate(format: "peerID == %@ AND owner == %@", pid, owner))
                 
                 NotificationCenter.default.post(name: NotifyMsgSumChanged,
-                                                    object: self, userInfo:nil)
+                                                object: self, userInfo:nil)
         }
         
-        public static func updateLastGroupMsg(groupId: String, msg: String, time: Int64, unread no:Int) {
-                let chat = CachedChats.get(idStr: groupId) ?? ChatItem.init()
-                chat.ItemID = groupId
-                chat.isGroup = true
-                
-                if chat.updateTime > time {
-                        return
-                }
-      
-                
-                chat.updateTime = time
-                chat.unreadNo += no
-                chat.LastMsg = msg
-                
-                chat.cObj?.unreadNo = Int32(chat.unreadNo)
-                chat.cObj?.lastMsg = chat.LastMsg
-
-                CachedChats.setOrAdd(idStr: groupId, item: chat)
-                
-                let owner = Wallet.shared.Addr!
-                try? CDManager.shared.UpdateOrAddOne(entity: "CDChatItem",
-                                                     m: chat,
-                                                     predicate: NSPredicate(format: "peerID == %@ AND owner == %@", groupId, owner))
-                NotificationCenter.default.post(name:NotifyMsgSumChanged,
-                                                    object: self, userInfo:nil)
-        }
         
         public static func SortedArra() -> [ChatItem] {
                 var sortedArray = CachedChats.getValues()
@@ -115,19 +103,19 @@ class ChatItem: NSObject{
                 }
                 return sortedArray
         }
-    
+        
         func resetUnread(){
                 guard self.unreadNo != 0 else {
                         return
                 }
-
+                
                 self.unreadNo = 0
                 self.cObj?.unreadNo = 0
                 NotificationCenter.default.post(name:NotifyMsgSumChanged,
                                                 object: self,
                                                 userInfo:nil)
         }
-
+        
         public static func remove(_ pid:String) {
                 let owner = Wallet.shared.Addr!
                 try? CDManager.shared.Delete(entity: "CDChatItem",
@@ -137,14 +125,14 @@ class ChatItem: NSObject{
 }
 
 extension ChatItem: ModelObj {
-
+        
         func fullFillObj(obj: NSManagedObject) throws {
                 guard let cObj = obj as? CDChatItem else {
                         throw NJError.coreData("cast to chat item obj failed")
                 }
-
+                
                 let owner = Wallet.shared.Addr!
-
+                
                 if isGroup {
                         cObj.isGrp = true
                 } else {
@@ -158,7 +146,7 @@ extension ChatItem: ModelObj {
                 cObj.unreadNo = Int32(self.unreadNo)
                 self.cObj = cObj
         }
-    
+        
         func initByObj(obj: NSManagedObject) throws {
                 guard let cObj = obj as? CDChatItem else {
                         throw NJError.coreData("cast to chat item obj failed")

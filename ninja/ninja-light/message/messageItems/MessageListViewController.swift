@@ -83,7 +83,7 @@ class MessageListViewController: UIViewController{
 
         }
         
-        func updateMsgBadge() {
+        func updateMsgBadge() {//TODO:: optimization
                 let total = ChatItem.getTotalUnreadNo()
                 var totalStr: String?
                 if total != 0 {
@@ -104,7 +104,6 @@ class MessageListViewController: UIViewController{
     
         @objc func notifiAction(notification: NSNotification) {
                 ServiceDelegate.workQueue.async { [weak self] in
-                        ChatItem.ReloadChatRoom()
                         self?.sortedArray = ChatItem.SortedArra()
                         DispatchQueue.main.async {
                                 self?.tableView.reloadData()
@@ -128,11 +127,6 @@ class MessageListViewController: UIViewController{
                 guard Wallet.shared.IsActive() else {
                         self.performSegue(withIdentifier: "ShowAutherSEG", sender: self)
                         return
-                }
-
-                self.sortedArray = ChatItem.SortedArra()
-                DispatchQueue.main.async {
-                        self.tableView.reloadData()
                 }
         }
     

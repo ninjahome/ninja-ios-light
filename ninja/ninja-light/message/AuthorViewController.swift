@@ -60,6 +60,7 @@ class AuthorViewController: UIViewController {
                 unlock(auth: pwd)
         }
     
+        //TODO:: to be tested
         func destroy(auth: String) {
                 self.showIndicator(withTitle: "", and: "opening")
 

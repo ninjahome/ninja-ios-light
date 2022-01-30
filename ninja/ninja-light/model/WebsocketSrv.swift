@@ -57,11 +57,7 @@ class WebsocketSrv: NSObject {
                 } else {
                         let msg = MessageItem.addSentIM(cliMsg: cliMsg)
                         onStart()
-                        if isGroup {
-                                ChatItem.updateLastGroupMsg(groupId: peerID, msg: msg.coinvertToLastMsg(), time: msg.timeStamp, unread: 0)
-                        } else {
-                                ChatItem.updateLastPeerMsg(peerUid: peerID, msg: msg.coinvertToLastMsg(), time: msg.timeStamp, unread: 0)
-                        }
+                        ChatItem.updateLatestrMsg(pid: peerID, msg: msg.coinvertToLastMsg(), time: msg.timeStamp, unread: 0, isGrp:isGroup )
                 }
                 
                 guard let data =  cliMsg.PackData() else{
@@ -98,21 +94,15 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
         }
         
         func groupUpdate(_ p0: Data?) {
-                //TODO:: the logic is not fixed
-                //                guard let data = p0
-                //                if let data = p0,
-                //                   let grpItem = GroupItem.initByData(data) {
-                //                        if let err = GroupItem.updateGroupMetaInDB(grpItem) {
-                //                                print("update grp faild:\(String(describing: err.localizedDescription))")
-                //                        }
-                //                }
         }
         
         func grpIM(_ from: String?, gid: String?, cryptKey: Data?, decoded: Data?, payload: Data?, time: Int64) throws {
-                if let f = from, let d = decoded, let grpId = gid {
-                        //                        if GroupItem.GetGroup(grpId) == nil {
-                        //                                _ = GroupItem.syncGroupMetaBy(groupID: grpId)
-                        //                        }
+                guard let f = from, let d = decoded, let grpId = gid  else{
+                        NSLog("------>>>[grpIM] invalid group message data")
+                        return
+                }
+                
+                WebsocketSrv.netQueue.async {
                         MessageItem.receiveMsg(from: f, gid: grpId, msgData: d, time: time)
                 }
         }
@@ -131,19 +121,18 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
                 }
                 let conf = ConfigItem.initEndPoint(newIP)
                 if let err = ConfigItem.updateConfig(conf) {
-                        print("update config faild:\(String(describing: err.localizedDescription))")
+                        print("------->>>[nodeIPChanged] update config faild:\(String(describing: err.localizedDescription))")
                 }
                 WebsocketSrv.shared.Online()
         }
         
         func peerIM(_ from: String?, decoded: Data?, payload: Data?, time: Int64) throws {
-                if let f = from, let d = decoded {
-                        if AccountItem.GetAccount(f) == nil {
-                                _ = AccountItem.loadAccountDetailFromChain(addr: f)
-                        }
+                guard  let f = from, let d = decoded  else{
+                        NSLog("------>>>[peerIM] invalid peer message data")
+                        return
+                }
+                WebsocketSrv.netQueue.async {
                         MessageItem.receiveMsg(from: f, gid: nil, msgData: d, time: time)
-                } else {
-                        print("++++++peer IM losted")
                 }
         }
         

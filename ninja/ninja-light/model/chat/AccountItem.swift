@@ -11,7 +11,9 @@ import ChatLib
 import SwiftyJSON
 
 class AccountItem: NSObject {
-        public static var cache: [String: AccountItem] = [:]
+        
+        public static var extraCache: [String: AccountItem] = [:]
+        
         var Nonce: Int64?
         var Addr: String?
         var NickName: String?
@@ -19,8 +21,6 @@ class AccountItem: NSObject {
         var Balance: Int64?
         var TouchTime: Int64?
         var Owner: String?
-        
-        public static let shared = AccountItem()
         
         public override init() {
                 super.init()
@@ -59,7 +59,7 @@ class AccountItem: NSObject {
                 }else{
                         acc.Avatar = ChatLibUnmarshalGoByte(str)
                 }
-               
+                
                 return acc
         }
         
@@ -82,27 +82,6 @@ class AccountItem: NSObject {
                 return nil
         }
         
-        public static func load(pid:String)->AccountItem?{
-                var obj: AccountItem?
-                obj = try? CDManager.shared.GetOne(entity: "CDAccount",
-                                                   predicate: NSPredicate(format: "addr == %@", pid))
-                if let item = obj{
-                        return item
-                }
-                var error: NSError?
-                
-                if let data = ChatLibAccountDetail(pid, &error), error == nil {
-                        guard let newItem = AccountItem.initByOnlineMeta(data) else{
-                                return nil
-                        }
-                        
-                        _ = UpdateOrAddAccount(newItem)
-                        return newItem
-                }
-                
-                return nil
-        }
-        
         public static func loadAccountDetailFromChain(addr: String) -> AccountItem? {
                 var error: NSError?
                 
@@ -120,6 +99,7 @@ class AccountItem: NSObject {
 }
 
 extension AccountItem: ModelObj {
+        
         func fullFillObj(obj: NSManagedObject) throws {
                 guard let cObj = obj as? CDAccount else {
                         throw NJError.coreData("Cast to CDAccount failed")
@@ -144,6 +124,35 @@ extension AccountItem: ModelObj {
                 self.Addr = cObj.addr
                 self.NickName = cObj.name
         }
+}
+
+extension AccountItem{
         
-        
+        public static func extraLoad(pid:String)->AccountItem?{
+                if let item = extraCache[pid]{
+                        return item
+                }
+                
+                var obj: AccountItem?
+                obj = try? CDManager.shared.GetOne(entity: "CDAccount",
+                                                   predicate: NSPredicate(format: "addr == %@", pid))
+                if let item = obj{
+                        return item
+                }
+                
+                var error: NSError?
+                if let data = ChatLibAccountDetail(pid, &error), error == nil {
+                        guard let newItem = AccountItem.initByOnlineMeta(data) else{
+                                return nil
+                        }
+                        
+                        _ = UpdateOrAddAccount(newItem)
+                        
+                        extraCache[pid] = newItem
+                        
+                        return newItem
+                }
+                
+                return nil
+        }
 }

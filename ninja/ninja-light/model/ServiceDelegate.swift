@@ -69,6 +69,7 @@ class ServiceDelegate: NSObject {
                 return err
         }
 }
+
 extension ServiceDelegate{
         
         public static func InitService() {
