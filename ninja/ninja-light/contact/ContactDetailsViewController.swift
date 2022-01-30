@@ -59,6 +59,8 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                         }
                         
                         self.contactData = data
+                        NotificationCenter.default.post(name:NotifyContactChanged,
+                                                        object: nil, userInfo:nil)
                         DispatchQueue.main.async {
                                 self.hideIndicator()
                                 self.populateView()
