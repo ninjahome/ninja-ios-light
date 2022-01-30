@@ -79,10 +79,13 @@ class CombineConntact: NSObject{
                         
                 }
                 
-                ChatItem.remove(self.peerID)//TODO:: need a full test
-                MessageItem.removeRead(self.peerID)//TODO:: need a full test
+                //TODO:: need a full test
+                ChatItem.remove(self.peerID)
                 
-                CombineConntact.cache[self.peerID] = nil
+                //TODO:: need a full test
+                MessageItem.removeRead(self.peerID)
+                
+                CombineConntact.cache.removeValue(forKey: self.peerID)
                 
                 return nil
         }

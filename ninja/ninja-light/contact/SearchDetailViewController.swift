@@ -62,9 +62,10 @@ class SearchDetailViewController: UIViewController {
                         showVipModalViewController()
                         return
                 }
+                
+                let contact = ContactItem.init(pid: self.uid, alias: self.alias.text, remark: self.remark.text)
                 self.showIndicator(withTitle: "waiting", and: "sync to Chain")
                 ServiceDelegate.workQueue.async {
-                        let contact = ContactItem.init(pid: self.uid, alias: self.alias.text, remark: self.remark.text)
                         let cc = CombineConntact()
                         cc.peerID = self.uid
                         cc.account = self.accountData

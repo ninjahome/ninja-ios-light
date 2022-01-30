@@ -146,6 +146,8 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 self.hideIndicator()
                 
                 guard let e = err else{
+                        NotificationCenter.default.post(name:NotifyContactChanged,
+                                                        object: nil, userInfo:nil)
                         self.dismiss(animated: true)
                         self.navigationController?.popViewController(animated: true)
                         return
