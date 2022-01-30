@@ -15,18 +15,18 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
         @IBOutlet weak var uid: UILabel!
         @IBOutlet weak var deleteBtn: UIButton!
         @IBOutlet weak var moreBtn: UIButton!
-        
+        @IBOutlet weak var vipFlagImgView: UIImageView!
         @IBOutlet weak var nickTextField: UITextField!
         @IBOutlet weak var memoTextView: UITextView!
         
         var peerID:String = ""
         var contactData:CombineConntact?
-        
         var _delegate: UIGestureRecognizerDelegate?
         
         override func viewWillAppear(_ animated: Bool) {
                 super.viewWillAppear(animated)
                 
+                self.vipFlagImgView.isHidden = Wallet.shared.isStillVip()
                 self.navigationController?.setNavigationBarHidden(true, animated: true)
                 
                 if (self.navigationController?.viewControllers.count)! >= 1 {
@@ -84,6 +84,11 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
         }
         
         @IBAction func saveChanges(_ sender: UIButton) {
+                if !Wallet.shared.isStillVip(){
+                        showVipModalViewController()
+                        return
+                }
+                
                 guard let obj = self.contactData else{
                         self.toastMessage(title: "no valid contact data")
                         return
@@ -99,6 +104,11 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
         }
         
         @IBAction func moreBarItem(_ sender: UIButton) {
+                if !Wallet.shared.isStillVip(){
+                        showVipModalViewController()
+                        return
+                }
+                
                 if deleteBtn.isHidden {
                         deleteBtn.isHidden = false
                         moreBtn.setImage(UIImage(named: "x_icon"), for: .normal)
@@ -154,8 +164,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                         self.navigationController?.popViewController(animated: true)
                         return
                 }
-                
-                self.ShowTips(msg: e.localizedDescription)
+                self.ShowTips(msg: e.localizedDescription ?? "operation failed")
         }
         }
         

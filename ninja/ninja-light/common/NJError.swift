@@ -20,9 +20,11 @@ public enum NJError: Error,LocalizedError {
 
         public var localizedDescription: String? {
                 switch self {
-                case .wallet(let err): return "[Wallet Error]:=>[\(err)]"
-                case .coreData(let err): return "[CoreData Error]:=>[\(err)]"
-                case .contact(let err): return err
+                case .wallet(let err): return err
+                case .coreData(let err): return err
+                case .contact(let err):
+                        print("------>>", err)
+                        return err
                 case .msg(let err): return err
                 case .group(let err): return err
                 case .agent(let err): return err

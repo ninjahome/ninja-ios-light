@@ -2877,6 +2877,13 @@
                                     <action selector="saveChanges:" destination="f4X-jQ-OkL" eventType="touchUpInside" id="F7b-vR-yFJ"/>
                                 </connections>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VIP" translatesAutoresizingMaskIntoConstraints="NO" id="hXX-3w-JCS">
+                                <rect key="frame" x="341" y="531" width="26" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="26" id="DtC-t2-LLY"/>
+                                    <constraint firstAttribute="height" constant="14" id="kTY-B0-eA7"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="gpv-6t-OUL"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -2894,11 +2901,13 @@
                             <constraint firstItem="RuG-Xe-D02" firstAttribute="leading" secondItem="gpv-6t-OUL" secondAttribute="leading" constant="15" id="V4J-F9-SNe"/>
                             <constraint firstItem="hfa-5h-p6g" firstAttribute="leading" secondItem="gpv-6t-OUL" secondAttribute="leading" constant="20" id="VcM-qy-Fr0"/>
                             <constraint firstItem="wC4-os-Ibr" firstAttribute="leading" secondItem="gpv-6t-OUL" secondAttribute="leading" constant="20" id="Z1k-Oh-MWt"/>
+                            <constraint firstItem="7zI-0t-mpk" firstAttribute="trailing" secondItem="hXX-3w-JCS" secondAttribute="trailing" constant="15" id="Z8C-uO-Rpc"/>
                             <constraint firstItem="wBQ-vz-03c" firstAttribute="leading" secondItem="gpv-6t-OUL" secondAttribute="leading" constant="20" id="fiM-fB-3bO"/>
                             <constraint firstItem="wC4-os-Ibr" firstAttribute="top" secondItem="RuG-Xe-D02" secondAttribute="bottom" constant="15" id="gaf-ap-BxW"/>
                             <constraint firstItem="hfa-5h-p6g" firstAttribute="top" secondItem="wC4-os-Ibr" secondAttribute="bottom" constant="12" id="iCA-Jo-q2S"/>
                             <constraint firstItem="RuG-Xe-D02" firstAttribute="top" secondItem="K0R-ek-idf" secondAttribute="bottom" id="k2a-zX-SP5"/>
                             <constraint firstItem="gpv-6t-OUL" firstAttribute="trailing" secondItem="K0R-ek-idf" secondAttribute="trailing" id="o1i-At-7G3"/>
+                            <constraint firstItem="hXX-3w-JCS" firstAttribute="top" secondItem="7zI-0t-mpk" secondAttribute="top" constant="10" id="oru-s4-2tV"/>
                             <constraint firstItem="gI4-bB-aMH" firstAttribute="leading" secondItem="gpv-6t-OUL" secondAttribute="leading" constant="20" id="ri7-7n-7dz"/>
                             <constraint firstItem="gpv-6t-OUL" firstAttribute="trailing" secondItem="7zI-0t-mpk" secondAttribute="trailing" constant="32" id="rvn-cb-9jh"/>
                             <constraint firstItem="gpv-6t-OUL" firstAttribute="trailing" secondItem="hfa-5h-p6g" secondAttribute="trailing" constant="20" id="tWq-KE-KHb"/>
@@ -2920,6 +2929,7 @@
                         <outlet property="nickName" destination="fmu-oj-ltv" id="29g-Mv-uhC"/>
                         <outlet property="nickTextField" destination="hfa-5h-p6g" id="Ex8-zj-Esm"/>
                         <outlet property="uid" destination="0XB-yp-pa8" id="AaK-OQ-epe"/>
+                        <outlet property="vipFlagImgView" destination="hXX-3w-JCS" id="3vH-CZ-O7u"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vw0-8p-ToJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
