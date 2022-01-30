@@ -31,10 +31,15 @@ class ContactAddViewController: UIViewController {
         
         @IBAction func search(_ sender: UIButton) {
                 guard let addr = searchAddr.text else {
+                        self.toastMessage(title: "empty ninja address")
                         return
                 }
                 guard ContactItem.IsValidContactID(addr) else{
                         self.toastMessage(title: "invalid ninja address")
+                        return
+                }
+                if Wallet.shared.Addr == addr{
+                        self.toastMessage(title: "you're brilliant")
                         return
                 }
                 
