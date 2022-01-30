@@ -13,11 +13,11 @@ import MobileCoreServices
 import ChatLib
 
 extension NSLayoutConstraint {
-
-    override public var description: String {
-        let id = identifier ?? ""
-        return "id: \(id), constant: \(constant)" //you may print whatever you want here
-    }
+        
+        override public var description: String {
+                let id = identifier ?? ""
+                return "id: \(id), constant: \(constant)" //you may print whatever you want here
+        }
 }
 
 func updateBadgeNum() {
@@ -84,7 +84,7 @@ extension URL {
                 }
                 return UTTypeConformsTo(uti, kUTTypeMovie)
         }
-
+        
 }
 
 public func isFirstUser() -> Bool {
@@ -101,8 +101,7 @@ public func setFirstUser() {
         userDefault.set("old", forKey: "ninja")
 }
 
-public func afterWallet() {
-        WebsocketSrv.shared.Online()
+public func afterWallet() { DispatchQueue.main.async {
         if #available(iOS 13.0, *) {
                 let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
                 sceneDelegate.window!.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
@@ -110,6 +109,7 @@ public func afterWallet() {
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                 appDelegate.window?.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
                 appDelegate.window?.makeKeyAndVisible()
+        }
         }
 }
 
@@ -123,25 +123,25 @@ public func getJSONStringFromDictionary(dictionary: NSDictionary) -> String {
         if !JSONSerialization.isValidJSONObject(dictionary) {
                 return ""
         }
-
+        
         let data = try? JSONSerialization.data(withJSONObject: dictionary, options: []) as Data
-
+        
         let JSONString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-
+        
         return JSONString! as String
 }
 
 public func getDictionaryFromJSONString(jsonString: String) -> NSDictionary {
         let jsonData = jsonString.data(using: .utf8)!
-
+        
         let dict = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers)
-
+        
         if dict != nil {
                 return dict as! NSDictionary
         }
-
+        
         return NSDictionary()
-    
+        
 }
 
 public func instantiateViewController(vcID: String) -> UIViewController {
@@ -182,14 +182,14 @@ func dispatch_async_safely_to_queue(_ queue: DispatchQueue, _ block: @escaping (
 public func formatMsgTimeStamp(by timeStamp: Int64) -> String {
         let time = Date.init(timeIntervalSince1970: TimeInterval(timeStamp/1000))
         dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
-
+        
         return dateFormatterGet.string(from: time)
 }
 
 public func formatTimeStamp(by timeStamp: Int64) -> String {
         let time = Date.init(timeIntervalSince1970: TimeInterval(timeStamp))
         dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
-
+        
         return dateFormatterGet.string(from: time)
 }
 
@@ -227,16 +227,16 @@ extension String {
                 }
                 return false
         }
-    
+        
         func transformToPinyin(hasBlank: Bool = false) -> String {
-
+                
                 let stringRef = NSMutableString(string: self) as CFMutableString
                 CFStringTransform(stringRef,nil, kCFStringTransformToLatin, false)
                 CFStringTransform(stringRef, nil, kCFStringTransformStripCombiningMarks, false)
                 let pinyin = stringRef as String
                 return hasBlank ? pinyin : pinyin.replacingOccurrences(of: " ", with: "")
         }
-    
+        
         func transformToPinyinHead(lowercased: Bool = false) -> String {
                 let pinyin = self.transformToPinyin(hasBlank: true).capitalized
                 var headPinyinStr = ""
@@ -247,7 +247,7 @@ extension String {
                 }
                 return lowercased ? headPinyinStr.lowercased() : headPinyinStr
         }
-    
+        
         func transformToCapitalized() -> String {
                 let str = self.capitalized
                 var selectStr = ""
@@ -258,7 +258,7 @@ extension String {
                 }
                 return selectStr
         }
-    
+        
         func toArray() -> NSArray? {
                 if let jsonData: Data = self.data(using: .utf8) {
                         let array = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers)
@@ -268,7 +268,7 @@ extension String {
                 }
                 return nil
         }
-    
+        
 }
 
 extension Array {
@@ -283,7 +283,7 @@ extension Array {
                 }
                 return nil
         }
-
+        
         func toString() -> String? {
                 if let data = try? JSONSerialization.data(withJSONObject: self, options: []),
                    let str = String(data: data, encoding: .utf8) {
@@ -291,7 +291,7 @@ extension Array {
                 }
                 return nil
         }
-    
+        
 }
 
 extension UIImage {
@@ -308,98 +308,98 @@ extension UIImage {
 }
 
 extension UIViewController {
-    
-    private class var sharedApplication: UIApplication? {
-        let selector = NSSelectorFromString("sharedApplication")
-        return UIApplication.perform(selector)?.takeUnretainedValue() as? UIApplication
-    }
-
-    // Returns the current application's top most view controller.
-    open class var topMostInApp: UIViewController? {
-        guard let currentWindows = self.sharedApplication?.windows else { return nil }
-        var rootViewController: UIViewController?
-        for window in currentWindows {
-            if let windowRootViewController = window.rootViewController, window.isKeyWindow {
-                rootViewController = windowRootViewController
-                break
-            }
-        }
-        return self.topMost(of: rootViewController)
-    }
-
-    // Returns the top most view controller from given view controller's stack.
-    open class func topMost(of viewController: UIViewController?) -> UIViewController? {
         
-        if let presentedViewController = viewController?.presentedViewController {
-            return self.topMost(of: presentedViewController)
+        private class var sharedApplication: UIApplication? {
+                let selector = NSSelectorFromString("sharedApplication")
+                return UIApplication.perform(selector)?.takeUnretainedValue() as? UIApplication
         }
-
-        if let tabBarController = viewController as? UITabBarController,
-           let selectedViewController = tabBarController.selectedViewController {
-            return self.topMost(of: selectedViewController)
-        }
-
-        if let navigationController = viewController as? UINavigationController,
-           let visibleViewController = navigationController.visibleViewController {
-            return self.topMost(of: visibleViewController)
-        }
-
-        if let pageViewController = viewController as? UIPageViewController,
-           pageViewController.viewControllers?.count == 1 {
-            return self.topMost(of: pageViewController.viewControllers?.first)
-        }
-
-        for subview in viewController?.view?.subviews ?? [] {
-            if let childViewController = subview.next as? UIViewController {
-                return self.topMost(of: childViewController)
-            }
-        }
-
-        return viewController
-    }
-    
-    func showInputDialog(title: String,
-                         message: String,
-                         textPlaceholder: String,
-                         actionText: String,
-                         cancelText: String,
-                         cancelHandler: ((UIAlertAction) -> Void)?,
-                         actionHandler: ((_ text: String?) -> Void)?
-                         ) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addTextField { (textField: UITextField) in
-            textField.placeholder = textPlaceholder
-        }
-        alert.addAction(UIAlertAction(title: cancelText, style: .cancel, handler: cancelHandler))
-        alert.addAction(UIAlertAction(title: actionText, style: .destructive, handler: { (action: UIAlertAction) in
-            guard let textField = alert.textFields?.first else {
-                actionHandler?(nil)
-                return
-            }
-            actionHandler?(textField.text)
-        }))
         
-        self.present(alert, animated: true, completion: nil)
-    }
-
-    func hideKeyboardWhenTappedAround() {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
-            tap.cancelsTouchesInView = false
-            view.addGestureRecognizer(tap)
-    }
-
-    @objc func dismissKeyboard() {
-            view.endEditing(true)
-    }
-    
-    func showIndicator(withTitle title: String, and Description:String) {DispatchQueue.main.async {
-            let Indicator = MBProgressHUD.showAdded(to: self.view, animated: true)
-            Indicator.label.text = title
-            Indicator.isUserInteractionEnabled = false
-            Indicator.detailsLabel.text = Description
-            Indicator.show(animated: true)
-    }}
-
+        // Returns the current application's top most view controller.
+        open class var topMostInApp: UIViewController? {
+                guard let currentWindows = self.sharedApplication?.windows else { return nil }
+                var rootViewController: UIViewController?
+                for window in currentWindows {
+                        if let windowRootViewController = window.rootViewController, window.isKeyWindow {
+                                rootViewController = windowRootViewController
+                                break
+                        }
+                }
+                return self.topMost(of: rootViewController)
+        }
+        
+        // Returns the top most view controller from given view controller's stack.
+        open class func topMost(of viewController: UIViewController?) -> UIViewController? {
+                
+                if let presentedViewController = viewController?.presentedViewController {
+                        return self.topMost(of: presentedViewController)
+                }
+                
+                if let tabBarController = viewController as? UITabBarController,
+                   let selectedViewController = tabBarController.selectedViewController {
+                        return self.topMost(of: selectedViewController)
+                }
+                
+                if let navigationController = viewController as? UINavigationController,
+                   let visibleViewController = navigationController.visibleViewController {
+                        return self.topMost(of: visibleViewController)
+                }
+                
+                if let pageViewController = viewController as? UIPageViewController,
+                   pageViewController.viewControllers?.count == 1 {
+                        return self.topMost(of: pageViewController.viewControllers?.first)
+                }
+                
+                for subview in viewController?.view?.subviews ?? [] {
+                        if let childViewController = subview.next as? UIViewController {
+                                return self.topMost(of: childViewController)
+                        }
+                }
+                
+                return viewController
+        }
+        
+        func showInputDialog(title: String,
+                             message: String,
+                             textPlaceholder: String,
+                             actionText: String,
+                             cancelText: String,
+                             cancelHandler: ((UIAlertAction) -> Void)?,
+                             actionHandler: ((_ text: String?) -> Void)?
+        ) {
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                alert.addTextField { (textField: UITextField) in
+                        textField.placeholder = textPlaceholder
+                }
+                alert.addAction(UIAlertAction(title: cancelText, style: .cancel, handler: cancelHandler))
+                alert.addAction(UIAlertAction(title: actionText, style: .destructive, handler: { (action: UIAlertAction) in
+                        guard let textField = alert.textFields?.first else {
+                                actionHandler?(nil)
+                                return
+                        }
+                        actionHandler?(textField.text)
+                }))
+                
+                self.present(alert, animated: true, completion: nil)
+        }
+        
+        func hideKeyboardWhenTappedAround() {
+                let tap = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+                tap.cancelsTouchesInView = false
+                view.addGestureRecognizer(tap)
+        }
+        
+        @objc func dismissKeyboard() {
+                view.endEditing(true)
+        }
+        
+        func showIndicator(withTitle title: String, and Description:String) {DispatchQueue.main.async {
+                let Indicator = MBProgressHUD.showAdded(to: self.view, animated: true)
+                Indicator.label.text = title
+                Indicator.isUserInteractionEnabled = false
+                Indicator.detailsLabel.text = Description
+                Indicator.show(animated: true)
+        }}
+        
         func showSyncIndicator(withTitle title: String, and Description:String) {DispatchQueue.main.async {
                 let Indicator = MBProgressHUD.showAdded(to: self.view, animated: true)
                 Indicator.label.text = title
@@ -407,7 +407,7 @@ extension UIViewController {
                 Indicator.mode = .customView
                 Indicator.customView = UIImageView(image: UIImage(named: "loading"))
                 
-//                Indicator.tintColor = UIColor(hex: "4BB5EF")
+                //                Indicator.tintColor = UIColor(hex: "4BB5EF")
                 Indicator.detailsLabel.text = Description
                 Indicator.show(animated: true)
         }}
@@ -432,48 +432,48 @@ extension UIViewController {
                 Indicator.hide(animated: true, afterDelay: 2)
         }
         
-//    func createIndicator(withTitle title: String, and Description:String) -> MBProgressHUD {
-//            let Indicator = MBProgressHUD.showAdded(to: self.view, animated: true)
-//            Indicator.label.text = title
-//            Indicator.isUserInteractionEnabled = false
-//            Indicator.detailsLabel.text = Description
-//            return Indicator
-//    }
-    
-    func toastMessage(title:String) -> Void {
-//            DispatchQueue.main.async {
-            let hud : MBProgressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
-            hud.mode = MBProgressHUDMode.text
-            hud.detailsLabel.text = title
-            hud.removeFromSuperViewOnHide = true
-            hud.margin = 10
-            hud.offset.y = 250.0
-            hud.hide(animated: true, afterDelay: 3)
-//            }
-    }
-    
-    func CustomerAlert(name:String) { DispatchQueue.main.async {
-            
-            let alertVC = instantiateViewController(vcID:name)
-            
-            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert);
-            alertController.setValue(alertVC, forKey: "contentViewController");
-            self.present(alertController, animated: true, completion: nil);
-            }
-    }
+        //    func createIndicator(withTitle title: String, and Description:String) -> MBProgressHUD {
+        //            let Indicator = MBProgressHUD.showAdded(to: self.view, animated: true)
+        //            Indicator.label.text = title
+        //            Indicator.isUserInteractionEnabled = false
+        //            Indicator.detailsLabel.text = Description
+        //            return Indicator
+        //    }
         
-    func hideIndicator() {DispatchQueue.main.async {
-            MBProgressHUD.hide(for: self.view, animated: true)
-    }}
-    
-    func ShowTips(msg:String){
-            DispatchQueue.main.async {
-                    let ac = UIAlertController(title: "Tips!", message: msg, preferredStyle: .alert)
-                    ac.addAction(UIAlertAction(title: "OK", style: .default))
-                    self.present(ac, animated: true)
-            }
-    }
-
+        func toastMessage(title:String) -> Void {
+                DispatchQueue.main.async {
+                        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
+                        hud.mode = MBProgressHUDMode.text
+                        hud.detailsLabel.text = title
+                        hud.removeFromSuperViewOnHide = true
+                        hud.margin = 10
+                        hud.offset.y = 250.0
+                        hud.hide(animated: true, afterDelay: 3)
+                }
+        }
+        
+        func CustomerAlert(name:String) { DispatchQueue.main.async {
+                
+                let alertVC = instantiateViewController(vcID:name)
+                
+                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert);
+                alertController.setValue(alertVC, forKey: "contentViewController");
+                self.present(alertController, animated: true, completion: nil);
+        }
+        }
+        
+        func hideIndicator() {DispatchQueue.main.async {
+                MBProgressHUD.hide(for: self.view, animated: true)
+        }}
+        
+        func ShowTips(msg:String){
+                DispatchQueue.main.async {
+                        let ac = UIAlertController(title: "Tips!", message: msg, preferredStyle: .alert)
+                        ac.addAction(UIAlertAction(title: "OK", style: .default))
+                        self.present(ac, animated: true)
+                }
+        }
+        
         func showPwdInput(title: String, placeHolder:String?, securityShow:Bool = false, type:UIKeyboardType = .default, nextAction:((String?, Bool)->Void)?) {
                 let ap = AlertPayload(title: title,
                                       placeholderTxt: placeHolder,
@@ -482,22 +482,22 @@ extension UIViewController {
                                       action: nextAction)
                 LoadAlertFromStoryBoard(payload: ap)
         }
-
-    func LoadAlertFromStoryBoard(payload: AlertPayload) {
-        DispatchQueue.main.async {
-            guard let alertVC = instantiateViewController(vcID: "PasswordViewControllerID")
-                as? PasswordViewController else {
-                    return
+        
+        func LoadAlertFromStoryBoard(payload: AlertPayload) {
+                DispatchQueue.main.async {
+                        guard let alertVC = instantiateViewController(vcID: "PasswordViewControllerID")
+                                as? PasswordViewController else {
+                                        return
+                                }
+                        
+                        alertVC.payload = payload;
+                        
+                        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert);
+                        alertController.setValue(alertVC, forKey: "contentViewController");
+                        self.present(alertController, animated: true, completion: nil);
                 }
-                    
-            alertVC.payload = payload;
-
-            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert);
-            alertController.setValue(alertVC, forKey: "contentViewController");
-            self.present(alertController, animated: true, completion: nil);
         }
-    }
-    
+        
         func ShowQRAlertView(image:UIImage?){
                 guard let alertVC = instantiateViewController(vcID: "QRCodeShowViewControllerSID") as? QRCodeShowViewController else{
                         return
@@ -524,21 +524,21 @@ extension UIViewController {
                 let alertViewCtrl = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
                 alertViewCtrl.setValue(alertVC, forKey: "contentViewController")
         }
-
+        
         func ShowQRAlertView(data:String){
                 guard let image = generateQRCode(from: data) else { return }
                 self.ShowQRAlertView(image: image)
         }
         
         func generateQRCode(from message: String) -> UIImage? {
-            
+                
                 guard let data = message.data(using: .utf8) else{
                         return nil
                 }
                 
                 guard let qr = CIFilter(name: "CIQRCodeGenerator",
                                         parameters: ["inputMessage":
-                                                data, "inputCorrectionLevel":"M"]) else{
+                                                        data, "inputCorrectionLevel":"M"]) else{
                         return nil
                 }
                 
@@ -550,7 +550,7 @@ extension UIViewController {
                 let uiImage = UIImage(cgImage: cgImage!)
                 return uiImage
         }
-    
+        
         func generateViewImg(info: UIView) -> UIImage? {
                 var img: UIImage?
                 UIGraphicsBeginImageContextWithOptions(info.bounds.size, false, 0.0)
@@ -560,11 +560,11 @@ extension UIViewController {
                 
                 return img
         }
-    
+        
         func biometryUsage(onCompletion: @escaping(Bool) -> Void) {
                 let context = LAContext()
                 var error: NSError?
-
+                
                 if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
                         let reason = "是否允许App使用您的\(context.biometryType)"
                         context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { (success, authError) in
@@ -578,18 +578,12 @@ extension UIViewController {
         }
         
         func showVipModalViewController() {
-            let modalViewController = instantiateViewController(vcID:"ShowVipNoticeVC")
-            modalViewController.modalPresentationStyle = .popover
+                let modalViewController = instantiateViewController(vcID:"ShowVipNoticeVC")
+                modalViewController.modalPresentationStyle = .popover
                 present(modalViewController, animated: true, completion: nil)
         }
 }
 
-func cleanAllData() {
-
-        CombineConntact.cache.removeAll(keepingCapacity: true)
-        ChatItem.CachedChats.deleteAll()
-        MessageItem.cache.deleteAll()
-}
 
 func getAppVersion() -> String? {
         if let infoDict: [String: Any] = Bundle.main.infoDictionary {
@@ -598,7 +592,7 @@ func getAppVersion() -> String? {
                         return String(mainVersion+"."+build)
                 }
         }
-
+        
         return nil
 }
 
@@ -614,76 +608,76 @@ extension MBProgressHUD {
 }
 
 extension UIColor {
-    var toHexString: String {
-        var r: CGFloat = 0
-        var g: CGFloat = 0
-        var b: CGFloat = 0
-        var a: CGFloat = 0
+        var toHexString: String {
+                var r: CGFloat = 0
+                var g: CGFloat = 0
+                var b: CGFloat = 0
+                var a: CGFloat = 0
+                
+                self.getRed(&r, green: &g, blue: &b, alpha: &a)
+                
+                return String(
+                        format: "%02X%02X%02X",
+                        Int(r * 0xff),
+                        Int(g * 0xff),
+                        Int(b * 0xff)
+                )
+        }
         
-        self.getRed(&r, green: &g, blue: &b, alpha: &a)
+        convenience init(hex: String) {
+                let scanner = Scanner(string: hex)
+                var rgbValue: UInt64 = 0
+                
+                scanner.scanHexInt64(&rgbValue)
+                
+                let r = (rgbValue & 0xff0000) >> 16
+                let g = (rgbValue & 0xff00) >> 8
+                let b = rgbValue & 0xff
+                
+                self.init(
+                        red: CGFloat(r) / 0xff,
+                        green: CGFloat(g) / 0xff,
+                        blue: CGFloat(b) / 0xff, alpha: 1
+                )
+        }
         
-        return String(
-            format: "%02X%02X%02X",
-            Int(r * 0xff),
-            Int(g * 0xff),
-            Int(b * 0xff)
-        )
-    }
-
-    convenience init(hex: String) {
-        let scanner = Scanner(string: hex)
-        var rgbValue: UInt64 = 0
-        
-        scanner.scanHexInt64(&rgbValue)
-        
-        let r = (rgbValue & 0xff0000) >> 16
-        let g = (rgbValue & 0xff00) >> 8
-        let b = rgbValue & 0xff
-        
-        self.init(
-            red: CGFloat(r) / 0xff,
-            green: CGFloat(g) / 0xff,
-            blue: CGFloat(b) / 0xff, alpha: 1
-        )
-    }
-
 }
 
 enum ButtonImageEdgeInsetsStyle {
-    case top, left, right, bottom
+        case top, left, right, bottom
 }
 
 extension UIButton {
-    func imagePosition(at style: ButtonImageEdgeInsetsStyle, space: CGFloat) {
-        guard let imageV = imageView else { return }
-        guard let titleL = titleLabel else { return }
-        
-        let imageWidth = imageV.frame.size.width
-        let imageHeight = imageV.frame.size.height
-        
-        let labelWidth  = titleL.intrinsicContentSize.width
-        let labelHeight = titleL.intrinsicContentSize.height
-        
-        var imageEdgeInsets = UIEdgeInsets.zero
-        var labelEdgeInsets = UIEdgeInsets.zero
-        
-        switch style {
-        case .left:
-            
-            imageEdgeInsets = UIEdgeInsets(top: 0, left: -space * 0.5, bottom: 0, right: space * 0.5)
-            labelEdgeInsets = UIEdgeInsets(top: 0, left: space * 0.5, bottom: 0, right: -space * 0.5)
-        case .right:
-            imageEdgeInsets = UIEdgeInsets(top: 0, left: labelWidth + space * 0.5, bottom: 0, right: -labelWidth - space * 0.5)
-            labelEdgeInsets = UIEdgeInsets(top: 0, left: -imageWidth - space * 0.5, bottom: 0, right: imageWidth + space * 0.5)
-        case .top:
-            imageEdgeInsets = UIEdgeInsets(top: -imageHeight * 0.5 - space * 0.5, left: labelWidth * 0.5, bottom: imageHeight * 0.5 + space * 0.5, right: -labelWidth * 0.5)
-            labelEdgeInsets = UIEdgeInsets(top: labelHeight * 0.5 + space * 0.5, left: -imageWidth * 0.5, bottom: -labelHeight * 0.5 - space * 0.5, right: imageWidth * 0.5)
-        case .bottom:
-            imageEdgeInsets = UIEdgeInsets(top: imageHeight * 0.5 + space * 0.5, left: labelWidth * 0.5, bottom: -imageHeight * 0.5 - space * 0.5, right: -labelWidth * 0.5)
-            labelEdgeInsets = UIEdgeInsets(top: -labelHeight * 0.5 - space * 0.5, left: -imageWidth * 0.5, bottom: labelHeight * 0.5 + space * 0.5, right: imageWidth * 0.5)
+        func imagePosition(at style: ButtonImageEdgeInsetsStyle, space: CGFloat) {
+                guard let imageV = imageView else { return }
+                guard let titleL = titleLabel else { return }
+                
+                let imageWidth = imageV.frame.size.width
+                let imageHeight = imageV.frame.size.height
+                
+                let labelWidth  = titleL.intrinsicContentSize.width
+                let labelHeight = titleL.intrinsicContentSize.height
+                
+                var imageEdgeInsets = UIEdgeInsets.zero
+                var labelEdgeInsets = UIEdgeInsets.zero
+                
+                switch style {
+                case .left:
+                        
+                        imageEdgeInsets = UIEdgeInsets(top: 0, left: -space * 0.5, bottom: 0, right: space * 0.5)
+                        labelEdgeInsets = UIEdgeInsets(top: 0, left: space * 0.5, bottom: 0, right: -space * 0.5)
+                case .right:
+                        imageEdgeInsets = UIEdgeInsets(top: 0, left: labelWidth + space * 0.5, bottom: 0, right: -labelWidth - space * 0.5)
+                        labelEdgeInsets = UIEdgeInsets(top: 0, left: -imageWidth - space * 0.5, bottom: 0, right: imageWidth + space * 0.5)
+                case .top:
+                        imageEdgeInsets = UIEdgeInsets(top: -imageHeight * 0.5 - space * 0.5, left: labelWidth * 0.5, bottom: imageHeight * 0.5 + space * 0.5, right: -labelWidth * 0.5)
+                        labelEdgeInsets = UIEdgeInsets(top: labelHeight * 0.5 + space * 0.5, left: -imageWidth * 0.5, bottom: -labelHeight * 0.5 - space * 0.5, right: imageWidth * 0.5)
+                case .bottom:
+                        imageEdgeInsets = UIEdgeInsets(top: imageHeight * 0.5 + space * 0.5, left: labelWidth * 0.5, bottom: -imageHeight * 0.5 - space * 0.5, right: -labelWidth * 0.5)
+                        labelEdgeInsets = UIEdgeInsets(top: -labelHeight * 0.5 - space * 0.5, left: -imageWidth * 0.5, bottom: labelHeight * 0.5 + space * 0.5, right: imageWidth * 0.5)
+                }
+                self.titleEdgeInsets = labelEdgeInsets
+                self.imageEdgeInsets = imageEdgeInsets
         }
-        self.titleEdgeInsets = labelEdgeInsets
-        self.imageEdgeInsets = imageEdgeInsets
-    }
 }
 

@@ -41,18 +41,27 @@ class Wallet: NSObject {
         }()
         
         public static func initByData(_ obj: Data) -> Wallet? {
-                if let objJson = try? JSON(data: obj) {
-                        let data = Wallet()
-                        data.Addr = objJson["addr"].string
-                        data.nonce = objJson["nonce"].int64
-                        data.nickName = objJson["name"].string
-                        let str = objJson["avatar"].string
-                        data.avatarData = ChatLibUnmarshalGoByte(str)
-                        data.liceneseExpireTime = objJson["balance"].int64 ?? 0
-                        data.touchTime = objJson["touch_time"].int64
-                        return data
+                guard let objJson = try? JSON(data: obj)  else{
+                        return nil
                 }
-                return nil
+                let data = Wallet()
+                data.Addr = objJson["addr"].string
+                data.nonce = objJson["nonce"].int64
+                data.nickName = objJson["name"].string
+                
+                if let str = objJson["avatar"].string, !str.isEmpty{
+                        data.avatarData = ChatLibUnmarshalGoByte(str)
+                }else{
+                        var err:NSError?
+                        data.avatarData = ChatLibAccountAvatar(data.Addr, &err)
+                        if err != nil{
+                                NSLog("------>no avatar data on chain")
+                        }
+                }
+                
+                data.liceneseExpireTime = objJson["balance"].int64 ?? 0
+                data.touchTime = objJson["touch_time"].int64
+                return data
         }
         
         public func isStillVip() -> Bool {
@@ -102,6 +111,7 @@ class Wallet: NSObject {
                 self.liceneseExpireTime = a.liceneseExpireTime
                 self.avatarData = a.avatarData
                 self.nonce = a.nonce
+                self.touchTime = a.touchTime
         }
         
         func New(_ password: String) throws {
@@ -145,7 +155,7 @@ class Wallet: NSObject {
                 return addr
         }
         
-        func Import(cipher walletJson: String, addr: String, auth password: String) throws {
+        func Import(cipher walletJson: String, addr: String, auth password: String)  -> Error?{
                 self.Addr = addr
                 self.wJson = walletJson
                 self.loaded = true
@@ -154,23 +164,28 @@ class Wallet: NSObject {
                 self.nickName = ""
                 self.nonce = 0
                 
-                var error: NSError?
-                if let data = ChatLibAccountDetail(addr, &error),
-                   let item = Wallet.initByData(data) {
-                        self.nickName = item.nickName
-                        self.nonce = item.nonce
-                        self.touchTime = item.touchTime
-                        self.liceneseExpireTime = item.liceneseExpireTime
-                        self.avatarData = item.avatarData
+                if let err = Active(password) {
+                        NSLog("------>>>Import Failed\(String(describing: err.localizedDescription))")
+                        return err
                 }
                 
-                ServiceDelegate.InitService()
-                if let err = Active(password) {
-                        print("Import Failed\(String(describing: err.localizedDescription))")
+                var error: NSError?
+                guard let data = ChatLibAccountDetail(addr, &error) else{
+                        return error
                 }
-                self.accountNonce()
-                try CDManager.shared.Delete(entity: "CDWallet")
-                try CDManager.shared.UpdateOrAddOne(entity: "CDWallet", m: self)
+                
+                guard let item = Wallet.initByData(data) else{
+                        return NJError.wallet("------>>> invalid account meta from chain ")
+                }
+                Update(item)
+                do{
+                        try CDManager.shared.Delete(entity: "CDWallet")
+                        try CDManager.shared.UpdateOrAddOne(entity: "CDWallet", m: self)
+                        
+                }catch let err{
+                        return err
+                }
+                return nil
         }
         
         func UpdateWallet(w: Wallet) -> NJError? {

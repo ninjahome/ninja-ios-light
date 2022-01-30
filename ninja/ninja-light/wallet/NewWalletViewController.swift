@@ -8,23 +8,23 @@
 import UIKit
 
 class NewWalletViewController: UIViewController {
-
-    @IBOutlet weak var password2: UITextField!
-    @IBOutlet weak var password1: UITextField!
-
-    @IBOutlet weak var importtext: UILabel!
-    @IBOutlet weak var importbtn: UIButton!
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.hideKeyboardWhenTappedAround()
         
-        if Wallet.shared.Addr != nil {
-            importtext.isHidden = true
-            importbtn.isHidden = true
+        @IBOutlet weak var password2: UITextField!
+        @IBOutlet weak var password1: UITextField!
+        
+        @IBOutlet weak var importtext: UILabel!
+        @IBOutlet weak var importbtn: UIButton!
+        
+        override func viewDidLoad() {
+                super.viewDidLoad()
+                self.hideKeyboardWhenTappedAround()
+                
+                if Wallet.shared.Addr != nil {
+                        importtext.isHidden = true
+                        importbtn.isHidden = true
+                }
         }
-    }
-
+        
         @IBAction func CreateWallet(_ sender: UIButton) {
                 guard let password = self.password1.text,password != ""else {
                         self.toastMessage(title: "Password can't be empty")
@@ -34,11 +34,11 @@ class NewWalletViewController: UIViewController {
                         self.toastMessage(title: "2 passwords are not same")
                         return
                 }
-
+                
                 if Wallet.shared.Addr != nil {
-                        cleanAllData()
+                        ServiceDelegate.cleanAllData()
                 }
-
+                
                 do {
                         try Wallet.shared.New(password)
                         ServiceDelegate.InitService()
@@ -68,29 +68,28 @@ extension NewWalletViewController: ScannerViewControllerDelegate {
                 }
                 if Wallet.shared.Addr == nil {
                         self.showPwdInput(title: "请输入密码导入账号", placeHolder: "请输入密码", securityShow: true) { (auth, isOK) in
-                                if let pwd = auth, isOK {
-                                        do {
-                                                
-                                                
-                                                WebsocketSrv.shared.Offline()
-
-                                                try Wallet.shared.Import(cipher: code, addr: addr, auth: pwd)
-                                                
-                                                //TODO:: show process bar and run following logic in back ground
-                                                if let err = GroupItem.syncAllGroupDataAtOnce(){
-                                                        NSLog("------>>> sync group metas when import account:", err.localizedDescription)
-                                                }
-                                                
-                                                CombineConntact.syncAllContactDataAtOnce()
-                                                ServiceDelegate.InitService()
-
-                                                afterWallet()
-
-                                                print("new wallet \(String(describing: Wallet.shared.Addr))")
-
-                                        } catch let err as NSError {
+                                guard let pwd = auth, isOK else{
+                                        return
+                                }
+                                
+                                self.showSyncIndicator(withTitle: "waiting", and: "loading account")
+                                ServiceDelegate.workQueue.async {
+                                        
+                                        WebsocketSrv.shared.Offline()
+                                        
+                                        if let err = Wallet.shared.Import(cipher: code, addr: addr, auth: pwd){
                                                 self.toastMessage(title: err.localizedDescription)
+                                                return
                                         }
+                                        
+                                        NSLog("------>>new wallet \(String(describing: Wallet.shared.Addr))")
+                                        
+                                        if let err = GroupItem.syncAllGroupDataAtOnce(){
+                                                NSLog("------>>> sync group metas when import account:", err.localizedDescription)
+                                        }
+                                        
+                                        CombineConntact.syncAllContactDataAtOnce()
+                                        afterWallet()
                                 }
                         }
                 }

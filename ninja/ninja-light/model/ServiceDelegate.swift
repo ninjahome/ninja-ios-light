@@ -10,6 +10,7 @@ import ChatLib
 
 
 class ServiceDelegate: NSObject {
+        
         public static let workQueue = DispatchQueue.init(label: "Serivce Queue", qos: .utility)
         public static let DevTypeIOS = 1
         public static let Debug = true
@@ -20,9 +21,16 @@ class ServiceDelegate: NSObject {
                 GroupItem.LocalSavedGroup()
                 MessageItem.loadUnread()
                 ChatItem.ReloadChatRoom()
+                
                 dateFormatterGet.timeStyle = .medium
         }
-        
+        public static func cleanAllData() {
+                CombineConntact.cache.removeAll()
+                ChatItem.CachedChats.deleteAll()
+                MessageItem.cache.deleteAll()
+                GroupItem.cache.removeAll()
+        }
+
         public static func InitAPP() {
                 
                 let endPoint = ConfigItem.loadEndPoint() ?? ""

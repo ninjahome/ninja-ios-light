@@ -49,7 +49,7 @@ extension ManageViewController: ScannerViewControllerDelegate {
                         self.showPwdInput(title: "请输入密码导入账号", placeHolder: "请输入密码") {[weak self] (auth, isOK) in
                                 if let pwd = auth, isOK {
                                         do {
-                                                cleanAllData()
+                                                ServiceDelegate.cleanAllData()
                                                 WebsocketSrv.shared.Offline()
                                                 try Wallet.shared.Import(cipher: code, addr: addr, auth: pwd)
                                                 ServiceDelegate.InitService()
