@@ -39,17 +39,26 @@ class NewWalletViewController: UIViewController {
                         ServiceDelegate.cleanAllData()
                 }
                 
-                do {
+                
+                self.showIndicator(withTitle: "", and: "creating")
+                
+                
+                ServiceDelegate.workQueue.async { do {
                         try Wallet.shared.New(password)
+                } catch let err as NSError{
+                        self.toastMessage(title: err.localizedDescription)
+                        self.hideIndicator()
+                        return
+                }
                         ServiceDelegate.InitService()
                         if isFirstUser() {
                                 setFirstUser()
                         }
-                        self.performSegue(withIdentifier: "CreateNewAccountSeg", sender: self)
-                } catch let err as NSError{
-                        self.toastMessage(title: err.localizedDescription)
+                        DispatchQueue.main.async {
+                                self.hideIndicator()
+                                self.performSegue(withIdentifier: "CreateNewAccountSeg", sender: self)
+                        }
                 }
-                
         }
         
         @IBAction func scanner(_ sender: UIButton) {

@@ -103,14 +103,18 @@ public func setFirstUser() {
 
 public func afterWallet() { DispatchQueue.main.async {
         if #available(iOS 13.0, *) {
-                let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
-                sceneDelegate.window!.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
+                guard let delegate =  UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else{
+                        print("------->>delegate-----is nil->s")
+                        return
+                }
+//                let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
+                delegate.window?.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
         } else {
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                 appDelegate.window?.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
                 appDelegate.window?.makeKeyAndVisible()
         }
-        }
+}
 }
 
 public func instantiateViewController(storyboardName: String, viewControllerIdentifier: String) -> UIViewController {

@@ -8,7 +8,6 @@
 import UIKit
 import UserNotifications
 
-@available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCenterDelegate {
         
         var window: UIWindow?

@@ -132,7 +132,6 @@ class Wallet: NSObject {
                 self.nickName = ""
                 self.liceneseExpireTime = 0
                 
-                try CDManager.shared.Delete(entity: "CDWallet")
                 try CDManager.shared.AddEntity(entity: "CDWallet", m: self)
         }
         

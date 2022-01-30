@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Photos
 
 class BackupGuideViewController: UIViewController {
         
@@ -29,17 +30,17 @@ class BackupGuideViewController: UIViewController {
         }
         
         @IBAction func backupQR(_ sender: UIButton) {
-                if qr != nil {
-                        UIImageWriteToSavedPhotosAlbum(qr!, nil, nil, nil)
-                        self.toastMessage(title: "Save success")
-                        afterWallet()
+                guard let data = qr else {
+                        self.toastMessage(title: "invalid Account, please reboot")
+                        return
                 }
-        }
-        
-        @IBAction func skipBackup(_ sender: UIButton) {
-//                self.performSegue(withIdentifier: "EndBackupSEG", sender: self)
+                UIImageWriteToSavedPhotosAlbum(data, nil, nil, nil)
+                self.toastMessage(title: "Save success")
                 afterWallet()
         }
         
-        
+        @IBAction func skipBackup(_ sender: UIButton) {
+                //                self.performSegue(withIdentifier: "EndBackupSEG", sender: self)
+                afterWallet()
+        }
 }
