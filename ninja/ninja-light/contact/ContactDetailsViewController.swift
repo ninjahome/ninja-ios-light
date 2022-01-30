@@ -147,11 +147,11 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
         }
         
         @IBAction func StartChat(_ sender: UIButton) {
-                guard self.uid.text != nil else{
+                guard let peerid = self.uid.text else{
                         return
                 }
                 let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController
-                vc.peerUid = self.uid.text!
+                vc.peerUid = peerid
                 
                 self.navigationController?.pushViewController(vc, animated: true)
         }
