@@ -103,9 +103,10 @@ class AuthorViewController: UIViewController {
                                 return
                         }
                         DispatchQueue.main.async {
-                                self.tips.text = "wallet open failed"
+//                                self.tips.text = "wallet open failed"
                                 self.hideIndicator()
                                 self.hideKeyboardWhenTappedAround()
+                                self.ShowTips(msg: "Invalid Password")
                         }
                 }
         }
