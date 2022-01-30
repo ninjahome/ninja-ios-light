@@ -19,9 +19,8 @@ class ConfirmTransferViewController: UIViewController {
         override func viewDidLoad() {
                 super.viewDidLoad()
                 transferAddr.text = transAddress
-                let expireDays = AgentService.shared.expireDays
+                let expireDays = AgentService.shared.expireDays 
                 expire.text = String(format: "剩余激活天数 %.2f 天", expireDays)
-                
                 self.hideKeyboardWhenTappedAround()
         }
         
