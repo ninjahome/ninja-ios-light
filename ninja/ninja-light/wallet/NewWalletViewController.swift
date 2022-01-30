@@ -60,37 +60,41 @@ class NewWalletViewController: UIViewController {
 }
 
 extension NewWalletViewController: ScannerViewControllerDelegate {
+        
         func codeDetected(code: String) {
-                NSLog("New wallet code\(code)")
+                
+                NSLog("------>>>New wallet code\(code)")
                 guard let addr = Wallet.shared.serializeWalletJson(cipher: code) else {
                         self.toastMessage(title: "invaild ninja wallet address")
                         return
                 }
-                if Wallet.shared.Addr == nil {
-                        self.showPwdInput(title: "请输入密码导入账号", placeHolder: "请输入密码", securityShow: true) { (auth, isOK) in
-                                guard let pwd = auth, isOK else{
+                
+                self.showPwdInput(title: "请输入密码导入账号", placeHolder: "请输入密码", securityShow: true) { (auth, isOK) in
+                        guard let pwd = auth, isOK else{
+                                return
+                        }
+                        
+                        self.showSyncIndicator(withTitle: "waiting", and: "loading account")
+                        ServiceDelegate.workQueue.async {
+                                
+                                WebsocketSrv.shared.Offline()
+                                
+                                if let err = Wallet.shared.Import(cipher: code, addr: addr, auth: pwd){
+                                        self.toastMessage(title: err.localizedDescription)
+                                        self.hideIndicator()
                                         return
                                 }
                                 
-                                self.showSyncIndicator(withTitle: "waiting", and: "loading account")
-                                ServiceDelegate.workQueue.async {
-                                        
-                                        WebsocketSrv.shared.Offline()
-                                        
-                                        if let err = Wallet.shared.Import(cipher: code, addr: addr, auth: pwd){
-                                                self.toastMessage(title: err.localizedDescription)
-                                                return
-                                        }
-                                        
-                                        NSLog("------>>new wallet \(String(describing: Wallet.shared.Addr))")
-                                        
-                                        if let err = GroupItem.syncAllGroupDataAtOnce(){
-                                                NSLog("------>>> sync group metas when import account:", err.localizedDescription)
-                                        }
-                                        
-                                        CombineConntact.syncAllContactDataAtOnce()
-                                        afterWallet()
+                                NSLog("------>>>new wallet \(String(describing: Wallet.shared.Addr))")
+                                
+                                if let err = GroupItem.syncAllGroupDataAtOnce(){
+                                        NSLog("------>>> sync group metas when import account:", err.localizedDescription)
                                 }
+                                
+                                CombineConntact.syncAllContactDataAtOnce()
+                                
+                                self.hideIndicator()
+                                afterWallet()
                         }
                 }
         }
