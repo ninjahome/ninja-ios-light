@@ -24,7 +24,7 @@
                                 <viewLayoutGuide key="contentLayoutGuide" id="SDY-kZ-sPt"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="HIq-BD-8lO"/>
                             </scrollView>
-                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="5" translatesAutoresizingMaskIntoConstraints="NO" id="J7g-KE-PXG">
+                            <pageControl opaque="NO" contentMode="scaleToFill" highlighted="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" numberOfPages="5" currentPage="1" translatesAutoresizingMaskIntoConstraints="NO" id="J7g-KE-PXG">
                                 <rect key="frame" x="132" y="816" width="150.5" height="26"/>
                                 <color key="pageIndicatorTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="currentPageIndicatorTintColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -5933,7 +5933,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="6uQ-pj-Sdx"/>
         <segue reference="acM-Ky-S9y"/>
-        <segue reference="0Ks-w5-oBW"/>
+        <segue reference="UFj-KF-hEb"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="!!" width="22" height="22"/>
