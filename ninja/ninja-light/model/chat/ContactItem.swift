@@ -19,6 +19,10 @@ class ContactItem:NSObject{
         //TODO:: sort by alphabet
         var sortPinyin:String?
         
+        override init(){
+                super.init()
+        }
+        
         init(pid:String, alias:String?, remark:String?){
                 super.init()
                 self.uid = pid
