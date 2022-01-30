@@ -90,8 +90,10 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 }
                 
                 self.showIndicator(withTitle: "waiting", and: "saving contact")
+                let alias = self.nickTextField.text
+                let remark = self.memoTextView.text
                 ServiceDelegate.workQueue.async {
-                        let err = obj.updateByUI(alias:self.nickTextField.text, remark:self.memoTextView.text)
+                        let err = obj.updateByUI(alias: alias, remark:  remark)
                         self.closeOrShowErrorTips(err:err)
                 }
         }
@@ -146,8 +148,6 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 self.hideIndicator()
                 
                 guard let e = err else{
-                        NotificationCenter.default.post(name:NotifyContactChanged,
-                                                        object: nil, userInfo:nil)
                         self.dismiss(animated: true)
                         self.navigationController?.popViewController(animated: true)
                         return

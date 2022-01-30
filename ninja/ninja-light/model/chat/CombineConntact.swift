@@ -39,11 +39,11 @@ class CombineConntact: NSObject{
                 
                 var flag:Int8 = 0
                 if contact.alias != alias{
-                        flag = (flag & 0x1)
+                        flag = (flag | 0x1)
                         contact.alias = alias ?? ""
                 }
                 if contact.remark != remark{
-                        flag = (flag & 0x2)
+                        flag = (flag | 0x2)
                         contact.remark = remark ?? ""
                 }
                 
@@ -74,18 +74,20 @@ class CombineConntact: NSObject{
                 guard let contact = self.contact else{
                         return NJError.contact("this contact is not on chain")
                 }
+                
                 if let err =  contact.removeFromChainAndLocalDB(){
                         return err
-                        
                 }
+                
+                CombineConntact.cache.removeValue(forKey: self.peerID)
+                NotificationCenter.default.post(name:NotifyContactChanged,
+                                                object: nil, userInfo:nil)
                 
                 //TODO:: need a full test
                 ChatItem.remove(self.peerID)
                 
                 //TODO:: need a full test
                 MessageItem.removeRead(self.peerID)
-                
-                CombineConntact.cache.removeValue(forKey: self.peerID)
                 
                 return nil
         }
