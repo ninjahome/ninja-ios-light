@@ -2724,9 +2724,9 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x000099909….nokjoo" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0XB-yp-pa8">
-                                        <rect key="frame" x="80" y="122.5" width="160" height="18"/>
+                                        <rect key="frame" x="80" y="122.5" width="234" height="18"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="160" id="kYa-no-F3X"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="100" constant="160" id="kYa-no-F3X"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.52549019610000003" green="0.52549019610000003" blue="0.54117647059999996" alpha="1" colorSpace="calibratedRGB"/>
@@ -2758,22 +2758,26 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7dY-VZ-Unb">
-                                        <rect key="frame" x="248" y="122.5" width="14" height="18"/>
+                                        <rect key="frame" x="322" y="145.5" width="28" height="36"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="14" id="cXi-ND-Q97"/>
-                                            <constraint firstAttribute="height" constant="18" id="hTz-7O-FxN"/>
+                                            <constraint firstAttribute="width" constant="28" id="cXi-ND-Q97"/>
+                                            <constraint firstAttribute="height" constant="36" id="hTz-7O-FxN"/>
                                         </constraints>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" title=" " image="copy_icon-1"/>
+                                        <state key="normal" title=" CopyButton" backgroundImage="copy_icon-1"/>
                                         <connections>
                                             <action selector="copyContactAddr:" destination="f4X-jQ-OkL" eventType="touchUpInside" id="H9l-7d-Ohw"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d16-gw-WDC">
-                                        <rect key="frame" x="362" y="120.5" width="32" height="22"/>
+                                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d16-gw-WDC">
+                                        <rect key="frame" x="362" y="147.5" width="32" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="32" id="kNP-fk-nk5"/>
+                                            <constraint firstAttribute="height" constant="32" id="lMg-4r-n9k"/>
+                                        </constraints>
                                         <color key="tintColor" red="0.52549019610000003" green="0.52549019610000003" blue="0.54117647059999996" alpha="1" colorSpace="calibratedRGB"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" title="&gt;" image="QR_icon"/>
+                                        <state key="normal" title="QRButton" backgroundImage="QR_icon"/>
                                         <connections>
                                             <action selector="contactQRAlert:" destination="f4X-jQ-OkL" eventType="touchUpInside" id="1Qz-Y8-4VF"/>
                                         </connections>
@@ -2781,9 +2785,9 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstItem="7dY-VZ-Unb" firstAttribute="leading" secondItem="0XB-yp-pa8" secondAttribute="trailing" constant="8" id="6lN-Gq-Pjv"/>
                                     <constraint firstItem="qhh-eI-X4T" firstAttribute="top" secondItem="Zoy-eH-exG" secondAttribute="bottom" constant="10" id="7JO-mE-pKZ"/>
-                                    <constraint firstItem="7dY-VZ-Unb" firstAttribute="centerY" secondItem="0XB-yp-pa8" secondAttribute="centerY" id="LVm-qv-pvx"/>
+                                    <constraint firstItem="d16-gw-WDC" firstAttribute="leading" secondItem="7dY-VZ-Unb" secondAttribute="trailing" constant="12" id="Bwx-J3-UNX"/>
+                                    <constraint firstItem="7dY-VZ-Unb" firstAttribute="top" secondItem="0XB-yp-pa8" secondAttribute="bottom" constant="5" id="LVm-qv-pvx"/>
                                     <constraint firstItem="Zoy-eH-exG" firstAttribute="top" secondItem="K0R-ek-idf" secondAttribute="top" constant="40" id="NG1-5c-eSc"/>
                                     <constraint firstItem="fmu-oj-ltv" firstAttribute="leading" secondItem="qhh-eI-X4T" secondAttribute="trailing" constant="8" id="Pkp-48-ePk"/>
                                     <constraint firstItem="d16-gw-WDC" firstAttribute="centerY" secondItem="7dY-VZ-Unb" secondAttribute="centerY" id="Q7d-Je-vvB"/>
@@ -2791,6 +2795,7 @@
                                     <constraint firstItem="Zoy-eH-exG" firstAttribute="leading" secondItem="K0R-ek-idf" secondAttribute="leading" constant="20" id="W5g-Vk-6ET"/>
                                     <constraint firstItem="ZMb-zn-YJH" firstAttribute="top" secondItem="yJ4-Qc-Ihw" secondAttribute="bottom" constant="2" id="YQn-V8-nch"/>
                                     <constraint firstAttribute="height" constant="200" id="e8h-JW-NhM"/>
+                                    <constraint firstItem="0XB-yp-pa8" firstAttribute="trailing" secondItem="7dY-VZ-Unb" secondAttribute="leading" constant="-8" id="eAt-Bo-j9H"/>
                                     <constraint firstItem="yJ4-Qc-Ihw" firstAttribute="top" secondItem="K0R-ek-idf" secondAttribute="top" constant="40" id="fKi-VZ-XFq"/>
                                     <constraint firstItem="0XB-yp-pa8" firstAttribute="leading" secondItem="qhh-eI-X4T" secondAttribute="trailing" constant="8" symbolic="YES" id="h9I-JS-bms"/>
                                     <constraint firstAttribute="trailing" secondItem="d16-gw-WDC" secondAttribute="trailing" constant="20" id="hgo-gg-T6I"/>

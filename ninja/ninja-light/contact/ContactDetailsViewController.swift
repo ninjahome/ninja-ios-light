@@ -20,7 +20,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
         @IBOutlet weak var memoTextView: UITextView!
         
         var peerID:String = ""
-        private var contactData:CombineConntact?
+        var contactData:CombineConntact?
         
         var _delegate: UIGestureRecognizerDelegate?
         
@@ -50,13 +50,22 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                                                        object: nil)
                 
                 self.showIndicator(withTitle: "waiting", and: "loading contact")
+                
                 ServiceDelegate.workQueue.async {
-                        self.contactData = CombineConntact.LoadOneContact(pid: self.peerID)
+                        
+                        guard let data = CombineConntact.LoadOneContact(pid: self.peerID)else{
+                                self.hideIndicator()
+                                return
+                        }
+                        
+                        self.contactData = data
                         DispatchQueue.main.async {
                                 self.hideIndicator()
                                 self.populateView()
                         }
                 }
+                
+                self.populateView()
         }
         
         deinit {

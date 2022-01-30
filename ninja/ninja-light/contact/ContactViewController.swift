@@ -29,7 +29,7 @@ class ContactViewController: UIViewController{
                 NotificationCenter.default.removeObserver(self)
         }
         
-        @objc func notifiAction(notification:NSNotification){DispatchQueue.main.async { 
+        @objc func notifiAction(notification:NSNotification){DispatchQueue.main.async {
                 self.tableview.reloadData()
                 self.dataArry =  CombineConntact.CacheArray()
         }
@@ -53,17 +53,17 @@ extension ContactViewController:UITableViewDelegate, UITableViewDataSource{
         
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
                 self.selectedRow = indexPath.row
-                self.NewCodeStr = nil
+                self.NewCodeStr = nil//TODO:: test
                 
                 let vc = instantiateViewController(vcID: "ContactDetailsVC") as! ContactDetailsViewController
                 
                 if let itemid = self.NewCodeStr {
                         vc.peerID = itemid
-
                 }
                 
                 if let idx = self.selectedRow {
-                        vc.peerID = self.dataArry[idx].peerID
+                        vc.contactData = self.dataArry[idx]
+                        vc.peerID = vc.contactData!.peerID
                 }
                 
                 self.navigationController?.pushViewController(vc, animated: true)
