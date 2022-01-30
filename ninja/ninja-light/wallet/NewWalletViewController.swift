@@ -74,28 +74,7 @@ extension NewWalletViewController: ScannerViewControllerDelegate {
                                 return
                         }
                         
-                        self.showSyncIndicator(withTitle: "waiting", and: "loading account")
-                        ServiceDelegate.workQueue.async {
-                                
-                                WebsocketSrv.shared.Offline()
-                                
-                                if let err = Wallet.shared.Import(cipher: code, addr: addr, auth: pwd){
-                                        self.toastMessage(title: err.localizedDescription)
-                                        self.hideIndicator()
-                                        return
-                                }
-                                
-                                NSLog("------>>>new wallet \(String(describing: Wallet.shared.Addr))")
-                                
-                                if let err = GroupItem.syncAllGroupDataAtOnce(){
-                                        NSLog("------>>> sync group metas when import account:", err.localizedDescription)
-                                }
-                                
-                                CombineConntact.syncAllContactDataAtOnce()
-                                
-                                self.hideIndicator()
-                                afterWallet()
-                        }
+                        ServiceDelegate.ImportNewAccount(wJson: code, addr: addr, pwd: pwd, parent: self, callback: afterWallet)
                 }
         }
 }

@@ -8,13 +8,13 @@
 import UIKit
 
 class ManageViewController: UIViewController {
-
+        
         override func viewDidLoad() {
                 super.viewDidLoad()
                 let item = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
                 self.navigationItem.backBarButtonItem = item
         }
-    
+        
         @IBAction func exportAccount(_ sender: UIButton) {
                 if let walletJson = Wallet.shared.wJson,
                    let walletImg = generateQRCode(from: walletJson) {
@@ -35,31 +35,27 @@ class ManageViewController: UIViewController {
                 let vc = instantiateViewController(vcID: "CreateWalletVC") as! NewWalletViewController
                 self.navigationController?.pushViewController(vc, animated: true)
         }
-    
+        
 }
 
 extension ManageViewController: ScannerViewControllerDelegate {
+        
         func codeDetected(code: String) {
-                NSLog("\(code)")
+                
+                NSLog("------>>>\(code)")
                 guard let addr = Wallet.shared.serializeWalletJson(cipher: code) else {
                         self.toastMessage(title: "invaild ninja wallet address")
                         return
                 }
-                if Wallet.shared.Addr != nil {
-                        self.showPwdInput(title: "请输入密码导入账号", placeHolder: "请输入密码") {[weak self] (auth, isOK) in
-                                if let pwd = auth, isOK {
-                                        do {
-                                                ServiceDelegate.cleanAllData()
-                                                WebsocketSrv.shared.Offline()
-                                                try Wallet.shared.Import(cipher: code, addr: addr, auth: pwd)
-                                                ServiceDelegate.InitService()
-                                                self?.navigationController?.popToRootViewController(animated: true)
-                                                print("import wallet \(String(describing: Wallet.shared.Addr))")
-
-                                        } catch let err as NSError {
-                                                self?.toastMessage(title: err.localizedDescription)
-                                        }
-                                }
+                
+                self.showPwdInput(title: "请输入密码导入账号", placeHolder: "请输入密码") {[weak self] (auth, isOK) in
+                        guard let pwd = auth, isOK else{
+                                return
+                        }
+                        
+                        ServiceDelegate.ImportNewAccount(wJson: code, addr: addr, pwd: pwd, parent: self!) {
+//                                ServiceDelegate.InitService()//TODO:: need reload old message?
+                                self?.navigationController?.popToRootViewController(animated: true)
                         }
                 }
         }

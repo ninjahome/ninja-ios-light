@@ -7,6 +7,7 @@
 
 import Foundation
 import ChatLib
+import UIKit
 
 
 class ServiceDelegate: NSObject {
@@ -15,22 +16,6 @@ class ServiceDelegate: NSObject {
         public static let DevTypeIOS = 1
         public static let Debug = true
         
-        
-        public static func InitService() {
-                CombineConntact.ReloadSavedContact()
-                GroupItem.LocalSavedGroup()
-                MessageItem.loadUnread()
-                ChatItem.ReloadChatRoom()
-                
-                dateFormatterGet.timeStyle = .medium
-        }
-        public static func cleanAllData() {
-                CombineConntact.cache.removeAll()
-                ChatItem.CachedChats.deleteAll()
-                MessageItem.cache.deleteAll()
-                GroupItem.cache.removeAll()
-        }
-
         public static func InitAPP() {
                 
                 let endPoint = ConfigItem.loadEndPoint() ?? ""
@@ -63,6 +48,25 @@ class ServiceDelegate: NSObject {
                 }
                 return newData
         }
+}
+extension ServiceDelegate{
+        
+        public static func InitService() {
+                CombineConntact.ReloadSavedContact()
+                GroupItem.LocalSavedGroup()
+                MessageItem.loadUnread()
+                ChatItem.ReloadChatRoom()//TODO:: update chat item by new loaded message item queue
+                
+                dateFormatterGet.timeStyle = .medium
+        }
+        
+        public static func cleanAllData() {
+                CombineConntact.cache.removeAll()
+                ChatItem.CachedChats.deleteAll()
+                MessageItem.cache.deleteAll()
+                GroupItem.cache.removeAll()
+        }
+
         
         public static func SyncChainData(data:Data){
                 workQueue.async {
@@ -76,6 +80,37 @@ class ServiceDelegate: NSObject {
                         
                         _ = GroupItem.updatePartialGroup()
                         CombineConntact.updatePatialContacts()
+                }
+        }
+        
+        
+        public static func ImportNewAccount(wJson:String, addr:String, pwd:String, parent:UIViewController, callback:(()->Void)?){
+                
+                parent.showSyncIndicator(withTitle: "waiting", and: "importing account")
+                workQueue.async {
+                        
+                        WebsocketSrv.shared.Offline()
+                        
+                        if let err = Wallet.shared.Import(cipher: wJson, addr: addr, auth: pwd){
+                                parent.toastMessage(title: err.localizedDescription)
+                                parent.hideIndicator()
+                                return
+                        }
+                        
+                        NSLog("------>>>new wallet \(String(describing: Wallet.shared.Addr))")
+                        ServiceDelegate.cleanAllData()
+                        
+                        if let err = GroupItem.syncAllGroupDataAtOnce(){
+                                NSLog("------>>> sync group metas when import account:", err.localizedDescription)
+                        }
+                        
+                        CombineConntact.syncAllContactDataAtOnce()
+                        
+                        parent.hideIndicator()
+                        guard let cb = callback else{
+                                return
+                        }
+                        cb()
                 }
         }
 }
