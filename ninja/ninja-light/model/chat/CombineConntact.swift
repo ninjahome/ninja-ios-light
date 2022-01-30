@@ -10,6 +10,7 @@ import SwiftyJSON
 import ChatLib
 
 class CombineConntact: NSObject{
+        
         public static var cache:[String:CombineConntact]=[:]
         
         var contact:ContactItem?
