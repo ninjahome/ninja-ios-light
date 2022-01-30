@@ -3304,7 +3304,7 @@
                                         </constraints>
                                         <state key="normal" image="&gt;_icon"/>
                                         <connections>
-                                            <segue destination="LY8-8I-Hgk" kind="show" id="uO4-5T-IUe"/>
+                                            <segue destination="LY8-8I-Hgk" kind="show" identifier="ShowAuthorByContactViewControllerSEG" id="uO4-5T-IUe"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -3347,6 +3347,10 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="contactShowView" destination="7dF-zN-mmk" id="JuZ-XB-Wan"/>
+                        <outlet property="friendIDView" destination="WyQ-l0-EfU" id="7my-3T-Fao"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G99-Dt-d98" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
