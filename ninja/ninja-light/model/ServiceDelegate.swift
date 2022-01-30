@@ -9,12 +9,26 @@ import Foundation
 import ChatLib
 import UIKit
 
-
 class ServiceDelegate: NSObject {
         
         public static let workQueue = DispatchQueue.init(label: "Serivce Queue", qos: .utility)
         public static let DevTypeIOS = 1
         public static let Debug = true
+            
+        public static func getAgentStatus() -> AgentStatus {
+
+                let balance = Wallet.shared.getBalance()
+
+                if balance <= 0 {
+                        return .initial
+                }
+
+                if balance < 5 {
+                        return .almostExpire
+                }
+
+                return .activated
+        }
         
         public static func InitAPP() {
                 
@@ -47,6 +61,12 @@ class ServiceDelegate: NSObject {
                         return nil
                 }
                 return newData
+        }
+        
+        public static func transferLicense(to addr: String, days: Int) -> NSError? {
+                var err:NSError?
+                ChatLibTransferLicense(addr, days, &err)
+                return err
         }
 }
 extension ServiceDelegate{

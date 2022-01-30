@@ -59,7 +59,7 @@ class WalletViewController: UITableViewController {
         }
         
         private func balanceStatusView() {
-                let status = AgentService.shared.getAgentStatus()
+                let status = ServiceDelegate.getAgentStatus()
                         self.agentBtn.currentStatus = status
 
 //                        switch status {
@@ -88,18 +88,19 @@ class WalletViewController: UITableViewController {
                         self.avatar.type = AvatarButtonType.wallet
                         self.avatar.avaInfo = nil
 
-                        let status = AgentService.shared.getAgentStatus()
+                        let status = ServiceDelegate.getAgentStatus()
                         self.agentBtn.currentStatus = status
+                        let balance = Wallet.shared.getBalance()
                         switch status {
                         case .activated:
-                                self.agentTime.text = String(format: "%.2f", AgentService.shared.expireDays)
+                                self.agentTime.text = String(format: "%.2f", balance)
                         
                                 self.agentTime.font = UIFont(name: "", size: 20)
                                 self.vipBackground.layer.contents = UIImage(named: "VIP_BGC")?.cgImage
                                 self.agentBtn.setImage(nil, for: .normal)
                                 self.vipFlag(show: true)
                         case .almostExpire:
-                                self.agentTime.text = String(format: "%.2f", AgentService.shared.expireDays)
+                                self.agentTime.text = String(format: "%.2f", balance)
                                 self.agentTime.font = UIFont(name: "", size: 20)
                                 self.vipBackground.layer.contents = UIImage(named: "VIP_BGC")?.cgImage
                         

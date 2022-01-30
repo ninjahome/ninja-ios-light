@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum AgentStatus {
+public enum AgentStatus {
         case initial, activated, almostExpire
 }
 

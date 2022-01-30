@@ -19,14 +19,14 @@ class ConfirmTransferViewController: UIViewController {
         override func viewDidLoad() {
                 super.viewDidLoad()
                 transferAddr.text = transAddress
-                let expireDays = AgentService.shared.expireDays 
+                let expireDays = Wallet.shared.getBalance()
                 expire.text = String(format: "剩余激活天数 %.2f 天", expireDays)
                 self.hideKeyboardWhenTappedAround()
         }
         
         @IBAction func transferAll(_ sender: UIButton) {
                 
-                let expireDays = AgentService.shared.expireDays
+                let expireDays = Wallet.shared.getBalance()
                 inputTransferDays.text = String(expireDays )
         }
         
@@ -39,14 +39,15 @@ class ConfirmTransferViewController: UIViewController {
                         return
                 }
                 
-                if AgentService.shared.transferLicense(to: addr, days: dayInt) {
-                        
-                        self.toastMessage(title: "success")
-                        self.navigationController?.popToRootViewController(animated: true)
-                } else {
-                        
-                        self.toastMessage(title: "faild")
-                }
+                self.showIndicator(withTitle: "", and: "trasforing")
+                ServiceDelegate.workQueue.async {
+                        if let err = ServiceDelegate.transferLicense(to: addr, days: dayInt) {
+                                self.toastMessage(title: "faild[\(err.localizedDescription)]")
+                                return
+                        }
+                        DispatchQueue.main.async {
+                                self.navigationController?.popToRootViewController(animated: true)
+                        }}
                 
         }
         

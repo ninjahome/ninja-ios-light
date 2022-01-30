@@ -68,6 +68,15 @@ class Wallet: NSObject {
                 return Int64(Date().timeIntervalSince1970) < self.liceneseExpireTime
         }
         
+        public func getBalance()->Double{
+
+                let expireDays = ChatLibConvertBalance(Int(self.liceneseExpireTime))
+                if expireDays <= 0{
+                        return 0.0
+                }
+                return expireDays
+        }
+        
         func getLatestWallt() {
                 var error: NSError?
                 guard let data = ChatLibAccountDetail(self.Addr!, &error) else {

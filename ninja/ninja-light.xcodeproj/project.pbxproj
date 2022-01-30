@@ -47,7 +47,6 @@
 		08781E93275F0A120084D80A /* MsgViewController+AudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08781E92275F0A120084D80A /* MsgViewController+AudioView.swift */; };
 		0879444826E6FFC70077DEDC /* AvatarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0879444726E6FFC70077DEDC /* AvatarButton.swift */; };
 		087B57F226DF1F1400591F8D /* AgentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087B57F126DF1F1400591F8D /* AgentButton.swift */; };
-		087B57F526DF529D00591F8D /* AgentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087B57F426DF529D00591F8D /* AgentService.swift */; };
 		087B57F826E1E15900591F8D /* AgentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087B57F726E1E15900591F8D /* AgentViewController.swift */; };
 		087BD8132658AF430009459C /* ManageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087BD8122658AF430009459C /* ManageViewController.swift */; };
 		0886B1AF2772BEC500257C15 /* AccountItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0886B1AE2772BEC500257C15 /* AccountItem.swift */; };
@@ -175,7 +174,6 @@
 		08781E92275F0A120084D80A /* MsgViewController+AudioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MsgViewController+AudioView.swift"; sourceTree = "<group>"; };
 		0879444726E6FFC70077DEDC /* AvatarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarButton.swift; sourceTree = "<group>"; };
 		087B57F126DF1F1400591F8D /* AgentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentButton.swift; sourceTree = "<group>"; };
-		087B57F426DF529D00591F8D /* AgentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentService.swift; sourceTree = "<group>"; };
 		087B57F726E1E15900591F8D /* AgentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentViewController.swift; sourceTree = "<group>"; };
 		087BD8122658AF430009459C /* ManageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageViewController.swift; sourceTree = "<group>"; };
 		087BD817265B4ACE0009459C /* ninja-light.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ninja-light.entitlements"; sourceTree = "<group>"; };
@@ -495,7 +493,6 @@
 				69F8D106261AA7FE009D7AF3 /* CoreData.swift */,
 				69B8C0C2261C703800B4E4AC /* WebsocketSrv.swift */,
 				69B8C0C7261C8AD100B4E4AC /* ServiceDelegate.swift */,
-				087B57F426DF529D00591F8D /* AgentService.swift */,
 				080A1169275716E900931B8C /* ConfigItem.swift */,
 				0860D5C627634F7900E53FDA /* FileManager+Extension.swift */,
 			);
@@ -659,7 +656,6 @@
 				6953EAF82622C12F008EC2F0 /* AuthorViewController.swift in Sources */,
 				087B57F226DF1F1400591F8D /* AgentButton.swift in Sources */,
 				0818D8912701665A002BF3B9 /* ConfirmTransferViewController.swift in Sources */,
-				087B57F526DF529D00591F8D /* AgentService.swift in Sources */,
 				080A116A275716E900931B8C /* ConfigItem.swift in Sources */,
 				0825C21A26CB6B40003E0EF3 /* AvatarCollectionCell.swift in Sources */,
 				08781E8F275F09DE0084D80A /* MsgViewController+MapView.swift in Sources */,
