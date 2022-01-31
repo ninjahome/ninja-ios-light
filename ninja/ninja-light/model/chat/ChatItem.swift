@@ -64,6 +64,7 @@ class ChatItem: NSObject{
                         c.cObj?.unreadNo = Int32(c.unreadNo)
                         c.cObj?.lastMsg = c.LastMsg
                         c.cObj?.updateTime = time
+                        CDManager.shared.saveContext()
                 }else{
                         chat = ChatItem.init(id: pid, time: time, msg: msg, isGrp: isGrp, unread:no)
                         let owner = Wallet.shared.Addr!
@@ -108,6 +109,7 @@ class ChatItem: NSObject{
                 
                 self.unreadNo = 0
                 self.cObj?.unreadNo = 0
+                CDManager.shared.saveContext()
         }
         
         public static func remove(_ pid:String) {
