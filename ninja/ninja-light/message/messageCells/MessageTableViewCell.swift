@@ -18,6 +18,9 @@ class MessageTableViewCell: UITableViewCell {
         
         @IBOutlet weak var spinner: UIActivityIndicatorView?
         
+        let inMsgImg = UIImage(named: "white")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
+        let ourImg = UIImage(named: "babycolor")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
+        
         override func prepareForReuse() {
                 super.prepareForReuse()
                 spinner?.stopAnimating()
@@ -34,14 +37,15 @@ class MessageTableViewCell: UITableViewCell {
         
         func updateMessageCell (by message: MessageItem) {
                 
-                if let msgText = message.payload as? String {
-                        msgLabel.text = msgText
-                }
-                
                 guard let from = message.from else {
                         return
                 }
                 
+                guard let msgText = message.payload as? String else{
+                        msgLabel.text = "Invalid Text MSG"
+                        return
+                }
+                msgLabel.text = msgText
                 if message.isOut {
                         switch message.status {
                         case .faild:
@@ -51,18 +55,13 @@ class MessageTableViewCell: UITableViewCell {
                         default:
                                 spinner?.stopAnimating()
                         }
-                        
-                        let img = UIImage(named: "white")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
-                        msgBackgroundView.image = img
+                        msgBackgroundView.image = inMsgImg
                         avatar.type = AvatarButtonType.wallet
                         avatar.avaInfo = nil
                         nickname.text = Wallet.shared.nickName ?? Wallet.GenAvatarText()
                 } else {
-                        let img = UIImage(named: "babycolor")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
-                        msgBackgroundView.image = img
-                        
+                        msgBackgroundView.image = ourImg
                         avatar.type = AvatarButtonType.contact
-                        
                         let contactData = CombineConntact.cache[from]
                         avatar.avaInfo = AvatarInfo.init(id: from, avaData: contactData?.account?.Avatar)
                         nickname.text = contactData?.GetNickName() ?? contactData?.peerID
