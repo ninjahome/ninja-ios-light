@@ -99,7 +99,7 @@ extension ServiceDelegate{
                                 }
                         }
                         
-                        _ = GroupItem.updatePartialGroup()
+                        _ = GroupItem.updatePartialGroup()      //TODO::have a full test
                         CombineConntact.updatePatialContacts()
                 }
         }

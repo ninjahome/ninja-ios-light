@@ -59,6 +59,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                         }
                         
                         self.contactData = data
+                        CombineConntact.cache[self.peerID] = data
                         NotificationCenter.default.post(name:NotifyContactChanged,
                                                         object: nil, userInfo:nil)
                         DispatchQueue.main.async {

@@ -173,7 +173,6 @@ class CombineConntact: NSObject{
                 }
                 let newContact = SaveDataOnChain(json: jsonObj, uid: peerID)
                 
-                cache[peerID] = newContact
                 return newContact
         }
         
@@ -184,12 +183,14 @@ class CombineConntact: NSObject{
                 }
                 
                 var changeNO = 0
+                var swapCache:[String:CombineConntact]=[:]
                 let friendsJson = JSON(data)
                 for (friID, subJson):(String, JSON) in friendsJson {
-                        let contact = cache[friID]
                         let newItem = ContactItem.initByJson(demo: subJson, uid: friID)
                         
+                        let contact = cache[friID]
                         if newItem.isSanme(contact?.contact){
+                                swapCache[friID] = contact
                                 continue
                         }
                         changeNO += 1
@@ -198,17 +199,21 @@ class CombineConntact: NSObject{
                         if let c = contact{
                                 c.contact = newItem
                                 _ = ContactItem.UpdateContact(newItem)
+                                swapCache[friID] = c
                                 continue
                         }
                         
-                        let _ = fetchContactFromChain(pid: friID)
+                        if let newItem = fetchContactFromChain(pid: friID){
+                                swapCache[friID] = newItem
+                        }
                 }
                 
+                NSLog("------>>>swap cache new[\(swapCache.count)],  old[\(cache.count)],changed[\((changeNO))]")
+                cache = swapCache
                 guard changeNO > 0 else{
                         return
                 }
                 
-                NSLog("------>>>total[\(changeNO)] contact changed")
                 NotificationCenter.default.post(name:NotifyContactChanged,
                                                 object: nil, userInfo:nil)
         }
