@@ -162,9 +162,10 @@ class MessageListViewController: UIViewController{
                         }
 
                         let item = sortedArray[idx]
-                        item.resetUnread()
                         vc.peerUid = item.ItemID
                         vc.IS_GROUP = item.isGroup
+                        
+                        
                         return
                 }
         }
@@ -190,6 +191,15 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
                 self.SelectedRowID = indexPath.row
                 self.performSegue(withIdentifier: "ShowMessageDetailsSEG", sender: self)
+                ServiceDelegate.workQueue.async {
+                        let item = self.sortedArray[indexPath.row]
+                        item.resetUnread()
+                        DispatchQueue.main.async {
+                                tableView.beginUpdates()
+                                tableView.reloadRows(at: [indexPath], with: .automatic)
+                                tableView.endUpdates()
+                        }
+                }
         }
 
         func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

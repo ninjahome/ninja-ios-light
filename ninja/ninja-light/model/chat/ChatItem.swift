@@ -111,9 +111,6 @@ class ChatItem: NSObject{
                 
                 self.unreadNo = 0
                 self.cObj?.unreadNo = 0
-                NotificationCenter.default.post(name:NotifyMsgSumChanged,
-                                                object: self,
-                                                userInfo:nil)
         }
         
         public static func remove(_ pid:String) {
