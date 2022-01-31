@@ -200,13 +200,20 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
         }
         
         func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-                if editingStyle == .delete {
-                        let item = sortedArray[indexPath.row]
+                guard editingStyle == .delete else{
+                        return
+                }
+                
+                ServiceDelegate.workQueue.async {
+                        let item = self.sortedArray[indexPath.row]
                         item.resetUnread()
-                        updateMsgBadge()
-                        sortedArray.remove(at: indexPath.row)
-                        tableView.deleteRows(at: [indexPath], with: .fade)
+                        self.sortedArray.remove(at: indexPath.row)
                         ChatItem.remove(item.ItemID)
+                        MessageItem.removeRead(item.ItemID)
+                        DispatchQueue.main.async {
+                                self.updateMsgBadge()
+                                tableView.deleteRows(at: [indexPath], with: .fade)
+                        }
                 }
         }
 }

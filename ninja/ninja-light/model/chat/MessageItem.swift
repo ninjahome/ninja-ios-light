@@ -335,12 +335,12 @@ class MessageItem: NSObject {
                 cacheNewMsg(pid: peerUid, msg: msgItem)
                 
                 ChatItem.updateLatestrMsg(pid: peerUid,
-                                           msg: msgItem.coinvertToLastMsg(),
-                                           time: msgItem.timeStamp,
-                                           unread: 1,
-                                           isGrp: gid != nil)
+                                          msg: msgItem.coinvertToLastMsg(),
+                                          time: msgItem.timeStamp,
+                                          unread: 1,
+                                          isGrp: gid != nil)
         }
-
+        
         public static func deleteMsgOneWeek() {
                 let owner = Wallet.shared.Addr!
                 let limitTime = Int64(Date().timeIntervalSince1970) - 7*86400
