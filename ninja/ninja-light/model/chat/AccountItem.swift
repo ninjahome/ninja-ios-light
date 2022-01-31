@@ -128,16 +128,18 @@ extension AccountItem: ModelObj {
 
 extension AccountItem{
         
-        public static func extraLoad(pid:String)->AccountItem?{
+        public static func extraLoad(pid:String, forceUpdate:Bool=false)->AccountItem?{
                 if let item = extraCache[pid]{
                         return item
                 }
                 
-                var obj: AccountItem?
-                obj = try? CDManager.shared.GetOne(entity: "CDAccount",
-                                                   predicate: NSPredicate(format: "addr == %@", pid))
-                if let item = obj{
-                        return item
+                if !forceUpdate{
+                        var obj: AccountItem?
+                        obj = try? CDManager.shared.GetOne(entity: "CDAccount",
+                                                           predicate: NSPredicate(format: "addr == %@", pid))
+                        if let item = obj{
+                                return item
+                        }
                 }
                 
                 var error: NSError?

@@ -31,7 +31,7 @@ class SearchDetailViewController: UIViewController {
                 self.hideKeyboardWhenTappedAround()
                 self.showIndicator(withTitle: "loading", and: "account data on chain")
                 ServiceDelegate.workQueue.async {
-                        guard let data = AccountItem.extraLoad(pid: self.uid) else{
+                        guard let data = AccountItem.extraLoad(pid: self.uid, forceUpdate: true) else{
                                 self.hideIndicator()
                                 return
                         }
