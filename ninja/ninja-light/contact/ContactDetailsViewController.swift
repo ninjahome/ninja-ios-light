@@ -44,10 +44,6 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
         override func viewDidLoad() {
                 super.viewDidLoad()
                 self.hideKeyboardWhenTappedAround()
-                NotificationCenter.default.addObserver(self,
-                                                       selector:#selector(self.notifiAction(notification:)),
-                                                       name: NotifyContactChanged,
-                                                       object: nil)
                 
                 self.showIndicator(withTitle: "waiting", and: "loading contact")
                 
@@ -73,13 +69,6 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
         
         deinit {
                 NotificationCenter.default.removeObserver(self)
-        }
-        
-        
-        @objc func notifiAction(notification:NSNotification){//TODO:: need to test
-                if let data = notification.object as? CombineConntact {
-                        self.contactData = data
-                }
         }
         
         @IBAction func backBtn(_ sender: UIButton) {
