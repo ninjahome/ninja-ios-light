@@ -33,7 +33,7 @@ class MessageListViewController: UIViewController{
                 sortedArray = ChatItem.SortedArra()
 
                 NotificationCenter.default.addObserver(self,
-                                                       selector:#selector(notifiAction(notification:)),
+                                                       selector:#selector(updateLatestItem(notification:)),
                                                        name: NotifyMsgSumChanged,
                                                        object: nil)
 
@@ -51,7 +51,7 @@ class MessageListViewController: UIViewController{
                                                        name: NotifyOnlineError,
                                                        object: nil)
                 NotificationCenter.default.addObserver(self,
-                                                       selector:#selector(contactUpdate(notification:)),
+                                                       selector:#selector(updateLatestItem(notification:)),
                                                        name: NotifyContactChanged,
                                                        object: nil)
 
@@ -83,7 +83,8 @@ class MessageListViewController: UIViewController{
 
         }
         
-        func updateMsgBadge() {//TODO:: optimization
+        //TODO:: optimization
+        func updateMsgBadge() {
                 let total = ChatItem.getTotalUnreadNo()
                 var totalStr: String?
                 if total != 0 {
@@ -102,7 +103,7 @@ class MessageListViewController: UIViewController{
                 self.hideConnectingTips()
         }
     
-        @objc func notifiAction(notification: NSNotification) {
+        @objc func updateLatestItem(notification: NSNotification) {
                 ServiceDelegate.workQueue.async { [weak self] in
                         self?.sortedArray = ChatItem.SortedArra()
                         DispatchQueue.main.async {
@@ -114,10 +115,6 @@ class MessageListViewController: UIViewController{
         
         @objc func wsOnlineErr(notification: NSNotification) {
                 print("WSOnline error....")
-        }
-        
-        @objc func contactUpdate(notification: NSNotification) {
-                
         }
         
         override func viewWillAppear(_ animated: Bool) {
