@@ -89,7 +89,7 @@ class ChatItem: NSObject{
                                                      predicate: NSPredicate(format: "peerID == %@ AND owner == %@", pid, owner))
                 
                 NotificationCenter.default.post(name: NotifyMsgSumChanged,
-                                                object: self, userInfo:nil)
+                                                object: pid, userInfo:nil)
         }
         
         

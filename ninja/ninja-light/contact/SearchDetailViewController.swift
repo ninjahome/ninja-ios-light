@@ -42,7 +42,7 @@ class SearchDetailViewController: UIViewController {
                         }
                         
                         NotificationCenter.default.post(name:NotifyContactChanged,
-                                                        object: nil, userInfo:nil)
+                                                        object: self.uid, userInfo:nil)
                 }
         }
         
@@ -86,7 +86,7 @@ class SearchDetailViewController: UIViewController {
                                 }
                                 
                                 NotificationCenter.default.post(name:NotifyContactChanged,
-                                                                object: nil, userInfo:nil)
+                                                                object: self.uid, userInfo:nil)
                                 self.startChat()
                         }
                 }

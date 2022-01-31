@@ -29,7 +29,7 @@ class MesasgeItemTableViewCell: UITableViewCell {
                 super.setSelected(selected, animated: animated)
         }
         
-        func initWith(details: ChatItem, idx:Int) {
+        func initWith(details: ChatItem) {
                 
                 let itemId = details.ItemID
                 var avaData: Data?
@@ -77,7 +77,6 @@ class MesasgeItemTableViewCell: UITableViewCell {
                                         self.nickName.text = pid
                                 }
                         }
-                        
                 }
         }
 }
