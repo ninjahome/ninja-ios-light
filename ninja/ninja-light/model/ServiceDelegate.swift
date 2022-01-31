@@ -45,7 +45,7 @@ class ServiceDelegate: NSObject {
                         userDefault.set(current, forKey: AppVersionKey)
                 }
                 // networkID 5: company 2: other
-                ChatLibInitAPP("", "a3a5c09826a246d0bfbef8084b81df1f", WebsocketSrv.shared, networkID)
+                ChatLibInitAPP(endPoint, "a3a5c09826a246d0bfbef8084b81df1f", WebsocketSrv.shared, networkID)
         }
         public static func InitPushParam(deviceToken:String) {
                 ChatLibSetPushParam(deviceToken, DevTypeIOS)
@@ -134,5 +134,28 @@ extension ServiceDelegate{
                         }
                         cb()
                 }
+        }
+        
+        public static func queryNickAndAvatar(pid:String, callback:((_ name:String?, _ avatar:Data?)->Void)?) ->(String?, Data?){
+                if let acc = CombineConntact.cache[pid]{
+                        return (acc.GetNickName(), acc.account?.Avatar)
+                }
+                if let acc = AccountItem.extraCache[pid]{
+                        return (acc.NickName, acc.Avatar)
+                }
+                
+                ServiceDelegate.workQueue.async {
+                        guard let acc = AccountItem.extraLoad(pid: pid) else{
+                                return
+                        }
+                        
+                        guard let cb = callback else{
+                                return
+                        }
+                        
+                        cb(acc.NickName, acc.Avatar)
+                }
+                
+                return (nil, nil)
         }
 }

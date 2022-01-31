@@ -31,11 +31,18 @@ class SearchDetailViewController: UIViewController {
                 self.hideKeyboardWhenTappedAround()
                 self.showIndicator(withTitle: "loading", and: "account data on chain")
                 ServiceDelegate.workQueue.async {
-                        self.accountData = AccountItem.loadAccountDetailFromChain(addr: self.uid)
+                        guard let data = AccountItem.extraLoad(pid: self.uid) else{
+                                self.hideIndicator()
+                                return
+                        }
+                        self.accountData = data
                         DispatchQueue.main.async {
                                 self.hideIndicator()
                                 self.populateView()
                         }
+                        
+                        NotificationCenter.default.post(name:NotifyContactChanged,
+                                                        object: nil, userInfo:nil)
                 }
         }
         

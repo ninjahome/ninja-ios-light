@@ -61,23 +61,14 @@ class MesasgeItemTableViewCell: UITableViewCell {
         }
         
         private func chatItemInfo(pid:String)->(String?, Data?){
-                if let acc = CombineConntact.cache[pid]{
-                        return (acc.GetNickName(), acc.account?.Avatar)
-                }
-                if let acc = AccountItem.extraCache[pid]{
-                        return (acc.NickName, acc.Avatar)
-                }
                 
-                ServiceDelegate.workQueue.async {
-                        guard let acc = AccountItem.extraLoad(pid: pid) else{
-                                return
-                        }
+                return ServiceDelegate.queryNickAndAvatar(pid: pid) {name, data in
+                        
                         DispatchQueue.main.async {
-                                self.avatar.avaInfo = AvatarInfo.init(id: pid, avaData: acc.Avatar)
-                                self.nickName.text = acc.NickName ?? pid
+                                self.avatar.avaInfo = AvatarInfo.init(id: pid, avaData: data)
+                                self.nickName.text = name ?? pid
                         }
+                        
                 }
-                
-                return (nil, nil)
         }
 }
