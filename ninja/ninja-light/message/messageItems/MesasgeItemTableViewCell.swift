@@ -46,7 +46,12 @@ class MesasgeItemTableViewCell: UITableViewCell {
                 }
                 
                 avatar.avaInfo = AvatarInfo.init(id: itemId, avaData: avaData)
-                self.nickName.text = nickName ?? itemId
+                if let name = nickName, !name.isEmpty{
+                        self.nickName.text = name
+                }else{
+                        self.nickName.text = itemId
+                }
+                
                 self.LastMsg.text = details.LastMsg
                 self.lastMsgTime.text = formatMsgTimeStamp(by: details.updateTime)
                 
@@ -66,7 +71,11 @@ class MesasgeItemTableViewCell: UITableViewCell {
                         
                         DispatchQueue.main.async {
                                 self.avatar.avaInfo = AvatarInfo.init(id: pid, avaData: data)
-                                self.nickName.text = name ?? pid
+                                if let n = name, !n.isEmpty{
+                                        self.nickName.text = n
+                                }else{
+                                        self.nickName.text = pid
+                                }
                         }
                         
                 }
