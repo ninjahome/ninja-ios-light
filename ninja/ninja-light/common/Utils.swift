@@ -21,7 +21,7 @@ extension NSLayoutConstraint {
 }
 
 func updateBadgeNum() {
-        let total = ChatItem.getTotalUnreadNo()
+        let total = ChatItem.TotalUnreadNo
         UIApplication.shared.applicationIconBadgeNumber = total
 }
 

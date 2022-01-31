@@ -81,9 +81,8 @@ class MessageListViewController: UIViewController{
                 
         }
         
-        //TODO:: optimization
         func updateMsgBadge() {
-                let total = ChatItem.getTotalUnreadNo()
+                let total = ChatItem.TotalUnreadNo
                 var totalStr: String?
                 if total != 0 {
                         totalStr = String(total)
@@ -163,7 +162,6 @@ class MessageListViewController: UIViewController{
                         vc.peerUid = item.ItemID
                         vc.IS_GROUP = item.isGroup
                         
-                        
                         return
                 }
         }
@@ -189,6 +187,7 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
                 self.SelectedRowID = indexPath.row
                 self.performSegue(withIdentifier: "ShowMessageDetailsSEG", sender: self)
+                
                 ServiceDelegate.workQueue.async {
                         let item = self.sortedArray[indexPath.row]
                         item.resetUnread()
@@ -203,6 +202,8 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
         func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
                 if editingStyle == .delete {
                         let item = sortedArray[indexPath.row]
+                        item.resetUnread()
+                        updateMsgBadge()
                         sortedArray.remove(at: indexPath.row)
                         tableView.deleteRows(at: [indexPath], with: .fade)
                         ChatItem.remove(item.ItemID)

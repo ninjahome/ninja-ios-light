@@ -10,6 +10,8 @@ import CoreData
 
 class ChatItem: NSObject{
         public static var CachedChats = LockCache<ChatItem>()
+        public static var TotalUnreadNo = 0
+        private static let noLock = NSLock()
         
         var cObj:CDChatItem?
         var ItemID:String = ""
@@ -41,29 +43,13 @@ class ChatItem: NSObject{
                 guard let data = result else {
                         return
                 }
-                
+                noLock.lock()
+                defer {noLock.unlock()}
+                TotalUnreadNo = 0
                 for obj in data {
-                        //TODO:: group chat Item chat later
-                        
-//                        if obj.isGroup {
-//                                let group = GroupItem.cache[obj.ItemID]
-//                                if group == nil {
-//                                        ChatItem.remove(obj.ItemID)
-//                                        continue
-//                                }
-//                        }
+                        TotalUnreadNo += obj.unreadNo
                         CachedChats.setOrAdd(idStr: obj.ItemID, item: obj)
                 }
-                
-        }
-        
-        public static func getTotalUnreadNo() -> Int {
-                let items = CachedChats.getValues()
-                var total = 0
-                for i in items {
-                        total += i.unreadNo
-                }
-                return total
         }
         
         public static func updateLatestrMsg(pid: String, msg: String, time: Int64, unread no: Int, isGrp:Bool) {
@@ -77,16 +63,20 @@ class ChatItem: NSObject{
                         c.unreadNo += no
                         c.cObj?.unreadNo = Int32(c.unreadNo)
                         c.cObj?.lastMsg = c.LastMsg
+                        c.cObj?.updateTime = time
                 }else{
                         chat = ChatItem.init(id: pid, time: time, msg: msg, isGrp: isGrp, unread:no)
+                        let owner = Wallet.shared.Addr!
+                        try? CDManager.shared.UpdateOrAddOne(entity: "CDChatItem",
+                                                             m: chat!,
+                                                             predicate: NSPredicate(format: "peerID == %@ AND owner == %@", pid, owner))
                 }
                 
                 CachedChats.setOrAdd(idStr: pid, item: chat)
                 
-                let owner = Wallet.shared.Addr!
-                try? CDManager.shared.UpdateOrAddOne(entity: "CDChatItem",
-                                                     m: chat!,
-                                                     predicate: NSPredicate(format: "peerID == %@ AND owner == %@", pid, owner))
+                noLock.lock()
+                TotalUnreadNo = TotalUnreadNo + no
+                noLock.unlock()
                 
                 NotificationCenter.default.post(name: NotifyMsgSumChanged,
                                                 object: pid, userInfo:nil)
@@ -108,6 +98,13 @@ class ChatItem: NSObject{
                 guard self.unreadNo != 0 else {
                         return
                 }
+                
+                ChatItem.noLock.lock()
+                ChatItem.TotalUnreadNo = ChatItem.TotalUnreadNo -  self.unreadNo
+                if ChatItem.TotalUnreadNo < 0{
+                        ChatItem.TotalUnreadNo = 0
+                }
+                ChatItem.noLock.unlock()
                 
                 self.unreadNo = 0
                 self.cObj?.unreadNo = 0
