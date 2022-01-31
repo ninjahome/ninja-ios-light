@@ -19,9 +19,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         @IBOutlet weak var mutiMsgType: UIView!
         
         @IBOutlet weak var peerNickName: UINavigationItem!
-        var peerUid: String = ""
-        //    var groupId: String = ""
-        var groupData:GroupItem?
         
         @IBOutlet weak var recordSeconds: UILabel!
         @IBOutlet weak var recordingPoint: UIView!
@@ -39,10 +36,11 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         @IBOutlet weak var fileVipImg: UIImageView!
         
         var IS_GROUP: Bool = false
-        
+        var peerUid: String = ""
+        var groupData:GroupItem?
         var messages: [MessageItem] = []
-        var isTextType = true
         
+        var isTextType = true
         var selectedRow: Int?
         var isLocalMsg:Bool?
         
@@ -55,6 +53,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         
         override func viewWillAppear(_ animated: Bool) {
                 super.viewWillAppear(animated)
+                ChatItem.CurrentPID = peerUid
                 populateView()
                 DispatchQueue.main.async {
                         self.scrollToBottom()
@@ -70,7 +69,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         override func viewWillDisappear(_ animated: Bool) {
                 super.viewWillDisappear(animated)
                 self.navigationController?.interactivePopGestureRecognizer?.delegate = _delegate
-                
+                ChatItem.CurrentPID = ""
                 AudioPlayManager.sharedInstance.playMusic(file: Data(), stop: true)
         }
         
@@ -254,13 +253,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.recordBtn.setTitle("按住说话", for: .normal)
         }
         
-        override func viewDidDisappear(_ animated: Bool) {
-                super.viewDidDisappear(animated)
-                ServiceDelegate.workQueue.async {
-                        ChatItem.CachedChats.get(idStr: self.peerUid)?.resetUnread()
-                }
-        }
-        
         @objc func keyboardWillShow(notification:NSNotification) {
                 
                 if !keyboardIsHide {
@@ -375,12 +367,10 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                                 let vc = instantiateViewController(vcID: "ContactDetailsVC") as! ContactDetailsViewController
                                 vc.peerID = peerUid
                                 self.navigationController?.pushViewController(vc, animated: true)
-                                //                                self.performSegue(withIdentifier: "EditContactDetailsSEG", sender: self)
                         } else {
                                 let vc = instantiateViewController(vcID: "SearchDetailVC") as! SearchDetailViewController
                                 vc.uid = peerUid
                                 self.navigationController?.pushViewController(vc, animated: true)
-                                //                                self.performSegue(withIdentifier: "ShowStrangerDetailSeg", sender: self)
                         }
                 }
         }

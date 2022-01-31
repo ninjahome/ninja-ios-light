@@ -11,6 +11,7 @@ import CoreData
 class ChatItem: NSObject{
         public static var CachedChats = LockCache<ChatItem>()
         public static var TotalUnreadNo = 0
+        public static var CurrentPID:String = ""
         private static let noLock = NSLock()
         
         var cObj:CDChatItem?
@@ -53,6 +54,10 @@ class ChatItem: NSObject{
         }
         
         public static func updateLatestrMsg(pid: String, msg: String, time: Int64, unread no: Int, isGrp:Bool) {
+                var unreadNo = no
+                if pid == CurrentPID{
+                        unreadNo = 0
+                }
                 var chat = CachedChats.get(idStr: pid)
                 if let c = chat{
                         if c.updateTime > time {
@@ -60,7 +65,7 @@ class ChatItem: NSObject{
                         }
                         c.updateTime = time
                         c.LastMsg = msg
-                        c.unreadNo += no
+                        c.unreadNo += unreadNo
                         c.cObj?.unreadNo = Int32(c.unreadNo)
                         c.cObj?.lastMsg = c.LastMsg
                         c.cObj?.updateTime = time
@@ -76,7 +81,7 @@ class ChatItem: NSObject{
                 CachedChats.setOrAdd(idStr: pid, item: chat)
                 
                 noLock.lock()
-                TotalUnreadNo = TotalUnreadNo + no
+                TotalUnreadNo = TotalUnreadNo + unreadNo
                 noLock.unlock()
                 
                 NotificationCenter.default.post(name: NotifyMsgSumChanged,
