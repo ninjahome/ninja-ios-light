@@ -21,8 +21,8 @@ enum sendingStatus: Int16 {
 class MessageItem: NSObject {
         public static let NotiKey = "peerUid"
         
-        var timeStamp: Int64 = 0
-        var from: String?
+        var timeStamp: Int64 = ChatLibNowInMilliSeconds()
+        var from: String = ""
         var to: String = ""
         var typ: CMT = .plainTxt
         var payload: Any?
@@ -34,6 +34,18 @@ class MessageItem: NSObject {
         
         override init() {
                 super.init()
+        }
+        
+        init(to:String, data:Any, typ:CMT = .plainTxt, gid:String?=nil) {
+                super.init()
+                
+                from = Wallet.shared.Addr!
+                isOut = true
+                groupId = gid
+                status = .sending
+                self.typ = typ
+                self.to = to
+                self.payload = data
         }
         
         public static func initByData(_ data: Data, from: String, gid: String? = nil, time: Int64) -> MessageItem? {
@@ -58,7 +70,7 @@ class MessageItem: NSObject {
                         }
                         print("------>>>", dataStr.count, dataStr)
                         print("------>>>", data.hexEncodedString())
-//                        guard let voiceData = ChatLibUnmarshalGoByte(dataStr) else{
+                        //                        guard let voiceData = ChatLibUnmarshalGoByte(dataStr) else{
                         guard let voiceData = Data(base64Encoded:dataStr) else{
                                 return msgItem
                         }
@@ -134,7 +146,7 @@ class MessageItem: NSObject {
                                 if msg.isOut {
                                         peerUid = msg.to
                                 } else {
-                                        peerUid = msg.from!
+                                        peerUid = msg.from
                                 }
                         }
                         
@@ -270,6 +282,15 @@ class MessageItem: NSObject {
                 return msg
         }
         
+        public static func syncNewIMToDisk(msg:MessageItem) -> Error?{
+                do{
+                        try CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
+                        return nil
+                }catch let err{
+                        return err
+                }
+        }
+        
         public static func resetSending(msgid: Int64, to: String, success: Bool) {
                 guard let msg = MessageItem.getItemByTime(mid: msgid, to: to) else {
                         return
@@ -399,7 +420,7 @@ extension MessageItem: ModelObj {
                 }
                 self.typ = CMT(rawValue: Int(uObj.type)) ?? CMT(rawValue: 1)!
                 
-                self.from = uObj.from
+                self.from = uObj.from!
                 self.isOut = uObj.isOut
                 
                 switch self.typ {

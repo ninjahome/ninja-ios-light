@@ -42,11 +42,8 @@ class VoiceTableViewCell: UITableViewCell {
                 guard let voice = message.payload as? audioMsg else {
                         return
                 }
+                let from = message.from
                 
-                guard let from = message.from else {
-                        return
-                }
-
                 setBtn(isOut: message.isOut, data: voice.content, long: voice.duration)
                 self.isOut = message.isOut
                 self.long = voice.duration

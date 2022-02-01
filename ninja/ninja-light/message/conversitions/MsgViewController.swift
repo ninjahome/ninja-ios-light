@@ -38,7 +38,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         var IS_GROUP: Bool = false
         var peerUid: String = ""
         var groupData:GroupItem?
-        var messages: [MessageItem] = []
+        var msgCacheArray: [MessageItem] = []
         
         var isTextType = true
         var selectedRow: Int?
@@ -107,7 +107,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                                                        object: nil)
                 
                 if let msges = MessageItem.cache.get(idStr: self.peerUid) {
-                        self.messages = msges
+                        self.msgCacheArray = msges
                 }
                 do{
                         try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord, mode: .default)
@@ -292,7 +292,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 guard let msges = MessageItem.cache.get(idStr: self.peerUid) else {
                         return
                 }
-                self.messages = msges
+                self.msgCacheArray = msges
                 
                 DispatchQueue.main.async {
                         self.messageTableView.reloadData()
@@ -355,7 +355,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                         if isLocalMsg!, let idx = self.selectedRow {
                                 vc.isMsg = true
                                 
-                                let msg:MessageItem = messages[idx]
+                                let msg:MessageItem = msgCacheArray[idx]
                                 vc.sendMsg = msg
                         } else {
                                 vc.isMsg = false
@@ -393,7 +393,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 
                 WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg, retry: resend) {
                         if let msges = MessageItem.cache.get(idStr: self.peerUid) {
-                                self.messages = msges
+                                self.msgCacheArray = msges
                                 self.messageTableView.reloadData()
                                 self.scrollToBottom()
                         }
@@ -401,7 +401,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                         if !success {
                                 MessageItem.resetSending(msgid: cliMsg.timestamp!, to: cliMsg.to, success: success)
                                 if let msges = MessageItem.cache.get(idStr: self.peerUid) {
-                                        self.messages = msges
+                                        self.msgCacheArray = msges
                                         self.messageTableView.reloadData()
                                         self.scrollToBottom()
                                 }

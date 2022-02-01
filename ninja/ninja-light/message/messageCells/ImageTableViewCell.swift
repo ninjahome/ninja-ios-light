@@ -59,10 +59,7 @@ var cellMsg: MessageItem?
                 cellMsg = message
                 msgBackgroundView.layer.cornerRadius = 8
                 msgBackgroundView.clipsToBounds = true
-
-                guard let from = message.from else {
-                        return
-                }
+                let from = message.from
 
                 imageMsg.image = UIImage(data: message.payload as! Data)
                 imageMsg.contentMode = .scaleAspectFill

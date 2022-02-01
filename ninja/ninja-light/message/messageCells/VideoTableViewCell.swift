@@ -77,9 +77,7 @@ class VideoTableViewCell: UITableViewCell {
                 msgBackgroundView.layer.cornerRadius = 8
                 msgBackgroundView.clipsToBounds = true
 
-                guard let from = message.from else {
-                        return
-                }
+                let from = message.from 
                 
                 if cellMsg?.typ == .video {
                         if let video = cellMsg?.payload as? videoMsg,

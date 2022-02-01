@@ -32,9 +32,7 @@ class LocationTableViewCell: UITableViewCell {
     
         func updateMessageCell (by message: MessageItem) {
         
-                guard let from = message.from else {
-                        return
-                }
+                let from = message.from
                 let contactData = CombineConntact.cache[from]
 
                 msgBackgroundView.layer.cornerRadius = 8

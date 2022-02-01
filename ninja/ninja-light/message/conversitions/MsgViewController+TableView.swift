@@ -10,12 +10,12 @@ import Foundation
 extension MsgViewController: UITableViewDelegate, UITableViewDataSource {
         
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-                return messages.count
+                return msgCacheArray.count
         }
         
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
                 
-                let msgItem = messages[indexPath.row]
+                let msgItem = msgCacheArray[indexPath.row]
                 var identifer = ""
                 
                 switch msgItem.typ {

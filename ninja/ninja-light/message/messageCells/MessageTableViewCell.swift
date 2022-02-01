@@ -37,10 +37,7 @@ class MessageTableViewCell: UITableViewCell {
         
         func updateMessageCell (by message: MessageItem) {
                 
-                guard let from = message.from else {
-                        return
-                }
-                
+                let from = message.from
                 guard let msgText = message.payload as? String else{
                         msgLabel.text = "Invalid Text MSG"
                         return
