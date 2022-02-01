@@ -203,38 +203,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.performSegue(withIdentifier: "ShowMapSeg", sender: self)
         }
         
-        @IBAction func cancelRecord(_ sender: Any) {
-                print("touch up outside")
-        }
-        
-
-        func willCancelRecord() {
-                finishRecording = false
-                self.recordingPoint.layer.contents = UIImage(named: "voicecancel_icon")?.cgImage
-                self.recordingTip.text = "松手取消发送"
-        }
-        
-        func showCancelRecord() {
-                finishRecording = true
-                self.recordingPoint.layer.contents = UIImage(named: "voiceBG_icon")?.cgImage
-                self.recordingTip.text = "上滑取消"
-        }
-        
-        func beganRecord() {
-                finishRecording = true
-                
-                self.recordingPoint.isHidden = false
-                self.recordingTip.isHidden = false
-                self.recordBtn.setTitle("松开发送", for: .normal)
-        }
-        
-        func endRecord() {
-                self.recordingPoint.layer.contents = nil
-                self.recordingTip.text = ""
-                self.recordingPoint.isHidden = true
-                self.recordingTip.isHidden = true
-                self.recordBtn.setTitle("按住说话", for: .normal)
-        }
         
         @objc func keyboardWillShow(notification:NSNotification) {
                 
@@ -358,67 +326,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 return CombineConntact.cache[peerUid] != nil
         }
         
-        @IBAction func voiceBtn(_ sender: UIButton) {
-                guard Wallet.shared.isStillVip() else{
-                        showVipModalViewController()
-                        return
-                }
-                
-                if !isTextType {
-                        self.voiceBtn.setImage(UIImage(named: "voice_icon"), for: .normal)
-                        self.sender.isHidden = false
-                        self.recordBtn.isHidden = true
-                        isTextType = true
-                        return
-                }
-                
-                AVAudioSession.sharedInstance().requestRecordPermission { allowed in
-                        if !allowed {
-                                self.toastMessage(title: "need microphone right in setting")
-                                return
-                        }
-                        DispatchQueue.main.async {
-                                self.voiceBtn.setImage(UIImage(named: "key_icon"), for: .normal)
-                                self.sender.isHidden = true
-                                self.recordBtn.isHidden = false
-                                self.isTextType = false
-                        }
-                }
-        }
-        
-        @IBAction func recordLongPress(_ sender: UILongPressGestureRecognizer) {
-                
-                if sender.state == .began {
-                        print("------>>>press began")
-                        do{
-                                try AVAudioSession.sharedInstance().setActive(true)
-                        }catch let err{
-                                self.toastMessage(title: err.localizedDescription)
-                        }
-                        self.audioRecorder.startRecord()
-                        beganRecord()
-                        
-                } else if sender.state == .changed {
-                        let point = sender.location(in: self.recordingPoint)
-                        if self.recordingPoint.point(inside: point, with: nil) {
-                                willCancelRecord()
-                        } else {
-                                showCancelRecord()
-                        }
-                        
-                } else if sender.state == .ended {
-                        print("press end \(finishRecording)")
-                        if finishRecording {
-                                self.audioRecorder.stopRecord()
-                        } else {
-                                self.audioRecorder.cancelRecord()
-                        }
-                        endRecord()
-                        
-                } else if sender.state == .cancelled {
-                self.audioRecorder.stopRecord()
-                }
-        }
         
         
         fileprivate func setPeerNick() {
@@ -501,9 +408,104 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                                         self.scrollToBottom()
                                 }
                         }
-                        
                 }
-                
+        }
+}
+
+
+extension MsgViewController{
+        
+        @IBAction func cancelRecord(_ sender: Any) {
+                print("touch up outside")
         }
         
+        
+        func willCancelRecord() {
+                finishRecording = false
+                self.recordingPoint.layer.contents = UIImage(named: "voicecancel_icon")?.cgImage
+                self.recordingTip.text = "松手取消发送"
+        }
+        
+        func showCancelRecord() {
+                finishRecording = true
+                self.recordingPoint.layer.contents = UIImage(named: "voiceBG_icon")?.cgImage
+                self.recordingTip.text = "上滑取消"
+        }
+        
+        func beganRecord() {
+                finishRecording = true
+                
+                self.recordingPoint.isHidden = false
+                self.recordingTip.isHidden = false
+                self.recordBtn.setTitle("松开发送", for: .normal)
+        }
+        
+        func endRecord() {
+                self.recordingPoint.layer.contents = nil
+                self.recordingTip.text = ""
+                self.recordingPoint.isHidden = true
+                self.recordingTip.isHidden = true
+                self.recordBtn.setTitle("按住说话", for: .normal)
+        }
+        
+        @IBAction func recordLongPress(_ sender: UILongPressGestureRecognizer) {
+                
+                if sender.state == .began {
+                        print("------>>>press began")
+                        if let err =  self.audioRecorder.startRecord() {
+                                self.toastMessage(title: err.localizedDescription)
+                                return
+                        }
+                        
+                        beganRecord()
+                        
+                } else if sender.state == .changed {
+                        let point = sender.location(in: self.recordingPoint)
+                        if self.recordingPoint.point(inside: point, with: nil) {
+                                willCancelRecord()
+                        } else {
+                                showCancelRecord()
+                        }
+                } else if sender.state == .ended {
+                        print("------>>>press end \(finishRecording)")
+                        if finishRecording {
+                                self.audioRecorder.stopRecord()
+                        } else {
+                                self.audioRecorder.cancelRecord()
+                        }
+                        endRecord()
+                        
+                } else if sender.state == .cancelled {
+                        self.audioRecorder.stopRecord()
+                }
+        }
+        
+        
+        @IBAction func voiceBtn(_ sender: UIButton) {
+                guard Wallet.shared.isStillVip() else{
+                        showVipModalViewController()
+                        return
+                }
+                
+                if !isTextType {
+                        self.voiceBtn.setImage(UIImage(named: "voice_icon"), for: .normal)
+                        self.sender.isHidden = false
+                        self.recordBtn.isHidden = true
+                        isTextType = true
+                        return
+                }
+                
+                AVAudioSession.sharedInstance().requestRecordPermission { allowed in
+                        if !allowed {
+                                self.toastMessage(title: "need microphone right in setting")
+                                return
+                        }
+                        DispatchQueue.main.async {
+                                self.voiceBtn.setImage(UIImage(named: "key_icon"), for: .normal)
+                                self.sender.isHidden = true
+                                self.recordBtn.isHidden = false
+                                self.isTextType = false
+                        }
+                }
+        }
 }

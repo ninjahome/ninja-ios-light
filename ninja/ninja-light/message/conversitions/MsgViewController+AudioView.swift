@@ -14,7 +14,6 @@ extension MsgViewController: RecordAudioDelegate {
                 DispatchQueue.main.async {
                         self.recordSeconds.text = String(Int(metra))
                 }
-                
         }
         
         func audioRecordTooShort() {
@@ -26,11 +25,11 @@ extension MsgViewController: RecordAudioDelegate {
         }
         
         func audioRecordCanceled() {
-                print("Record canceled")
+                self.toastMessage(title: "Record canceled")
         }
         
         func audioRecordFinish(_ uploadAmrData: Data, recordTime: Float, fileHash: String) {
-                print("Record finished")
+                self.toastMessage(title: "Record finished")
         }
         
         func audioRecordWavFinish(_ uploadWavData: Data, recordTime: Float, fileHash: String) {
@@ -42,22 +41,13 @@ extension MsgViewController: RecordAudioDelegate {
                 cliMsg.type = .voice
                 if IS_GROUP {
                         cliMsg.groupId = self.peerUid
-                        //            guard let group = groupData,
-                        //                  let ids = group.memberIds as? [String] else {
-                        //                return
-                        //            }
                         cliMsg.to = self.peerUid
                 } else {
                         cliMsg.to = peerUid
                 }
-                let audio: audioMsg = audioMsg.init()
-                audio.content = uploadWavData
-                audio.duration = Int(recordTime)
-                cliMsg.audioData = audio
                 
+                cliMsg.audioData = audioMsg.init(data: uploadWavData, len: Int(recordTime))
                 sendAllTypeMessage(cliMsg)
-                
         }
-        
 }
 

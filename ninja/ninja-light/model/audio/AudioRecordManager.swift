@@ -15,7 +15,7 @@ private let TempAmrFilePath = AudioFilesManager.amrPathWithName("amr_temp_record
 class AudioRecordManager:NSObject {
         
         var recorder:AVAudioRecorder!
-        var operationQueue: OperationQueue!
+        var operationQueue: OperationQueue = OperationQueue()
         
         weak var delegate: RecordAudioDelegate?
         
@@ -25,8 +25,10 @@ class AudioRecordManager:NSObject {
         fileprivate var isFinishRecord: Bool = true
         fileprivate var isCancelRecord: Bool = false
         
-        let audioSession = AVAudioSession.sharedInstance()
-        
+        let recoredSetting = [AVSampleRateKey: NSNumber(44100.0),
+                                AVFormatIDKey: NSNumber(value: kAudioFormatLinearPCM),
+                        AVNumberOfChannelsKey: NSNumber(1),
+                     AVEncoderAudioQualityKey: NSNumber(value: AVAudioQuality.medium.rawValue)] as [String : Any]
         
         class var shared: AudioRecordManager {
                 struct Static {
@@ -36,31 +38,29 @@ class AudioRecordManager:NSObject {
         }
         
         fileprivate override init() {
-                self.operationQueue = OperationQueue()
                 super.init()
         }
         
-                
-        func startRecord() {
+        func startRecord() -> Error?{
                 
                 self.isCancelRecord = false
                 self.startTime = CACurrentMediaTime()
                 
-                let recoredSetting = [AVSampleRateKey: NSNumber(44100.0),
-                                        AVFormatIDKey: NSNumber(value: kAudioFormatLinearPCM),
-                                AVNumberOfChannelsKey: NSNumber(1),
-                             AVEncoderAudioQualityKey: NSNumber(value: AVAudioQuality.medium.rawValue)] as [String : Any]
-                
                 do {
+                        try AVAudioSession.sharedInstance().setActive(true)
                         self.recorder = try AVAudioRecorder(url: TempWavRecordPath, settings: recoredSetting)
                         self.recorder.delegate = self
                         self.recorder.isMeteringEnabled = true
                         self.recorder.prepareToRecord()
-                } catch let error as NSError {
-                        print("------>>>",error)
+                        
+                } catch let err {
+                        print("------>>>", err.localizedDescription)
+                        return err
                 }
                 
                 self.perform(#selector(AudioRecordManager.readyStartRecord), with: self, afterDelay: 0.0)
+                
+                return nil
         }
         
         func stopRecord() {
@@ -90,16 +90,7 @@ class AudioRecordManager:NSObject {
         }
         
         @objc func readyStartRecord() {
-                
-                do {
-                        try audioSession.setActive(true)
-                } catch let error as NSError {
-                        print("setActive fail:\(error)")
-                        return
-                }
-                
                 self.recorder?.record()
-                
                 let operation = BlockOperation()
                 operation.addExecutionBlock(updateMeters)
                 self.operationQueue.addOperation(operation)
