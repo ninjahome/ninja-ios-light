@@ -34,7 +34,7 @@ func compressImage(_ origin: Data?) -> Data? {
                 var error: NSError?
                 let data = ChatLibCompressImg(origin, limitSize, &error)
                 if error != nil {
-                        NSLog("---[compress image]---\(error?.localizedDescription ?? "")")
+                        print("---[compress image]---\(error?.localizedDescription ?? "")")
                 }
                 return data
         }
@@ -90,7 +90,7 @@ extension URL {
 public func isFirstUser() -> Bool {
         let userDefault = UserDefaults.standard
         if let firstUser = userDefault.string(forKey: "ninja") {
-                NSLog("---[First Uset]---\(firstUser)")
+                print("---[First Uset]---\(firstUser)")
                 return false
         }
         return true

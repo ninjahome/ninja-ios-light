@@ -73,7 +73,7 @@ class ContactItem:NSObject{
                 var error: NSError?
                 ChatLibAddFriend(contact.uid, contact.alias, contact.remark, &error)
                 if error != nil{
-                        NSLog("------>>>add new contract failed[\(error!.localizedDescription)]")
+                        print("------>>>add new contract failed[\(error!.localizedDescription)]")
                         return NJError.contact(error!.localizedDescription)
                 }
                 return ContactItem.UpdateContact(contact)

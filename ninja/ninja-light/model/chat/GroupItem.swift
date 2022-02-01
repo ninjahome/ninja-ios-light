@@ -176,7 +176,7 @@ class GroupItem: NSObject {
                 if let avatar = ChatLibCommitImg(&err) {
                         return avatar
                 }
-                NSLog("---[group image]---\(err?.localizedDescription ?? "")")
+                print("---[group image]---\(err?.localizedDescription ?? "")")
                 return nil
         }
         
@@ -208,12 +208,12 @@ class GroupItem: NSObject {
                 for (index, groupJson):(String, JSON) in grpArr {
                         
                         guard let group = GroupItem.initByJson(json: groupJson) else{
-                                NSLog("------>>>[syncAllGroupDataAtOnce]failed parse group item[\(index)]")
+                                print("------>>>[syncAllGroupDataAtOnce]failed parse group item[\(index)]")
                                 continue
                         }
                         
                         if let err = updateGroupMetaInDB(group) {
-                                NSLog("---[update grp]---\(err.localizedDescription ?? "")")
+                                print("---[update grp]---\(err.localizedDescription ?? "")")
                                 continue
                         }
                         
@@ -259,7 +259,7 @@ class GroupItem: NSObject {
                 }
                 
                 if let err = updateGroupMetaInDB(group) {
-                        NSLog("---[update grp]---\(err.localizedDescription ?? "")")
+                        print("---[update grp]---\(err.localizedDescription ?? "")")
                 }
                 
                 GroupItem.cache[groupID] = group

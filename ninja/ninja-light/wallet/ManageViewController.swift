@@ -18,7 +18,7 @@ class ManageViewController: UIViewController {
         @IBAction func exportAccount(_ sender: UIButton) {
                 if let walletJson = Wallet.shared.wJson,
                    let walletImg = generateQRCode(from: walletJson) {
-                        NSLog("walletJson \(walletJson)")
+                        print("walletJson \(walletJson)")
                         UIImageWriteToSavedPhotosAlbum(walletImg, nil, nil, nil)
                         self.toastMessage(title: "Save success")
                 } else {
@@ -42,7 +42,7 @@ extension ManageViewController: ScannerViewControllerDelegate {
         
         func codeDetected(code: String) {
                 
-                NSLog("------>>>\(code)")
+                print("------>>>\(code)")
                 guard let addr = Wallet.shared.serializeWalletJson(cipher: code) else {
                         self.toastMessage(title: "invaild ninja wallet address")
                         return

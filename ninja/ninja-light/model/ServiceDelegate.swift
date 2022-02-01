@@ -38,7 +38,7 @@ class ServiceDelegate: NSObject {
                 let saved = getSavedAppVersion()
                 
                 if current != saved {
-                        NSLog("----[Current Version]---\(current ?? "no current")----[Saved Version]---\(saved ?? "no saved")")
+                        print("----[Current Version]---\(current ?? "no current")----[Saved Version]---\(saved ?? "no saved")")
                         
                         //Tips::
                         let userDefault = UserDefaults.standard
@@ -58,7 +58,7 @@ class ServiceDelegate: NSObject {
         public static func CompressImg(origin:Data, targetSize:Int)->Data?{
                 var err:NSError?
                 guard let newData = ChatLibCompressImg(origin, targetSize, &err) else{
-                        NSLog("------>>>compress image failed:\(err?.localizedDescription ?? "<->")")
+                        print("------>>>compress image failed:\(err?.localizedDescription ?? "<->")")
                         return nil
                 }
                 return newData
@@ -96,7 +96,7 @@ extension ServiceDelegate{
                         if let wallet = Wallet.initByData(data){
                                let err = Wallet.shared.UpdateWallet(w: wallet)
                                 if err != nil{
-                                        NSLog("------>>>compress image failed:\(err?.localizedDescription ?? "<->")")
+                                        print("------>>>compress image failed:\(err?.localizedDescription ?? "<->")")
                                 }
                         }
                         
@@ -119,11 +119,11 @@ extension ServiceDelegate{
                                 return
                         }
                         
-                        NSLog("------>>>new wallet \(String(describing: Wallet.shared.Addr))")
+                        print("------>>>new wallet \(String(describing: Wallet.shared.Addr))")
                         ServiceDelegate.cleanAllData()
                         
                         if let err = GroupItem.syncAllGroupDataAtOnce(){
-                                NSLog("------>>> sync group metas when import account:", err.localizedDescription)
+                                print("------>>> sync group metas when import account:", err.localizedDescription)
                         }
                         
                         CombineConntact.syncAllContactDataAtOnce()

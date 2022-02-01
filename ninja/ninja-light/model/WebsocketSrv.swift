@@ -98,7 +98,7 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
         
         func grpIM(_ from: String?, gid: String?, cryptKey: Data?, decoded: Data?, payload: Data?, time: Int64) throws {
                 guard let f = from, let d = decoded, let grpId = gid  else{
-                        NSLog("------>>>[grpIM] invalid group message data")
+                        print("------>>>[grpIM] invalid group message data")
                         return
                 }
                 
@@ -128,7 +128,7 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
         
         func peerIM(_ from: String?, decoded: Data?, payload: Data?, time: Int64) throws {
                 guard  let f = from, let d = decoded  else{
-                        NSLog("------>>>[peerIM] invalid peer message data")
+                        print("------>>>[peerIM] invalid peer message data")
                         return
                 }
                 WebsocketSrv.netQueue.async {
@@ -143,7 +143,7 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
         }
         
         func webSocketDidOnline() {
-                NSLog("------>>> socket online success")
+                print("------>>> socket online success")
                 NotificationCenter.default.post(name: NotifyWebsocketOnline,
                                                 object: self,
                                                 userInfo: nil)

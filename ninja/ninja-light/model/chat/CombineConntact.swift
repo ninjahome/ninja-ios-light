@@ -164,11 +164,11 @@ class CombineConntact: NSObject{
                 }
                 var err:NSError?
                 guard let data = ChatLibFriendDetail(peerID, &err) else{
-                        NSLog("------>>> sync friend details err:\(err?.localizedDescription ?? "<->")")
+                        print("------>>> sync friend details err:\(err?.localizedDescription ?? "<->")")
                         return nil
                 }
                 guard let jsonObj = try? JSON(data: data) else{
-                        NSLog("------>>> parse friend details to json object failed")
+                        print("------>>> parse friend details to json object failed")
                         return nil
                 }
                 let newContact = SaveDataOnChain(json: jsonObj, uid: peerID)
@@ -194,7 +194,7 @@ class CombineConntact: NSObject{
                                 continue
                         }
                         changeNO += 1
-                        NSLog("------>>>friend[\(friID)] contact changed and need to sync:")
+                        print("------>>>friend[\(friID)] contact changed and need to sync:")
                         
                         if let c = contact{
                                 c.contact = newItem
@@ -208,7 +208,7 @@ class CombineConntact: NSObject{
                         }
                 }
                 
-                NSLog("------>>>swap cache new[\(swapCache.count)],  old[\(cache.count)],changed[\((changeNO))]")
+                print("------>>>swap cache new[\(swapCache.count)],  old[\(cache.count)],changed[\((changeNO))]")
                 cache = swapCache
                 guard changeNO > 0 else{
                         return
@@ -222,12 +222,12 @@ class CombineConntact: NSObject{
                 var error: NSError?
                 
                 guard let data = ChatLibSyncFriendWithDetails(&error)else{
-                        NSLog("------>>> ChatLibSyncFriendWithDetails failed:\(error!.localizedDescription)")
+                        print("------>>> ChatLibSyncFriendWithDetails failed:\(error!.localizedDescription)")
                         return
                 }
                 
                 guard let allContactJson = try? JSON(data: data) else{
-                        NSLog("------>>> failed to parse the syncing friend data to json dirction")
+                        print("------>>> failed to parse the syncing friend data to json dirction")
                         return
                 }
                 
@@ -245,7 +245,7 @@ class CombineConntact: NSObject{
                         let accItem = AccountItem.initByJson(json["account"])
                         let err = AccountItem.UpdateOrAddAccount(accItem)
                         if err != nil{
-                                NSLog("------>>> save account detail failed:\(err?.localizedDescription ?? "<->")")
+                                print("------>>> save account detail failed:\(err?.localizedDescription ?? "<->")")
                         }
                         cc.account = accItem
                 }

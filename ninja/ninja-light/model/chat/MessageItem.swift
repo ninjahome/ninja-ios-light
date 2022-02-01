@@ -327,7 +327,7 @@ class MessageItem: NSObject {
                         try CDManager.shared.AddEntity(entity: "CDUnread", m: msgItem)
                         
                 }catch let err{
-                        NSLog("------>>> save new message failed:[\(err.localizedDescription)]")
+                        print("------>>> save new message failed:[\(err.localizedDescription)]")
                         return
                 }
                 

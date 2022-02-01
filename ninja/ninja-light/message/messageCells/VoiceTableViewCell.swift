@@ -107,26 +107,28 @@ class VoiceTableViewCell: UITableViewCell {
         }
     
         @objc func playAudioBtnAction() {
-                if let data = self.audioData {
-                        AudioPlayManager.sharedInstance.playMusic(file: data)
+                guard let data = self.audioData else{
+                        return
+                }
+                
+                AudioPlayManager.shared.playMusic(file: data)
 
-                        let time = TimeInterval(self.long)
-                        let imgs = getFilpAnimatedImg()
-                        let rimg = UIImage.animatedImage(with: imgs, duration: 2)
-                        let img = UIImage.animatedImageNamed("voice_0000", duration: 2)!
-                        if self.isOut! {
-                                self.playBtn.setImage(rimg, for: .normal)
-                                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+time) {
-                                        let rawImg = UIImage(named: "voice_00009")!
-                                        let flipImgH = self.filpImageH(rawImg)
-                                        self.playBtn.setImage(flipImgH, for: .normal)
-                                }
-                        } else {
-                                self.playBtn.setImage(img, for: .normal)
-                                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+time) {
-                                        let rawImg = UIImage(named: "voice_00009")!
-                                        self.playBtn.setImage(rawImg, for: .normal)
-                                }
+                let time = TimeInterval(self.long)
+                let imgs = getFilpAnimatedImg()
+                let rimg = UIImage.animatedImage(with: imgs, duration: 2)
+                let img = UIImage.animatedImageNamed("voice_0000", duration: 2)!
+                if self.isOut! {
+                        self.playBtn.setImage(rimg, for: .normal)
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+time) {
+                                let rawImg = UIImage(named: "voice_00009")!
+                                let flipImgH = self.filpImageH(rawImg)
+                                self.playBtn.setImage(flipImgH, for: .normal)
+                        }
+                } else {
+                        self.playBtn.setImage(img, for: .normal)
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+time) {
+                                let rawImg = UIImage(named: "voice_00009")!
+                                self.playBtn.setImage(rawImg, for: .normal)
                         }
                 }
         }

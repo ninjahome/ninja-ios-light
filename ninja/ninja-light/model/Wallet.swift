@@ -55,7 +55,7 @@ class Wallet: NSObject {
                         var err:NSError?
                         data.avatarData = ChatLibAccountAvatar(data.Addr, &err)
                         if err != nil{
-                                NSLog("------>no avatar data on chain")
+                                print("------>no avatar data on chain")
                         }
                 }
                 
@@ -80,7 +80,7 @@ class Wallet: NSObject {
         func getLatestWallt() {
                 var error: NSError?
                 guard let data = ChatLibAccountDetail(self.Addr!, &error) else {
-                        NSLog("-----[getLatestWallt]------>:\(error?.localizedDescription ?? "no error")")
+                        print("-----[getLatestWallt]------>:\(error?.localizedDescription ?? "no error")")
                         return
                 }
                 if let item = Wallet.initByData(data) {
@@ -91,7 +91,7 @@ class Wallet: NSObject {
         func getWalletFromETH() {
                 var error: NSError?
                 guard let data = ChatLibAccountBalance(self.Addr!, &error) else {
-                        NSLog("------[getWalletFromETH]----->:\(error?.localizedDescription ?? "no error")")
+                        print("------[getWalletFromETH]----->:\(error?.localizedDescription ?? "no error")")
                         return
                 }
                 if let item = Wallet.initByData(data) {
@@ -173,7 +173,7 @@ class Wallet: NSObject {
                 self.nonce = 0
                 
                 if let err = Active(password) {
-                        NSLog("------>>>Import Failed\(String(describing: err.localizedDescription))")
+                        print("------>>>Import Failed\(String(describing: err.localizedDescription))")
                         return err
                 }
                 

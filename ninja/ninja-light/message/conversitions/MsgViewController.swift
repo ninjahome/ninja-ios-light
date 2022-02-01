@@ -54,36 +54,33 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         override func viewWillAppear(_ animated: Bool) {
                 super.viewWillAppear(animated)
                 ChatItem.CurrentPID = peerUid
-                populateView()
-                DispatchQueue.main.async {
-                        self.scrollToBottom()
-                }
                 
                 if (self.navigationController?.viewControllers.count)! >= 1 {
                         _delegate = self.navigationController?.interactivePopGestureRecognizer?.delegate
                         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
                 }
-                
+        }
+        
+        override func viewDidAppear(_ animated: Bool) {
+                super.viewDidAppear(animated)
+                self.scrollToBottom()
         }
         
         override func viewWillDisappear(_ animated: Bool) {
                 super.viewWillDisappear(animated)
                 self.navigationController?.interactivePopGestureRecognizer?.delegate = _delegate
                 ChatItem.CurrentPID = ""
-                AudioPlayManager.sharedInstance.playMusic(file: Data(), stop: true)
+                AudioPlayManager.shared.stopPlay()
         }
         
         override func viewDidLoad() {
                 super.viewDidLoad()
+                
                 audioRecorder.delegate = self
                 messageTableView.delegate = self
                 messageTableView.dataSource = self
                 
-                vipView.layer.contents = UIImage(named: "bgc")?.cgImage
-                if Wallet.shared.liceneseExpireTime > 0 {
-                        vipView.isHidden = true
-                }
-                self.hideKeyboardWhenTappedAround()
+                populateView()
                 
                 NotificationCenter.default.addObserver(self,
                                                        selector:#selector(newMsg(notification:)),
@@ -111,8 +108,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                                                        name: UIResponder.keyboardDidHideNotification,
                                                        object: nil)
                 
-                senderBar.layer.shadowOpacity = 0.1
-                
                 if let msges = MessageItem.cache.get(idStr: self.peerUid) {
                         self.messages = msges
                 }
@@ -122,12 +117,27 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 NotificationCenter.default.removeObserver(self)
         }
         
-        func vipRelatedUI() {
+        private func populateView() {
+                
+                if IS_GROUP {//TODO::
+                        groupData = GroupItem.cache[peerUid]
+                        setPeerNick()
+                } else {
+                        let contactData = CombineConntact.cache[peerUid]
+                        self.peerNickName.title = contactData?.GetNickName() ?? contactData?.peerID
+                }
+                
+                vipView.layer.contents = UIImage(named: "bgc")?.cgImage
+                senderBar.layer.shadowOpacity = 0.1
+                
+                self.hideKeyboardWhenTappedAround()
+                
                 if Wallet.shared.isStillVip() {
                         voiceVipImg.isHidden = true
                         imageVipimg.isHidden = true
                         cameraVipImg.isHidden = true
                         fileVipImg.isHidden = true
+                        vipView.isHidden = true
                 }
         }
         
@@ -290,7 +300,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.textFieldConstrain.constant = 4
                 self.msgTableConstrain.constant = 0
                 
-                print("keyboardWillHide")
                 UIView.animate(withDuration: duration!) {
                         self.scrollToBottom()
                 }
@@ -306,11 +315,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 }
                 
                 self.keyboardIsHide = false
-                print("keyboardDidShow")
-                
-                //                UIView.animate(withDuration: duration!) {
-                //
-                //                }
         }
         
         @objc func keyboardDidHide(notification: NSNotification) {
@@ -324,8 +328,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 }
                 
                 self.keyboardIsHide = true
-                print("keyboardDidHide")
-                
         }
         
         @objc func contactUpdate(notification: NSNotification) {
@@ -398,17 +400,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                         }
                 } else {
                         showVipModalViewController()
-                }
-        }
-        
-        private func populateView() {
-                vipRelatedUI()
-                if IS_GROUP {
-                        groupData = GroupItem.cache[peerUid]
-                        setPeerNick()
-                } else {
-                        let contactData = CombineConntact.cache[peerUid]
-                        self.peerNickName.title = contactData?.GetNickName() ?? contactData?.peerID
                 }
         }
         

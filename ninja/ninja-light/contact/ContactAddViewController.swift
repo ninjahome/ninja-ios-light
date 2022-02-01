@@ -67,7 +67,7 @@ class ContactAddViewController: UIViewController {
 
 extension ContactAddViewController: ScannerViewControllerDelegate {
         func codeDetected(code: String) {
-                NSLog("------>>> scaned user code=[\(code)]")
+                print("------>>> scaned user code=[\(code)]")
                 self.searchAddr.text = code
                 guard ContactItem.IsValidContactID(code) else{
                         self.toastMessage(title: "invalid ninja address")
