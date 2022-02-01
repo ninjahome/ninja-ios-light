@@ -41,17 +41,16 @@ var cellMsg: MessageItem?
     
         @IBAction func retry(_ sender: UIButton) {
                 if let msg = cellMsg {
-                        let cliMsg = CliMessage.init(to: msg.to!, imgData: msg.payload as! Data, groupId: msg.groupId)
+                        let cliMsg = CliMessage.init(to: msg.to, imgData: msg.payload as! Data, groupId: msg.groupId)
 
                         WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg, retry: true) { [self] in
                                 self.retry?.isHidden = true
                                 self.spinner?.startAnimating()
                         } onCompletion: { success in
                                 if !success {
-                                        MessageItem.resetSending(msgid: msg.timeStamp, to: msg.to!, success: success)
+                                        MessageItem.resetSending(msgid: msg.timeStamp, to: msg.to, success: success)
                                         self.updateMessageCell(by: msg)
                                 }
-                                
                         }
                 }
         }

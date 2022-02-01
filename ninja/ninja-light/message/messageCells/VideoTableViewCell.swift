@@ -46,7 +46,7 @@ class VideoTableViewCell: UITableViewCell {
                 if let msg = cellMsg {
                         var cliMsg: CliMessage?
                         if let videoData = msg.payload as? videoMsg {
-                                cliMsg = CliMessage.init(to: msg.to!, videoUrl: URL(fileURLWithPath: videoData.url), groupId: msg.groupId!)
+                                cliMsg = CliMessage.init(to: msg.to, videoUrl: URL(fileURLWithPath: videoData.url), groupId: msg.groupId!)
                         }
                         guard let resendCli = cliMsg else {
                                 return
@@ -57,7 +57,7 @@ class VideoTableViewCell: UITableViewCell {
                                 self.spinner?.startAnimating()
                         } onCompletion: { success in
                                 if !success {
-                                        MessageItem.resetSending(msgid: resendCli.timestamp!, to: resendCli.to!, success: success)
+                                        MessageItem.resetSending(msgid: resendCli.timestamp!, to: resendCli.to, success: success)
                                         self.updateMessageCell(by: msg)
                                 }
                         }

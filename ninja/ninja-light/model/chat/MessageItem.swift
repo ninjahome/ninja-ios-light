@@ -20,9 +20,10 @@ enum sendingStatus: Int16 {
 
 class MessageItem: NSObject {
         public static let NotiKey = "peerUid"
+        
         var timeStamp: Int64 = 0
         var from: String?
-        var to: String?
+        var to: String = ""
         var typ: CMT = .plainTxt
         var payload: Any?
         var isOut: Bool = false
@@ -61,7 +62,6 @@ class MessageItem: NSObject {
                         guard let voiceData = Data(base64Encoded:dataStr) else{
                                 return msgItem
                         }
-                        print("------>>>",voiceData[0], voiceData[1], voiceData[2], voiceData[3])
                         let len  = objJson["len"].int ?? 0
                         
                         msgItem.payload = audioMsg(data: voiceData, len: len)
@@ -132,7 +132,7 @@ class MessageItem: NSObject {
                                 peerUid = groupId
                         } else {
                                 if msg.isOut {
-                                        peerUid = msg.to!
+                                        peerUid = msg.to
                                 } else {
                                         peerUid = msg.from!
                                 }
@@ -259,12 +259,12 @@ class MessageItem: NSObject {
         public static func addSentIM(cliMsg: CliMessage) -> MessageItem {
                 let msg = MessageItem.init(cliMsg: cliMsg)
                 
-                var msgList = cache.get(idStr: msg.to!)
+                var msgList = cache.get(idStr: msg.to)
                 if msgList == nil {
                         msgList = []
                 }
                 msgList?.append(msg)
-                cache.setOrAdd(idStr: msg.to!, item: msgList)
+                cache.setOrAdd(idStr: msg.to, item: msgList)
                 
                 try? CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
                 return msg
@@ -418,7 +418,7 @@ extension MessageItem: ModelObj {
                 default:
                         print("init by msg obj: no such type")
                 }
-                self.to = uObj.to
+                self.to = uObj.to!
                 self.timeStamp = uObj.unixTime
                 self.status = sendingStatus(rawValue: uObj.status) ?? .sent
                 self.groupId = uObj.groupId

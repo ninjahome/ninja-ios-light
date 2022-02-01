@@ -46,10 +46,10 @@ class FileTableViewCell: UITableViewCell {
                 if let msg = cellMsg {
                         var cliMsg: CliMessage?
                         if let videoData = msg.payload as? videoMsg {
-                                cliMsg = CliMessage.init(to: msg.to!, videoUrl: URL(fileURLWithPath: videoData.url), groupId: msg.groupId!)
+                                cliMsg = CliMessage.init(to: msg.to, videoUrl: URL(fileURLWithPath: videoData.url), groupId: msg.groupId!)
                         }
                         if let fileData = msg.payload as? fileMsg {
-                                cliMsg = CliMessage.init(to: msg.to!, fileUrl: URL(fileURLWithPath: fileData.url), groupId: msg.groupId!)
+                                cliMsg = CliMessage.init(to: msg.to, fileUrl: URL(fileURLWithPath: fileData.url), groupId: msg.groupId!)
                         }
                         guard let resendCli = cliMsg else {
                                 return
@@ -60,7 +60,7 @@ class FileTableViewCell: UITableViewCell {
                                 self.spinner?.startAnimating()
                         } onCompletion: { success in
                                 if !success {
-                                        MessageItem.resetSending(msgid: resendCli.timestamp!, to: resendCli.to!, success: success)
+                                        MessageItem.resetSending(msgid: resendCli.timestamp!, to: resendCli.to, success: success)
                                         self.updateMessageCell(by: msg)
                                 }
                         }

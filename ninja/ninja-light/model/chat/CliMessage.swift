@@ -113,7 +113,7 @@ class locationMsg: NSObject, NSCoding {
 }
 
 class CliMessage: NSObject {
-        var to: String?
+        var to: String = ""
         var type:CMT = .plainTxt
         var textData: String?
         var audioData: audioMsg?

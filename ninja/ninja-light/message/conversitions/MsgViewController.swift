@@ -399,7 +399,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                         }
                 } onCompletion: { success in
                         if !success {
-                                MessageItem.resetSending(msgid: cliMsg.timestamp!, to: cliMsg.to!, success: success)
+                                MessageItem.resetSending(msgid: cliMsg.timestamp!, to: cliMsg.to, success: success)
                                 if let msges = MessageItem.cache.get(idStr: self.peerUid) {
                                         self.messages = msges
                                         self.messageTableView.reloadData()

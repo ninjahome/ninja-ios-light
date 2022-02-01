@@ -41,6 +41,18 @@ class WebsocketSrv: NSObject {
                 ChatLibWSOffline()
         }
         
+        func SendMessage(msg:CliMessage)->Error?{
+                guard let data =  msg.PackData() else{
+                        return NJError.msg("pack message failed")
+                }
+                
+                var err: NSError? = nil
+                guard let _ = ChatLibSend(msg.timestamp!, msg.to, data, msg.groupId != nil, &err), err != nil else{
+                        return nil
+                }
+                return err
+        }
+        
         func SendIMMsg(cliMsg: CliMessage, retry: Bool = false, onStart: @escaping()-> Void, onCompletion: @escaping(Bool) -> Void) {
                 
                 var isGroup: Bool = false
@@ -49,7 +61,7 @@ class WebsocketSrv: NSObject {
                         isGroup = true
                         peerID = groupId
                 } else {
-                        peerID = cliMsg.to!
+                        peerID = cliMsg.to
                 }
                 
                 if retry {
