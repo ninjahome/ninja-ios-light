@@ -123,10 +123,10 @@ class CliMessage: NSObject {
         var fileData: fileMsg?
         var groupId: String?
         var timestamp: Int64?
-
+        var isRetrying:Bool = false
+        
         override init() {
                 super.init()
-                
                 self.timestamp = ChatLibNowInMilliSeconds()
         }
 

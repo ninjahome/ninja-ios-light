@@ -29,20 +29,13 @@ extension MsgViewController: RecordAudioDelegate {
         }
         
         func audioRecordWavFinish(_ uploadWavData: Data, recordTime: Double, fileHash: String) {
-                if recordTime < 1 {
-                        self.toastMessage(title: "Record too short")
-                        return
-                }
-                let cliMsg = CliMessage.init()
-                cliMsg.type = .voice
-                if IS_GROUP {
-                        cliMsg.groupId = self.peerUid
-                        cliMsg.to = self.peerUid
-                } else {
-                        cliMsg.to = peerUid
+                var gid:String? = nil
+                if IS_GROUP{
+                        gid = self.peerUid
                 }
                 
-                cliMsg.audioData = audioMsg.init(data: uploadWavData, len: Int(recordTime))
+                let cliMsg = CliMessage.init(to: peerUid, audioD: uploadWavData, length: Int(recordTime + 1), groupId: gid)
+                
                 sendAllTypeMessage(cliMsg)
         }
 }

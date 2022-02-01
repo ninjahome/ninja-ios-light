@@ -14,7 +14,7 @@ private let TempAmrFilePath = AudioFilesManager.amrPathWithName("amr_temp_record
 
 class AudioRecordManager:NSObject {
         public static let MaxAudioLengthInSecond = 60.0
-        public static let MinAudioLengthInSecond = 0.1
+        public static let MinAudioLengthInSecond = 0.5
         public static let shared: AudioRecordManager = AudioRecordManager()
         
         
