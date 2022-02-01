@@ -107,7 +107,8 @@ class VoiceTableViewCell: UITableViewCell {
         }
     
         @objc func playAudioBtnAction() {
-                guard let data = self.audioData else{
+                guard let data = self.audioData, data.count > 0 else{
+                        print("------>>>invalid audio data")
                         return
                 }
                 

@@ -45,7 +45,7 @@ class AudioPlayManager: NSObject, AVAudioPlayerDelegate {
                         }
                         
                 } catch let err{
-                        print("------>>>play music failed[\(err)]")
+                        print("------>>>play music failed[\(err)], data len:[\(file.count)]")
                         try? session.setActive(false, options: [.notifyOthersOnDeactivation])
                         return
                 }
