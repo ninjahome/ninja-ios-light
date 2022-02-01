@@ -10,14 +10,14 @@ import AVFoundation
 
 class AudioPlayManager: NSObject, AVAudioPlayerDelegate {
         
-        var audioPlayer:AVAudioPlayer!
+        private var audioPlayer:AVAudioPlayer?
         let session = AVAudioSession.sharedInstance()
         public static let shared : AudioPlayManager = AudioPlayManager()
         
         override init() {
                 super.init()
                 do{
-                        try session.setCategory(.playback)
+                        try session.setCategory(.playback, mode: .default)
                 }catch let err{
                         print("------>>>player init failed[\(err)]")
                         return
@@ -33,7 +33,10 @@ class AudioPlayManager: NSObject, AVAudioPlayerDelegate {
         func playMusic(file: Data) {
                 
                 do {
-                        try session.setActive(true, options: .notifyOthersOnDeactivation)
+                        if let oldPlayer = self.audioPlayer {
+                                oldPlayer.stop()
+                        }
+                        try session.setActive(true)
                         audioPlayer = try AVAudioPlayer(data: file)
                         audioPlayer?.delegate = self
                         
@@ -51,5 +54,18 @@ class AudioPlayManager: NSObject, AVAudioPlayerDelegate {
                                          successfully flag: Bool){
                 
                 print("------>>>play music result[\(flag)]")
+                do {
+                        try session.setActive(false, options: [.notifyOthersOnDeactivation])
+                        
+                }catch let err{
+                        print("------>>>session setActive false failed[\(err)]")
+                }
+        }
+        
+        func audioPlayerEndInterruption(_ player: AVAudioPlayer, withOptions flags: Int){
+                print("------>>>audioPlayerEndInterruption flags =[\(flags)]")
+        }
+        func audioPlayerBeginInterruption(_ player: AVAudioPlayer){
+                print("------>>>audioPlayerBeginInterruption")
         }
 }
