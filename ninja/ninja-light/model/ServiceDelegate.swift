@@ -128,6 +128,8 @@ extension ServiceDelegate{
                         
                         CombineConntact.syncAllContactDataAtOnce()
                         
+                        WebsocketSrv.shared.Online()
+                        
                         parent.hideIndicator()
                         guard let cb = callback else{
                                 return
