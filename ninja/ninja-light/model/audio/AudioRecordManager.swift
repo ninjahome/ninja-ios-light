@@ -40,22 +40,7 @@ class AudioRecordManager:NSObject {
                 super.init()
         }
         
-        
-        func checkPermissionAndInitRecord(onFaild: @escaping(Bool) -> Void) {
                 
-                do {
-                        try audioSession.setCategory(AVAudioSession.Category.playAndRecord, mode: .default)
-                        do {
-                                try audioSession.setActive(true)
-                        } catch let err as NSError {
-                                print("set audio session active faild \(err.localizedDescription)")
-                        }
-                } catch let err as NSError {
-                        print("set audio session category faild \(err.localizedDescription)")
-                }
-                
-        }
-        
         func startRecord() {
                 
                 self.isCancelRecord = false
@@ -113,7 +98,7 @@ class AudioRecordManager:NSObject {
                         return
                 }
                 
-                self.recorder.record()
+                self.recorder?.record()
                 
                 let operation = BlockOperation()
                 operation.addExecutionBlock(updateMeters)

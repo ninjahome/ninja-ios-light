@@ -111,6 +111,12 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 if let msges = MessageItem.cache.get(idStr: self.peerUid) {
                         self.messages = msges
                 }
+                do{
+                        try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord, mode: .default)
+                        
+                }catch let err{
+                        print("------>>>{\(err)}")
+                }
         }
         
         deinit {
@@ -384,8 +390,10 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 
                 if sender.state == .began {
                         print("------>>>press began")
-                        self.audioRecorder.checkPermissionAndInitRecord { onFaild in
-                                print("------>>>check permission and init record:\(onFaild)")
+                        do{
+                                try AVAudioSession.sharedInstance().setActive(true)
+                        }catch let err{
+                                self.toastMessage(title: err.localizedDescription)
                         }
                         self.audioRecorder.startRecord()
                         beganRecord()

@@ -16,12 +16,6 @@ class AudioPlayManager: NSObject, AVAudioPlayerDelegate {
         
         override init() {
                 super.init()
-                do{
-                        try session.setCategory(.playback, mode: .default)
-                }catch let err{
-                        print("------>>>player init failed[\(err)]")
-                        return
-                }
         }
         func stopPlay(){
                 guard let player = self.audioPlayer, player.isPlaying else{
