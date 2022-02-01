@@ -44,10 +44,8 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         var selectedRow: Int?
         var isLocalMsg:Bool?
         
+        var recordCancelled:Bool = false
         var keyboardIsHide: Bool = true
-        
-        let audioRecorder = AudioRecordManager.shared
-        fileprivate var finishRecording = true
         
         var _delegate: UIGestureRecognizerDelegate?
         
@@ -76,7 +74,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         override func viewDidLoad() {
                 super.viewDidLoad()
                 
-                audioRecorder.delegate = self
+                AudioRecordManager.shared.delegate = self
                 messageTableView.delegate = self
                 messageTableView.dataSource = self
                 
@@ -414,27 +412,21 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
 
 
 extension MsgViewController{
-        
         @IBAction func cancelRecord(_ sender: Any) {
-                print("touch up outside")
+                print("------>>>touch up outside")
         }
         
-        
         func willCancelRecord() {
-                finishRecording = false
                 self.recordingPoint.layer.contents = UIImage(named: "voicecancel_icon")?.cgImage
                 self.recordingTip.text = "松手取消发送"
         }
         
         func showCancelRecord() {
-                finishRecording = true
                 self.recordingPoint.layer.contents = UIImage(named: "voiceBG_icon")?.cgImage
                 self.recordingTip.text = "上滑取消"
         }
         
         func beganRecord() {
-                finishRecording = true
-                
                 self.recordingPoint.isHidden = false
                 self.recordingTip.isHidden = false
                 self.recordBtn.setTitle("松开发送", for: .normal)
@@ -452,31 +444,30 @@ extension MsgViewController{
                 
                 if sender.state == .began {
                         print("------>>>press began")
-                        if let err =  self.audioRecorder.startRecord() {
+                        if let err =  AudioRecordManager.shared.startRecord() {
                                 self.toastMessage(title: err.localizedDescription)
                                 return
                         }
-                        
+                        recordCancelled = false
                         beganRecord()
                         
                 } else if sender.state == .changed {
                         let point = sender.location(in: self.recordingPoint)
                         if self.recordingPoint.point(inside: point, with: nil) {
                                 willCancelRecord()
+                                recordCancelled = true
                         } else {
                                 showCancelRecord()
+                                recordCancelled = false
                         }
                 } else if sender.state == .ended {
-                        print("------>>>press end \(finishRecording)")
-                        if finishRecording {
-                                self.audioRecorder.stopRecord()
-                        } else {
-                                self.audioRecorder.cancelRecord()
-                        }
+                        print("------>>>press end[\(recordCancelled)]")
+                        
+                        AudioRecordManager.shared.finishRecrod(isReset: recordCancelled)
                         endRecord()
                         
                 } else if sender.state == .cancelled {
-                        self.audioRecorder.stopRecord()
+                        AudioRecordManager.shared.finishRecrod(isReset: true)
                 }
         }
         
