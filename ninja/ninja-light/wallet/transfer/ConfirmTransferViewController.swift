@@ -39,7 +39,7 @@ class ConfirmTransferViewController: UIViewController {
                         return
                 }
                 
-                self.showIndicator(withTitle: "", and: "trasforing")
+                self.showIndicator(withTitle: "", and: "transfering")
                 ServiceDelegate.workQueue.async {
                         if let err = ServiceDelegate.transferLicense(to: addr, days: dayInt) {
                                 self.toastMessage(title: "faild[\(err.localizedDescription)]")

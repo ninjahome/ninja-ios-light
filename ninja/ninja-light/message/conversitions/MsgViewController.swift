@@ -59,11 +59,11 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                         _delegate = self.navigationController?.interactivePopGestureRecognizer?.delegate
                         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
                 }
+                self.scrollToBottom()
         }
         
         override func viewDidAppear(_ animated: Bool) {
                 super.viewDidAppear(animated)
-                self.scrollToBottom()
         }
         
         override func viewWillDisappear(_ animated: Bool) {
