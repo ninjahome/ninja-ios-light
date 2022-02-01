@@ -34,7 +34,7 @@ extension MsgViewController: RecordAudioDelegate {
                         gid = self.peerUid
                 }
                 
-                let cliMsg = CliMessage.init(to: peerUid, audioD: uploadWavData, length: Int(recordTime + 1), groupId: gid)
+                let cliMsg = CliMessage.init(to: peerUid, audioD: uploadWavData, length: Int(recordTime + 0.5), groupId: gid)
                 
                 sendAllTypeMessage(cliMsg)
         }

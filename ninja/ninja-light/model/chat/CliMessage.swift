@@ -219,7 +219,7 @@ class CliMessage: NSObject {
                         let compress = compressImage(self.imgData)
                         data = ChatLibWrapImg(compress)
                 case .voice:
-                        guard let audioData = self.audioData, audioData.duration > 1 else { //TODO::  duration?
+                        guard let audioData = self.audioData, audioData.duration >= 1 else { //TODO::  duration?
                                 return nil
                         }
                         data = ChatLibWrapVoice(audioData.duration, audioData.content)
