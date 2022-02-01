@@ -274,7 +274,11 @@ extension String {
         }
         
 }
-
+extension Data {
+    func hexEncodedString() -> String {
+        return map { String(format: "%02hhx", $0) }.joined()
+    }
+}
 extension Array {
         func sortedByPinyin(ascending: Bool = true) -> Array<ContactItem>? {
                 if self is Array<ContactItem> {

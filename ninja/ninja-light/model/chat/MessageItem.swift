@@ -51,12 +51,20 @@ class MessageItem: NSObject {
                 case .image:
                         msgItem.payload = data[1...]
                 case .voice:
-                        let audiomsg = audioMsg()
-                        
                         let objJson = JSON(data[1...])
-                        audiomsg.content = objJson["content"].rawValue as? Data ?? Data()
-                        audiomsg.duration = objJson["len"].int ?? 0
-                        msgItem.payload = audiomsg
+                        guard let  dataStr = objJson["content"].string else{
+                                return msgItem
+                        }
+                        print("------>>>", dataStr.count, dataStr)
+                        print("------>>>", data.hexEncodedString())
+//                        guard let voiceData = ChatLibUnmarshalGoByte(dataStr) else{
+                        guard let voiceData = Data(base64Encoded:dataStr) else{
+                                return msgItem
+                        }
+                        print("------>>>",voiceData[0], voiceData[1], voiceData[2], voiceData[3])
+                        let len  = objJson["len"].int ?? 0
+                        
+                        msgItem.payload = audioMsg(data: voiceData, len: len)
                 case .location:
                         let locMsg = locationMsg()
                         let objJson = JSON(data[1...])

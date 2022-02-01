@@ -18,7 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
                 
-                
                 let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
                 print("token \(token)")
                 ServiceDelegate.InitPushParam(deviceToken: token)

@@ -201,40 +201,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 print("touch up outside")
         }
         
-        @IBAction func recordLongPress(_ sender: UILongPressGestureRecognizer) {
-                if sender.state == .began {
-                        
-                        print("press began")
-                        self.audioRecorder.checkPermissionAndInitRecord { onFaild in
-                                print("check permission and init record:\(onFaild)")
-                        }
-                        self.audioRecorder.startRecord()
-                        beganRecord()
-                        
-                } else if sender.state == .changed {
-                        let point = sender.location(in: self.recordingPoint)
-                        if self.recordingPoint.point(inside: point, with: nil) {
-                                willCancelRecord()
-                        } else {
-                                showCancelRecord()
-                        }
-                        
-                } else if sender.state == .ended {
-                        print("press end \(finishRecording)")
-                        if finishRecording {
-                                self.audioRecorder.stopRecord()
-                        } else {
-                                self.audioRecorder.cancelRecord()
-                        }
-                        endRecord()
-                        
-                } else if sender.state == .cancelled {
-                        self.audioRecorder.stopRecord()
-                        
-                }
-                
-        }
-        
+
         func willCancelRecord() {
                 finishRecording = false
                 self.recordingPoint.layer.contents = UIImage(named: "voicecancel_icon")?.cgImage
@@ -386,22 +353,65 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         @IBAction func voiceBtn(_ sender: UIButton) {
-                if Wallet.shared.isStillVip() {
-                        if isTextType {
+                guard Wallet.shared.isStillVip() else{
+                        showVipModalViewController()
+                        return
+                }
+                
+                if !isTextType {
+                        self.voiceBtn.setImage(UIImage(named: "voice_icon"), for: .normal)
+                        self.sender.isHidden = false
+                        self.recordBtn.isHidden = true
+                        isTextType = true
+                        return
+                }
+                
+                AVAudioSession.sharedInstance().requestRecordPermission { allowed in
+                        if !allowed {
+                                self.toastMessage(title: "need microphone right in setting")
+                                return
+                        }
+                        DispatchQueue.main.async {
                                 self.voiceBtn.setImage(UIImage(named: "key_icon"), for: .normal)
                                 self.sender.isHidden = true
                                 self.recordBtn.isHidden = false
-                                isTextType = false
-                        } else {
-                                self.voiceBtn.setImage(UIImage(named: "voice_icon"), for: .normal)
-                                self.sender.isHidden = false
-                                self.recordBtn.isHidden = true
-                                isTextType = true
+                                self.isTextType = false
                         }
-                } else {
-                        showVipModalViewController()
                 }
         }
+        
+        @IBAction func recordLongPress(_ sender: UILongPressGestureRecognizer) {
+                
+                if sender.state == .began {
+                        print("------>>>press began")
+                        self.audioRecorder.checkPermissionAndInitRecord { onFaild in
+                                print("------>>>check permission and init record:\(onFaild)")
+                        }
+                        self.audioRecorder.startRecord()
+                        beganRecord()
+                        
+                } else if sender.state == .changed {
+                        let point = sender.location(in: self.recordingPoint)
+                        if self.recordingPoint.point(inside: point, with: nil) {
+                                willCancelRecord()
+                        } else {
+                                showCancelRecord()
+                        }
+                        
+                } else if sender.state == .ended {
+                        print("press end \(finishRecording)")
+                        if finishRecording {
+                                self.audioRecorder.stopRecord()
+                        } else {
+                                self.audioRecorder.cancelRecord()
+                        }
+                        endRecord()
+                        
+                } else if sender.state == .cancelled {
+                self.audioRecorder.stopRecord()
+                }
+        }
+        
         
         fileprivate func setPeerNick() {
                 var count: String = "?"

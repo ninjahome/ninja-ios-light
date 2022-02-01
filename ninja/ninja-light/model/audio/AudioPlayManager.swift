@@ -30,22 +30,22 @@ class AudioPlayManager: NSObject, AVAudioPlayerDelegate {
                 player.stop()
         }
         
-        func playMusic(file: Data) {
+        func playMusic(rawData: Data) {
                 
                 do {
-                        if let oldPlayer = self.audioPlayer {
+                        if let oldPlayer = self.audioPlayer, oldPlayer.isPlaying {
                                 oldPlayer.stop()
                         }
                         try session.setActive(true)
-                        audioPlayer = try AVAudioPlayer(data: file)
+                        audioPlayer = try AVAudioPlayer(data: rawData)
                         audioPlayer?.delegate = self
                         
                         if (audioPlayer!.prepareToPlay()){
                                 audioPlayer!.play()
                         }
-                        
+                        audioPlayer!.play()
                 } catch let err{
-                        print("------>>>play music failed[\(err)], data len:[\(file.count)]")
+                        print("------>>>play music failed[\(err)], data len:[\(rawData.count)]")
                         try? session.setActive(false, options: [.notifyOthersOnDeactivation])
                         return
                 }

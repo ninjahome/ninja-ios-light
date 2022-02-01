@@ -112,7 +112,7 @@ class VoiceTableViewCell: UITableViewCell {
                         return
                 }
                 
-                AudioPlayManager.shared.playMusic(file: data)
+                AudioPlayManager.shared.playMusic(rawData: data)
 
                 let time = TimeInterval(self.long)
                 let imgs = getFilpAnimatedImg()

@@ -42,15 +42,11 @@ class AudioRecordManager:NSObject {
         
         
         func checkPermissionAndInitRecord(onFaild: @escaping(Bool) -> Void) {
+                
                 do {
-                        try audioSession.setCategory(AVAudioSession.Category.playAndRecord, mode: AVAudioSession.Mode.default, options: .duckOthers)
+                        try audioSession.setCategory(AVAudioSession.Category.playAndRecord, mode: .default)
                         do {
                                 try audioSession.setActive(true)
-                                audioSession.requestRecordPermission { allowed in
-                                        if !allowed {
-                                                onFaild(allowed)
-                                        }
-                                }
                         } catch let err as NSError {
                                 print("set audio session active faild \(err.localizedDescription)")
                         }
@@ -76,7 +72,7 @@ class AudioRecordManager:NSObject {
                         self.recorder.isMeteringEnabled = true
                         self.recorder.prepareToRecord()
                 } catch let error as NSError {
-                        print(error)
+                        print("------>>>",error)
                 }
                 
                 self.perform(#selector(AudioRecordManager.readyStartRecord), with: self, afterDelay: 0.0)
@@ -106,7 +102,6 @@ class AudioRecordManager:NSObject {
                 }
                 
                 self.operationQueue.cancelAllOperations()
-                
         }
         
         @objc func readyStartRecord() {

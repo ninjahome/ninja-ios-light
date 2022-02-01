@@ -38,7 +38,12 @@ class audioMsg: NSObject, NSCoding {
         override init() {
                 super.init()
         }
-
+        
+        init(data:Data, len:Int){
+                super.init()
+                content = data
+                duration = len
+        }
 }
 
 class videoMsg: NSObject, NSCoding {
