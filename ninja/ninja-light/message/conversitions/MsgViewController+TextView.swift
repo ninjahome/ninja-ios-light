@@ -11,29 +11,21 @@ import UIKit
 extension MsgViewController: UITextViewDelegate {
         
         func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+                guard text == "\n" else{
+                        return true
+                }
                 
-                if (text == "\n") {
-                        guard let msg = self.sender.text, msg != "" else {
-                                return false
-                        }
-                        
-                        let cliMsg = CliMessage.init()
-                        cliMsg.type = .plainTxt
-                        if IS_GROUP {
-                                cliMsg.groupId = self.peerUid
-                                cliMsg.to = self.peerUid
-                                cliMsg.textData = msg
-                                
-                        } else {
-                                cliMsg.to = peerUid
-                                cliMsg.textData = msg
-                        }
-                        
-                        textView.text = nil
-                        sendAllTypeMessage(cliMsg)
-                        
+                guard let message = self.sender.text, message != "" else {
                         return false
                 }
-                return true
+                var gid:String? = nil
+                if IS_GROUP{
+                        gid = self.peerUid
+                }
+                let data = txtMsg.init(txt: message)
+                let msg = MessageItem.init(to: peerUid, data: data, typ: .plainTxt, gid: gid)
+                textView.text = nil
+                sendMessage(msg: msg)
+                return false
         }
 }

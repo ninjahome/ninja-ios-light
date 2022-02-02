@@ -40,8 +40,11 @@ var cellMsg: MessageItem?
         }
     
         @IBAction func retry(_ sender: UIButton) {
+                guard let im =  cellMsg?.payload as? imgMsg else{
+                        return
+                }
                 if let msg = cellMsg {
-                        let cliMsg = CliMessage.init(to: msg.to, imgData: msg.payload as! Data, groupId: msg.groupId)
+                        let cliMsg = CliMessage.init(to: msg.to, imgData: im.content, groupId: msg.groupId)
 
                         WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg, retry: true) { [self] in
                                 self.retry?.isHidden = true
@@ -60,8 +63,8 @@ var cellMsg: MessageItem?
                 msgBackgroundView.layer.cornerRadius = 8
                 msgBackgroundView.clipsToBounds = true
                 let from = message.from
-
-                imageMsg.image = UIImage(data: message.payload as! Data)
+                let img = message.payload as? imgMsg
+                imageMsg.image = UIImage(data: img?.content ?? Data())//TODO::
                 imageMsg.contentMode = .scaleAspectFill
                 imageMsg.clipsToBounds = true
 
