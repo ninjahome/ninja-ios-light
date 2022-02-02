@@ -9,7 +9,7 @@ import UIKit
 import AVFoundation
 import MobileCoreServices
 
-class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
+class MsgViewController: UIViewController {
         
         @IBOutlet weak var voiceBtn: UIButton!
         @IBOutlet weak var sender: UITextView!
@@ -201,74 +201,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.performSegue(withIdentifier: "ShowMapSeg", sender: self)
         }
         
-        
-        @objc func keyboardWillShow(notification:NSNotification) {
-                
-                if !keyboardIsHide {
-                        return
-                }
-                
-                guard let userInfo = notification.userInfo else { return }
-                guard let keyboardRect = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
-                        return
-                }
-                var duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
-                
-                if duration == nil {
-                        duration = 0.25
-                }
-                
-                let keyboardTopYPosition = keyboardRect.height
-                self.textFieldConstrain.constant = -keyboardTopYPosition
-                self.msgTableConstrain.constant = 0
-                
-                UIView.animate(withDuration: duration!) {
-                        self.scrollToBottom()
-                }
-                
-        }
-        
-        @objc func keyboardWillHide(notification:NSNotification) {
-                guard let userInfo = notification.userInfo else { return }
-                var duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
-                
-                if duration == nil {
-                        duration = 0.25
-                }
-                
-                self.textFieldConstrain.constant = 4
-                self.msgTableConstrain.constant = 0
-                
-                UIView.animate(withDuration: duration!) {
-                        self.scrollToBottom()
-                }
-        }
-        
-        @objc func keyboardDidShow(notification: NSNotification) {
-                guard let userInfo = notification.userInfo else {
-                        return
-                }
-                var duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
-                if duration == nil {
-                        duration = 0.25
-                }
-                
-                self.keyboardIsHide = false
-        }
-        
-        @objc func keyboardDidHide(notification: NSNotification) {
-                guard let userInfo = notification.userInfo else {
-                        return
-                }
-                var duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
-                
-                if duration == nil {
-                        duration = 0.25
-                }
-                
-                self.keyboardIsHide = true
-        }
-        
         @objc func contactUpdate(notification: NSNotification) {
                 let contactData = CombineConntact.cache[peerUid]
                 self.peerNickName.title = contactData?.GetNickName() ?? contactData?.peerID
@@ -278,26 +210,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         @objc func groupUpdate(notification: NSNotification) {
                 groupData = GroupItem.cache[peerUid]
                 self.setPeerNick()
-        }
-        
-        @objc func newMsg(notification: NSNotification){
-                guard let uid = notification.userInfo?[MessageItem.NotiKey] as? String else {
-                        return
-                }
-                
-                if uid != self.peerUid {
-                        return
-                }
-                
-                guard let msges = MessageItem.cache.get(idStr: self.peerUid) else {
-                        return
-                }
-                self.msgCacheArray = msges
-                
-                DispatchQueue.main.async {
-                        self.messageTableView.reloadData()
-                        self.scrollToBottom(animated: true)
-                }
         }
         
         @IBAction func EditContactInfo(_ sender: UIBarButtonItem) {
@@ -323,8 +235,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         private func isInContact() -> Bool {
                 return CombineConntact.cache[peerUid] != nil
         }
-        
-        
         
         fileprivate func setPeerNick() {
                 var count: String = "?"
@@ -389,27 +299,29 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.messageTableView.setContentOffset(CGPoint.init(x: 0, y: (self.messageTableView.contentSize.height-self.messageTableView.bounds.size.height)), animated: animated)
         }
         
-//        func sendAllTypeMessage(_ cliMsg: CliMessage, resend: Bool = false) {
-//                
-//                WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg, retry: resend) {
-//                        if let msges = MessageItem.cache.get(idStr: self.peerUid) {
-//                                self.msgCacheArray = msges
-//                                self.messageTableView.reloadData()
-//                                self.scrollToBottom()
-//                        }
-//                } onCompletion: { success in
-//                        if !success {
-//                                MessageItem.resetSending(msgid: cliMsg.timestamp!, to: cliMsg.to, success: success)
-//                                if let msges = MessageItem.cache.get(idStr: self.peerUid) {
-//                                        self.msgCacheArray = msges
-//                                        self.messageTableView.reloadData()
-//                                        self.scrollToBottom()
-//                                }
-//                        }
-//                }
-//        }
+        func sendAllTypeMessage(_ cliMsg: CliMessage, resend: Bool = false) {
+                
+                //                WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg, retry: resend) {
+                //                        if let msges = MessageItem.cache.get(idStr: self.peerUid) {
+                //                                self.msgCacheArray = msges
+                //                                self.messageTableView.reloadData()
+                //                                self.scrollToBottom()
+                //                        }
+                //                } onCompletion: { success in
+                //                        if !success {
+                //                                MessageItem.resetSending(msgid: cliMsg.timestamp!, to: cliMsg.to, success: success)
+                //                                if let msges = MessageItem.cache.get(idStr: self.peerUid) {
+                //                                        self.msgCacheArray = msges
+                //                                        self.messageTableView.reloadData()
+                //                                        self.scrollToBottom()
+                //                                }
+                //                        }
+                //                }
+        }
 }
 
+extension MsgViewController:UIGestureRecognizerDelegate{
+}
 
 extension MsgViewController{
         @IBAction func cancelRecord(_ sender: Any) {
@@ -499,4 +411,114 @@ extension MsgViewController{
                         }
                 }
         }
+}
+
+extension MsgViewController{
+        
+        
+        @objc func newMsg(notification: NSNotification){
+                guard let uid = notification.userInfo?[MessageItem.NotiKey] as? String else {
+                        return
+                }
+                
+                if uid != self.peerUid {
+                        return
+                }
+                
+                guard let msges = MessageItem.cache.get(idStr: self.peerUid) else {
+                        return
+                }
+                self.msgCacheArray = msges
+                
+                DispatchQueue.main.async {
+                        self.messageTableView.reloadData()
+                        self.scrollToBottom(animated: true)
+                }
+        }
+        
+        func sendMessage(msg:MessageItem){
+                if let err = MessageItem.syncNewIMToDisk(msg: msg){
+                        self.toastMessage(title: err.localizedDescription)
+                        return
+                }
+                if let err = WebsocketSrv.shared.SendMessage(msg: msg){
+                        self.toastMessage(title: err.localizedDescription)
+                        return
+                }
+                DispatchQueue.main.async {
+                        self.messageTableView.reloadData()
+                        self.scrollToBottom(animated: true)
+                }
+        }
+}
+
+extension MsgViewController{
+        
+        @objc func keyboardWillShow(notification:NSNotification) {
+                
+                if !keyboardIsHide {
+                        return
+                }
+                
+                guard let userInfo = notification.userInfo else { return }
+                guard let keyboardRect = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+                        return
+                }
+                var duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
+                
+                if duration == nil {
+                        duration = 0.25
+                }
+                
+                let keyboardTopYPosition = keyboardRect.height
+                self.textFieldConstrain.constant = -keyboardTopYPosition
+                self.msgTableConstrain.constant = 0
+                
+                UIView.animate(withDuration: duration!) {
+                        self.scrollToBottom()
+                }
+                
+        }
+        
+        @objc func keyboardWillHide(notification:NSNotification) {
+                guard let userInfo = notification.userInfo else { return }
+                var duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
+                
+                if duration == nil {
+                        duration = 0.25
+                }
+                
+                self.textFieldConstrain.constant = 4
+                self.msgTableConstrain.constant = 0
+                
+                UIView.animate(withDuration: duration!) {
+                        self.scrollToBottom()
+                }
+        }
+        
+        @objc func keyboardDidShow(notification: NSNotification) {
+                guard let userInfo = notification.userInfo else {
+                        return
+                }
+                var duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
+                if duration == nil {
+                        duration = 0.25
+                }
+                
+                self.keyboardIsHide = false
+        }
+        
+        @objc func keyboardDidHide(notification: NSNotification) {
+                guard let userInfo = notification.userInfo else {
+                        return
+                }
+                var duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
+                
+                if duration == nil {
+                        duration = 0.25
+                }
+                
+                self.keyboardIsHide = true
+        }
+        
 }

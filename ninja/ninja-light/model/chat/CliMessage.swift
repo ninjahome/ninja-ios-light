@@ -59,16 +59,6 @@ class txtMsg:NSObject, NSCoding,IMPayLoad{
                 }
                 return data
         }
-        
-        func unwrapFromProto(data: Data) -> Error? {
-                var err:NSError?
-                self.txt = ChatLibUnwrapTxtV2(data, &err)
-                if let e = err{
-                        return e
-                }
-                
-                return nil
-        }
 }
 
 class imgMsg:NSObject, NSCoding,IMPayLoad{
@@ -105,23 +95,10 @@ class imgMsg:NSObject, NSCoding,IMPayLoad{
                 
                 return data
         }
-        
-        func unwrapFromProto(data: Data) -> Error? {
-                var err:NSError?
-                let data = ChatLibUnwrapImgV2(data, &err)
-                if let e = err {
-                        return e
-                }
-                guard let d = data else{
-                        return NJError.msg("unwrap empty image data")
-                }
-                self.content = d
-                return nil
-        }
 }
 
 
-class audioMsg: NSObject, NSCoding, ChatLibVoiceCallbackProtocol, IMPayLoad {
+class audioMsg: NSObject, NSCoding, IMPayLoad {
         
         var content: Data = Data()
         var duration: Int = 0
@@ -152,14 +129,6 @@ class audioMsg: NSObject, NSCoding, ChatLibVoiceCallbackProtocol, IMPayLoad {
                 self.content = d ?? Data()
         }
         
-        func unwrapFromProto(data:Data)->Error?{
-                var err:NSError?
-                ChatLibUnwrapVoiceV2(data, self, &err)
-                if err != nil{
-                        return err
-                }
-                return nil
-        }
         
         func wrappedToProto() -> Data? {
                 guard content.count > 0 else{
@@ -176,7 +145,7 @@ class audioMsg: NSObject, NSCoding, ChatLibVoiceCallbackProtocol, IMPayLoad {
         }
 }
 
-class fileMsg: NSObject, NSCoding,IMPayLoad,ChatLibFileCallbackProtocol {
+class fileMsg: NSObject, NSCoding,IMPayLoad {
         
         
         var content: Data = Data()
@@ -202,15 +171,6 @@ class fileMsg: NSObject, NSCoding,IMPayLoad,ChatLibFileCallbackProtocol {
                 super.init()
         }
         
-        func unwrapFromProto(data:Data)->Error?{
-                var err:NSError?
-                ChatLibUnwrapFileV2(data, self, &err)
-                if err != nil{
-                        return err
-                }
-                return nil
-        }
-        
         func wrappedToProto() -> Data? {
                 guard content.count > 0 else{
                         return nil
@@ -225,13 +185,15 @@ class fileMsg: NSObject, NSCoding,IMPayLoad,ChatLibFileCallbackProtocol {
                 return data
         }
         
-        func success(_ n: String?, s: String?, l: Int32, d: Data?) {
-                self.name = n ?? ""
-                self.content = d ?? Data()
+        init(name:String?, suffix:String?, len:Int32, data:Data?){
+                super.init()
+                
+                self.name = name ?? ""
+                self.content = data ?? Data()
         }
 }
 
-class locationMsg: NSObject, NSCoding,IMPayLoad,ChatLibLocationCallbackProtocol {
+class locationMsg: NSObject, NSCoding,IMPayLoad {
         
         var lo: Float = 0
         var la: Float = 0
@@ -254,15 +216,6 @@ class locationMsg: NSObject, NSCoding,IMPayLoad,ChatLibLocationCallbackProtocol 
                 super.init()
         }
         
-        func unwrapFromProto(data:Data)->Error?{
-                var err:NSError?
-                ChatLibUnwrapLocationV2(data, self, &err)
-                if err != nil{
-                        return err
-                }
-                return nil
-        }
-        
         func wrappedToProto() -> Data? {
                 var err:NSError?
                 let data = ChatLibWrapLocationV2(str, Double(lo), Double(la), &err)
@@ -274,10 +227,11 @@ class locationMsg: NSObject, NSCoding,IMPayLoad,ChatLibLocationCallbackProtocol 
                 return data
         }
         
-        func success(_ n: String?, lo: Double, la: Double) {
-                self.str = n ?? ""
-                self.lo = Float(lo)
-                self.la = Float(la)
+        init(name: String?, long: Double, lat: Double) {
+                super.init()
+                self.str = name ?? ""
+                self.lo = Float(long)
+                self.la = Float(lat)
         }
 }
 

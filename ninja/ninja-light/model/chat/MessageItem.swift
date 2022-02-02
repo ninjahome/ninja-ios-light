@@ -20,7 +20,6 @@ enum sendingStatus: Int16 {
 
 protocol IMPayLoad {
         func wrappedToProto()->Data?
-        func unwrapFromProto(data:Data)->Error?
 }
 
 class MessageItem: NSObject {
@@ -54,34 +53,13 @@ class MessageItem: NSObject {
                 self.payload = data
         }
         
-        private static func parseProtoMsgData(typ:CMT, data:Data)->IMPayLoad?{
-                var item:IMPayLoad? = nil
-                
-                switch typ{
-                case .plainTxt:
-                        item = txtMsg()
-                case .image:
-                        item =  imgMsg()
-                case .voice:
-                        item = audioMsg()
-                case .location:
-                        item = locationMsg()
-                case .video, .file:
-                        item = fileMsg()
-                case .contact:
-                        return nil
-                case .unknown:
-                        return nil
+        private func parseProtoMsgData(data:Data)->Error?{
+                var err:NSError?
+                ChatLibUnwrapProMsg(data, self, &err)
+                if let e = err{
+                        return e
                 }
-                guard let obj = item else{
-                        return nil
-                }
-                
-                if let e = obj.unwrapFromProto(data: data){
-                        print("------>>>", e)
-                        return nil
-                }
-                return item
+                return nil
         }
         
         public static func initByData(_ data: Data, from: String, gid: String? = nil, time: Int64) -> MessageItem? {
@@ -89,15 +67,15 @@ class MessageItem: NSObject {
                         print("------>>> empty message data")
                         return nil
                 }
-                guard let typ = CMT(rawValue: Int(data[0])) else {
+                
+                let msgItem = MessageItem()
+                if let e = msgItem.parseProtoMsgData(data: data){
+                        print("------>>> [parseProtoMsgData]",e)
                         return nil
                 }
-                let msgItem = MessageItem()
-                msgItem.typ = typ
                 msgItem.from = from
                 msgItem.timeStamp = time
                 msgItem.groupId = gid
-                msgItem.payload = parseProtoMsgData(typ: typ, data: data[1...])
                 
                 return msgItem
         }
@@ -214,19 +192,9 @@ class MessageItem: NSObject {
                 }
         }
         
-//        public static func addSentIM(cliMsg: CliMessage) -> MessageItem {
-//                let msg = MessageItem.init(cliMsg: cliMsg)
-//
-//                var msgList = cache.get(idStr: msg.to)
-//                if msgList == nil {
-//                        msgList = []
-//                }
-//                msgList?.append(msg)
-//                cache.setOrAdd(idStr: msg.to, item: msgList)
-//
-//                try? CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
-//                return msg
-//        }
+        public static func addSentIM(cliMsg: CliMessage) -> MessageItem {
+                return MessageItem()
+        }
         
         public static func syncNewIMToDisk(msg:MessageItem) -> Error?{
                 do{
@@ -426,5 +394,32 @@ extension MessageList {
                         }
                 }
                 return str
+        }
+}
+
+extension MessageItem:ChatLibUnwrapCallbackProtocol{
+        func file(_ n: String?, s: String?, l: Int32, d: Data?) {
+                self.typ = .file
+                self.payload = fileMsg(name:n, suffix:s, len:l, data:d ?? Data())
+        }
+        
+        func img(_ d: Data?) {
+                self.typ = .image
+                self.payload = imgMsg(data: d ?? Data())
+        }
+        
+        func location(_ n: String?, lo: Double, la: Double) {
+                self.typ = .location
+                self.payload = locationMsg(name:n, long:lo, lat:la)
+        }
+        
+        func txt(_ s: String?) {
+                self.typ = .plainTxt
+                self.payload = txtMsg(txt: s ?? "")
+        }
+        
+        func voice(_ l: Int32, d: Data?) {
+                self.typ = .voice
+                self.payload = audioMsg(data: d ?? Data(), len: Int(l))
         }
 }

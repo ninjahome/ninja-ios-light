@@ -10,7 +10,7 @@ import UIKit
 
 extension MsgViewController: RecordAudioDelegate {
         func audioRecordUpdateMetra(_ metra: Double) {
-                print("-------->\(metra)")
+//                print("-------->\(metra)")
                 DispatchQueue.main.async {
                         self.recordSeconds.text = String.init(format: "%.1f", metra)
                 }
@@ -34,11 +34,10 @@ extension MsgViewController: RecordAudioDelegate {
                         gid = self.peerUid
                 }
                 
-                let data = audioMsg.init(data: uploadWavData, len: Int(recordTime + 0.5))
+                let data = audioMsg.init(data: uploadWavData, len: Int(recordTime + 1))
                 let msg = MessageItem.init(to: peerUid, data: data, typ: .voice, gid: gid)
                 
-                MessageItem.syncNewIMToDisk(msg: msg)
-                WebsocketSrv.shared.SendMessage(msg: msg)
+                sendMessage(msg: msg)
         }
 }
 
