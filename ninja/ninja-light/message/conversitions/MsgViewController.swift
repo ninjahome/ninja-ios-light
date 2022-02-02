@@ -389,25 +389,25 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.messageTableView.setContentOffset(CGPoint.init(x: 0, y: (self.messageTableView.contentSize.height-self.messageTableView.bounds.size.height)), animated: animated)
         }
         
-        func sendAllTypeMessage(_ cliMsg: CliMessage, resend: Bool = false) {
-                
-                WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg, retry: resend) {
-                        if let msges = MessageItem.cache.get(idStr: self.peerUid) {
-                                self.msgCacheArray = msges
-                                self.messageTableView.reloadData()
-                                self.scrollToBottom()
-                        }
-                } onCompletion: { success in
-                        if !success {
-                                MessageItem.resetSending(msgid: cliMsg.timestamp!, to: cliMsg.to, success: success)
-                                if let msges = MessageItem.cache.get(idStr: self.peerUid) {
-                                        self.msgCacheArray = msges
-                                        self.messageTableView.reloadData()
-                                        self.scrollToBottom()
-                                }
-                        }
-                }
-        }
+//        func sendAllTypeMessage(_ cliMsg: CliMessage, resend: Bool = false) {
+//                
+//                WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg, retry: resend) {
+//                        if let msges = MessageItem.cache.get(idStr: self.peerUid) {
+//                                self.msgCacheArray = msges
+//                                self.messageTableView.reloadData()
+//                                self.scrollToBottom()
+//                        }
+//                } onCompletion: { success in
+//                        if !success {
+//                                MessageItem.resetSending(msgid: cliMsg.timestamp!, to: cliMsg.to, success: success)
+//                                if let msges = MessageItem.cache.get(idStr: self.peerUid) {
+//                                        self.msgCacheArray = msges
+//                                        self.messageTableView.reloadData()
+//                                        self.scrollToBottom()
+//                                }
+//                        }
+//                }
+//        }
 }
 
 

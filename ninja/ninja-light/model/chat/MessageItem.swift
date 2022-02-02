@@ -18,6 +18,11 @@ enum sendingStatus: Int16 {
         case faild
 }
 
+protocol IMPayLoad {
+        func wrappedToProto()->Data?
+        func unwrapFromProto(data:Data)->Error?
+}
+
 class MessageItem: NSObject {
         public static let NotiKey = "peerUid"
         public static let MaxItemNoPerID = 1000
@@ -26,7 +31,7 @@ class MessageItem: NSObject {
         var from: String = ""
         var to: String = ""
         var typ: CMT = .plainTxt
-        var payload: Any?
+        var payload: IMPayLoad?
         var isOut: Bool = false
         var groupId: String?
         var status: sendingStatus = .sent
@@ -37,7 +42,7 @@ class MessageItem: NSObject {
                 super.init()
         }
         
-        init(to:String, data:Any, typ:CMT = .plainTxt, gid:String?=nil) {
+        init(to:String, data:IMPayLoad, typ:CMT = .plainTxt, gid:String?=nil) {
                 super.init()
                 
                 from = Wallet.shared.Addr!
@@ -49,12 +54,41 @@ class MessageItem: NSObject {
                 self.payload = data
         }
         
-        public func PackData()->Data?{
-                return nil
+        private static func parseProtoMsgData(typ:CMT, data:Data)->IMPayLoad?{
+                var item:IMPayLoad? = nil
+                
+                switch typ{
+                case .plainTxt:
+                        item = txtMsg()
+                case .image:
+                        item =  imgMsg()
+                case .voice:
+                        item = audioMsg()
+                case .location:
+                        item = locationMsg()
+                case .video, .file:
+                        item = fileMsg()
+                case .contact:
+                        return nil
+                case .unknown:
+                        return nil
+                }
+                guard let obj = item else{
+                        return nil
+                }
+                
+                if let e = obj.unwrapFromProto(data: data){
+                        print("------>>>", e)
+                        return nil
+                }
+                return item
         }
         
         public static func initByData(_ data: Data, from: String, gid: String? = nil, time: Int64) -> MessageItem? {
-                
+                guard data.count > 2 else{
+                        print("------>>> empty message data")
+                        return nil
+                }
                 guard let typ = CMT(rawValue: Int(data[0])) else {
                         return nil
                 }
@@ -63,44 +97,8 @@ class MessageItem: NSObject {
                 msgItem.from = from
                 msgItem.timeStamp = time
                 msgItem.groupId = gid
-                switch typ {
-                case .plainTxt:
-                        msgItem.payload = String(data: data[1...], encoding: .utf8)
-                case .image:
-                        msgItem.payload = data[1...]
-                case .voice:
-                        let objJson = JSON(data[1...])
-                        guard let  dataStr = objJson["content"].string else{
-                                return msgItem
-                        }
-                        print("------>>>", dataStr.count, dataStr)
-                        print("------>>>", data.hexEncodedString())
-                        //                        guard let voiceData = ChatLibUnmarshalGoByte(dataStr) else{
-                        guard let voiceData = Data(base64Encoded:dataStr) else{
-                                return msgItem
-                        }
-                        let len  = objJson["len"].int ?? 0
-                        
-                        msgItem.payload = audioMsg(data: voiceData, len: len)
-                case .location:
-                        let locMsg = locationMsg()
-                        let objJson = JSON(data[1...])
-                        locMsg.str = objJson["name"].string ?? ""
-                        locMsg.la = objJson["lat"].floatValue
-                        locMsg.lo = objJson["long"].floatValue
-                        msgItem.payload = locMsg
-                case .contact:
-                        return nil
-                case .file, .video:
-                        let objJson = JSON(data[1...])
-                        let suffix = objJson["suffix"].string
-                        if mimeTypeIsVideo(suffix ?? "") {
-                                msgItem.typ = .video
-                                msgItem.payload = wrapVideMsg(objJson: objJson)
-                        } else {
-                                msgItem.payload = wrapFileMsg(objJson: objJson)
-                        }
-                }
+                msgItem.payload = parseProtoMsgData(typ: typ, data: data[1...])
+                
                 return msgItem
         }
         
@@ -117,8 +115,8 @@ class MessageItem: NSObject {
                 return file
         }
         
-        fileprivate class func wrapVideMsg(objJson: JSON) -> videoMsg {
-                let video = videoMsg()
+        fileprivate class func wrapVideMsg(objJson: JSON) -> fileMsg {
+                let video = fileMsg()
                 video.name = objJson["name"].string!
                 let videostr = objJson["content"].string
                 let dirUrl = VideoFileManager.createVideoURL(name: video.name)
@@ -211,87 +209,33 @@ class MessageItem: NSObject {
                         return "[Image]"
                 case .file:
                         return "[File]"
+                case .unknown:
+                        return "unknown"
                 }
         }
         
-        init(cliMsg: CliMessage, from: String, time: Int64, out:Bool) {
-                super.init()
-                self.from = from
-                self.timeStamp = time
-                self.to = cliMsg.to
-                self.typ = cliMsg.type
-                self.groupId = cliMsg.groupId
-                
-                switch self.typ {
-                case .plainTxt:
-                        self.payload = cliMsg.textData
-                case .image:
-                        self.payload = cliMsg.imgData
-                case .voice:
-                        self.payload = cliMsg.audioData
-                case .location:
-                        self.payload = cliMsg.locationData
-                case .file:
-                        self.payload = cliMsg.fileData
-                case .video:
-                        self.payload = cliMsg.videoData
-                default:
-                        print("init MESSAGE error: undefined type")
-                }
-                
-                self.isOut = out
-        }
-        
-        init(cliMsg: CliMessage) {
-                let sender = Wallet.shared.Addr!
-                self.from = sender
-                
-                if let groupid = cliMsg.groupId {
-                        self.to = groupid
-                } else {
-                        self.to = cliMsg.to
-                }
-                
-                self.typ = cliMsg.type
-                self.timeStamp = cliMsg.timestamp!
-                self.isOut = true
-                self.groupId = cliMsg.groupId
-                
-                switch self.typ {
-                case .plainTxt:
-                        self.payload = cliMsg.textData
-                case .image:
-                        self.payload = cliMsg.imgData
-                case .voice:
-                        self.payload = cliMsg.audioData
-                case .location:
-                        self.payload = cliMsg.locationData
-                case .video:
-                        self.payload = cliMsg.videoData
-                case .file:
-                        self.payload = cliMsg.fileData
-                default:
-                        print("init MESSAGE error: undefined type")
-                }
-                self.status = .sending
-        }
-        
-        public static func addSentIM(cliMsg: CliMessage) -> MessageItem {
-                let msg = MessageItem.init(cliMsg: cliMsg)
-                
-                var msgList = cache.get(idStr: msg.to)
-                if msgList == nil {
-                        msgList = []
-                }
-                msgList?.append(msg)
-                cache.setOrAdd(idStr: msg.to, item: msgList)
-                
-                try? CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
-                return msg
-        }
+//        public static func addSentIM(cliMsg: CliMessage) -> MessageItem {
+//                let msg = MessageItem.init(cliMsg: cliMsg)
+//
+//                var msgList = cache.get(idStr: msg.to)
+//                if msgList == nil {
+//                        msgList = []
+//                }
+//                msgList?.append(msg)
+//                cache.setOrAdd(idStr: msg.to, item: msgList)
+//
+//                try? CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
+//                return msg
+//        }
         
         public static func syncNewIMToDisk(msg:MessageItem) -> Error?{
                 do{
+                        var msgList = cache.get(idStr: msg.to)
+                        if msgList == nil {
+                                msgList = []
+                        }
+                        msgList?.append(msg)
+                        cache.setOrAdd(idStr: msg.to, item: msgList)
                         try CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
                         return nil
                 }catch let err{
@@ -401,9 +345,9 @@ extension MessageItem: ModelObj {
                 
                 switch self.typ {
                 case .plainTxt:
-                        uObj.message = self.payload as? String
+                        uObj.message = (self.payload as? txtMsg)?.txt
                 case .image:
-                        uObj.image = self.payload as? Data
+                        uObj.image = (self.payload as? imgMsg)?.content
                 case .voice:
                         uObj.media = self.payload as? NSObject
                 case .location:
@@ -433,15 +377,15 @@ extension MessageItem: ModelObj {
                 
                 switch self.typ {
                 case .plainTxt:
-                        self.payload = uObj.message
+                        self.payload = txtMsg.init(txt:uObj.message ?? "")
                 case .image:
-                        self.payload = uObj.image
+                        self.payload = imgMsg.init(data:uObj.image ?? Data())
                 case .voice:
                         self.payload = uObj.media as? audioMsg
                 case .location:
                         self.payload = uObj.media as? locationMsg
                 case .video:
-                        self.payload = uObj.media as? videoMsg
+                        self.payload = uObj.media as? fileMsg
                 case .file:
                         self.payload = uObj.media as? fileMsg
                 default:
@@ -477,6 +421,8 @@ extension MessageList {
                                 str += "Video TODO::\r\n"
                         case .file:
                                 str += "File TODO::\r\n"
+                        case .unknown:
+                                str += "unknown TODO::\r\n"
                         }
                 }
                 return str

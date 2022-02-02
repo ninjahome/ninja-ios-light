@@ -45,7 +45,7 @@ class FileTableViewCell: UITableViewCell {
         @IBAction func retry(_ sender: UIButton) {
                 if let msg = cellMsg {
                         var cliMsg: CliMessage?
-                        if let videoData = msg.payload as? videoMsg {
+                        if let videoData = msg.payload as? fileMsg {
                                 cliMsg = CliMessage.init(to: msg.to, videoUrl: URL(fileURLWithPath: videoData.url), groupId: msg.groupId!)
                         }
                         if let fileData = msg.payload as? fileMsg {

@@ -45,7 +45,7 @@ class VideoTableViewCell: UITableViewCell {
         @IBAction func retry(_ sender: UIButton) {
                 if let msg = cellMsg {
                         var cliMsg: CliMessage?
-                        if let videoData = msg.payload as? videoMsg {
+                        if let videoData = msg.payload as? fileMsg {
                                 cliMsg = CliMessage.init(to: msg.to, videoUrl: URL(fileURLWithPath: videoData.url), groupId: msg.groupId!)
                         }
                         guard let resendCli = cliMsg else {
@@ -66,7 +66,7 @@ class VideoTableViewCell: UITableViewCell {
         
         @IBAction func PlayVideo(_ sender: UIButton) {
                 if let msg = cellMsg {
-                        if let videoData = msg.payload as? videoMsg {
+                        if let videoData = msg.payload as? fileMsg {
                                 playVideo(url: URL(fileURLWithPath: videoData.url))
                         }
                 }
@@ -80,7 +80,7 @@ class VideoTableViewCell: UITableViewCell {
                 let from = message.from 
                 
                 if cellMsg?.typ == .video {
-                        if let video = cellMsg?.payload as? videoMsg,
+                        if let video = cellMsg?.payload as? fileMsg,
                            let image = UIImage(data: video.thumbnailImg) {
                                 playVideBtn.layer.contents = image.cgImage
                         }

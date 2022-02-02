@@ -36,7 +36,7 @@ extension MsgViewController: RecordAudioDelegate {
                 
                 let data = audioMsg.init(data: uploadWavData, len: Int(recordTime + 0.5))
                 let msg = MessageItem.init(to: peerUid, data: data, typ: .voice, gid: gid)
-                MessageItem.cache.setOrAdd(idStr: self.peerUid, item: self.msgCacheArray)
+                
                 MessageItem.syncNewIMToDisk(msg: msg)
                 WebsocketSrv.shared.SendMessage(msg: msg)
         }

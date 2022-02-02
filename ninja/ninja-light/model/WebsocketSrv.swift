@@ -42,7 +42,7 @@ class WebsocketSrv: NSObject {
         }
         
         func SendMessage(msg:MessageItem)->Error?{
-                guard let data =  msg.PackData() else{
+                guard let data =  msg.payload?.wrappedToProto() else{
                         return NJError.msg("pack message failed")
                 }
                 
@@ -53,39 +53,39 @@ class WebsocketSrv: NSObject {
                 return err
         }
         
-        func SendIMMsg(cliMsg: CliMessage, retry: Bool = false, onStart: @escaping()-> Void, onCompletion: @escaping(Bool) -> Void) {
-                
-                var isGroup: Bool = false
-                var peerID:String
-                if let groupId = cliMsg.groupId {
-                        isGroup = true
-                        peerID = groupId
-                } else {
-                        peerID = cliMsg.to
-                }
-                
-                if retry {
-                        onStart()
-                } else {
-                        let msg = MessageItem.addSentIM(cliMsg: cliMsg)
-                        onStart()
-                        ChatItem.updateLatestrMsg(pid: peerID, msg: msg.coinvertToLastMsg(), time: msg.timeStamp, unread: 0, isGrp:isGroup )
-                }
-                
-                guard let data =  cliMsg.PackData() else{
-                        return
-                }
-                
-                var err: NSError? = nil
-                ChatLibSend(cliMsg.timestamp!, cliMsg.to, data, isGroup, &err)
-                if err != nil {
-                        onCompletion(false)
-                        print("send msg error\(String(describing: err?.localizedDescription))")
-                }
-                
-                onCompletion(true)
-                
-        }
+//        func SendIMMsg(cliMsg: CliMessage, retry: Bool = false, onStart: @escaping()-> Void, onCompletion: @escaping(Bool) -> Void) {
+//                
+//                var isGroup: Bool = false
+//                var peerID:String
+//                if let groupId = cliMsg.groupId {
+//                        isGroup = true
+//                        peerID = groupId
+//                } else {
+//                        peerID = cliMsg.to
+//                }
+//                
+//                if retry {
+//                        onStart()
+//                } else {
+//                        let msg = MessageItem.addSentIM(cliMsg: cliMsg)
+//                        onStart()
+//                        ChatItem.updateLatestrMsg(pid: peerID, msg: msg.coinvertToLastMsg(), time: msg.timeStamp, unread: 0, isGrp:isGroup )
+//                }
+//                
+//                guard let data =  cliMsg.PackData() else{
+//                        return
+//                }
+//                
+//                var err: NSError? = nil
+//                ChatLibSend(cliMsg.timestamp!, cliMsg.to, data, isGroup, &err)
+//                if err != nil {
+//                        onCompletion(false)
+//                        print("send msg error\(String(describing: err?.localizedDescription))")
+//                }
+//                
+//                onCompletion(true)
+//                
+//        }
 }
 
 
