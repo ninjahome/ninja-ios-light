@@ -147,7 +147,6 @@ class audioMsg: NSObject, NSCoding, IMPayLoad {
 
 class fileMsg: NSObject, NSCoding,IMPayLoad {
         
-        
         var content: Data = Data()
         var name: String = ""
         var url: String = ""
@@ -191,7 +190,14 @@ class fileMsg: NSObject, NSCoding,IMPayLoad {
                 self.name = name ?? ""
                 self.content = data ?? Data()
         }
+        
+        init(name:String, url:URL){
+                super.init()
+                self.name = name
+        }
 }
+
+
 
 class locationMsg: NSObject, NSCoding,IMPayLoad {
         

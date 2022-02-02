@@ -15,8 +15,6 @@ class VideoFileManager {
                 
                 let imageGenerator = AVAssetImageGenerator(asset: asset)
                 imageGenerator.appliesPreferredTrackTransform = true
-//                let time = CMTimeMakeWithSeconds(0, preferredTimescale: 1)
-//                var actualTime: CMTime = CMTimeMake(value: 0, timescale: 0)
                 guard let cgImage = try? imageGenerator.copyCGImage(at: .zero, actualTime: nil) else {
                         return nil
                 }

@@ -26,16 +26,23 @@ extension MsgViewController: UIDocumentPickerDelegate {
                         do {
                                 try FileManager.copyFile(fileName: name, origin: pickedURL, to: dirURL)
                         } catch let err {
-                                print("faild copy to sandbox\(err.localizedDescription)")
+                                print("------>>>faild copy to sandbox\(err.localizedDescription)")
+                                self.toastMessage(title: err.localizedDescription)
+                                return
                         }
                 }
                 
-                var cliMsg: CliMessage?
-                if IS_GROUP {
-                        cliMsg = CliMessage.init(to: peerUid, fileUrl: dirURL, groupId: peerUid)
-                } else {
-                        cliMsg = CliMessage.init(to: peerUid, fileUrl: dirURL, groupId: nil)
+                
+                var gid:String? = nil
+                if IS_GROUP{
+                        gid = self.peerUid
                 }
-                sendAllTypeMessage(cliMsg!)
+                let fil = fileMsg(name:name, url: dirURL)
+                let msg = MessageItem.init(to: peerUid,
+                                           data: fil,
+                                           typ: .file,
+                                           gid: gid)
+                
+                sendMessage(msg: msg)
         }
 }
