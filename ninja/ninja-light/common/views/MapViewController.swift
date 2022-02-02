@@ -118,7 +118,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     @IBAction func sendLocation(_ sender: Any) {
-        print("(((locationInfo\(locationInfo)")
+        print("------>>>locationInfo=>\(locationInfo)")
 //        self.returnLoc(locationInfo)
         
         self.delegate?.sendLocation(location: locationInfo)
