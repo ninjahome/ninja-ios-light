@@ -20,6 +20,7 @@ enum sendingStatus: Int16 {
 
 class MessageItem: NSObject {
         public static let NotiKey = "peerUid"
+        public static let MaxItemNoPerID = 1000
         
         var timeStamp: Int64 = ChatLibNowInMilliSeconds()
         var from: String = ""
@@ -46,6 +47,10 @@ class MessageItem: NSObject {
                 self.typ = typ
                 self.to = to
                 self.payload = data
+        }
+        
+        public func PackData()->Data?{
+                return nil
         }
         
         public static func initByData(_ data: Data, from: String, gid: String? = nil, time: Int64) -> MessageItem? {
@@ -126,13 +131,16 @@ class MessageItem: NSObject {
                 return video
         }
         
+        //pull to load more unread message
         public static func loadUnread() {
                 guard let owner = Wallet.shared.Addr else {
                         return
                 }
                 var result:[MessageItem]?
                 result = try? CDManager.shared.Get(entity: "CDUnread",
-                                                   predicate: NSPredicate(format: "owner == %@", owner))
+                                                   predicate: NSPredicate(format: "owner == %@", owner),
+                                                   sort: [["unixTime" : true]],
+                                                   limit: MaxItemNoPerID)
                 guard let data = result else{
                         return
                 }
@@ -439,7 +447,7 @@ extension MessageItem: ModelObj {
                 default:
                         print("init by msg obj: no such type")
                 }
-                self.to = uObj.to!
+                self.to = uObj.to ?? "<->"//TODO::
                 self.timeStamp = uObj.unixTime
                 self.status = sendingStatus(rawValue: uObj.status) ?? .sent
                 self.groupId = uObj.groupId
