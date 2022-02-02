@@ -10,10 +10,6 @@ import UIKit
 import MobileCoreServices.UTType
 
 extension MsgViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-//        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-//                self.dismiss(animated: true, completion: nil)
-//                picker.dismiss(animated: true, completion: nil)
-//        }
         
         func imagePickerController(_ picker: UIImagePickerController,
                                    didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -44,13 +40,22 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                         imagedata = img.png
                 }
                 
-                var cliMsg: CliMessage?
-                if IS_GROUP {
-                        cliMsg = CliMessage.init(to: peerUid, imgData: imagedata!, groupId: peerUid)
-                } else {
-                        cliMsg = CliMessage.init(to: peerUid, imgData: imagedata!, groupId: nil)
+                guard let data = imagedata else{
+                        self.toastMessage(title: "no valid image data")
+                        return
                 }
-                sendAllTypeMessage(cliMsg!)
+                
+                var gid:String? = nil
+                if IS_GROUP{
+                        gid = self.peerUid
+                }
+                
+                let msg = MessageItem.init(to: peerUid,
+                                           data: imgMsg(data: data),
+                                           typ: .image,
+                                           gid: gid)
+                
+                sendMessage(msg: msg)
                 
         }
         
@@ -66,14 +71,14 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                 
                 var cliMsg: CliMessage?
                 if IS_GROUP {
-//                        guard let group = groupData, let ids = group.memberIds as? [String] else {
-//                                return
-//                        }
+                        //                        guard let group = groupData, let ids = group.memberIds as? [String] else {
+                        //                                return
+                        //                        }
                         cliMsg = CliMessage.init(to: peerUid, videoUrl: dirURL, groupId: peerUid)
                 } else {
                         cliMsg = CliMessage.init(to: peerUid, videoUrl: dirURL, groupId: nil)
                 }
                 sendAllTypeMessage(cliMsg!)
         }
-
+        
 }
