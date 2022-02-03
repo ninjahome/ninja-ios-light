@@ -80,16 +80,20 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
                         return
                 }
                 
-                WebsocketSrv.netQueue.async {
+                ServiceDelegate.workQueue.async {
                         MessageItem.receiveMsg(from: f, gid: grpId, msgData: d, time: time)
                 }
         }
         
         func msgResult(_ p0: Int64, p1: String?, p2: Bool) {
                 guard let to = p1 else {
+                        print("------>>> message result invalid to data")
                         return
                 }
-                MessageItem.resetSending(msgid: p0, to: to, success: p2)
+                
+                ServiceDelegate.workQueue.async {
+                        MessageItem.updateSendResult(msgid: p0, to: to, success: p2)
+                }
         }
         
         func nodeIPChanged(_ p0: String?) {
@@ -109,7 +113,7 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
                         print("------>>>[peerIM] invalid peer message data")
                         return
                 }
-                WebsocketSrv.netQueue.async {
+                ServiceDelegate.workQueue.async {
                         MessageItem.receiveMsg(from: f, gid: nil, msgData: d, time: time)
                 }
         }

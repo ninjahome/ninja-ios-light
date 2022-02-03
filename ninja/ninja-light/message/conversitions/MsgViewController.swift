@@ -90,6 +90,10 @@ class MsgViewController: UIViewController {
                                                        object: nil)
                 
                 NotificationCenter.default.addObserver(self,
+                                                       selector:#selector(noRight(notification:)),
+                                                       name: NotifyMessageNoRights,
+                                                       object: nil)
+                NotificationCenter.default.addObserver(self,
                                                        selector:#selector(contactUpdate(notification:)),
                                                        name: NotifyContactChanged,
                                                        object: nil)
@@ -396,6 +400,11 @@ extension MsgViewController{
 }
 
 extension MsgViewController{
+        
+        
+        @objc func noRight(notification: NSNotification){
+                self.toastMessage(title: "No rights to send message")
+        }
         
         @objc func newMsg(notification: NSNotification){
                 guard let uid = notification.userInfo?[MessageItem.NotiKey] as? String else {

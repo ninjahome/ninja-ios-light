@@ -164,10 +164,24 @@ class MessageItem: NSObject {
                         return "unknown"
                 }
         }
+        
+        
+        public static func updateSendResult(msgid: Int64, to: String, success: Bool){
+                if msgid < 0{
+                        NotificationCenter.default.post(name: NotifyMessageNoRights,
+                                                        object: self, userInfo: nil)
+                        return
+                }
+                
+        }
+        
+        
         public static func resetSending(msgid: Int64, to: String, success: Bool) {
+                
                 guard let msg = MessageItem.getItemByTime(mid: msgid, to: to) else {
                         return
                 }
+                
                 let owner = Wallet.shared.Addr!
                 if success {
                         msg.status = .sent
