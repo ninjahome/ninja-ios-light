@@ -278,7 +278,7 @@ class videoMsg:fileMsg{
                         }
                 }
                 
-                tmpFileURL = FileManager.TmpDirectory().appendingPathComponent(self.name).appendingPathExtension("mov")
+                tmpFileURL = FileManager.TmpDirectory().appendingPathComponent(self.name)
                 guard let u = tmpFileURL else{
                         return nil
                 }
