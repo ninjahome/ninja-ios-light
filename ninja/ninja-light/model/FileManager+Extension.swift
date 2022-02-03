@@ -14,16 +14,27 @@ extension FileManager {
         }
         
         static func TmpDirectory() -> URL {
-                return fileManager.temporaryDirectory
+                let url = fileManager.temporaryDirectory.appendingPathComponent(njFileFolder, isDirectory: true)
+                if fileManager.fileExists(atPath: url.path) {
+                        return url
+                }
+                do {
+                        try fileManager.createDirectory(atPath: url.path, withIntermediateDirectories: true, attributes: nil)
+                }catch let err{
+                        print("------>>>", err)
+                        return fileManager.temporaryDirectory
+                }
+                return url
         }
         
         static func cleanupTmpDirectory(){
-                let tmpPath = fileManager.temporaryDirectory.path
+                let tmpPath = TmpDirectory()
                 do{
-                        let tmpDirectory = try fileManager.contentsOfDirectory(atPath: tmpPath)
+                        let tmpDirectory = try fileManager.contentsOfDirectory(atPath: tmpPath.path)
                         for path in tmpDirectory {
-                                print("------>cleaning file:=>", path)
-                                try fileManager.removeItem(atPath: path)
+                                let filePath = tmpPath.appendingPathComponent(path)
+                                print("------>cleaning file:=>", filePath)
+                                try fileManager.removeItem(at: filePath)
                         }
                 }catch let err{
                         print("------>clean up temporary directory err:=>", err)

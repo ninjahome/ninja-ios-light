@@ -160,14 +160,16 @@ class WalletViewController: UITableViewController {
                 }
         }
     
-    
-    
         @IBAction func clearChatHistory(_ sender: UIButton) {
                 let alertActionController = UIAlertController.init(title: "", message: "将删除所有个人和群的聊天记录", preferredStyle: .actionSheet)
                 alertActionController.modalPresentationStyle = .popover
 
                 let deleteAction = UIAlertAction(title: "清空聊天记录", style: .destructive) { action in
-                        MessageItem.removeAllRead()
+                        self.showIndicator(withTitle: "", and: "deleting message caches")
+                        ServiceDelegate.workQueue.async {
+                                MessageItem.removeAllRead()
+                                self.hideIndicator()
+                        }
                 }
                 let cancleAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
 
