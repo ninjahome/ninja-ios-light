@@ -404,6 +404,7 @@ extension MsgViewController{
                 guard let idxPath = indexPathCache[msgID] else{
                         return
                 }
+                print("------>>[msgResult] row[\(idxPath.row)]=>msg[\(msgID)]")
                 DispatchQueue.main.async {
                         self.messageTableView.reloadRows(at: [idxPath], with: .fade)
                 }
