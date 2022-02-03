@@ -14,10 +14,12 @@ class LocationTableViewCell: UITableViewCell {
         @IBOutlet weak var avatar: AvatarButton!
         @IBOutlet weak var nickname: UILabel!
         @IBOutlet weak var time: UILabel!
-
+        @IBOutlet weak var retry: UIButton?
+        @IBOutlet weak var spinner: UIActivityIndicatorView?
         @IBOutlet weak var miniMapTrailing: NSLayoutConstraint!
         @IBOutlet weak var miniMapLeading: NSLayoutConstraint!
-    
+        
+        var curMsg:MessageItem?
         override func prepareForReuse() {
                 super.prepareForReuse()
         }
@@ -29,9 +31,23 @@ class LocationTableViewCell: UITableViewCell {
         override func setSelected(_ selected: Bool, animated: Bool) {
                 super.setSelected(selected, animated: animated)
         }
-    
-        func updateMessageCell (by message: MessageItem) {
         
+        
+        @IBAction func resendFailedMsg(_ sender: Any) {
+                guard let msg = self.curMsg else{
+                        print("------>>>no valid msg in current cell")
+                        return
+                }
+                msg.status = .sending
+                spinner?.startAnimating()
+                retry?.isHidden = true
+                if let err = WebsocketSrv.shared.SendMessage(msg: msg){
+                        print("------>>> retry failed:=>", err)
+                        msg.status = .faild
+                }
+        }
+        func updateMessageCell (by message: MessageItem) {
+                self.curMsg = message
                 let from = message.from
                 let contactData = CombineConntact.cache[from]
 
@@ -51,6 +67,15 @@ class LocationTableViewCell: UITableViewCell {
                         
                         avatar.type = AvatarButtonType.wallet
                         avatar.avaInfo = nil
+                        switch message.status {
+                        case .faild:
+                                spinner?.stopAnimating()
+                                retry?.isHidden = false
+                        case .sending:
+                                spinner?.startAnimating()
+                        default:
+                                spinner?.stopAnimating()
+                        }
                     
                         nickname.text = Wallet.shared.nickName ?? Wallet.GenAvatarText()
                 } else {

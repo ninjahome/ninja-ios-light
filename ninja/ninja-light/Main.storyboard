@@ -1197,6 +1197,14 @@
                                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="yt5-Oe-eNf">
                                                     <rect key="frame" x="250" y="33" width="20" height="20"/>
                                                 </activityIndicatorView>
+                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ahb-AF-gvR">
+                                                    <rect key="frame" x="196" y="23" width="22" height="22"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" image="!!"/>
+                                                    <connections>
+                                                        <action selector="resendFailedMsg:" destination="uqq-x9-4zG" eventType="touchUpInside" id="fOf-FO-5pW"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
@@ -1219,6 +1227,7 @@
                                             <outlet property="msgBackgroundView" destination="oJU-2F-2qY" id="aiC-vY-qwf"/>
                                             <outlet property="nickname" destination="JZ6-kW-jUo" id="gNA-CN-8RJ"/>
                                             <outlet property="playBtn" destination="0fR-x0-DGR" id="ZSv-tT-wPz"/>
+                                            <outlet property="retry" destination="ahb-AF-gvR" id="r1l-MI-XTa"/>
                                             <outlet property="spinner" destination="yt5-Oe-eNf" id="nar-1d-jUk"/>
                                             <outlet property="time" destination="qYT-UM-KwI" id="3bb-Vs-gGd"/>
                                         </connections>
@@ -1574,6 +1583,16 @@
                                                         <constraint firstAttribute="trailing" secondItem="qV5-cS-9aj" secondAttribute="trailing" id="xht-R8-dv4"/>
                                                     </constraints>
                                                 </view>
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="UaX-o2-n8v">
+                                                    <rect key="frame" x="130" y="84.5" width="20" height="20"/>
+                                                </activityIndicatorView>
+                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="olp-HW-tbr">
+                                                    <rect key="frame" x="129" y="83.5" width="22" height="22"/>
+                                                    <state key="normal" image="!!"/>
+                                                    <connections>
+                                                        <action selector="resendFailedMsg:" destination="UpK-ZG-JPQ" eventType="touchUpInside" id="rFn-Yt-Y1W"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
@@ -1581,11 +1600,15 @@
                                                 <constraint firstAttribute="bottom" secondItem="c7O-tC-47W" secondAttribute="bottom" constant="8" id="7zH-7s-rY8"/>
                                                 <constraint firstItem="c7O-tC-47W" firstAttribute="top" secondItem="U4e-vN-Z1o" secondAttribute="bottom" constant="4" id="Do1-8e-91s"/>
                                                 <constraint firstItem="U4e-vN-Z1o" firstAttribute="leading" secondItem="hzY-UM-RSP" secondAttribute="trailing" constant="8" id="GQQ-cG-vyA"/>
+                                                <constraint firstItem="UaX-o2-n8v" firstAttribute="centerY" secondItem="c7O-tC-47W" secondAttribute="centerY" id="SPw-rJ-Q1r"/>
+                                                <constraint firstItem="UaX-o2-n8v" firstAttribute="centerX" secondItem="olp-HW-tbr" secondAttribute="centerX" id="gu6-fW-InK"/>
+                                                <constraint firstItem="olp-HW-tbr" firstAttribute="centerY" secondItem="UaX-o2-n8v" secondAttribute="centerY" id="i5T-ad-Bna"/>
                                                 <constraint firstItem="U4e-vN-Z1o" firstAttribute="centerY" secondItem="hzY-UM-RSP" secondAttribute="centerY" id="lbI-NM-Zxi"/>
                                                 <constraint firstItem="VJ0-5A-vPA" firstAttribute="leading" secondItem="U4e-vN-Z1o" secondAttribute="trailing" constant="14" id="lhk-bt-7IB"/>
                                                 <constraint firstItem="VJ0-5A-vPA" firstAttribute="leading" secondItem="c7O-tC-47W" secondAttribute="trailing" constant="4" id="nbY-rd-VFe"/>
                                                 <constraint firstItem="c7O-tC-47W" firstAttribute="width" relation="lessThanOrEqual" secondItem="O5V-3H-VaX" secondAttribute="width" multiplier="0.6" id="o5V-vI-pgT"/>
                                                 <constraint firstItem="VJ0-5A-vPA" firstAttribute="top" secondItem="O5V-3H-VaX" secondAttribute="top" constant="8" id="oQJ-ma-wmL"/>
+                                                <constraint firstItem="c7O-tC-47W" firstAttribute="leading" secondItem="UaX-o2-n8v" secondAttribute="trailing" constant="8" id="uOm-8v-JeU"/>
                                                 <constraint firstAttribute="trailing" secondItem="VJ0-5A-vPA" secondAttribute="trailing" constant="16" id="yKP-T7-m4n"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -1596,6 +1619,8 @@
                                             <outlet property="miniMapTrailing" destination="xht-R8-dv4" id="ddZ-cA-TZg"/>
                                             <outlet property="msgBackgroundView" destination="c7O-tC-47W" id="wZE-tJ-NOG"/>
                                             <outlet property="nickname" destination="U4e-vN-Z1o" id="IGJ-6g-Ucb"/>
+                                            <outlet property="retry" destination="olp-HW-tbr" id="03U-QJ-2wF"/>
+                                            <outlet property="spinner" destination="UaX-o2-n8v" id="rdj-QZ-yDE"/>
                                             <outlet property="time" destination="hzY-UM-RSP" id="yEV-Dm-Wc2"/>
                                         </connections>
                                     </tableViewCell>

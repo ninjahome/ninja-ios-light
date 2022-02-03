@@ -15,13 +15,14 @@ class VoiceTableViewCell: UITableViewCell {
         @IBOutlet weak var avatar: AvatarButton!
         @IBOutlet weak var nickname: UILabel!
         @IBOutlet weak var time: UILabel!
-
+        @IBOutlet weak var retry: UIButton?
         @IBOutlet weak var spinner: UIActivityIndicatorView?
 
         var audioData:Data?
         var isOut: Bool?
         var long:Int = 2
-    
+        var curMsg:MessageItem?
+        
         override func awakeFromNib() {
                 super.awakeFromNib()
         }
@@ -36,9 +37,22 @@ class VoiceTableViewCell: UITableViewCell {
                 playBtn.setImage(nil, for: .normal)
                 spinner?.stopAnimating()
         }
-    
-        func updateMessageCell (by message: MessageItem) {
         
+        @IBAction func resendFailedMsg(_ sender: Any) {
+                guard let msg = self.curMsg else{
+                        print("------>>>no valid msg in current cell")
+                        return
+                }
+                msg.status = .sending
+                spinner?.startAnimating()
+                retry?.isHidden = true
+                if let err = WebsocketSrv.shared.SendMessage(msg: msg){
+                        print("------>>> retry failed:=>", err)
+                        msg.status = .faild
+                }
+        }
+        func updateMessageCell (by message: MessageItem) {
+                self.curMsg = message
                 guard let voice = message.payload as? audioMsg else {
                         return
                 }
@@ -53,7 +67,7 @@ class VoiceTableViewCell: UITableViewCell {
                         switch message.status {
                         case .faild:
                                 spinner?.stopAnimating()
-                        //                retry?.isHidden = false
+                                        retry?.isHidden = false
                         case .sending:
                                 spinner?.startAnimating()
                         default:

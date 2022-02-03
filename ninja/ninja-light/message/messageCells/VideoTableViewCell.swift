@@ -43,17 +43,17 @@ class VideoTableViewCell: UITableViewCell {
         }
         
         @IBAction func retry(_ sender: UIButton) {
-                guard let msg = cellMsg else{
-                        print("------>>> empty message")
+                guard let msg = self.cellMsg else{
+                        print("------>>>no valid msg in current cell")
                         return
                 }
+                msg.status = .sending
+                spinner?.startAnimating()
+                retry?.isHidden = true
                 if let err = WebsocketSrv.shared.SendMessage(msg: msg){
-                        
-                        print("------>>> retry message err:", err)
-                        return
+                        print("------>>> retry failed:=>", err)
+                        msg.status = .faild
                 }
-                self.retry?.isHidden = true
-                self.spinner?.startAnimating()
         }
         
         @IBAction func PlayVideo(_ sender: UIButton) {

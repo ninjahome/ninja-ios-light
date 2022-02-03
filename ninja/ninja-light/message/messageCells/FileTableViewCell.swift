@@ -43,16 +43,18 @@ class FileTableViewCell: UITableViewCell {
         }
     
         @IBAction func retry(_ sender: UIButton) {
-                guard let  msg = cellMsg else{
+                
+                guard let msg = self.cellMsg else{
+                        print("------>>>no valid msg in current cell")
                         return
                 }
+                msg.status = .sending
+                spinner?.startAnimating()
+                retry?.isHidden = true
                 if let err = WebsocketSrv.shared.SendMessage(msg: msg){
-                        
-                        print("------>>> retry message err:", err)
-                        return
+                        print("------>>> retry failed:=>", err)
+                        msg.status = .faild
                 }
-                self.retry?.isHidden = true
-                self.spinner?.startAnimating()
         }
         
         @IBAction func openFileOrPlayVideo(_ sender: UIButton) {
@@ -69,13 +71,7 @@ class FileTableViewCell: UITableViewCell {
                 msgBackgroundView.clipsToBounds = true
                 
                 let from = message.from
-                
-//                if cellMsg?.typ == .video {
-//                        if let video = cellMsg?.payload as? videoMsg,
-//                           let image = UIImage(data: video.thumbnailImg) {
-//                                openFileBtn.layer.contents = image.cgImage
-//                        }
-//                }
+
                 let contactData = CombineConntact.cache[from]
                 
                 if message.isOut {

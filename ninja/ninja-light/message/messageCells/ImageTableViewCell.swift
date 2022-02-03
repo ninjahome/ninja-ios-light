@@ -40,12 +40,16 @@ var cellMsg: MessageItem?
         }
     
         @IBAction func retry(_ sender: UIButton) {
-                guard let im =  cellMsg else{
+                guard let msg = self.cellMsg else{
+                        print("------>>>no valid msg in current cell")
                         return
                 }
-                if let err = WebsocketSrv.shared.SendMessage(msg: im){
-                        print("------>>> retry send err:", err)
-                        return
+                msg.status = .sending
+                spinner?.startAnimating()
+                retry?.isHidden = true
+                if let err = WebsocketSrv.shared.SendMessage(msg: msg){
+                        print("------>>> retry failed:=>", err)
+                        msg.status = .faild
                 }
         }
     
