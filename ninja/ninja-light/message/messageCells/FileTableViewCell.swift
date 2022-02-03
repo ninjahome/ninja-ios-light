@@ -43,28 +43,16 @@ class FileTableViewCell: UITableViewCell {
         }
     
         @IBAction func retry(_ sender: UIButton) {
-                if let msg = cellMsg {
-                        var cliMsg: CliMessage?
-                        if let videoData = msg.payload as? fileMsg {
-                                cliMsg = CliMessage.init(to: msg.to, videoUrl: URL(fileURLWithPath: videoData.url), groupId: msg.groupId!)
-                        }
-                        if let fileData = msg.payload as? fileMsg {
-                                cliMsg = CliMessage.init(to: msg.to, fileUrl: URL(fileURLWithPath: fileData.url), groupId: msg.groupId!)
-                        }
-                        guard let resendCli = cliMsg else {
-                                return
-                        }
-
-                        WebsocketSrv.shared.SendIMMsg(cliMsg: resendCli, retry: true) { [self] in
-                                self.retry?.isHidden = true
-                                self.spinner?.startAnimating()
-                        } onCompletion: { success in
-                                if !success {
-                                        MessageItem.resetSending(msgid: resendCli.timestamp!, to: resendCli.to, success: success)
-                                        self.updateMessageCell(by: msg)
-                                }
-                        }
+                guard let  msg = cellMsg else{
+                        return
                 }
+                if let err = WebsocketSrv.shared.SendMessage(msg: msg){
+                        
+                        print("------>>> retry message err:", err)
+                        return
+                }
+                self.retry?.isHidden = true
+                self.spinner?.startAnimating()
         }
         
         @IBAction func openFileOrPlayVideo(_ sender: UIButton) {

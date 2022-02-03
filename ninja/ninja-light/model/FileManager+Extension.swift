@@ -13,19 +13,20 @@ extension FileManager {
                 return FileManager.default
         }
         
-        static func CachesDirectory() -> URL {
-                let cachesPath =  fileManager.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-                return cachesPath
-        }
-        
-//        static func TmpDirectory() -> URL {
-//                let tmpDir = fileManager.urls(for: .itemReplacementDirectory, in: .userDomainMask)[0]
-//                return tmpDir
+//        static func CachesDirectory() -> URL {
+//                let cachesPath =  fileManager.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+//                return cachesPath
 //        }
+        
+        static func TmpDirectory() -> URL {
+                let tmpDir = fileManager.urls(for: .itemReplacementDirectory, in: .userDomainMask)[0]
+                return tmpDir
+        }
         
         @discardableResult
         static func createFolder(_ folderName :String) -> URL {
-                let folder = CachesDirectory().appendingPathComponent(folderName)
+                let folder = TmpDirectory().appendingPathComponent(folderName)
+//                let folder = CachesDirectory().appendingPathComponent(folderName)
                 let fileManager = FileManager.default
                 if !fileManager.fileExists(atPath: folder.absoluteString) {
                         do {
@@ -79,7 +80,7 @@ extension FileManager {
         }
         
         static func copyFile(fileName: String, origin: URL, to: URL) throws {
-//                let origin = from.appendingPathComponent(fileName)
+                //                let origin = from.appendingPathComponent(fileName)
                 let direct = to
                 return try fileManager.copyItem(at: origin, to: direct)
         }

@@ -80,32 +80,7 @@ class MessageItem: NSObject {
                 return msgItem
         }
         
-        fileprivate class func wrapFileMsg(objJson: JSON) -> fileMsg {
-                let file = fileMsg()
-                file.name = objJson["name"].string!
-                let filestr = objJson["content"].string
-                
-                let dirURL = FileManager.createURL(name: file.name)
-                if let fileData = ChatLibUnmarshalGoByte(filestr),
-                   let url = FileManager.writeFile(content: fileData, path: dirURL) {
-                        file.url = url.path
-                }
-                return file
-        }
-        
-        fileprivate class func wrapVideMsg(objJson: JSON) -> fileMsg {
-                let video = fileMsg()
-                video.name = objJson["name"].string!
-                let videostr = objJson["content"].string
-                let dirUrl = VideoFileManager.createVideoURL(name: video.name)
-                if let videoData = ChatLibUnmarshalGoByte(videostr),
-                   let url = FileManager.writeFile(content: videoData, path: dirUrl) {
-                        video.url = url.path
-                        video.thumbnailImg = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)?.pngData() ?? Data()
-                }
-                
-                return video
-        }
+      
         
         //pull to load more unread message
         public static func loadUnread() {
@@ -177,8 +152,6 @@ class MessageItem: NSObject {
                         return "[Text Message]"
                 case .voice:
                         return "[Voice Message]"
-                case .video:
-                        return "[Video Message]"
                 case .location:
                         return "[Location]"
                 case .contact:
@@ -191,11 +164,7 @@ class MessageItem: NSObject {
                         return "unknown"
                 }
         }
-        
-        public static func addSentIM(cliMsg: CliMessage) -> MessageItem {
-                return MessageItem()
-        }
-        
+                
         public static func syncNewIMToDisk(msg:MessageItem) -> Error?{
                 do{
                         var msgList = cache.get(idStr: msg.to)
@@ -320,8 +289,6 @@ extension MessageItem: ModelObj {
                         uObj.media = self.payload as? NSObject
                 case .location:
                         uObj.media = self.payload as? NSObject
-                case .video:
-                        uObj.media = self.payload as? NSObject
                 case .file:
                         uObj.media = self.payload as? NSObject
                 default:
@@ -352,8 +319,6 @@ extension MessageItem: ModelObj {
                         self.payload = uObj.media as? audioMsg
                 case .location:
                         self.payload = uObj.media as? locationMsg
-                case .video:
-                        self.payload = uObj.media as? fileMsg
                 case .file:
                         self.payload = uObj.media as? fileMsg
                 default:
@@ -385,8 +350,6 @@ extension MessageList {
                                 str += "Location TODO::\r\n"
                         case .image:
                                 str += "Image TODO::\r\n"
-                        case .video:
-                                str += "Video TODO::\r\n"
                         case .file:
                                 str += "File TODO::\r\n"
                         case .unknown:
@@ -398,9 +361,15 @@ extension MessageList {
 }
 
 extension MessageItem:ChatLibUnwrapCallbackProtocol{
-        func file(_ n: String?, s: String?, l: Int32, d: Data?) {
+        func file(_ n: String?, t: Int32, d: Data?) {
                 self.typ = .file
-                self.payload = fileMsg(name:n, suffix:s, len:l, data:d ?? Data())
+                let filTyp = FileTyp.init(rawValue: t)
+                switch filTyp{
+                case .video:
+                        self.payload = videoMsg(name: n, data: d)
+                default:
+                        self.payload = fileMsg(name:n, data:d ?? Data())
+                }
         }
         
         func img(_ d: Data?) {

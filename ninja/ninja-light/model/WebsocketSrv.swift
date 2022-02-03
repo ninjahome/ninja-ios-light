@@ -52,10 +52,6 @@ class WebsocketSrv: NSObject {
                 }
                 return err
         }
-        
-        func SendIMMsg(cliMsg: CliMessage, retry: Bool = false, onStart: @escaping()-> Void, onCompletion: @escaping(Bool) -> Void) {
-                         
-        }
 }
 
 

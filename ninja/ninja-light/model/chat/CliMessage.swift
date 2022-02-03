@@ -6,7 +6,6 @@
 //
 
 import Foundation
-//import SwiftyJSON
 import ChatLib
 import UIKit
 
@@ -16,10 +15,16 @@ enum CMT: Int {
         case image = 2
         case voice = 3
         case location = 4
-        case video = 6
         case file = 5
-        case contact = 7
+        case contact = 6
         case unknown = -1
+}
+
+enum FileTyp: Int32{
+        case video = 0
+        case pdf = 1
+        case word = 2
+        case unsupport = -1
 }
 
 class txtMsg:NSObject, NSCoding,IMPayLoad{
@@ -145,60 +150,6 @@ class audioMsg: NSObject, NSCoding, IMPayLoad {
         }
 }
 
-class fileMsg: NSObject, NSCoding,IMPayLoad {
-        
-        var content: Data = Data()
-        var name: String = ""
-        var url: String = ""
-        var thumbnailImg: Data = Data()
-        
-        func encode(with coder: NSCoder) {
-                coder.encode(name, forKey: "name")
-                coder.encode(url, forKey: "url")
-                coder.encode(thumbnailImg, forKey: "thumbnailImg")
-        }
-        
-        required init?(coder: NSCoder) {
-                
-                super.init()
-                self.name = coder.decodeObject(forKey: "name") as! String
-                self.url = (coder.decodeObject(forKey: "url") as? String) ?? ""
-                self.thumbnailImg = (coder.decodeObject(forKey: "thumbnailImg") as? Data) ?? Data()
-        }
-        
-        override init() {
-                super.init()
-        }
-        
-        func wrappedToProto() -> Data? {
-                guard content.count > 0 else{
-                        return nil
-                }
-                var err:NSError?
-                let data = ChatLibWrapFileV2(name, "", Int32(content.count), content, &err)
-                if let e = err{
-                        print("------>>>wrap file to proto err:[\(e.localizedDescription)]")
-                        return nil
-                }
-                
-                return data
-        }
-        
-        init(name:String?, suffix:String?, len:Int32, data:Data?){
-                super.init()
-                
-                self.name = name ?? ""
-                self.content = data ?? Data()
-        }
-        
-        init(name:String, url:URL){
-                super.init()
-                self.name = name
-        }
-}
-
-
-
 class locationMsg: NSObject, NSCoding,IMPayLoad {
         
         var lo: Float = 0
@@ -241,148 +192,101 @@ class locationMsg: NSObject, NSCoding,IMPayLoad {
         }
 }
 
-class CliMessage: NSObject {
-        var to: String = ""
-        var type:CMT = .plainTxt
-        var textData: String?
-        var audioData: audioMsg?
-        var imgData: Data?
-        var locationData: locationMsg?
-        var videoData: fileMsg?
-        var fileData: fileMsg?
-        var groupId: String?
-        var timestamp: Int64?
-        var isRetrying:Bool = false
+
+class fileMsg: NSObject, NSCoding,IMPayLoad {
+        
+        var content: Data = Data()
+        var name: String = ""
+        var typ: FileTyp = .video
+        
+        func encode(with coder: NSCoder) {
+                coder.encode(name, forKey: "name")
+                coder.encode(content, forKey: "content")
+                coder.encode(typ, forKey: "suffix")
+        }
+        
+        required init?(coder: NSCoder) {
+                super.init()
+                self.name = coder.decodeObject(forKey: "name") as? String ?? ""
+                self.typ = coder.decodeObject(forKey: "suffix") as? FileTyp ?? .video
+                self.content = coder.decodeObject(forKey: "content") as? Data ?? Data()
+        }
         
         override init() {
                 super.init()
-                self.timestamp = ChatLibNowInMilliSeconds()
         }
         
-        init(to:String, txtData: String, groupId: String? = nil) {
-                self.to = to
-                self.type = .plainTxt
-                self.textData = txtData
-                self.groupId = groupId
-                self.timestamp = ChatLibNowInMilliSeconds()
-        }
-        
-        init(to: String, audioD: Data, length: Int, groupId: String? = nil) {
-                self.to = to
-                self.type = .voice
-                
-                let audio = audioMsg.init()
-                audio.content = audioD
-                audio.duration = length
-                self.audioData = audio
-                self.groupId = groupId
-                self.timestamp = ChatLibNowInMilliSeconds()
-        }
-        
-        init(to: String, imgData:Data, groupId: String? = nil) {
-                self.to = to
-                self.type = .image
-                self.imgData = imgData
-                self.groupId = groupId
-                self.timestamp = ChatLibNowInMilliSeconds()
-        }
-        
-        init(to: String, videoUrl: URL, groupId: String? = nil) {
-                self.to = to
-                self.type = .video
-                
-                let video = fileMsg.init()
-                let name = videoUrl.lastPathComponent
-                video.name = name
-                video.url = videoUrl.path
-                video.thumbnailImg = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: videoUrl)?.pngData() ?? Data()
-                
-                self.videoData = video
-                self.groupId = groupId
-                self.timestamp = ChatLibNowInMilliSeconds()
-        }
-        
-        init(to: String, fileUrl: URL, groupId: String? = nil) {
-                self.to = to
-                self.type = .file
-                
-                let file = fileMsg.init()
-                file.name = fileUrl.lastPathComponent
-                file.url = fileUrl.path
-                //                file.url = fileUrl
-                
-                self.fileData = file
-                self.groupId = groupId
-                self.timestamp = ChatLibNowInMilliSeconds()
-        }
-        
-        init(to: String, locationData: locationMsg, groupId: String? = nil) {
-                self.to = to
-                self.type = .location
-                self.locationData = locationData
-                self.groupId = groupId
-                self.timestamp = ChatLibNowInMilliSeconds()
-        }
-        
-        init(to: String, la: Float, lo: Float, describe: String, groupId: String? = nil) {
-                self.to = to
-                self.type = .location
-                
-                let loca = locationMsg.init()
-                loca.la = la
-                loca.lo = lo
-                loca.str = describe
-                
-                self.locationData = loca
-                self.groupId = groupId
-                self.timestamp = ChatLibNowInMilliSeconds()
-        }
-        
-        func PackData() -> (Data?) {
-                var data:Data?
-                
-                switch self.type {
-                case .plainTxt:
-                        data = ChatLibWrapTxt(self.textData)
-                case .image:
-                        let compress = compressImage(self.imgData)
-                        data = ChatLibWrapImg(compress)
-                case .voice:
-                        guard let audioData = self.audioData, audioData.duration >= 1 else { //TODO::  duration?
-                                return nil
-                        }
-                        data = ChatLibWrapVoice(audioData.duration, audioData.content)
-                case .location:
-                        guard let locData =  self.locationData else {
-                                //TODO::
-                                return nil
-                        }
-                        data = ChatLibWrapLocation(locData.str, Double(locData.lo), Double(locData.la))
-                        
-                case .file:
-                        let url = URL(fileURLWithPath: self.fileData!.url)
-                        guard let fileD = FileManager.readFile(url: url) else {
-                                return nil
-                        }
-                        let size = fileD.count
-                        let suffix = url.pathExtension
-                        let name = self.fileData?.name
-                        data = ChatLibWrapFile(name, suffix, size, fileD)
-                case .video:
-                        let url = URL(fileURLWithPath: self.videoData!.url)
-                        guard let videoD = VideoFileManager.readVideoData(videoURL: url) else {
-                                return nil
-                        }
-                        
-                        let size = VideoFileManager.getVideoSize(videoURL: url)
-                        let suffix = url.pathExtension
-                        let name = self.videoData?.name
-                        data = ChatLibWrapFile(name, suffix, size, videoD)
-                default:
+        public func wrappedToProto() -> Data? {
+                guard content.count > 0 else{
+                        return nil
+                }
+                var err:NSError?
+                let data = ChatLibWrapFileV2(name, typ.rawValue, content, &err)
+                if let e = err{
+                        print("------>>>wrap file to proto err:[\(e.localizedDescription)]")
                         return nil
                 }
                 
                 return data
         }
         
+        init(name:String?, data:Data?, typ:FileTyp = .video){
+                super.init()
+                
+                self.name = name ?? ""
+                self.typ = typ
+                self.content = data ?? Data()
+        }
+}
+
+class videoMsg:fileMsg{
+        public static let defaultImg = UIImage(named: "logo_img")!
+        var thumbnailImg: UIImage = defaultImg
+        private var tmpFileURL:URL?
+        
+        override init() {
+                super.init()
+        }
+        override func encode(with coder: NSCoder) {
+                super.encode(with: coder)
+                coder.encode(thumbnailImg, forKey: "thumbnailImg")
+        }
+        required init?(coder: NSCoder) {
+                super.init(coder: coder)
+                self.thumbnailImg = (coder.decodeObject(forKey: "thumbnailImg") as? UIImage) ?? videoMsg.defaultImg
+        }
+        
+        init(name:String?, data:Data?, thumb:UIImage?){
+                super.init(name: name, data: data)
+                self.thumbnailImg = thumb ?? UIImage(named: "logo")!
+        }
+        
+        init(name:String?, data:Data?){
+                super.init(name: name, data: data)
+                guard  let url = tmpUrl() else{
+                        return
+                }
+                self.thumbnailImg = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url) ?? videoMsg.defaultImg
+        }
+        
+        func tmpUrl()->URL?{
+                if let url = self.tmpFileURL{
+                        return url
+                }
+                
+                tmpFileURL = FileManager.TmpDirectory().appendingPathComponent(self.name).appendingPathExtension("mov")
+                guard let u = tmpFileURL else{
+                        return nil
+                }
+                if FileManager.judgeFileOrFolderExists(filePath:  u.path) {
+                        return tmpFileURL
+                }
+                do {
+                        try self.content.write(to: u, options: [.atomic])
+                        return tmpFileURL
+                }catch let err{
+                        print("------>>> write video file failed", err)
+                        return nil
+                }
+        }
 }

@@ -86,7 +86,7 @@ class VoiceTableViewCell: UITableViewCell {
                 let rawImg = UIImage(named: "voice_00009")!
                 let flipImgH = filpImageH(rawImg)
 
-                playBtn.setTitle("\(long)", for: .normal)
+                playBtn.setTitle("------>>>\(long)", for: .normal)
 
                 let space = 20*long/60 + 20
 

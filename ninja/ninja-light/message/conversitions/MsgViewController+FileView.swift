@@ -32,12 +32,19 @@ extension MsgViewController: UIDocumentPickerDelegate {
                         }
                 }
                 
+                guard let videoD = VideoFileManager.readVideoData(videoURL: dirURL) else {
+                        self.toastMessage(title: "invalid video data")
+                        return
+                }
+                
+                let thumb = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: dirURL)
+                   
+                let fil = videoMsg.init(name:name, data: videoD, thumb: thumb)
                 
                 var gid:String? = nil
                 if IS_GROUP{
                         gid = self.peerUid
                 }
-                let fil = fileMsg(name:name, url: dirURL)
                 let msg = MessageItem.init(to: peerUid,
                                            data: fil,
                                            typ: .file,

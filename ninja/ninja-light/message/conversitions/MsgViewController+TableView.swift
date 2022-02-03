@@ -43,13 +43,18 @@ extension MsgViewController: UITableViewDelegate, UITableViewDataSource {
                         let cell = tableView.dequeueReusableCell(withIdentifier: identifer, for: indexPath) as! LocationTableViewCell
                         cell.updateMessageCell(by: msgItem)
                         return cell
-                case .video:
-                        identifer = msgItem.isOut ? "videoCell" : "videoCellL"
-                        
-                        let cell = tableView.dequeueReusableCell(withIdentifier: identifer, for: indexPath) as! VideoTableViewCell
-                        cell.updateMessageCell(by: msgItem)
-                        return cell
                 case .file:
+                        guard let fil = msgItem.payload as?fileMsg else{
+                                return UITableViewCell()//set default invalid msg cell tip
+                        }
+                        if fil.typ == .video{
+                                identifer = msgItem.isOut ? "videoCell" : "videoCellL"
+                                
+                                let cell = tableView.dequeueReusableCell(withIdentifier: identifer, for: indexPath) as! VideoTableViewCell
+                                cell.updateMessageCell(by: msgItem)
+                                return cell
+                        }
+                        
                         identifer = msgItem.isOut ? "fileCell" : "fileCellL"
                         
                         let cell = tableView.dequeueReusableCell(withIdentifier: identifer, for: indexPath) as! FileTableViewCell

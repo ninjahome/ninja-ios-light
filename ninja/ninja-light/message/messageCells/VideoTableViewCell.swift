@@ -10,80 +10,84 @@ import AVKit
 import AVFoundation
 
 class VideoTableViewCell: UITableViewCell {
-
+        
         @IBOutlet weak var msgBackgroundView: UIImageView!
-//        @IBOutlet weak var thumbtailImage: UIImageView!
-
+        //        @IBOutlet weak var thumbtailImage: UIImageView!
+        
         @IBOutlet weak var playVideBtn: UIButton!
         @IBOutlet weak var avatar: AvatarButton!
         @IBOutlet weak var nickname: UILabel!
         @IBOutlet weak var time: UILabel!
-
+        
         @IBOutlet weak var spinner: UIActivityIndicatorView?
-
+        
         @IBOutlet weak var retry: UIButton?
-
+        
         var cellMsg: MessageItem?
-
+        
         override func prepareForReuse() {
                 super.prepareForReuse()
-
+                
                 spinner?.stopAnimating()
                 retry?.isHidden = true
         }
-
+        
         override func awakeFromNib() {
                 super.awakeFromNib()
                 // Initialization code
         }
-
+        
         override func setSelected(_ selected: Bool, animated: Bool) {
                 super.setSelected(selected, animated: animated)
                 // Configure the view for the selected state
         }
-    
+        
         @IBAction func retry(_ sender: UIButton) {
-                if let msg = cellMsg {
-                        var cliMsg: CliMessage?
-                        if let videoData = msg.payload as? fileMsg {
-                                cliMsg = CliMessage.init(to: msg.to, videoUrl: URL(fileURLWithPath: videoData.url), groupId: msg.groupId!)
-                        }
-                        guard let resendCli = cliMsg else {
-                                return
-                        }
-
-                        WebsocketSrv.shared.SendIMMsg(cliMsg: resendCli, retry: true) { [self] in
-                                self.retry?.isHidden = true
-                                self.spinner?.startAnimating()
-                        } onCompletion: { success in
-                                if !success {
-                                        MessageItem.resetSending(msgid: resendCli.timestamp!, to: resendCli.to, success: success)
-                                        self.updateMessageCell(by: msg)
-                                }
-                        }
+                guard let msg = cellMsg else{
+                        print("------>>> empty message")
+                        return
                 }
+                if let err = WebsocketSrv.shared.SendMessage(msg: msg){
+                        
+                        print("------>>> retry message err:", err)
+                        return
+                }
+                self.retry?.isHidden = true
+                self.spinner?.startAnimating()
         }
         
         @IBAction func PlayVideo(_ sender: UIButton) {
-                if let msg = cellMsg {
-                        if let videoData = msg.payload as? fileMsg {
-                                playVideo(url: URL(fileURLWithPath: videoData.url))
-                        }
+                guard let msg = cellMsg else{
+                        print("------>>> empty message")
+                        return
                 }
+                
+                guard let videoData = msg.payload as? videoMsg else{
+                        print("------>>> invalid video file")
+                        return
+                }
+             
+                guard let url = videoData.tmpUrl() else{
+                        print("------>>> tmp video file url invalid")
+                        return
+                }
+                let player = AVPlayer(url: url)
+                let vc = AVPlayerViewController()
+                vc.player = player
+                let window = getKeyWindow()
+                window?.rootViewController?.present(vc, animated: true, completion: {
+                        vc.player?.play()
+                })
         }
-
+        
         func updateMessageCell (by message: MessageItem) {
                 cellMsg = message
                 msgBackgroundView.layer.cornerRadius = 8
                 msgBackgroundView.clipsToBounds = true
-
-                let from = message.from 
                 
-                if cellMsg?.typ == .video {
-                        if let video = cellMsg?.payload as? fileMsg,
-                           let image = UIImage(data: video.thumbnailImg) {
-                                playVideBtn.layer.contents = image.cgImage
-                        }
+                let from = message.from
+                if let video = message.payload as? videoMsg{
+                        playVideBtn.layer.contents = video.thumbnailImg.cgImage
                 }
                 
                 let contactData = CombineConntact.cache[from]
@@ -107,21 +111,7 @@ class VideoTableViewCell: UITableViewCell {
                         avatar.avaInfo = AvatarInfo.init(id: from, avaData: contactData?.account?.Avatar)
                         nickname.text = contactData?.GetNickName() ?? contactData?.peerID
                 }
-
+                
                 time.text = formatMsgTimeStamp(by: message.timeStamp)
         }
-        
-
-        func playVideo(url: URL) {
-                let size = VideoFileManager.getVideoSize(videoURL: url)
-                print("video size\(size)")
-                let player = AVPlayer(url: url)
-                let vc = AVPlayerViewController()
-                vc.player = player
-                let window = getKeyWindow()
-                window?.rootViewController?.present(vc, animated: true, completion: {
-                        vc.player?.play()
-                })
-        }
-
 }

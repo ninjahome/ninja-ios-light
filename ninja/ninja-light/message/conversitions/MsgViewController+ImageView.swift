@@ -61,24 +61,23 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
         
         private func videoDidSelected(url: URL) {
                 let name = url.lastPathComponent
-                let dirURL = VideoFileManager.createVideoURL(name: name)
-                
-                do {
-                        try FileManager.copyFile(fileName: name, origin: url, to: dirURL)
-                } catch let err {
-                        print("faild copy to sandbox\(err.localizedDescription)")
+                guard let data = try? Data(contentsOf: url) else{
+                        self.toastMessage(title: "empty video file")
+                        return
                 }
                 
-                var cliMsg: CliMessage?
-                if IS_GROUP {
-                        //                        guard let group = groupData, let ids = group.memberIds as? [String] else {
-                        //                                return
-                        //                        }
-                        cliMsg = CliMessage.init(to: peerUid, videoUrl: dirURL, groupId: peerUid)
-                } else {
-                        cliMsg = CliMessage.init(to: peerUid, videoUrl: dirURL, groupId: nil)
+                var gid:String? = nil
+                if IS_GROUP{
+                        gid = self.peerUid
                 }
-                sendAllTypeMessage(cliMsg!)
+                let thumb = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
+                
+                let video = videoMsg(name: name, data: data, thumb: thumb)
+                let msg = MessageItem.init(to: peerUid,
+                                           data: video,
+                                           typ: .file,
+                                           gid: gid)
+                
+                sendMessage(msg: msg)
         }
-        
 }
