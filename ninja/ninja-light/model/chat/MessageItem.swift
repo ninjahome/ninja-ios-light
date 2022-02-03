@@ -184,9 +184,6 @@ class MessageItem: NSObject {
                         msg.status = .sent
                 }else{
                         msg.status = .faild
-                        NotificationCenter.default.post(name: NotifyMessageSendResult,
-                                                        object: msgid,
-                                                        userInfo: nil)
                 }
                 
                 do {
@@ -198,6 +195,10 @@ class MessageItem: NSObject {
                         print("------>>> update message sent result:[\(err.localizedDescription)]")
                         return
                 }
+                
+                NotificationCenter.default.post(name: NotifyMessageSendResult,
+                                                object: msgid,
+                                                userInfo: nil)
         }
                        
         public static func processNewMessage(pid:String, msg:MessageItem, unread:Int) -> Error?{

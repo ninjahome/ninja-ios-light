@@ -19,6 +19,8 @@ extension MsgViewController: UITableViewDelegate, UITableViewDataSource {
                 var identifer = ""
                 indexPathCache[msgItem.timeStamp] = indexPath
                 
+                print("------>>row[\(indexPath.row)]=>msg[\(msgItem.timeStamp)]")
+                
                 switch msgItem.typ {
                 case .plainTxt:
                         identifer = msgItem.isOut ? "messageCell" : "messageCellL"
