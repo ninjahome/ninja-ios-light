@@ -144,6 +144,7 @@ class MessageItem: NSObject {
                 let owner = Wallet.shared.Addr!
                 try? CDManager.shared.Delete(entity: "CDUnread",
                                              predicate: NSPredicate(format: "owner == %@", owner))
+                FileManager.cleanupTmpDirectory()
         }
         
         func coinvertToLastMsg() -> String{

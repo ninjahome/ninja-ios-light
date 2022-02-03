@@ -13,20 +13,28 @@ extension FileManager {
                 return FileManager.default
         }
         
-//        static func CachesDirectory() -> URL {
-//                let cachesPath =  fileManager.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-//                return cachesPath
-//        }
-        
         static func TmpDirectory() -> URL {
-                let tmpDir = fileManager.urls(for: .itemReplacementDirectory, in: .userDomainMask)[0]
-                return tmpDir
+                return fileManager.temporaryDirectory
         }
+        
+        static func cleanupTmpDirectory(){
+                let tmpPath = fileManager.temporaryDirectory.path
+                do{
+                        let tmpDirectory = try fileManager.contentsOfDirectory(atPath: tmpPath)
+                        for path in tmpDirectory {
+                                print("------>cleaning file:=>", path)
+                                try fileManager.removeItem(atPath: path)
+                        }
+                }catch let err{
+                        print("------>clean up temporary directory err:=>", err)
+                }
+        }
+        
         
         @discardableResult
         static func createFolder(_ folderName :String) -> URL {
                 let folder = TmpDirectory().appendingPathComponent(folderName)
-//                let folder = CachesDirectory().appendingPathComponent(folderName)
+                //                let folder = CachesDirectory().appendingPathComponent(folderName)
                 let fileManager = FileManager.default
                 if !fileManager.fileExists(atPath: folder.absoluteString) {
                         do {
