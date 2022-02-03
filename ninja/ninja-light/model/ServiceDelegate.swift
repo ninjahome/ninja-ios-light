@@ -76,7 +76,7 @@ extension ServiceDelegate{
         public static func InitService() {
                 CombineConntact.ReloadSavedContact()
                 GroupItem.LocalSavedGroup()
-                MessageItem.loadUnread()
+                MessageItem.prepareMessage()
                 ChatItem.ReloadChatRoom()//TODO:: update chat item by new loaded message item queue
                 
                 dateFormatterGet.timeStyle = .medium

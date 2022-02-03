@@ -100,7 +100,6 @@ class AuthorViewController: UIViewController {
                                                         WebsocketSrv.shared.Online()
                                         }
                                 }
-                                MessageItem.deleteMsgOneWeek()
                                 return
                         }
                         DispatchQueue.main.async {

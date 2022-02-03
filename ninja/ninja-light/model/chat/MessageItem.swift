@@ -265,6 +265,9 @@ class MessageItem: NSObject {
                 try? CDManager.shared.Delete(entity: "CDUnread",
                                              predicate: NSPredicate(format: "owner == %@ AND unixTime < %@",
                                                                     owner, NSNumber(value: limitTime)))
+        }
+        public static func prepareMessage() {
+                deleteMsgOneWeek()
                 loadUnread()
         }
 }

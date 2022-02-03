@@ -200,15 +200,15 @@ class fileMsg: NSObject, NSCoding,IMPayLoad {
         var typ: FileTyp = .video
         
         func encode(with coder: NSCoder) {
+                coder.encode(typ.rawValue, forKey: "typ")
                 coder.encode(name, forKey: "name")
                 coder.encode(content, forKey: "content")
-                coder.encode(typ, forKey: "suffix")
         }
         
         required init?(coder: NSCoder) {
                 super.init()
+                self.typ = FileTyp(rawValue: coder.decodeInt32(forKey:  "typ")) ?? .video
                 self.name = coder.decodeObject(forKey: "name") as? String ?? ""
-                self.typ = coder.decodeObject(forKey: "suffix") as? FileTyp ?? .video
                 self.content = coder.decodeObject(forKey: "content") as? Data ?? Data()
         }
         
@@ -250,15 +250,17 @@ class videoMsg:fileMsg{
         override func encode(with coder: NSCoder) {
                 super.encode(with: coder)
                 coder.encode(thumbnailImg, forKey: "thumbnailImg")
+                coder.encode(tmpFileURL, forKey: "tmpFileURL")
         }
         required init?(coder: NSCoder) {
                 super.init(coder: coder)
                 self.thumbnailImg = (coder.decodeObject(forKey: "thumbnailImg") as? UIImage) ?? videoMsg.defaultImg
+                self.tmpFileURL = coder.decodeObject(forKey: "tmpFileURL") as? URL
         }
         
         init(name:String?, data:Data?, thumb:UIImage?){
                 super.init(name: name, data: data)
-                self.thumbnailImg = thumb ?? UIImage(named: "logo")!
+                self.thumbnailImg = thumb ?? videoMsg.defaultImg
         }
         
         init(name:String?, data:Data?){
@@ -271,7 +273,9 @@ class videoMsg:fileMsg{
         
         func tmpUrl()->URL?{
                 if let url = self.tmpFileURL{
-                        return url
+                        if FileManager.judgeFileOrFolderExists(filePath:  url.path) {
+                                return tmpFileURL
+                        }
                 }
                 
                 tmpFileURL = FileManager.TmpDirectory().appendingPathComponent(self.name).appendingPathExtension("mov")
