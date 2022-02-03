@@ -282,17 +282,6 @@ class MsgViewController: UIViewController {
                 }
                 
         }
-        
-        private func scrollToBottom(animated: Bool = false) {
-                let rowCount = self.msgCacheArray.count
-                
-                guard rowCount >= 2 else {
-                        return
-                }
-                
-                let bottomIndexPath = IndexPath.init(row: rowCount - 1, section: 0)
-                self.messageTableView.scrollToRow(at: bottomIndexPath, at: .bottom, animated: animated)
-        }
 }
 
 extension MsgViewController:UIGestureRecognizerDelegate{
@@ -423,12 +412,36 @@ extension MsgViewController{
                 self.insertNewCell()
         }
         
+        private func scrollToBottom(animated: Bool = false) {
+                let rowCount = self.messageTableView.numberOfRows(inSection: 0)
+                
+                guard rowCount >= 2 else {
+                        return
+                }
+                
+                let bottomIndexPath = IndexPath.init(row: rowCount - 1, section: 0)
+                self.messageTableView.scrollToRow(at: bottomIndexPath, at: .bottom, animated: animated)
+        }
+        
         private func insertNewCell(){
-                DispatchQueue.main.async {
+                DispatchQueue.main.sync {
+                        let startCnt = self.messageTableView.numberOfRows(inSection: 0)
+                        let endCnt = self.msgCacheArray.count
+                        if startCnt >= endCnt{
+                                print("------>>> finish insert rows[\(endCnt)] in table")
+                                return
+                        }
+                        var indes :[IndexPath] = []
+                        for i in startCnt ... endCnt - 1{
+                                indes.append(IndexPath.init(row: i, section: 0))
+                        }
+                        print("------>>> start rows[\(startCnt)] to end rows[\(endCnt)]")
+                        
                         self.messageTableView.beginUpdates()
-                        self.messageTableView.insertRows(at: [IndexPath.init(row: self.msgCacheArray.count-1, section: 0)], with: .automatic)
+                        self.messageTableView.insertRows(at: indes, with: .automatic)
                         self.messageTableView.endUpdates()
-                        self.scrollToBottom(animated: true)
+                        
+                        self.messageTableView.scrollToRow(at: indes[indes.count - 1], at: .bottom, animated: true)
                 }
         }
         

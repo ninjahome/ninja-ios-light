@@ -50,6 +50,11 @@ class WebsocketSrv: NSObject {
                 guard let _ = ChatLibSend(msg.timeStamp, msg.to, data, msg.groupId != nil, &err), err != nil else{
                         return nil
                 }
+                do{
+                        try CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
+                }catch let err{
+                        return err
+                }
                 return err
         }
 }
