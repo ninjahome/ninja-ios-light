@@ -24,6 +24,7 @@ extension MsgViewController: UITextViewDelegate {
                 }
                 let data = txtMsg.init(txt: message)
                 let msg = MessageItem.init(to: peerUid, data: data, typ: .plainTxt, gid: gid)
+                msg.isOut = true
                 textView.text = nil
                 sendMessage(msg: msg)
                 return false

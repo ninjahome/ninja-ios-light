@@ -78,10 +78,7 @@ class MsgViewController: UIViewController {
                 messageTableView.delegate = self
                 messageTableView.dataSource = self
                 
-                if let msges = MessageItem.cache.get(idStr: self.peerUid) {
-                        self.msgCacheArray = Array(msges.values)
-                }
-                
+                self.msgCacheArray = MessageItem.SortedArray(pid: self.peerUid)
                 populateView()
                 
                 NotificationCenter.default.addObserver(self,
@@ -114,7 +111,7 @@ class MsgViewController: UIViewController {
                                                        name: UIResponder.keyboardDidHideNotification,
                                                        object: nil)
                 
-               
+                
                 do{
                         try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord, mode: .default)
                         
@@ -286,23 +283,14 @@ class MsgViewController: UIViewController {
         }
         
         private func scrollToBottom(animated: Bool = false) {
-                let rowCount = self.messageTableView.numberOfRows(inSection: 0)
+                let rowCount = self.msgCacheArray.count
                 
-                guard rowCount > 0 else {
+                guard rowCount >= 2 else {
                         return
                 }
                 
-                self.messageTableView.reloadData()
-                self.view.layoutIfNeeded()
-                
-                if rowCount > 1 {
-                        let bottomIndexPath = IndexPath.init(row: rowCount - 1, section: 0)
-                        self.messageTableView.scrollToRow(at: bottomIndexPath, at: .bottom, animated: animated)
-                }
-        }
-        
-        private func layoutToBottom(animated: Bool = false) {
-                self.messageTableView.setContentOffset(CGPoint.init(x: 0, y: (self.messageTableView.contentSize.height-self.messageTableView.bounds.size.height)), animated: animated)
+                let bottomIndexPath = IndexPath.init(row: rowCount - 1, section: 0)
+                self.messageTableView.scrollToRow(at: bottomIndexPath, at: .bottom, animated: animated)
         }
 }
 
@@ -415,10 +403,7 @@ extension MsgViewController{
                         return
                 }
                 
-                guard let msges = MessageItem.cache.get(idStr: self.peerUid) else {
-                        return
-                }
-                self.msgCacheArray = Array(msges.values)
+                self.msgCacheArray = MessageItem.SortedArray(pid: self.peerUid)
                 
                 DispatchQueue.main.async {
                         self.messageTableView.reloadData()

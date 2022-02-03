@@ -189,6 +189,8 @@ class MessageItem: NSObject {
                 do {
                         try CDManager.shared.UpdateOrAddOne(entity: "CDUnread", m: msg,
                                                      predicate: NSPredicate(format: "unixTime == %@",NSNumber(value: msg.timeStamp)))
+                        
+                        CDManager.shared.saveContext()
                 }catch let err{
                         print("------>>> update message sent result:[\(err.localizedDescription)]")
                         return
@@ -245,6 +247,22 @@ class MessageItem: NSObject {
         public static func prepareMessage() {
                 deleteMsgOneWeek()
                 loadUnread()
+        }
+        
+        public static func SortedArray(pid:String) -> [MessageItem] {
+                
+                guard let msges = cache.get(idStr: pid) else {
+                        return []
+                }
+                
+                var sortedArray = Array(msges.values)
+                guard sortedArray.count > 1 else {
+                        return sortedArray
+                }
+                sortedArray.sort { (a, b) -> Bool in
+                        return a.timeStamp < b.timeStamp
+                }
+                return sortedArray
         }
 }
 

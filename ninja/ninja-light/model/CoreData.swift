@@ -127,8 +127,6 @@ extension CDManager{
                 }
                 let object = objArr.first!
                 try m.fullFillObj(obj: object)
-                
-                saveContext()
         }
         
         func AddBatch<T>(entity:String, m:[T])throws where T: ModelObj{
@@ -141,8 +139,6 @@ extension CDManager{
                                                      insertInto: managedContext)
                         try mObj.fullFillObj(obj: object)
                 }
-                
-                saveContext()
         }
         
         func AddEntity<T>(entity:String, m:T)throws where T: ModelObj{
@@ -156,8 +152,6 @@ extension CDManager{
                                              insertInto: managedContext)
                
                 try m.fullFillObj(obj: object)
-                
-                saveContext()
         }
         
         func Delete(entity:String, predicate:NSPredicate? = nil)throws{
@@ -171,12 +165,10 @@ extension CDManager{
                 for obj in objArr {
                         managedContext.delete(obj)
                 }
-                saveContext()
         }
         
         func DeleteObj(obj:NSManagedObject) throws{
                 let managedContext = persistentContainer.viewContext
                 managedContext.delete(obj)
-                saveContext()
         }
 }

@@ -216,6 +216,8 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
                         self.sortedArray.remove(at: indexPath.row)
                         ChatItem.remove(item.ItemID)
                         MessageItem.removeRead(item.ItemID)
+                        CDManager.shared.saveContext()
+                        
                         DispatchQueue.main.async {
                                 self.updateMsgBadge()
                                 tableView.deleteRows(at: [indexPath], with: .fade)
@@ -232,5 +234,4 @@ extension MessageListViewController:WalletDelegate{
                         self.tableView.reloadData()
                 }
         }
-        
 }
