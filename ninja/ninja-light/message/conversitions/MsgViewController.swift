@@ -418,17 +418,14 @@ extension MsgViewController{
         }
         
         func sendMessage(msg:MessageItem){
-                if let err = MessageItem.syncNewIMToDisk(msg: msg){
-                        self.toastMessage(title: err.localizedDescription)
-                        return
-                }
                 if let err = WebsocketSrv.shared.SendMessage(msg: msg){
                         self.toastMessage(title: err.localizedDescription)
                         return
                 }
-                DispatchQueue.main.async {
-                        self.messageTableView.reloadData()
-                        self.scrollToBottom(animated: true)
+                let pid = msg.groupId ?? msg.to
+                if let err = MessageItem.processNewMessage(pid:pid, msg: msg, unread: 0){
+                        self.toastMessage(title: err.localizedDescription)
+                        return
                 }
         }
 }

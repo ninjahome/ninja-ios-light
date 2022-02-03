@@ -80,7 +80,6 @@ class MessageItem: NSObject {
                 return msgItem
         }
         
-      
         
         //pull to load more unread message
         public static func loadUnread() {
@@ -165,22 +164,6 @@ class MessageItem: NSObject {
                         return "unknown"
                 }
         }
-                
-        public static func syncNewIMToDisk(msg:MessageItem) -> Error?{
-                do{
-                        var msgList = cache.get(idStr: msg.to)
-                        if msgList == nil {
-                                msgList = []
-                        }
-                        msgList?.append(msg)
-                        cache.setOrAdd(idStr: msg.to, item: msgList)
-                        try CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
-                        return nil
-                }catch let err{
-                        return err
-                }
-        }
-        
         public static func resetSending(msgid: Int64, to: String, success: Bool) {
                 guard let msg = MessageItem.getItemByTime(mid: msgid, to: to) else {
                         return
@@ -219,45 +202,46 @@ class MessageItem: NSObject {
                 }
                 
         }
-        
-        private static func cacheNewMsg(pid:String, msg:MessageItem){
-                var msgList = cache.get(idStr: pid)
-                if msgList == nil {
-                        msgList = []
+                       
+        public static func processNewMessage(pid:String, msg:MessageItem, unread:Int) -> Error?{
+                do{
+                        var msgList = cache.get(idStr: pid)
+                        if msgList == nil {
+                                msgList = []
+                        }
+                        msgList?.append(msg)
+                        cache.setOrAdd(idStr: pid, item: msgList)
+                        
+                        try CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
+                        
+                        ChatItem.updateLatestrMsg(pid: pid,
+                                                  msg: msg.coinvertToLastMsg(),
+                                                  time: msg.timeStamp,
+                                                  unread: unread,
+                                                  isGrp: msg.groupId != nil)
+                        
+                        NotificationCenter.default.post(name: NotifyMessageAdded,
+                                                        object: self, userInfo: [NotiKey: pid])
+                        return nil
+                }catch let err{
+                        print("------>>> save new message failed:[\(err.localizedDescription)]")
+                        return err
                 }
-                
-                msgList?.append(msg)
-                msgList?.sort(by: { (a, b) -> Bool in
-                        return a.timeStamp < b.timeStamp
-                })
-                cache.setOrAdd(idStr: pid, item: msgList)
-                
-                NotificationCenter.default.post(name: NotifyMessageAdded,
-                                                object: self, userInfo: [NotiKey: pid])
         }
         
         public static func receiveMsg(from: String, gid: String? = nil, msgData: Data, time: Int64) {
                 
                 guard let msgItem = MessageItem.initByData(msgData, from: from, gid: gid, time: time) else{
+                        print("------>>> receied invalid message", from, gid ?? "<->", msgData.count)
                         return
                 }
                 
-                do{
-                        try CDManager.shared.AddEntity(entity: "CDUnread", m: msgItem)
-                        
-                }catch let err{
-                        print("------>>> save new message failed:[\(err.localizedDescription)]")
-                        return
-                }
-                
+                              
                 let peerUid = gid ?? from
-                cacheNewMsg(pid: peerUid, msg: msgItem)
-                
-                ChatItem.updateLatestrMsg(pid: peerUid,
-                                          msg: msgItem.coinvertToLastMsg(),
-                                          time: msgItem.timeStamp,
-                                          unread: 1,
-                                          isGrp: gid != nil)
+                guard let e = processNewMessage(pid: peerUid, msg: msgItem, unread: 1)else{
+                        return
+                }
+                print("------>>>process received message err:=>",e)
         }
         
         public static func deleteMsgOneWeek() {

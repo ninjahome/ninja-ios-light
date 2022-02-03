@@ -52,7 +52,7 @@ class ChatItem: NSObject{
                         CachedChats.setOrAdd(idStr: obj.ItemID, item: obj)
                 }
         }
-        
+
         public static func updateLatestrMsg(pid: String, msg: String, time: Int64, unread no: Int, isGrp:Bool) {
                 var unreadNo = no
                 if pid == CurrentPID{
