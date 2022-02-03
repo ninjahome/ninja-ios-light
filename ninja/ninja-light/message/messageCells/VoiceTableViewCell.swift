@@ -80,7 +80,7 @@ class VoiceTableViewCell: UITableViewCell {
                         avatar.type = AvatarButtonType.wallet
                         avatar.avaInfo = nil
 
-                        nickname.text = Wallet.shared.nickName ?? Wallet.GenAvatarText()
+                        nickname.text = ""//Wallet.shared.nickName ?? Wallet.GenAvatarText()
 
                 } else {
                         let img = UIImage(named: "babycolor")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
@@ -100,7 +100,7 @@ class VoiceTableViewCell: UITableViewCell {
                 let rawImg = UIImage(named: "voice_00009")!
                 let flipImgH = filpImageH(rawImg)
 
-                playBtn.setTitle("------>>>\(long)", for: .normal)
+                playBtn.setTitle("\(long)", for: .normal)
 
                 let space = 20*long/60 + 20
 

@@ -69,7 +69,7 @@ class MessageTableViewCell: UITableViewCell {
                         msgBackgroundView.image = inMsgImg
                         avatar.type = AvatarButtonType.wallet
                         avatar.avaInfo = nil
-                        nickname.text = Wallet.shared.nickName ?? Wallet.GenAvatarText()
+                        nickname.text = "" // Wallet.shared.nickName ?? Wallet.GenAvatarText()
                 } else {
                         msgBackgroundView.image = ourImg
                         avatar.type = AvatarButtonType.contact

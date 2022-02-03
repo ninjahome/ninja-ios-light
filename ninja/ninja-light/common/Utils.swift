@@ -183,9 +183,19 @@ func dispatch_async_safely_to_queue(_ queue: DispatchQueue, _ block: @escaping (
         }
 }
 
+public let oneDay = TimeInterval(60 * 60 * 24)
+public let oneMinute = TimeInterval(60)
 public func formatMsgTimeStamp(by timeStamp: Int64) -> String {
         let time = Date.init(timeIntervalSince1970: TimeInterval(timeStamp/1000))
-        dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let now = Date().timeIntervalSince(time)
+        if now < oneDay{
+                dateFormatterGet.dateFormat = "HH:mm"
+                if now < oneMinute{
+                        return ""
+                }
+        }else{
+                dateFormatterGet.dateFormat = "yy/MM/dd HH:mm"
+        }
         
         return dateFormatterGet.string(from: time)
 }

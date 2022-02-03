@@ -19,7 +19,7 @@ extension MsgViewController: UITableViewDelegate, UITableViewDataSource {
                 var identifer = ""
                 indexPathCache[msgItem.timeStamp] = indexPath
                 
-                print("------>>row[\(indexPath.row)]=>msg[\(msgItem.timeStamp)]")
+//                print("------>>row[\(indexPath.row)]=>msg[\(msgItem.timeStamp)]")
                 
                 switch msgItem.typ {
                 case .plainTxt:
