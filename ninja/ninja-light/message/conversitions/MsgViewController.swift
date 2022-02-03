@@ -39,6 +39,7 @@ class MsgViewController: UIViewController {
         var peerUid: String = ""
         var groupData:GroupItem?
         var msgCacheArray: [MessageItem] = []
+        var indexPathCache:[Int64:IndexPath] = [:]
         
         var isTextType = true
         var selectedRow: Int?
@@ -87,8 +88,8 @@ class MsgViewController: UIViewController {
                                                        object: nil)
                 
                 NotificationCenter.default.addObserver(self,
-                                                       selector:#selector(noRight(notification:)),
-                                                       name: NotifyMessageNoRights,
+                                                       selector:#selector(msgResult(notification:)),
+                                                       name: NotifyMessageSendResult,
                                                        object: nil)
                 NotificationCenter.default.addObserver(self,
                                                        selector:#selector(contactUpdate(notification:)),
@@ -390,8 +391,22 @@ extension MsgViewController{
 extension MsgViewController{
         
         
-        @objc func noRight(notification: NSNotification){
-                self.toastMessage(title: "No rights to send message")
+        @objc func msgResult(notification: NSNotification){
+                guard let msgID = notification.object as? Int64 else{
+                        print("------>>> invalid msg resul notification")
+                        return
+                }
+                guard msgID > 0 else{
+                        self.toastMessage(title: "No rights to send message")
+                        return
+                }
+                
+                guard let idxPath = indexPathCache[msgID] else{
+                        return
+                }
+                DispatchQueue.main.async {
+                        self.messageTableView.reloadRows(at: [idxPath], with: .fade)
+                }
         }
         
         @objc func newMsg(notification: NSNotification){
@@ -404,9 +419,14 @@ extension MsgViewController{
                 }
                 
                 self.msgCacheArray = MessageItem.SortedArray(pid: self.peerUid)
-                
+                self.insertNewCell()
+        }
+        
+        private func insertNewCell(){
                 DispatchQueue.main.async {
-                        self.messageTableView.reloadData()
+                        self.messageTableView.beginUpdates()
+                        self.messageTableView.insertRows(at: [IndexPath.init(row: self.msgCacheArray.count-1, section: 0)], with: .automatic)
+                        self.messageTableView.endUpdates()
                         self.scrollToBottom(animated: true)
                 }
         }
@@ -417,10 +437,10 @@ extension MsgViewController{
                         return
                 }
                 let pid = msg.groupId ?? msg.to
-                if let err = MessageItem.processNewMessage(pid:pid, msg: msg, unread: 0){
-                        self.toastMessage(title: err.localizedDescription)
-                        return
-                }
+                MessageItem.cacheItem(pid: pid, item: msg)
+                self.msgCacheArray = MessageItem.SortedArray(pid: self.peerUid)
+                
+                self.insertNewCell()
         }
 }
 

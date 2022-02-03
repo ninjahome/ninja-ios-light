@@ -52,7 +52,7 @@ class MessageItem: NSObject {
                 self.to = to
                 self.payload = data
         }
-        private static func cacheItem(pid:String, item:MessageItem){
+        public static func cacheItem(pid:String, item:MessageItem){
                 
                 var msgCache = cache.get(idStr: pid)
                 if msgCache == nil {
@@ -172,8 +172,8 @@ class MessageItem: NSObject {
         
         public static func updateSendResult(msgid: Int64, to: String, success: Bool){
                 if msgid < 0{
-                        NotificationCenter.default.post(name: NotifyMessageNoRights,
-                                                        object: self, userInfo: [NotiKey: msgid])
+                        NotificationCenter.default.post(name: NotifyMessageSendResult,
+                                                        object: msgid, userInfo: nil)
                         return
                 }
                 guard let msg = cache.get(idStr: to)?[msgid] else{
@@ -184,6 +184,9 @@ class MessageItem: NSObject {
                         msg.status = .sent
                 }else{
                         msg.status = .faild
+                        NotificationCenter.default.post(name: NotifyMessageSendResult,
+                                                        object: msgid,
+                                                        userInfo: nil)
                 }
                 
                 do {
@@ -195,9 +198,6 @@ class MessageItem: NSObject {
                         print("------>>> update message sent result:[\(err.localizedDescription)]")
                         return
                 }
-                NotificationCenter.default.post(name: NotifyMessageAdded,
-                                                object: self,
-                                                userInfo: [NotiKey: msgid])
         }
                        
         public static func processNewMessage(pid:String, msg:MessageItem, unread:Int) -> Error?{
