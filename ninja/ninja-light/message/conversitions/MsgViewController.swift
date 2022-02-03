@@ -57,11 +57,11 @@ class MsgViewController: UIViewController {
                         _delegate = self.navigationController?.interactivePopGestureRecognizer?.delegate
                         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
                 }
-                self.scrollToBottom()
         }
         
         override func viewDidAppear(_ animated: Bool) {
                 super.viewDidAppear(animated)
+                self.scrollToBottom()
         }
         
         override func viewWillDisappear(_ animated: Bool) {
@@ -77,6 +77,10 @@ class MsgViewController: UIViewController {
                 AudioRecordManager.shared.delegate = self
                 messageTableView.delegate = self
                 messageTableView.dataSource = self
+                
+                if let msges = MessageItem.cache.get(idStr: self.peerUid) {
+                        self.msgCacheArray = msges
+                }
                 
                 populateView()
                 
@@ -106,9 +110,7 @@ class MsgViewController: UIViewController {
                                                        name: UIResponder.keyboardDidHideNotification,
                                                        object: nil)
                 
-                if let msges = MessageItem.cache.get(idStr: self.peerUid) {
-                        self.msgCacheArray = msges
-                }
+               
                 do{
                         try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord, mode: .default)
                         
@@ -298,7 +300,6 @@ class MsgViewController: UIViewController {
         private func layoutToBottom(animated: Bool = false) {
                 self.messageTableView.setContentOffset(CGPoint.init(x: 0, y: (self.messageTableView.contentSize.height-self.messageTableView.bounds.size.height)), animated: animated)
         }
-
 }
 
 extension MsgViewController:UIGestureRecognizerDelegate{
@@ -395,7 +396,6 @@ extension MsgViewController{
 }
 
 extension MsgViewController{
-        
         
         @objc func newMsg(notification: NSNotification){
                 guard let uid = notification.userInfo?[MessageItem.NotiKey] as? String else {
