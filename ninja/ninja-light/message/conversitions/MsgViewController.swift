@@ -407,8 +407,8 @@ extension MsgViewController{
                 if uid != self.peerUid {
                         return
                 }
-                
                 self.msgCacheArray = MessageItem.SortedArray(pid: self.peerUid)
+                print("------>>> new message notification \(self.msgCacheArray.count)]")
                 self.insertNewCell()
         }
         
@@ -424,7 +424,7 @@ extension MsgViewController{
         }
         
         private func insertNewCell(){
-                DispatchQueue.main.sync {
+                DispatchQueue.main.async {
                         let startCnt = self.messageTableView.numberOfRows(inSection: 0)
                         let endCnt = self.msgCacheArray.count
                         if startCnt >= endCnt{

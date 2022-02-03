@@ -84,7 +84,7 @@ extension ServiceDelegate{
         
         public static func cleanAllData() {
                 CombineConntact.cache.removeAll()
-                ChatItem.CachedChats.deleteAll()
+                ChatItem.deleteAll()
                 MessageItem.cache.deleteAll()
                 GroupItem.cache.removeAll()
         }

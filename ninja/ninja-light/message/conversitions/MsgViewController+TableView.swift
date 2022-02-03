@@ -10,6 +10,7 @@ import Foundation
 extension MsgViewController: UITableViewDelegate, UITableViewDataSource {
         
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+                print("------>>>table view count:\(msgCacheArray.count) ")
                 return msgCacheArray.count
         }
         
