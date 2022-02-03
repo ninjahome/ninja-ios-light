@@ -8,17 +8,19 @@
 import UIKit
 
 protocol WalletDelegate{
-    func OpenSuccess()
+        func OpenSuccess()
 }
 
 class AuthorViewController: UIViewController {
-
+        
         @IBOutlet weak var tips: UILabel!
         @IBOutlet weak var password: UITextField!
         
         @IBOutlet weak var avatar: UIImageView!
         @IBOutlet weak var nick: UILabel!
-    
+        
+        var delegate:WalletDelegate?
+        
         override func viewDidLoad() {
                 super.viewDidLoad()
                 if let avaData = Wallet.shared.avatarData {
@@ -26,7 +28,7 @@ class AuthorViewController: UIViewController {
                         avatar.layer.cornerRadius = 45
                         avatar.layer.masksToBounds = true
                 }
-
+                
                 nick.text = Wallet.shared.nickName
                 
                 self.hideKeyboardWhenTappedAround()
@@ -44,69 +46,64 @@ class AuthorViewController: UIViewController {
                         }
                 }
         }
-    
+        
         @IBAction func Auth(_ sender: Any) {
                 guard let pwd = password.text else {
                         tips.text = "please input your password"
                         return
                 }
-
+                
                 if Wallet.shared.useDestroy,
                    pwd == DeriveDestroyKey() {
                         destroy(auth: pwd)
                         return
                 }
-
+                
                 unlock(auth: pwd)
         }
-    
+        
         //TODO:: to be tested
         func destroy(auth: String) {
                 self.showIndicator(withTitle: "", and: "opening")
-
-                DispatchQueue.global().async {
+                
+                ServiceDelegate.workQueue.async {
                         do {
                                 try Wallet.shared.New(auth)
-                                ServiceDelegate.InitService()
                                 _ = Wallet.shared.Active(auth)
-
-                                ChatItem.ReloadChatRoom()
-                                CombineConntact.ReloadSavedContact()
-
+                                ServiceDelegate.InitService()
+                                
                                 DispatchQueue.main.async {
-                                        self.dismiss(animated: true, completion: nil)
+                                        self.dismiss(animated: true){
+                                                self.delegate?.OpenSuccess()
+                                        }
                                 }
-
+                                
                         } catch _ {
-                                DispatchQueue.main.async {
-                                        self.hideIndicator()
-                                        self.tips.text = "wallet open failed"
-                                        self.hideKeyboardWhenTappedAround()
-                                }
+                                self.hideIndicator()
+                                self.hideKeyboardWhenTappedAround()
                         }
                 }
         }
-
+        
         func unlock(auth pwd: String) {
                 self.showIndicator(withTitle: "", and: "opening")
-
-                DispatchQueue.global().async {
-                        guard let _ = Wallet.shared.Active(pwd) else {
-                                DispatchQueue.main.async {
-                                        self.hideIndicator()
-                                        self.hideKeyboardWhenTappedAround()
-                                        Wallet.shared.accountNonce()
-                                        self.dismiss(animated: true) {
-                                                        WebsocketSrv.shared.Online()
-                                        }
-                                }
-                                return
-                        }
-                        DispatchQueue.main.async {
-//                                self.tips.text = "wallet open failed"
+                
+                ServiceDelegate.workQueue.async {
+                        if let err = Wallet.shared.Active(pwd) {
                                 self.hideIndicator()
                                 self.hideKeyboardWhenTappedAround()
-                                self.ShowTips(msg: "Invalid Password")
+                                self.ShowTips(msg: "Active Failed:\(err.localizedDescription)")
+                                return
+                        }
+                        
+                        ServiceDelegate.InitService()
+                        Wallet.shared.accountNonce()
+                        WebsocketSrv.shared.Online()
+                        
+                        DispatchQueue.main.async {
+                                self.dismiss(animated: true){
+                                        self.delegate?.OpenSuccess()
+                                }
                         }
                 }
         }

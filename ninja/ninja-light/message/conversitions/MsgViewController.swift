@@ -79,7 +79,7 @@ class MsgViewController: UIViewController {
                 messageTableView.dataSource = self
                 
                 if let msges = MessageItem.cache.get(idStr: self.peerUid) {
-                        self.msgCacheArray = msges
+                        self.msgCacheArray = Array(msges.values)
                 }
                 
                 populateView()
@@ -418,7 +418,7 @@ extension MsgViewController{
                 guard let msges = MessageItem.cache.get(idStr: self.peerUid) else {
                         return
                 }
-                self.msgCacheArray = msges
+                self.msgCacheArray = Array(msges.values)
                 
                 DispatchQueue.main.async {
                         self.messageTableView.reloadData()

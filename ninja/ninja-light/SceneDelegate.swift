@@ -25,7 +25,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
                 guard let winScene = (scene as? UIWindowScene) else { return }
                 window = UIWindow(windowScene: winScene)
                 if Wallet.shared.loaded {
-                        ServiceDelegate.InitService()
                         window?.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
                 } else {
                         if isFirstUser() {

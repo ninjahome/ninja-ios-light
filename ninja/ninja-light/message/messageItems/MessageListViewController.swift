@@ -116,12 +116,12 @@ class MessageListViewController: UIViewController{
         
         override func viewWillAppear(_ animated: Bool) {
                 super.viewWillAppear(animated)
-                self.hideConnectingTips()
-                updateMsgBadge()
                 guard Wallet.shared.IsActive() else {
                         self.performSegue(withIdentifier: "ShowAutherSEG", sender: self)
                         return
                 }
+                self.hideConnectingTips()
+                updateMsgBadge()
         }
         
         private func hideConnectingTips() {
@@ -163,6 +163,12 @@ class MessageListViewController: UIViewController{
                         vc.IS_GROUP = item.isGroup
                         
                         return
+                }
+                if segue.identifier == "ShowAutherSEG"{
+                        guard let vc = segue.destination as? AuthorViewController else {
+                                return
+                        }
+                        vc.delegate = self
                 }
         }
 }
@@ -216,4 +222,15 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
                         }
                 }
         }
+}
+extension MessageListViewController:WalletDelegate{
+        
+        func OpenSuccess() {
+                sortedArray = ChatItem.SortedArra()
+                DispatchQueue.main.async {
+                        self.updateMsgBadge()
+                        self.tableView.reloadData()
+                }
+        }
+        
 }

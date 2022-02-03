@@ -10,7 +10,7 @@ import CoreData
 import ChatLib
 import SwiftyJSON
 
-typealias MessageList = [MessageItem]
+typealias MsgCacheMap = [Int64:MessageItem]
 
 enum sendingStatus: Int16 {
         case sent = 0
@@ -35,7 +35,7 @@ class MessageItem: NSObject {
         var groupId: String?
         var status: sendingStatus = .sent
         
-        public static var cache = LockCache<MessageList>()
+        public static var cache = LockCache<MsgCacheMap>()
         
         override init() {
                 super.init()
@@ -51,6 +51,16 @@ class MessageItem: NSObject {
                 self.typ = typ
                 self.to = to
                 self.payload = data
+        }
+        private static func cacheItem(pid:String, item:MessageItem){
+                
+                var msgCache = cache.get(idStr: pid)
+                if msgCache == nil {
+                        msgCache = MsgCacheMap.init()
+                }
+                msgCache![item.timeStamp] = item
+                
+                cache.setOrAdd(idStr: pid, item: msgCache)
         }
         
         private func parseProtoMsgData(data:Data)->Error?{
@@ -108,13 +118,7 @@ class MessageItem: NSObject {
                                 }
                         }
                         
-                        var msgList = cache.get(idStr: peerUid)
-                        if msgList == nil {
-                                msgList = MessageList.init()
-                        }
-                        msgList!.append(msg)
-                        
-                        cache.setOrAdd(idStr: peerUid, item: msgList)
+                        cacheItem(pid: peerUid, item: msg)
                 }
         }
         
@@ -169,62 +173,34 @@ class MessageItem: NSObject {
         public static func updateSendResult(msgid: Int64, to: String, success: Bool){
                 if msgid < 0{
                         NotificationCenter.default.post(name: NotifyMessageNoRights,
-                                                        object: self, userInfo: nil)
+                                                        object: self, userInfo: [NotiKey: msgid])
+                        return
+                }
+                guard let msg = cache.get(idStr: to)?[msgid] else{
                         return
                 }
                 
-        }
-        
-        
-        public static func resetSending(msgid: Int64, to: String, success: Bool) {
-                
-                guard let msg = MessageItem.getItemByTime(mid: msgid, to: to) else {
-                        return
-                }
-                
-                let owner = Wallet.shared.Addr!
                 if success {
                         msg.status = .sent
-                } else {
+                }else{
                         msg.status = .faild
                 }
                 
-                var peerUid: String?
-                if let gid = msg.groupId {
-                        peerUid = gid
-                } else {
-                        peerUid = msg.to
+                do {
+                        try CDManager.shared.UpdateOrAddOne(entity: "CDUnread", m: msg,
+                                                     predicate: NSPredicate(format: "unixTime == %@",NSNumber(value: msg.timeStamp)))
+                }catch let err{
+                        print("------>>> update message sent result:[\(err.localizedDescription)]")
+                        return
                 }
-                
-                if var msgs = MessageItem.cache.get(idStr: peerUid!) {
-                        for (index, item) in msgs.enumerated() {
-                                if item.timeStamp == msg.timeStamp {
-                                        msgs[index] = msg
-                                        break
-                                }
-                        }
-                        MessageItem.cache.setOrAdd(idStr: peerUid!, item: msgs)
-                        try? CDManager.shared.UpdateOrAddOne(entity: "CDUnread", m: msg,
-                                                             predicate: NSPredicate(format: "owner == %@ AND unixTime == %@",
-                                                                                    owner, NSNumber(value: msg.timeStamp)))
-                        NotificationCenter.default.post(name: NotifyMessageAdded,
-                                                        object: self, userInfo: [NotiKey: peerUid!])
-                        for item in msgs {
-                                print(item.status)
-                                print(item.typ)
-                        }
-                }
-                
+                NotificationCenter.default.post(name: NotifyMessageAdded,
+                                                object: self,
+                                                userInfo: [NotiKey: msgid])
         }
                        
         public static func processNewMessage(pid:String, msg:MessageItem, unread:Int) -> Error?{
                 do{
-                        var msgList = cache.get(idStr: pid)
-                        if msgList == nil {
-                                msgList = []
-                        }
-                        msgList?.append(msg)
-                        cache.setOrAdd(idStr: pid, item: msgList)
+                        cacheItem(pid: pid, item: msg)
                         
                         try CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
                         
@@ -265,6 +241,7 @@ class MessageItem: NSObject {
                                              predicate: NSPredicate(format: "owner == %@ AND unixTime < %@",
                                                                     owner, NSNumber(value: limitTime)))
         }
+        
         public static func prepareMessage() {
                 deleteMsgOneWeek()
                 loadUnread()
@@ -334,33 +311,6 @@ extension MessageItem: ModelObj {
         
 }
 
-extension MessageList {
-        func toString() -> String {
-                var str = ""
-                for msg in self {
-                        switch msg.typ {
-                        case .plainTxt:
-                                if msg.isOut{
-                                        str += "[me]:"
-                                }
-                                str += "\(msg.payload!)\r\n"
-                        case .contact:
-                                str += "Contact TODO::\r\n"
-                        case .voice:
-                                str += "Voice TODO::\r\n"
-                        case .location:
-                                str += "Location TODO::\r\n"
-                        case .image:
-                                str += "Image TODO::\r\n"
-                        case .file:
-                                str += "File TODO::\r\n"
-                        case .unknown:
-                                str += "unknown TODO::\r\n"
-                        }
-                }
-                return str
-        }
-}
 
 extension MessageItem:ChatLibUnwrapCallbackProtocol{
         func file(_ n: String?, t: Int32, d: Data?) {
