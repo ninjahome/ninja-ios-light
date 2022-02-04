@@ -37,7 +37,6 @@
 		0860D5C52761FDD000E53FDA /* FileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0860D5C42761FDD000E53FDA /* FileTableViewCell.swift */; };
 		0860D5C727634F7900E53FDA /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0860D5C627634F7900E53FDA /* FileManager+Extension.swift */; };
 		086701B32665C6D900A1E951 /* AudioRecordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086701B22665C6D900A1E951 /* AudioRecordManager.swift */; };
-		086701B62667159E00A1E951 /* AudioFilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086701B52667159E00A1E951 /* AudioFilesManager.swift */; };
 		086701B926672CAE00A1E951 /* AudioPlayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086701B826672CAE00A1E951 /* AudioPlayManager.swift */; };
 		086701BD2667329200A1E951 /* AudioDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086701BC2667329200A1E951 /* AudioDelegate.swift */; };
 		08781E8B275DCEE30084D80A /* MsgViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08781E8A275DCEE30084D80A /* MsgViewController+TableView.swift */; };
@@ -164,7 +163,6 @@
 		0860D5C42761FDD000E53FDA /* FileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTableViewCell.swift; sourceTree = "<group>"; };
 		0860D5C627634F7900E53FDA /* FileManager+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
 		086701B22665C6D900A1E951 /* AudioRecordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecordManager.swift; sourceTree = "<group>"; };
-		086701B52667159E00A1E951 /* AudioFilesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFilesManager.swift; sourceTree = "<group>"; };
 		086701B826672CAE00A1E951 /* AudioPlayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayManager.swift; sourceTree = "<group>"; };
 		086701BC2667329200A1E951 /* AudioDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioDelegate.swift; sourceTree = "<group>"; };
 		08781E8A275DCEE30084D80A /* MsgViewController+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MsgViewController+TableView.swift"; sourceTree = "<group>"; };
@@ -295,7 +293,6 @@
 			isa = PBXGroup;
 			children = (
 				086701B22665C6D900A1E951 /* AudioRecordManager.swift */,
-				086701B52667159E00A1E951 /* AudioFilesManager.swift */,
 				086701B826672CAE00A1E951 /* AudioPlayManager.swift */,
 				086701BC2667329200A1E951 /* AudioDelegate.swift */,
 			);
@@ -647,7 +644,6 @@
 				0823F778265201B4000DA4DB /* QRViewController.swift in Sources */,
 				08F0FA9026884C2000C5C1DF /* ImageTableViewCell.swift in Sources */,
 				0886B1AF2772BEC500257C15 /* AccountItem.swift in Sources */,
-				086701B62667159E00A1E951 /* AudioFilesManager.swift in Sources */,
 				69B8C0BC261C683100B4E4AC /* NJError.swift in Sources */,
 				08C2C22A278FD1BA0023D773 /* AvatarEditViewController.swift in Sources */,
 				0886B1B3277AFE9400257C15 /* GroupListViewController.swift in Sources */,

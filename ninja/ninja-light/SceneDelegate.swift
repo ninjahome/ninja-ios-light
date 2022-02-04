@@ -76,7 +76,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
                 UIApplication.shared.applicationIconBadgeNumber = 0
                 CDManager.shared.saveContext()
                 WebsocketSrv.shared.Offline()
-                AudioFilesManager.deleteAllRecordingFiles()
         }
 }
 

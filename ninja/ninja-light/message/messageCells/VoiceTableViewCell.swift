@@ -51,6 +51,7 @@ class VoiceTableViewCell: UITableViewCell {
                         msg.status = .faild
                 }
         }
+        
         func updateMessageCell (by message: MessageItem) {
                 self.curMsg = message
                 guard let voice = message.payload as? audioMsg else {
