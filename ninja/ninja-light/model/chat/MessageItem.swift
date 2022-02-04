@@ -216,8 +216,6 @@ class MessageItem: NSObject {
                 do {
                         try CDManager.shared.UpdateOrAddOne(entity: "CDUnread", m: msg,
                                                             predicate: NSPredicate(format: "unixTime == %@",NSNumber(value: msg.timeStamp)))
-                        
-                        CDManager.shared.saveContext()
                 }catch let err{
                         print("------>>> update message sent result:[\(err.localizedDescription)]")
                         return
@@ -255,11 +253,10 @@ class MessageItem: NSObject {
                 
                 
                 let peerUid = gid ?? from
-                guard let e = processNewMessage(pid: peerUid, msg: msgItem, unread: 1)else{
+                if let e = processNewMessage(pid: peerUid, msg: msgItem, unread: 1){
+                        print("------>>>process received message err:=>",e)
                         return
                 }
-                
-                print("------>>>process received message err:=>",e)
 
                 NotificationCenter.default.post(name: NotifyMessageAdded,
                       object: self, userInfo: [NotiKey: peerUid])

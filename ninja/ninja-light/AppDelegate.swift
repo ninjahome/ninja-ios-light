@@ -129,6 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         func applicationWillTerminate(_ application: UIApplication) {
+                CDManager.shared.saveContext()
                 //                MessageItem.removeAllRead()
                 AudioFilesManager.deleteAllRecordingFiles()
         }

@@ -9,8 +9,7 @@ import Foundation
 import AVFoundation
 
 
-private let TempWavRecordPath = AudioFilesManager.wavPathWithName("wav_temp_record") //wav 临时路径
-private let TempAmrFilePath = AudioFilesManager.amrPathWithName("amr_temp_record")   //amr 临时路径
+private let TempWavRecordPath = "wav_temp_record"
 
 class AudioRecordManager:NSObject {
         public static let MaxAudioLengthInSecond = 60.0
@@ -22,7 +21,7 @@ class AudioRecordManager:NSObject {
         private var recordTimer:Timer?
         private var audioTimeInterval: TimeInterval = 0
         weak var delegate: RecordAudioDelegate?
-        
+        var currntUrl = FileManager.TmpDirectory().appendingPathComponent(TempWavRecordPath)
         
         let recoredSetting = [AVSampleRateKey: NSNumber(44100.0),
                                 AVFormatIDKey: NSNumber(value: kAudioFormatLinearPCM),
@@ -34,7 +33,7 @@ class AudioRecordManager:NSObject {
                 
                 do {
                         try AVAudioSession.sharedInstance().setActive(true)
-                        guard let rc =  try? AVAudioRecorder(url: TempWavRecordPath, settings: recoredSetting) else{
+                        guard let rc =  try? AVAudioRecorder(url: self.currntUrl, settings: recoredSetting) else{
                                 throw NJError.msg("create audio item failed")
                         }
                         
@@ -95,7 +94,7 @@ extension AudioRecordManager: AVAudioRecorderDelegate {
                         self.delegate?.audioRecordFailed()
                         return
                 }
-                guard let wavAudioData = try? Data(contentsOf: TempWavRecordPath) else {
+                guard let wavAudioData = try? Data(contentsOf: self.currntUrl) else {
                         self.delegate?.audioRecordCanceled()
                         return
                 }
