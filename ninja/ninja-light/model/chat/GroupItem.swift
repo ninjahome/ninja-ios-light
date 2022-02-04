@@ -195,14 +195,16 @@ class GroupItem: NSObject {
                 return gid
         }
         
-        public static func syncAllGroupDataAtOnce()->NSError?{
+        public static func syncAllGroupDataAtOnce(){
                 
                 var err: NSError?
                 guard let data = ChatLibSyncGroupWithDetails(&err) else{
-                        return err
+                        print("------>>> sync group metas when import account:", err?.localizedDescription ?? "<->")
+                        return
                 }
                 guard let grpArr = try? JSON(data:data) else{
-                        return NJError.group("pasrse group array message failed") as NSError
+                        print("------>>>pasrse group array message failed")
+                        return
                 }
                 
                 for (index, groupJson):(String, JSON) in grpArr {
@@ -220,7 +222,6 @@ class GroupItem: NSObject {
                         GroupItem.cache[group.gid!] = group
                 }
                 
-                return nil
         }
         
         public static func updatePartialGroup() -> NSError?{

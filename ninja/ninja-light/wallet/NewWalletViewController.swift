@@ -42,7 +42,6 @@ class NewWalletViewController: UIViewController {
                 
                 self.showIndicator(withTitle: "", and: "creating")
                 
-                
                 ServiceDelegate.workQueue.async { do {
                         try Wallet.shared.New(password)
                 } catch let err as NSError{

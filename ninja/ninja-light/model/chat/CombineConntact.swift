@@ -222,7 +222,7 @@ class CombineConntact: NSObject{
                 var error: NSError?
                 
                 guard let data = ChatLibSyncFriendWithDetails(&error)else{
-                        print("------>>> ChatLibSyncFriendWithDetails failed:\(error!.localizedDescription)")
+                        print("------>>> ChatLibSyncFriendWithDetails failed:\(error?.localizedDescription ?? "<->")")
                         return
                 }
                 

@@ -121,13 +121,8 @@ extension ServiceDelegate{
                         
                         print("------>>>new wallet \(String(describing: Wallet.shared.Addr))")
                         ServiceDelegate.cleanAllData()
-                        
-                        if let err = GroupItem.syncAllGroupDataAtOnce(){
-                                print("------>>> sync group metas when import account:", err.localizedDescription)
-                        }
-                        
+                        GroupItem.syncAllGroupDataAtOnce()
                         CombineConntact.syncAllContactDataAtOnce()
-                        
                         WebsocketSrv.shared.Online()
                         
                         parent.hideIndicator()
