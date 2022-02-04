@@ -12,6 +12,16 @@ import LocalAuthentication
 import MobileCoreServices
 import ChatLib
 
+
+
+public let defaultAvatar = UIImage(named: "logo_img")!
+
+public func MustImage(data:Data?)->UIImage{
+        guard let d = data else{
+                return defaultAvatar
+        }
+        return UIImage(data: d) ?? defaultAvatar
+}
 extension NSLayoutConstraint {
         
         override public var description: String {

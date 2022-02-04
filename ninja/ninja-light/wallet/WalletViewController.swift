@@ -84,9 +84,7 @@ class WalletViewController: UITableViewController {
                         self.faceIDSwitch.isOn = Wallet.shared.useFaceID
                         self.destroySwitch.isOn = Wallet.shared.useDestroy
                         self.nickName.text = Wallet.shared.nickName
-                        
-                        self.avatar.type = AvatarButtonType.wallet
-                        self.avatar.avaInfo = nil
+                        self.avatar.setupSelf()
 
                         let status = ServiceDelegate.getAgentStatus()
                         self.agentBtn.currentStatus = status
@@ -183,7 +181,7 @@ class WalletViewController: UITableViewController {
                 if segue.identifier == "EditNicknameSEG", let vc = segue.destination as? NickEditViewController {
                         vc.nick = Wallet.shared.nickName
                         vc.returnHost = {[weak self] res in
-                                self?.avatar.avaInfo = nil
+                                self?.avatar.peerID = ""//TODO::
                         }
                 }else if "ShowDestroySEG" == segue.identifier, let vc = segue.destination as? DestroyViewController{
                         vc.statusResultDelegate = self

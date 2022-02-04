@@ -22,7 +22,6 @@ class ContactTransferTableViewCell: UITableViewCell {
         
         func initWith(details:CombineConntact, idx: Int){
                 self.nickName.text = details.GetNickName() ?? details.peerID
-                avatar.type = AvatarButtonType.chatContact
-                avatar.avaInfo = AvatarInfo.init(id: details.peerID, avaData: details.account?.Avatar)
+                self.avatar.setup(id: details.peerID, avaData:details.account?.Avatar)
         }
 }

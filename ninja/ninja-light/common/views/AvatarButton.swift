@@ -8,66 +8,32 @@
 import UIKit
 import CloudKit
 
-enum AvatarButtonType {
-        case wallet, contact, chatContact, chatGroup
-}
-
-struct AvatarInfo {
-        var id: String
-        var avatar: Data?
-        init(id: String, avaData: Data?) {
-                self.id = id
-                self.avatar = avaData
-        }
-}
-
 class AvatarButton: UIButton {
-        var type: AvatarButtonType = .chatContact
+        var peerID:String = ""
+        
+        func setup(id: String, avaData: Data?){
+                self.peerID = id
+                let backImg = MustImage(data: avaData)
+                self.setBackgroundImage(backImg, for: .normal)
+                self.layer.masksToBounds = true
+        }
+        
+        func setupSelf(){
+                let backImg = MustImage(data:  Wallet.shared.avatarData)
+                self.setBackgroundImage(backImg, for: .normal)
+                self.layer.masksToBounds = true
+        }
         
         override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
                 super.touchesEnded(touches, with: event)
-                switch type {
-                case .contact:
-                        guard let info = avaInfo else {
-                                return
-                        }
-                        
-                        if let item = CombineConntact.cache[info.id] {
-                                let vc = instantiateViewController(storyboardName: "Main", viewControllerIdentifier: "ContactDetailsVC") as! ContactDetailsViewController
-                                vc.peerID = item.peerID
-                                UIViewController.topMostInApp?.navigationController?.pushViewController(vc, animated: true)
-                        } else {
-                                let vc = instantiateViewController(storyboardName: "Main", viewControllerIdentifier: "SearchDetailVC") as! SearchDetailViewController
-                                vc.uid = info.id
-                                UIViewController.topMostInApp?.navigationController?.pushViewController(vc, animated: true)
-                        }
-                default: break
+                if let _ = CombineConntact.cache[peerID] {
+                        let vc = instantiateViewController(storyboardName: "Main", viewControllerIdentifier: "ContactDetailsVC") as! ContactDetailsViewController
+                        vc.peerID = peerID
+                        UIViewController.topMostInApp?.navigationController?.pushViewController(vc, animated: true)
+                } else {
+                        let vc = instantiateViewController(storyboardName: "Main", viewControllerIdentifier: "SearchDetailVC") as! SearchDetailViewController
+                        vc.uid = peerID
+                        UIViewController.topMostInApp?.navigationController?.pushViewController(vc, animated: true)
                 }
         }
-        
-        var avaInfo: AvatarInfo? {
-                didSet {
-                        switch self.type {
-                        case .contact, .chatContact:
-                                guard let imgData = self.avaInfo?.avatar else {
-                                        self.setBackgroundImage(UIImage(named: "logo_img"), for: .normal)
-                                        break
-                                }
-                                self.setBackgroundImage(UIImage(data: imgData), for: .normal)
-                        case .wallet:
-                                guard let avaData = Wallet.shared.avatarData else {
-                                        self.setBackgroundImage(UIImage(named: "logo_img"), for: .normal)
-                                        break
-                                }
-                                self.setBackgroundImage(UIImage(data: avaData), for: .normal)
-                        case .chatGroup:
-                                if let imgData = self.avaInfo?.avatar {
-                                        self.setBackgroundImage(UIImage(data: imgData), for: .normal)
-                                }else{
-                                        self.setBackgroundImage(UIImage.init(named: "ava"), for: .normal)
-                                }
-                        }
-                        self.layer.masksToBounds = true
-                }
-        }        
 }

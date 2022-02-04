@@ -11,7 +11,6 @@ class AvatarCollectionCell: UICollectionViewCell {
         @IBOutlet weak var MemberIcon: AvatarButton!
     
         func initApperance(id: String) {
-                MemberIcon.type = AvatarButtonType.contact
                 var avaData: Data?
                 if let contact = AccountItem.GetAccount(id) {
                         avaData = contact.Avatar
@@ -19,6 +18,6 @@ class AvatarCollectionCell: UICollectionViewCell {
                         let latest = AccountItem.loadAccountDetailFromChain(addr: id)
                         avaData = latest?.Avatar
                 }
-                MemberIcon.avaInfo = AvatarInfo.init(id: id, avaData: avaData)
+                MemberIcon.setup(id: id, avaData: avaData)
         }
 }

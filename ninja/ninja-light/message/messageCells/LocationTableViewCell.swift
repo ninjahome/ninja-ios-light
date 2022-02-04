@@ -46,7 +46,7 @@ class LocationTableViewCell: UITableViewCell {
                         msg.status = .faild
                 }
         }
-        func updateMessageCell (by message: MessageItem) {
+        func updateMessageCell (by message: MessageItem, name:String, avatar:Data?) {
                 self.curMsg = message
                 let from = message.from
 
@@ -64,8 +64,7 @@ class LocationTableViewCell: UITableViewCell {
                         msgBackgroundView.image = img
                         miniMapTrailing.constant = 8
                         
-                        avatar.type = AvatarButtonType.wallet
-                        avatar.avaInfo = nil
+                        self.avatar.setupSelf()
                         switch message.status {
                         case .faild:
                                 spinner?.stopAnimating()
@@ -82,26 +81,11 @@ class LocationTableViewCell: UITableViewCell {
                         msgBackgroundView.image = img
                         miniMapLeading.constant = 8
                     
-                        avatar.type = AvatarButtonType.contact
-                        
-                        let(name, avatarData) = ServiceDelegate.queryNickAndAvatar(pid: from) { name, avatarData in
-                                DispatchQueue.main.async {
-                                        self.initCellMeta(pid: from, name: name, aData: avatarData)
-                                }
-                        }
-                        self.initCellMeta(pid: from, name: name, aData: avatarData)
+                        nickname.text = name
+                        self.avatar.setup(id: from, avaData: avatar)
                 }
                 
                 time.text = formatMsgTimeStamp(by: message.timeStamp)
-        }
-        
-        private func initCellMeta(pid:String, name:String?, aData:Data?){
-                avatar.avaInfo = AvatarInfo.init(id: pid, avaData: aData)
-                if let n = name, !n.isEmpty{
-                        nickname.text = n
-                        return
-                }
-                nickname.text = pid
         }
 
 }

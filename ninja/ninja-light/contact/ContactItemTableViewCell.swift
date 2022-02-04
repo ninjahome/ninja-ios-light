@@ -23,7 +23,6 @@ class ContactItemTableViewCell: UITableViewCell {
 
         func initWith(details: CombineConntact) {
                 self.nickName.text = details.GetNickName() ?? details.peerID
-                avatar.type = AvatarButtonType.contact
-                avatar.avaInfo = AvatarInfo.init(id: details.peerID, avaData: details.account?.Avatar)
+                avatar.setup(id: details.peerID, avaData: details.account?.Avatar)
         }
 }

@@ -45,9 +45,10 @@ class GroupMemberTableViewCell: UITableViewCell {
         func initWith(details: CombineConntact, idx: Int, selected: Bool) {
                 self.index = idx
                 setSelect(selected: selected)
-                self.avatar.type = AvatarButtonType.contact
+                
+                //TODO:: refactor
+                self.avatar.setup(id: details.peerID, avaData: details.account?.Avatar)
                 self.nickName.text = details.GetNickName() ?? details.peerID
-                self.avatar.avaInfo = AvatarInfo.init(id: details.peerID, avaData: details.account?.Avatar)
                 let isVip = details.isVIP()
                 vipHint.isHidden = isVip
                 selectBtn.isHidden = !isVip
@@ -58,10 +59,10 @@ class GroupMemberTableViewCell: UITableViewCell {
                 self.index = idx
                 let id = group.memberIds[idx]
                 setSelect(selected: selected)
-                self.avatar.type = AvatarButtonType.contact
                 let acc = CombineConntact.cache[id]
+                //TODO:: refactor
                 self.nickName.text = acc?.GetNickName() ?? acc?.peerID
-                self.avatar.avaInfo = AvatarInfo.init(id: id, avaData: acc?.account?.Avatar)
+                self.avatar.setup(id: id, avaData: acc?.account?.Avatar)
         }
     
         @IBAction func addToGroupList(_ sender: UIButton) {

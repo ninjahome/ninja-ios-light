@@ -36,16 +36,14 @@ class MesasgeItemTableViewCell: UITableViewCell {
                 var nickName:String?
                 
                 if details.isGroup {
-                        avatar.type = AvatarButtonType.chatGroup
                         let grp = GroupItem.GetGroup(itemId)//TODO::
                         avaData = grp?.avatar
                         nickName = grp?.groupName
                 } else {
-                        avatar.type = AvatarButtonType.chatContact
                         (nickName, avaData) = chatItemInfo(pid: itemId)
                 }
                 
-                avatar.avaInfo = AvatarInfo.init(id: itemId, avaData: avaData)
+                avatar.setup(id: itemId, avaData: avaData)
                 if let name = nickName, !name.isEmpty{
                         self.nickName.text = name
                 }else{
@@ -70,7 +68,7 @@ class MesasgeItemTableViewCell: UITableViewCell {
                 return ServiceDelegate.queryNickAndAvatar(pid: pid) {name, data in
                         
                         DispatchQueue.main.async {
-                                self.avatar.avaInfo = AvatarInfo.init(id: pid, avaData: data)
+                                self.avatar.setup(id: pid, avaData: data)
                                 if let n = name, !n.isEmpty{
                                         self.nickName.text = n
                                 }else{

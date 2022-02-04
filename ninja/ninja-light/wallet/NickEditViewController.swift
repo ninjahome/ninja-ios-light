@@ -25,8 +25,7 @@ class NickEditViewController: UIViewController {
                         nickText.text = nick
                 }
                 
-                avatar.type = AvatarButtonType.wallet
-                avatar.avaInfo = nil
+                avatar.setupSelf()
                 self.hideKeyboardWhenTappedAround()
                 vipFlagImgView.isHidden = Wallet.shared.isStillVip()
         }

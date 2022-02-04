@@ -9,7 +9,7 @@ import UIKit
 import AVFoundation
 import MobileCoreServices
 
-class MsgViewController: UIViewController {
+class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         
         @IBOutlet weak var voiceBtn: UIButton!
         @IBOutlet weak var sender: UITextView!
@@ -37,6 +37,8 @@ class MsgViewController: UIViewController {
         
         var IS_GROUP: Bool = false
         var peerUid: String = ""
+        var peerAvatarData:Data?
+        var peerName:String=""
         var groupData:GroupItem?
         var msgCacheArray: [MessageItem] = []
         var indexPathCache:[Int64:IndexPath] = [:]
@@ -111,7 +113,7 @@ class MsgViewController: UIViewController {
                                                        selector: #selector(keyboardDidHide(notification:)),
                                                        name: UIResponder.keyboardDidHideNotification,
                                                        object: nil)
-
+                
         }
         
         deinit {
@@ -119,15 +121,7 @@ class MsgViewController: UIViewController {
         }
         
         private func populateView() {
-                
-                if IS_GROUP {//TODO::
-                        groupData = GroupItem.cache[peerUid]
-                        setPeerNick()
-                } else {
-                        let contactData = CombineConntact.cache[peerUid]
-                        self.peerNickName.title = contactData?.GetNickName() ?? contactData?.peerID
-                }
-                
+                self.setPeerBasic()
                 vipView.layer.contents = UIImage(named: "bgc")?.cgImage
                 senderBar.layer.shadowOpacity = 0.1
                 
@@ -197,18 +191,6 @@ class MsgViewController: UIViewController {
                 self.isLocalMsg = false
                 self.performSegue(withIdentifier: "ShowMapSeg", sender: self)
         }
-        
-        @objc func contactUpdate(notification: NSNotification) {
-                let contactData = CombineConntact.cache[peerUid]
-                self.peerNickName.title = contactData?.GetNickName() ?? contactData?.peerID
-        }
-        
-        // TODO: Update group member
-        @objc func groupUpdate(notification: NSNotification) {
-                groupData = GroupItem.cache[peerUid]
-                self.setPeerNick()
-        }
-        
         @IBAction func EditContactInfo(_ sender: UIBarButtonItem) {
                 if IS_GROUP {
                         self.performSegue(withIdentifier: "ShowGroupDetailSeg", sender: self)
@@ -233,12 +215,34 @@ class MsgViewController: UIViewController {
                 return CombineConntact.cache[peerUid] != nil
         }
         
-        fileprivate func setPeerNick() {
-                var count: String = "?"
-                if let memberCount = self.groupData?.memberIds.count {
-                        count = String(memberCount+1)
+        private func setPeerBasic() {
+                if IS_GROUP {//TODO::
+                        groupData = GroupItem.cache[peerUid]
+                        var count: String = "?"
+                        if let memberCount = self.groupData?.memberIds.count {
+                                count = String(memberCount+1)
+                        }
+                        self.peerNickName.title = "\(self.groupData?.groupName ?? "群聊")(\(count))"
+                        return
                 }
-                self.peerNickName.title = "\(self.groupData?.groupName ?? "群聊")(\(count))"
+                
+                let (name, avatar) = ServiceDelegate.queryNickAndAvatar(pid: peerUid) { name, avatar in
+                        self.initPeerUI(name: name, avatar: avatar)
+                }
+                initPeerUI(name: name, avatar: avatar)
+        }
+        private func initPeerUI(name:String?, avatar:Data?){
+                DispatchQueue.main.async {
+                        if let n = name, !n.isEmpty{
+                                self.peerName = n
+                        }else{
+                                self.peerName = self.peerUid
+                        }
+                        
+                        self.peerAvatarData =  avatar 
+                        self.peerNickName.title = self.peerName
+                        self.messageTableView.reloadData()
+                }
         }
         
         @IBAction func locationBtn(_ sender: UIButton) {
@@ -275,9 +279,6 @@ class MsgViewController: UIViewController {
                 }
                 
         }
-}
-
-extension MsgViewController:UIGestureRecognizerDelegate{
 }
 
 extension MsgViewController{
@@ -372,7 +373,6 @@ extension MsgViewController{
 
 extension MsgViewController{
         
-        
         @objc func msgResult(notification: NSNotification){
                 guard let msgID = notification.object as? Int64 else{
                         print("------>>> invalid msg resul notification")
@@ -457,6 +457,15 @@ extension MsgViewController{
 }
 
 extension MsgViewController{
+        
+        @objc func contactUpdate(notification: NSNotification) {
+                self.setPeerBasic()
+        }
+        
+        // TODO: Update group member
+        @objc func groupUpdate(notification: NSNotification) {
+                //TODO
+        }
         
         @objc func keyboardWillShow(notification:NSNotification) {
                 

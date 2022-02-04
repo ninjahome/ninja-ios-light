@@ -48,7 +48,7 @@ class MessageTableViewCell: UITableViewCell {
                 }
         }
         
-        func updateMessageCell (by message: MessageItem) {
+        func updateMessageCell (by message: MessageItem, name:String, avatar:Data?) {
                 self.curMsg = message
                 let from = message.from
                 guard let msgText = message.payload as? txtMsg else{
@@ -67,28 +67,13 @@ class MessageTableViewCell: UITableViewCell {
                                 spinner?.stopAnimating()
                         }
                         msgBackgroundView.image = inMsgImg
-                        avatar.type = AvatarButtonType.wallet
-                        avatar.avaInfo = nil
-                        nickname.text = "" // Wallet.shared.nickName ?? Wallet.GenAvatarText()
+                        self.avatar.setupSelf()
                 } else {
                         msgBackgroundView.image = ourImg
-                        avatar.type = AvatarButtonType.contact
-                        let(name, avatarData) = ServiceDelegate.queryNickAndAvatar(pid: from) { name, avatarData in
-                                DispatchQueue.main.async {
-                                        self.initCellMeta(pid: from, name: name, aData: avatarData)
-                                }
-                        }
-                        self.initCellMeta(pid: from, name: name, aData: avatarData)
+                        nickname.text = name
+                        self.avatar.setup(id: from, avaData: avatar)
                 }
                 
                 time.text = formatMsgTimeStamp(by: message.timeStamp)
-        }
-        private func initCellMeta(pid:String, name:String?, aData:Data?){
-                avatar.avaInfo = AvatarInfo.init(id: pid, avaData: aData)
-                if let n = name, !n.isEmpty{
-                        nickname.text = n
-                        return
-                }
-                nickname.text = pid
         }
 }
