@@ -447,7 +447,11 @@ extension MsgViewController{
         
         func sendMessage(msg:MessageItem){
                 let pid = msg.groupId ?? msg.to
-                MessageItem.cacheItem(pid: pid, item: msg)
+                
+                if let e = MessageItem.processNewMessage(pid: pid, msg: msg, unread: 0){
+                        self.toastMessage(title: e.localizedDescription)
+                        return
+                }
                 self.msgCacheArray = MessageItem.SortedArray(pid: pid)
                 self.insertNewCell()
                 

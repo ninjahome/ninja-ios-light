@@ -142,6 +142,7 @@ class Wallet: NSObject {
                 self.liceneseExpireTime = 0
                 
                 try CDManager.shared.AddEntity(entity: "CDWallet", m: self)
+                CDManager.shared.saveContext()
         }
         
         func IsActive() -> Bool {

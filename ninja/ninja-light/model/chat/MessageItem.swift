@@ -53,11 +53,13 @@ class MessageItem: NSObject {
                 self.to = to
                 self.payload = data
         }
+        
         public static func cacheItem(pid:String, item:MessageItem){
                 msgLock.lock()
                 cacheItemWithoutLock(pid: pid, item: item)
                 msgLock.unlock()
         }
+        
         public static func cacheItemWithoutLock(pid:String, item:MessageItem){
                 
                 var map = msgCache[pid]
@@ -237,9 +239,6 @@ class MessageItem: NSObject {
                                                   time: msg.timeStamp,
                                                   unread: unread,
                                                   isGrp: msg.groupId != nil)
-                        
-                        NotificationCenter.default.post(name: NotifyMessageAdded,
-                                                        object: self, userInfo: [NotiKey: pid])
                         return nil
                 }catch let err{
                         print("------>>> save new message failed:[\(err.localizedDescription)]")
@@ -259,7 +258,11 @@ class MessageItem: NSObject {
                 guard let e = processNewMessage(pid: peerUid, msg: msgItem, unread: 1)else{
                         return
                 }
+                
                 print("------>>>process received message err:=>",e)
+
+                NotificationCenter.default.post(name: NotifyMessageAdded,
+                      object: self, userInfo: [NotiKey: peerUid])
         }
         
         public static func deleteMsgOneWeek() {
