@@ -412,6 +412,7 @@ extension MsgViewController{
                         return
                 }
                 
+                self.view.layoutIfNeeded()
                 let bottomIndexPath = IndexPath.init(row: rowCount - 1, section: 0)
                 self.messageTableView.scrollToRow(at: bottomIndexPath, at: .bottom, animated: animated)
         }
