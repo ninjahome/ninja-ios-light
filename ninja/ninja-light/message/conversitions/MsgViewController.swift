@@ -227,22 +227,24 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 }
                 
                 let (name, avatar) = ServiceDelegate.queryNickAndAvatar(pid: peerUid) { name, avatar in
-                        self.initPeerUI(name: name, avatar: avatar)
+                        
+                        DispatchQueue.main.async {
+                                self.initPeerUI(name: name, avatar: avatar)
+                                self.messageTableView.reloadData()
+                        }
+                        
                 }
                 initPeerUI(name: name, avatar: avatar)
         }
         private func initPeerUI(name:String?, avatar:Data?){
-                DispatchQueue.main.async {
-                        if let n = name, !n.isEmpty{
-                                self.peerName = n
-                        }else{
-                                self.peerName = self.peerUid
-                        }
-                        
-                        self.peerAvatarData =  avatar 
-                        self.peerNickName.title = self.peerName
-                        self.messageTableView.reloadData()
+                if let n = name, !n.isEmpty{
+                        self.peerName = n
+                }else{
+                        self.peerName = self.peerUid
                 }
+                
+                self.peerAvatarData =  avatar
+                self.peerNickName.title = self.peerName
         }
         
         @IBAction func locationBtn(_ sender: UIButton) {
@@ -460,6 +462,7 @@ extension MsgViewController{
         
         @objc func contactUpdate(notification: NSNotification) {
                 self.setPeerBasic()
+                self.messageTableView.reloadData()
         }
         
         // TODO: Update group member
