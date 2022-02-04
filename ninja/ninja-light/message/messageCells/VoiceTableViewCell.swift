@@ -86,16 +86,25 @@ class VoiceTableViewCell: UITableViewCell {
                 } else {
                         let img = UIImage(named: "babycolor")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
                         msgBackgroundView.image = img
-                    
                         avatar.type = AvatarButtonType.contact
-                        let contactData = CombineConntact.cache[from]
-                        avatar.avaInfo = AvatarInfo.init(id: from, avaData: contactData?.account?.Avatar)
-                        nickname.text = contactData?.GetNickName() ?? contactData?.peerID
+                        
+                        let(name, avatarData) = ServiceDelegate.queryNickAndAvatar(pid: from) { name, avatarData in
+                                DispatchQueue.main.async {
+                                        self.initCellMeta(pid: from, name: name, aData: avatarData)
+                                }
+                        }
+                        self.initCellMeta(pid: from, name: name, aData: avatarData)
                 }
                 
                 time.text = formatMsgTimeStamp(by: message.timeStamp)
         }
-    
+        
+        private func initCellMeta(pid:String, name:String?, aData:Data?){
+                avatar.avaInfo = AvatarInfo.init(id: pid, avaData: aData)
+                nickname.text = name ??  pid
+        }
+        
+        
         func setBtn(isOut: Bool, data: Data, long: Int) {
                 playBtn.backgroundColor = .clear
                 let rawImg = UIImage(named: "voice_00009")!

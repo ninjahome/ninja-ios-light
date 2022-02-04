@@ -72,8 +72,6 @@ class FileTableViewCell: UITableViewCell {
                 
                 let from = message.from
 
-                let contactData = CombineConntact.cache[from]
-                
                 if message.isOut {
                         switch message.status {
                         case .faild:
@@ -90,24 +88,22 @@ class FileTableViewCell: UITableViewCell {
                         nickname.text = Wallet.shared.nickName ?? Wallet.GenAvatarText()
                 } else {
                         avatar.type = AvatarButtonType.contact
-                        avatar.avaInfo = AvatarInfo.init(id: from, avaData: contactData?.account?.Avatar)
-                        nickname.text = contactData?.GetNickName() ?? contactData?.peerID
+                         
+                        let(name, avatarData) = ServiceDelegate.queryNickAndAvatar(pid: from) { name, avatarData in
+                                DispatchQueue.main.async {
+                                        self.initCellMeta(pid: from, name: name, aData: avatarData)
+                                }
+                        }
+                        self.initCellMeta(pid: from, name: name, aData: avatarData)
                 }
 
                 time.text = formatMsgTimeStamp(by: message.timeStamp)
         }
         
-
-//        func playVideo(url: URL) {
-//                let size = VideoFileManager.getVideoSize(videoURL: url)
-//                print("video size\(size)")
-//                let player = AVPlayer(url: url)
-//                let vc = AVPlayerViewController()
-//                vc.player = player
-//                let window = getKeyWindow()
-//                window?.rootViewController?.present(vc, animated: true, completion: {
-//                        vc.player?.play()
-//                })
-//        }
+        
+        private func initCellMeta(pid:String, name:String?, aData:Data?){
+                avatar.avaInfo = AvatarInfo.init(id: pid, avaData: aData)
+                nickname.text = name ??  pid
+        }
 
 }

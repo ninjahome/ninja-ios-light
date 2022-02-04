@@ -23,15 +23,6 @@ struct AvatarInfo {
 
 class AvatarButton: UIButton {
         var type: AvatarButtonType = .chatContact
-        //    init(type: AvatarButtonType, info: AvatarInfo) {
-        //        super.init(frame: .zero)
-        //        self.type = type
-        //        self.avaInfo = info
-        //    }
-        //
-        //    required init?(coder: NSCoder) {
-        //        fatalError("init(coder:) has not been implemented")
-        //    }
         
         override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
                 super.touchesEnded(touches, with: event)
@@ -78,26 +69,5 @@ class AvatarButton: UIButton {
                         }
                         self.layer.masksToBounds = true
                 }
-        }
-        
-        //        func getContactColor(id: String) -> String {
-        //                return ContactItem.GetAvatarColor(by: id)
-        //        }
-        //
-        //        func getWalletColor() -> String {
-        //                return Wallet.GenAvatarColor()
-        //        }
-        //
-        //        func getWalletText() -> String {
-        //                return Wallet.GenAvatarText()
-        //        }
-        //
-        //        func getContactText(id: String) -> String {
-        //                return ContactItem.GetAvatarText(by: id)
-        //        }
-        //
-        //        func getGroupText(id: String) -> String {
-        //                return GroupItem.GetAvatarText(by: id)
-        //        }
-        
+        }        
 }

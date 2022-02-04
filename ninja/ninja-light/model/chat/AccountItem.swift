@@ -140,6 +140,7 @@ extension AccountItem{
                         obj = try? CDManager.shared.GetOne(entity: "CDAccount",
                                                            predicate: NSPredicate(format: "addr == %@", pid))
                         if let item = obj{
+                                extraCache[pid] = item
                                 return item
                         }
                         

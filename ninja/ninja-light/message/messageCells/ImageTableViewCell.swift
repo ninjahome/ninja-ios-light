@@ -82,13 +82,23 @@ var cellMsg: MessageItem?
                         nickname.text = Wallet.shared.nickName ?? Wallet.GenAvatarText()
 
                 } else {
-                        let contactData = CombineConntact.cache[from]
                         avatar.type = AvatarButtonType.contact
-                        avatar.avaInfo = AvatarInfo.init(id: from, avaData: contactData?.account?.Avatar)
-                        nickname.text = contactData?.GetNickName() ?? contactData?.peerID
+                        
+                        let(name, avatarData) = ServiceDelegate.queryNickAndAvatar(pid: from) { name, avatarData in
+                                DispatchQueue.main.async {
+                                        self.initCellMeta(pid: from, name: name, aData: avatarData)
+                                }
+                        }
+                        self.initCellMeta(pid: from, name: name, aData: avatarData)
                 }
 
                 time.text = formatMsgTimeStamp(by: message.timeStamp)
+        }
+        
+        
+        private func initCellMeta(pid:String, name:String?, aData:Data?){
+                avatar.avaInfo = AvatarInfo.init(id: pid, avaData: aData)
+                nickname.text = name ??  pid
         }
 
 }
