@@ -42,17 +42,21 @@ class WebsocketSrv: NSObject {
         }
         
         func SendMessage(msg:MessageItem)->Error?{
+                
                 guard let data =  msg.payload?.wrappedToProto() else{
                         return NJError.msg("pack message failed")
                 }
                 
                 var err: NSError? = nil
-                guard let _ = ChatLibSend(msg.timeStamp, msg.to, data, msg.groupId != nil, &err), err != nil else{
-                        return nil
+                let _ = ChatLibSend(msg.timeStamp, msg.to, data, msg.groupId != nil, &err)
+                if err != nil{
+                        print("------>>>websocket send failed:", err!.localizedDescription)
+                        return err
                 }
                 do{
                         try CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
                 }catch let err{
+                        print("------>>>AddEntity failed:", err.localizedDescription)
                         return err
                 }
                 return err

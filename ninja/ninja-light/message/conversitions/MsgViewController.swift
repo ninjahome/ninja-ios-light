@@ -441,17 +441,17 @@ extension MsgViewController{
         func sendMessage(msg:MessageItem){
                 let pid = msg.groupId ?? msg.to
                 
-                if let e = MessageItem.processNewMessage(pid: pid, msg: msg, unread: 0){
-                        self.toastMessage(title: e.localizedDescription)
-                        return
-                }
-                self.msgCacheArray = MessageItem.SortedArray(pid: pid)
-                self.insertNewCell()
-                
                 if let err = WebsocketSrv.shared.SendMessage(msg: msg){
                         self.toastMessage(title: err.localizedDescription)
                         return
                 }
+                if let e = MessageItem.processNewMessage(pid: pid, msg: msg, unread: 0){
+                        self.toastMessage(title: e.localizedDescription)
+                        return
+                }
+                
+                self.msgCacheArray = MessageItem.SortedArray(pid: pid)
+                self.insertNewCell()
         }
 }
 

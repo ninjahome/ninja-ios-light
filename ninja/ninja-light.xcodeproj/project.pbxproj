@@ -385,8 +385,8 @@
 		08F0FA8B2688388000C5C1DF /* messageCells */ = {
 			isa = PBXGroup;
 			children = (
-				082CF17B263A9C6D0009450E /* MessageTableViewCell.swift */,
 				08F0FA8C268839F200C5C1DF /* VoiceTableViewCell.swift */,
+				082CF17B263A9C6D0009450E /* MessageTableViewCell.swift */,
 				08F0FA8F26884C2000C5C1DF /* ImageTableViewCell.swift */,
 				08F0FA9526884C5C00C5C1DF /* LocationTableViewCell.swift */,
 				0860D5C42761FDD000E53FDA /* FileTableViewCell.swift */,

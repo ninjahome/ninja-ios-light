@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 import AVFoundation
+import ChatLib
+import Photos
 
 class VideoFileManager {
         static func thumbnailImageOfVideoInVideoURL(videoURL: URL) -> UIImage? {
@@ -40,6 +42,25 @@ class VideoFileManager {
         static func createVideoURL(name: String) -> URL {
                 let dir = FileManager.createFolder(njFileFolder)
                 return dir.appendingPathComponent(name)
+        }
+        
+        static func compressVideo(from:Int, to:Int, videoURL: URL, callback:@escaping  ((_ status:AVAssetExportSession.Status, _ url:URL)->())){
+               
+                let asset = AVAsset(url: videoURL)
+                let assetDuration = CMTimeGetSeconds(asset.duration)
+                
+                let end = assetDuration/Float64(from) * Float64(to) - 1
+                
+                let endDuration = CMTimeMakeWithSeconds(end, preferredTimescale: 1)
+                let videoFinalPath = FileManager.TmpDirectory().appendingPathComponent(videoURL.lastPathComponent)
+                let exporter :AVAssetExportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality)!
+                exporter.outputURL = videoFinalPath
+                exporter.outputFileType = AVFileType.mov
+                exporter.timeRange = CMTimeRangeFromTimeToTime(start: CMTime.zero, end: endDuration)
+                
+                exporter.exportAsynchronously {
+                        callback(exporter.status, videoFinalPath)
+                }
         }
 
 }

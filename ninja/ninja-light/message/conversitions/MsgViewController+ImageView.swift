@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import MobileCoreServices.UTType
+import ChatLib
 
 extension MsgViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         
@@ -61,17 +62,43 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
         
         private func videoDidSelected(url: URL) {
                 let name = url.lastPathComponent
-                guard let data = try? Data(contentsOf: url) else{
+                guard let data = try? Data(contentsOf: url), !data.isEmpty else{
                         self.toastMessage(title: "empty video file")
                         return
                 }
+                let maxSize = ChatLibMaxFileSize()
+                let curSize = data.count
+                if curSize < maxSize{
+                        let thumb = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
+                        sendVideoFile(data: data, name: name, thumb: thumb)
+                        return
+                }
                 
+                self.showIndicator(withTitle: "", and: "compressing")
+                ServiceDelegate.workQueue.async {
+                        
+                        VideoFileManager.compressVideo(from:curSize, to:maxSize, videoURL: url) {(status, resultUrl) in
+                                
+                                self.hideIndicator()
+                                
+                                switch status{
+                                case .failed:
+                                        self.toastMessage(title: "failed")
+                                        break
+                                case .cancelled:
+                                        self.toastMessage(title: "cancelled")
+                                        break
+                                default:
+                                        self.sendVideoFile(url: resultUrl)
+                                }
+                        }
+                }
+        }
+        private func sendVideoFile(data:Data, name:String, thumb:UIImage?){
                 var gid:String? = nil
                 if IS_GROUP{
                         gid = self.peerUid
                 }
-                let thumb = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
-                
                 let video = videoMsg(name: name, data: data, thumb: thumb)
                 let msg = MessageItem.init(to: peerUid,
                                            data: video,
@@ -79,5 +106,22 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                                            gid: gid)
                 
                 sendMessage(msg: msg)
+        }
+        
+        private func sendVideoFile(url: URL){
+                
+                let name = url.lastPathComponent
+                guard let data = try? Data(contentsOf: url), !data.isEmpty else{
+                        self.toastMessage(title: "empty video file")
+                        return
+                }
+                if data.count > ChatLibMaxFileSize(){
+                        self.toastMessage(title: "file too big[\(data.count)]")
+                        return
+                }
+                
+                let thumb = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
+                
+                sendVideoFile(data:data, name: name, thumb: thumb)
         }
 }
