@@ -120,6 +120,10 @@ class VideoTableViewCell: UITableViewCell {
         
         private func initCellMeta(pid:String, name:String?, aData:Data?){
                 avatar.avaInfo = AvatarInfo.init(id: pid, avaData: aData)
-                nickname.text = name ??  pid
+                if let n = name, !n.isEmpty{
+                        nickname.text = n
+                        return
+                }
+                nickname.text = pid
         }
 }
