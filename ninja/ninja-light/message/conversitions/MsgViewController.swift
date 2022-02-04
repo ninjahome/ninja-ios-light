@@ -111,14 +111,7 @@ class MsgViewController: UIViewController {
                                                        selector: #selector(keyboardDidHide(notification:)),
                                                        name: UIResponder.keyboardDidHideNotification,
                                                        object: nil)
-                
-                
-                do{
-                        try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord, mode: .default)
-                        
-                }catch let err{
-                        print("------>>>{\(err)}")
-                }
+
         }
         
         deinit {

@@ -33,6 +33,7 @@ class AudioRecordManager:NSObject {
         func startRecord() -> Error?{
                 
                 do {
+                        try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord, mode: .default)
                         try AVAudioSession.sharedInstance().setActive(true)
                         guard let rc =  try? AVAudioRecorder(url: self.currntUrl, settings: recoredSetting) else{
                                 throw NJError.msg("create audio item failed")

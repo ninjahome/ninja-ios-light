@@ -27,6 +27,8 @@ class AudioPlayManager: NSObject, AVAudioPlayerDelegate {
         func playMusic(rawData: Data) {
                 
                 do {
+                        try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+                        
                         if let oldPlayer = self.audioPlayer, oldPlayer.isPlaying {
                                 oldPlayer.stop()
                         }
