@@ -161,15 +161,17 @@ class MessageItem: NSObject {
         
         public static func removeAllRead() {
                 msgLock.lock()
-                defer{
-                        msgLock.unlock()
-                }
-                
                 msgCache.removeAll()
-                let owner = Wallet.shared.Addr!
-                try? CDManager.shared.Delete(entity: "CDUnread",
-                                             predicate: NSPredicate(format: "owner == %@", owner))
+                msgLock.unlock()
+                
                 FileManager.cleanupTmpDirectory()
+                let owner = Wallet.shared.Addr!
+                do{
+                        try CDManager.shared.Delete(entity: "CDUnread",
+                                                    predicate: NSPredicate(format: "owner == %@", owner))
+                }catch let err{
+                        print("------>>>clean unread message failed:=>", err)
+                }
         }
         
         func coinvertToLastMsg() -> String{
@@ -257,9 +259,9 @@ class MessageItem: NSObject {
                         print("------>>>process received message err:=>",e)
                         return
                 }
-
+                
                 NotificationCenter.default.post(name: NotifyMessageAdded,
-                      object: self, userInfo: [NotiKey: peerUid])
+                                                object: self, userInfo: [NotiKey: peerUid])
         }
         
         public static func deleteMsgOneWeek() {
@@ -363,7 +365,6 @@ extension MessageItem: ModelObj {
                 self.status = sendingStatus(rawValue: uObj.status) ?? .sent
                 self.groupId = uObj.groupId
         }
-        
 }
 
 
