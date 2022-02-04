@@ -53,12 +53,6 @@ class WebsocketSrv: NSObject {
                         print("------>>>websocket send failed:", err!.localizedDescription)
                         return err
                 }
-                do{
-                        try CDManager.shared.AddEntity(entity: "CDUnread", m: msg)
-                }catch let err{
-                        print("------>>>AddEntity failed:", err.localizedDescription)
-                        return err
-                }
                 return err
         }
 }

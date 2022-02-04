@@ -34,6 +34,7 @@ class MessageItem: NSObject {
         var isOut: Bool = false
         var groupId: String?
         var status: sendingStatus = .sent
+        var uObj:CDUnread? = nil
         
         public static var msgCache:[String:MsgCacheMap] = [:]
         public static var msgLock = NSLock()
@@ -210,17 +211,9 @@ class MessageItem: NSObject {
                 }
                 
                 if success {
-                        msg.status = .sent
+                        msg.updateSendStatus(status: .sent)
                 }else{
-                        msg.status = .faild
-                }
-                
-                do {
-                        try CDManager.shared.UpdateOrAddOne(entity: "CDUnread", m: msg,
-                                                            predicate: NSPredicate(format: "unixTime == %@",NSNumber(value: msg.timeStamp)))
-                }catch let err{
-                        print("------>>> update message sent result:[\(err.localizedDescription)]")
-                        return
+                        msg.updateSendStatus(status: .faild)
                 }
                 
                 NotificationCenter.default.post(name: NotifyMessageSendResult,
@@ -307,6 +300,12 @@ class MessageItem: NSObject {
 
 extension MessageItem: ModelObj {
         
+        func updateSendStatus(status:sendingStatus){
+                self.status = status
+                self.uObj?.status = status.rawValue
+                CDManager.shared.saveContext()
+        }
+        
         func fullFillObj(obj: NSManagedObject) throws {
                 guard let uObj = obj as? CDUnread else {
                         throw NJError.coreData("cast to unread item obj failed")
@@ -335,6 +334,7 @@ extension MessageItem: ModelObj {
                 uObj.unixTime = self.timeStamp
                 uObj.status = self.status.rawValue
                 uObj.groupId = self.groupId
+                self.uObj = uObj
         }
         
         func initByObj(obj: NSManagedObject) throws {
@@ -364,6 +364,7 @@ extension MessageItem: ModelObj {
                 self.timeStamp = uObj.unixTime
                 self.status = sendingStatus(rawValue: uObj.status) ?? .sent
                 self.groupId = uObj.groupId
+                self.uObj = uObj
         }
 }
 
