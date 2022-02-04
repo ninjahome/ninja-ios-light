@@ -35,7 +35,8 @@ class MessageItem: NSObject {
         var groupId: String?
         var status: sendingStatus = .sent
         
-        public static var cache = LockCache<MsgCacheMap>()
+        public static var msgCache:[String:MsgCacheMap] = [:]
+        public static var msgLock = NSLock()
         
         override init() {
                 super.init()
@@ -53,14 +54,19 @@ class MessageItem: NSObject {
                 self.payload = data
         }
         public static func cacheItem(pid:String, item:MessageItem){
+                msgLock.lock()
+                cacheItemWithoutLock(pid: pid, item: item)
+                msgLock.unlock()
+        }
+        public static func cacheItemWithoutLock(pid:String, item:MessageItem){
                 
-                var msgCache = cache.get(idStr: pid)
-                if msgCache == nil {
-                        msgCache = MsgCacheMap.init()
+                var map = msgCache[pid]
+                if map == nil{
+                        map = MsgCacheMap.init()
+                        msgCache[pid] = map
                 }
-                msgCache![item.timeStamp] = item
-                
-                cache.setOrAdd(idStr: pid, item: msgCache)
+                map![item.timeStamp] = item
+                msgCache.updateValue(map!, forKey: pid)
         }
         
         private func parseProtoMsgData(data:Data)->Error?{
@@ -104,7 +110,12 @@ class MessageItem: NSObject {
                 guard let data = result else{
                         return
                 }
-                cache.deleteAll()
+                
+                msgLock.lock()
+                defer{
+                        msgLock.unlock()
+                }
+                msgCache.removeAll()
                 
                 for msg in data {
                         var peerUid: String
@@ -118,7 +129,7 @@ class MessageItem: NSObject {
                                 }
                         }
                         
-                        cacheItem(pid: peerUid, item: msg)
+                        cacheItemWithoutLock(pid: peerUid, item: msg)
                 }
         }
         
@@ -135,7 +146,11 @@ class MessageItem: NSObject {
         }
         
         public static func removeRead(_ uid: String){
-                cache.delete(idStr: uid)
+                msgLock.lock()
+                defer{
+                        msgLock.unlock()
+                }
+                msgCache.removeValue(forKey: uid)
                 let owner = Wallet.shared.Addr!
                 try? CDManager.shared.Delete(entity: "CDUnread",
                                              predicate: NSPredicate(format: "owner == %@ AND (from == %@ OR to == %@)",
@@ -143,7 +158,12 @@ class MessageItem: NSObject {
         }
         
         public static func removeAllRead() {
-                cache.deleteAll()
+                msgLock.lock()
+                defer{
+                        msgLock.unlock()
+                }
+                
+                msgCache.removeAll()
                 let owner = Wallet.shared.Addr!
                 try? CDManager.shared.Delete(entity: "CDUnread",
                                              predicate: NSPredicate(format: "owner == %@", owner))
@@ -176,7 +196,12 @@ class MessageItem: NSObject {
                                                         object: msgid, userInfo: nil)
                         return
                 }
-                guard let msg = cache.get(idStr: to)?[msgid] else{
+                msgLock.lock()
+                defer{
+                        msgLock.unlock()
+                }
+                
+                guard let msg = msgCache[to]?[msgid] else{
                         return
                 }
                 
@@ -188,7 +213,7 @@ class MessageItem: NSObject {
                 
                 do {
                         try CDManager.shared.UpdateOrAddOne(entity: "CDUnread", m: msg,
-                                                     predicate: NSPredicate(format: "unixTime == %@",NSNumber(value: msg.timeStamp)))
+                                                            predicate: NSPredicate(format: "unixTime == %@",NSNumber(value: msg.timeStamp)))
                         
                         CDManager.shared.saveContext()
                 }catch let err{
@@ -200,7 +225,7 @@ class MessageItem: NSObject {
                                                 object: msgid,
                                                 userInfo: nil)
         }
-                       
+        
         public static func processNewMessage(pid:String, msg:MessageItem, unread:Int) -> Error?{
                 do{
                         cacheItem(pid: pid, item: msg)
@@ -229,7 +254,7 @@ class MessageItem: NSObject {
                         return
                 }
                 
-                              
+                
                 let peerUid = gid ?? from
                 guard let e = processNewMessage(pid: peerUid, msg: msgItem, unread: 1)else{
                         return
@@ -251,8 +276,11 @@ class MessageItem: NSObject {
         }
         
         public static func SortedArray(pid:String) -> [MessageItem] {
-                
-                guard let msges = cache.get(idStr: pid) else {
+                msgLock.lock()
+                defer{
+                        msgLock.unlock()
+                }
+                guard let msges = msgCache[pid] else {
                         return []
                 }
                 
@@ -264,6 +292,14 @@ class MessageItem: NSObject {
                         return a.timeStamp < b.timeStamp
                 }
                 return sortedArray
+        }
+        
+        public static func deleteAll(){
+                msgLock.lock()
+                defer{
+                        msgLock.unlock()
+                }
+                msgCache.removeAll()
         }
 }
 

@@ -448,7 +448,7 @@ extension MsgViewController{
         func sendMessage(msg:MessageItem){
                 let pid = msg.groupId ?? msg.to
                 MessageItem.cacheItem(pid: pid, item: msg)
-                self.msgCacheArray = MessageItem.SortedArray(pid: self.peerUid)
+                self.msgCacheArray = MessageItem.SortedArray(pid: pid)
                 self.insertNewCell()
                 
                 if let err = WebsocketSrv.shared.SendMessage(msg: msg){
