@@ -64,7 +64,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         
         override func viewDidAppear(_ animated: Bool) {
                 super.viewDidAppear(animated)
-                self.scrollToBottom()
         }
         
         override func viewWillDisappear(_ animated: Bool) {
@@ -134,6 +133,8 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                         fileVipImg.isHidden = true
                         vipView.isHidden = true
                 }
+                
+                self.scrollToBottom()
         }
         
         @IBAction func moreMsgType(_ sender: UIButton) {
