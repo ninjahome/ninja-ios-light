@@ -73,6 +73,7 @@
 		08F0FA9626884C5C00C5C1DF /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F0FA9526884C5C00C5C1DF /* LocationTableViewCell.swift */; };
 		2B01182227A5508B00C88116 /* CombineConntact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01182127A5508B00C88116 /* CombineConntact.swift */; };
 		2B66DB4427AE1FF100FBE8B6 /* SystemMeesageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66DB4327AE1FF100FBE8B6 /* SystemMeesageViewController.swift */; };
+		2BAB8A7027AEC327001D92DC /* InvalidGrpMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAB8A6F27AEC327001D92DC /* InvalidGrpMemberTableViewCell.swift */; };
 		6953EAF82622C12F008EC2F0 /* AuthorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6953EAF72622C12F008EC2F0 /* AuthorViewController.swift */; };
 		6969ECBC26134294008CB0B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969ECBB26134294008CB0B2 /* AppDelegate.swift */; };
 		6969ECBE26134294008CB0B2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969ECBD26134294008CB0B2 /* SceneDelegate.swift */; };
@@ -202,6 +203,7 @@
 		08F0FA9526884C5C00C5C1DF /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
 		2B01182127A5508B00C88116 /* CombineConntact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineConntact.swift; sourceTree = "<group>"; };
 		2B66DB4327AE1FF100FBE8B6 /* SystemMeesageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMeesageViewController.swift; sourceTree = "<group>"; };
+		2BAB8A6F27AEC327001D92DC /* InvalidGrpMemberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvalidGrpMemberTableViewCell.swift; sourceTree = "<group>"; };
 		694D55C52766F5B60044E580 /* MBProgressHUD.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MBProgressHUD.xcframework; path = Carthage/Build/MBProgressHUD.xcframework; sourceTree = "<group>"; };
 		694D55C62766F5B60044E580 /* SwiftyJSON.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = SwiftyJSON.xcframework; path = Carthage/Build/SwiftyJSON.xcframework; sourceTree = "<group>"; };
 		6953EAF72622C12F008EC2F0 /* AuthorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorViewController.swift; sourceTree = "<group>"; };
@@ -379,6 +381,7 @@
 				0825C21926CB6B40003E0EF3 /* AvatarCollectionCell.swift */,
 				08B74A6626B3B90D00D6F0F8 /* GroupMemberViewController.swift */,
 				08B74A6A26B637D800D6F0F8 /* GroupMemberTableViewCell.swift */,
+				2BAB8A6F27AEC327001D92DC /* InvalidGrpMemberTableViewCell.swift */,
 				0825C21C26CF5887003E0EF3 /* DeleteMemberController.swift */,
 			);
 			path = group;
@@ -676,6 +679,7 @@
 				6969ECBC26134294008CB0B2 /* AppDelegate.swift in Sources */,
 				08EAAE24269735AC00210271 /* ContactAddViewController.swift in Sources */,
 				0823F78A26565186000DA4DB /* KeychainItemAccessibility.swift in Sources */,
+				2BAB8A7027AEC327001D92DC /* InvalidGrpMemberTableViewCell.swift in Sources */,
 				0818D888270165FA002BF3B9 /* TransferViewController.swift in Sources */,
 				08781E8D275F09A60084D80A /* MsgViewController+ImageView.swift in Sources */,
 				2B01182227A5508B00C88116 /* CombineConntact.swift in Sources */,

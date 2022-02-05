@@ -170,19 +170,29 @@ extension GroupMemberViewController: UITableViewDelegate, UITableViewDataSource 
         }
         
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "CreateGroupMemberTableViewCell", for: indexPath)
                 
-                var item:CombineConntact = validContactArr[indexPath.row]
-                if indexPath.section == 1{
-                        item = invalidContactArr[indexPath.row]
+                if indexPath.section == 0{
+                        let cell = tableView.dequeueReusableCell(withIdentifier: "CreateGroupMemberTableViewCell", for: indexPath)
+                        
+                        let item:CombineConntact = validContactArr[indexPath.row]
+                        
+                        if let c = cell as? GroupMemberTableViewCell {
+                                let selected = selectedIndexs.contains(indexPath.row)
+                                c.initWith(details: item, idx: indexPath.row, selected: selected)
+                                c.cellDelegate = self
+                                return c
+                        }
+                        return cell
                 }
-                if let c = cell as? GroupMemberTableViewCell {
-                        let selected = selectedIndexs.contains(indexPath.row)
-                        c.initWith(details: item, idx: indexPath.row, selected: selected)
-                        c.cellDelegate = self
-                        return c
+                
+                let item = invalidContactArr[indexPath.row]
+                let cell = tableView.dequeueReusableCell(withIdentifier: "InvalidGroupMemberTableViewCell", for: indexPath)
+                guard let c = cell as? InvalidGrpMemberTableViewCell else{
+                        return cell
                 }
-                return cell
+                c.initWith(details: item, idx: indexPath.row)
+                c.cellDelegate = self
+                return c
         }
 }
 

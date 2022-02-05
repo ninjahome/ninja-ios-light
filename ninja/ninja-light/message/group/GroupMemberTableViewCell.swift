@@ -17,9 +17,6 @@ class GroupMemberTableViewCell: UITableViewCell {
         
         @IBOutlet weak var avatar: AvatarButton!
         @IBOutlet weak var nickName: UILabel!
-        @IBOutlet weak var vipHint: UILabel!
-        
-        @IBOutlet weak var reloadBtn: UIButton!
         @IBOutlet weak var selectBtn: UIButton!
         @IBOutlet weak var deleteBtn: UIButton!
         
@@ -28,12 +25,8 @@ class GroupMemberTableViewCell: UITableViewCell {
         
         override func prepareForReuse() {
                 super.prepareForReuse()
-                
                 setSelect(selected: false)
-                vipHint.isHidden = true
                 selectBtn.isHidden = false
-                reloadBtn.isHidden = true
-                reloadBtn.isEnabled = true
         }
         
         override func awakeFromNib() {
@@ -50,11 +43,6 @@ class GroupMemberTableViewCell: UITableViewCell {
                 
                 self.avatar.setup(id: details.peerID, avaData: details.account?.Avatar,showDetails: false)
                 self.nickName.text = details.GetNickName() ?? details.peerID
-                let isVip = details.isVIP()
-                vipHint.isHidden = isVip
-                selectBtn.isHidden = !isVip
-                reloadBtn.isHidden = isVip
-                self.isUserInteractionEnabled = isVip
         }
         
         func initWith(group: GroupItem, idx: Int, selected: Bool) {
@@ -79,13 +67,6 @@ class GroupMemberTableViewCell: UITableViewCell {
                 if let idx = index {
                         self.cellDelegate?.delDidClick(idx)
                 }
-        }
-        
-        @IBAction func reloadAction(_ sender: UIButton) {
-                guard let idx = index else{
-                        return
-                }
-                self.cellDelegate?.loadSelectedContact(idx)
         }
         fileprivate func setSelect(selected: Bool) {
                 if selected {
