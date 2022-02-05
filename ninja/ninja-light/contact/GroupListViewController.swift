@@ -8,9 +8,10 @@
 import UIKit
 
 class GroupListViewController: UIViewController {
-
-//        var selectedRow: Int?
+        
         @IBOutlet weak var tableView: UITableView!
+        
+        var groupArray:[GroupItem] = []
         
         override func viewDidLoad() {
                 super.viewDidLoad()
@@ -18,40 +19,51 @@ class GroupListViewController: UIViewController {
                 self.tableView.dataSource = self
                 self.tableView.rowHeight = 60
                 self.tableView.tableFooterView = UIView()
+                groupArray = GroupItem.CacheArray()
+                
+                NotificationCenter.default.addObserver(self,
+                                                       selector:#selector(updateGroupList(notification:)),
+                                                       name: NotifyGroupChanged,
+                                                       object: nil)
+                
+        }
+        
+        @objc func updateGroupList(notification: NSNotification) {
+                if  let gid = notification.object as? String{
+                        print("------>new item\(gid) create")
+                }
+                groupArray =  GroupItem.CacheArray()
                 self.reload()
         }
         
-        private func reload() {
-                GroupItem.LocalSavedGroup()
+        private func reload() {DispatchQueue.main.async {
                 self.tableView.reloadData()
         }
-
-
+        }
 }
 
 extension GroupListViewController: UITableViewDelegate, UITableViewDataSource {
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-                return GroupItem.cache.count
+                return groupArray.count
         }
         
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+                
                 let cell = tableView.dequeueReusableCell(withIdentifier: "GroupItemTableViewCell", for: indexPath)
-                if let c = cell as? GroupItemTableViewCell {
-                        let item = GroupItem.CacheArray()[indexPath.row]
-                        c.initWith(detail: item, idx: indexPath.row)
-                        return c
+                guard let c = cell as? GroupItemTableViewCell else{
+                        return cell
                 }
-                return cell
+                let item = groupArray[indexPath.row]
+                c.initWith(detail: item, idx: indexPath.row)
+                return c
         }
         
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//                self.selectedRow = indexPath.row
                 let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController
                 let item = GroupItem.CacheArray()[indexPath.row]
                 vc.groupData = item
                 vc.IS_GROUP = true
                 vc.peerUid = item.gid!
                 self.navigationController?.pushViewController(vc, animated: true)
-//                self.performSegue(withIdentifier: "GrpMsgDetailSEG", sender: self)
         }
 }

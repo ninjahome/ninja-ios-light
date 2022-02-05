@@ -8,12 +8,17 @@
 import Foundation
 
 let NotifyContactChanged = NSNotification.Name(rawValue:"contact_new_changed")
+
 let NotifyMessageAdded = NSNotification.Name(rawValue:"messsage_content_added")
 let NotifyMessageSendResult = NSNotification.Name(rawValue:"messsage_send_result")
 let NotifyMsgSumChanged = NSNotification.Name(rawValue:"messsage_sum_changed")
+
 let NotifyWebsocketOffline = NSNotification.Name(rawValue:"websocket_status_offline")
 let NotifyWebsocketOnline = NSNotification.Name(rawValue:"websocket_status_online")
 let NotifyOnlineError = NSNotification.Name(rawValue: "websocket_online_error")
+
+
+let NotifyGroupChanged = NSNotification.Name(rawValue: "group_meta_changed")
 let NotifyJoinGroup = NSNotification.Name(rawValue: "add_new_member_to_group")
 let NotifyKickOutGroup = NSNotification.Name(rawValue: "kick_out_member_from_group")
 let NotifyKickMeOutGroup = NSNotification.Name(rawValue: "kick_me_out_member_from_group")

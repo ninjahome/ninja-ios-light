@@ -119,12 +119,13 @@ class GroupMemberViewController: UIViewController {
                         
                 }catch let err {
                         self.toastMessage(title: "Save GroupItem failed[\(err.localizedDescription)]")
-                } 
+                }
         }
         
         fileprivate func CreateGroup(member: [CombineConntact], groupName: String) {
                 
                 self.showIndicator(withTitle: "", and: "creating group")
+                
                 ServiceDelegate.workQueue.async {
                         defer{
                                 self.hideIndicator()
@@ -133,25 +134,26 @@ class GroupMemberViewController: UIViewController {
                                 self.toastMessage(title: "\(err.localizedDescription)")
                                 return
                         }
-                
-                do {
-                        self.groupItem = try GroupItem.NewGroup(ids: member,
-                                                                groupName: groupName)
                         
-                }catch let err{
-                        self.toastMessage(title: "\(err.localizedDescription)")
-                }
-                
-                DispatchQueue.main.async {
+                        do {
+                                self.groupItem = try GroupItem.NewGroup(ids: member,
+                                                                        groupName: groupName)
+                                
+                        }catch let err{
+                                self.toastMessage(title: "\(err.localizedDescription)")
+                        }
                         
-                        let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController
-                        vc.peerUid = self.groupItem.gid!
-                        vc.groupData = self.groupItem
-                        vc.IS_GROUP = true
-                        self.navigationController?.pushViewController(vc, animated: true)
-                        return
+                        DispatchQueue.main.async {
+                                let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController
+                                vc.peerUid = self.groupItem.gid!
+                                vc.groupData = self.groupItem
+                                vc.IS_GROUP = true
+                                self.navigationController?.pushViewController(vc, animated: true)
+                                NotificationCenter.default.post(name:NotifyGroupChanged,
+                                                                object: self.groupItem.gid!, userInfo:nil)
+                                return
+                        }
                 }
-        }
         }
         
         func enableOrDisableCompleteBtn(number: Int) {
