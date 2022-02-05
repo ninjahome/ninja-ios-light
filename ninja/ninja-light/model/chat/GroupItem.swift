@@ -35,7 +35,7 @@ class GroupItem: NSObject {
         var isDelete: Bool = false
         var avatar: Data?
         
-        var memberInfos: Dictionary<String, String> = [:]
+        var memberInfos: [String:String] = [:]
         
         override init() {
                 super.init()

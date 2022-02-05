@@ -17,7 +17,8 @@ class GroupMemberViewController: UIViewController {
         
         var selectedIndexs = [Int]()
         var setEnable: Bool = false
-        var contactArray: [CombineConntact] = []
+        var validContactArr: [CombineConntact] = []
+        var invalidContactArr: [CombineConntact] = []
         var isAddMember: Bool = false
         var isDelMember: Bool = false
         var existMember: [String] = []
@@ -38,25 +39,27 @@ class GroupMemberViewController: UIViewController {
                 self.tableView.rowHeight = 64
                 self.tableView.tableFooterView = UIView()
                 
-                self.contactArray = contactsFilter()
-                
-                self.reload()
+                contactsFilter()
         }
         
-        fileprivate func contactsFilter() -> [CombineConntact] {
+        fileprivate func contactsFilter(){
                 var contacts = CombineConntact.CacheArray()
-                
+                var invalidContact:[CombineConntact] = []
                 if isAddMember {
                         contacts.removeAll { cont in
                                 existMember.contains(cont.peerID)
                         }
                 } else {
                         contacts.removeAll { cont in
-                                cont.peerID == Wallet.shared.Addr
+                                if !cont.isVIP(){
+                                        invalidContact.append(cont)
+                                        return true
+                                }
+                               return  cont.peerID == Wallet.shared.Addr
                         }
                 }
-                
-                return contacts
+                self.validContactArr = contacts
+                self.invalidContactArr = invalidContact
         }
         
         @IBAction func returnBackItem(_ sender: UIBarButtonItem) {
@@ -73,8 +76,8 @@ class GroupMemberViewController: UIViewController {
                         var groupIds = groupItem.memberIds
                         var newIds: [String] = []
                         for i in selectedIndexs {
-                                newIds.append(contactArray[i].peerID)
-                                groupIds.append(contactArray[i].peerID)
+                                newIds.append(validContactArr[i].peerID)
+                                groupIds.append(validContactArr[i].peerID)
                         }
                         
                         groupItem.memberIds = groupIds
@@ -85,7 +88,7 @@ class GroupMemberViewController: UIViewController {
                 } else {
                         var groupIds: [String] = []
                         for i in selectedIndexs {
-                                groupIds.append(contactArray[i].peerID)
+                                groupIds.append(validContactArr[i].peerID)
                         }
                         
                         showInputDialog(title: "取个群名", message: "", textPlaceholder: "", actionText: "确定", cancelText: "暂不取名") { cancleAction in
@@ -120,7 +123,7 @@ class GroupMemberViewController: UIViewController {
                 let wallet = Wallet.shared.Addr!
                 groupItem.gid = groupId
                 groupItem.groupName = groupName
-                groupItem.memberIds = ids 
+                groupItem.memberIds = ids
                 //                groupItem.memberNicks = nicks as NSArray
                 groupItem.owner = wallet
                 groupItem.leader = wallet
@@ -142,10 +145,6 @@ class GroupMemberViewController: UIViewController {
                 self.toastMessage(title: "Save GroupItem failed \(String(describing: err.localizedDescription))")
         }
         
-        private func reload() {
-                self.tableView.reloadData()
-        }
-        
         func enableOrDisableCompleteBtn(number: Int) {
                 finishBtn.setTitle("完成(\(number))", for: .normal)
                 
@@ -155,25 +154,32 @@ class GroupMemberViewController: UIViewController {
                         finishBtn.backgroundColor = UIColor(hex: "A9A9AE")
                 }
         }
-        
 }
 
 extension GroupMemberViewController: UITableViewDelegate, UITableViewDataSource {
         
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-                return contactArray.count
+                if section == 0{
+                        return validContactArr.count
+                }
+                return invalidContactArr.count
+        }
+        
+        func numberOfSections(in tableView: UITableView) -> Int {
+                return 2
         }
         
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "CreateGroupMemberTableViewCell", for: indexPath)
                 
+                var item:CombineConntact = validContactArr[indexPath.row]
+                if indexPath.section == 1{
+                        item = invalidContactArr[indexPath.row]
+                }
                 if let c = cell as? GroupMemberTableViewCell {
-                        let item = contactArray[indexPath.row]
                         let selected = selectedIndexs.contains(indexPath.row)
-                        
                         c.initWith(details: item, idx: indexPath.row, selected: selected)
                         c.cellDelegate = self
-                        
                         return c
                 }
                 return cell
@@ -221,8 +227,7 @@ extension GroupMemberViewController : CellClickDelegate {
                 
                 enableOrDisableCompleteBtn(number: selectedIndexs.count)
                 
-                print("selected list \(selectedIndexs)")
-                
+                print("------>>>selected list \(selectedIndexs)")
         }
         
 }
