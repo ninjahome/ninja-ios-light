@@ -145,53 +145,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 mutiMsgType.isHidden = true
         }
         
-        @IBAction func camera(_ sender: UIButton) {
-                if Wallet.shared.isStillVip() {
-                        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                                let cameraPicker = UIImagePickerController()
-                                cameraPicker.delegate = self
-                                cameraPicker.allowsEditing = true
-                                cameraPicker.sourceType = .camera
-                                cameraPicker.mediaTypes = ["public.movie", "public.image"]
-                                present(cameraPicker, animated: true, completion: nil)
-                        } else {
-                                toastMessage(title: "无相机访问权限")
-                        }
-                } else {
-                        showVipModalViewController()
-                }
-        }
-        
-        @IBAction func album(_ sender: UIButton) {
-                if Wallet.shared.isStillVip() {
-                        let vc = UIImagePickerController()
-                        vc.sourceType = .photoLibrary
-                        vc.mediaTypes = ["public.movie", "public.image"]
-                        vc.videoQuality = .typeMedium
-                        vc.delegate = self
-                        vc.allowsEditing = true
-                        present(vc, animated: true, completion: nil)
-                } else {
-                        showVipModalViewController()
-                }
-        }
-        
-        @IBAction func file(_ sender: UIButton) {
-                if Wallet.shared.isStillVip() {
-                        let vc = UIDocumentPickerViewController(documentTypes: [kUTTypeMovie as String, kUTTypeImage as String, kUTTypeZipArchive as String, kUTTypePDF as String, kUTTypeText as String], in: .import)
-                        vc.delegate = self
-                        vc.allowsMultipleSelection = false
-                        vc.shouldShowFileExtensions = true
-                        present(vc, animated: true, completion: nil)
-                } else {
-                        showVipModalViewController()
-                }
-        }
-        
-        @IBAction func location(_ sender: UIButton) {
-                self.isLocalMsg = false
-                self.performSegue(withIdentifier: "ShowMapSeg", sender: self)
-        }
         @IBAction func EditContactInfo(_ sender: UIBarButtonItem) {
                 if IS_GROUP {
                         self.performSegue(withIdentifier: "ShowGroupDetailSeg", sender: self)
@@ -248,19 +201,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.peerNickName.title = self.peerName
         }
         
-        @IBAction func locationBtn(_ sender: UIButton) {
-                if let cell = sender.superview?.superview?.superview as? UITableViewCell {
-                        self.selectedRow = self.messageTableView.indexPath(for: cell)?.row
-                        self.isLocalMsg = true
-                }
-                
-                self.performSegue(withIdentifier: "ShowMapSeg", sender: self)
-        }
-        
-        @IBAction func vipGuideBtn(_ sender: UIButton) {
-                showVipModalViewController()
-        }
-        
         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
                 if segue.identifier == "ShowMapSeg" {
                         let vc: MapViewController = segue.destination as! MapViewController
@@ -281,6 +221,71 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                         vc.groupItem = self.groupData
                 }
                 
+        }
+}
+
+extension MsgViewController{
+        
+        @IBAction func locationBtn(_ sender: UIButton) {
+                if let cell = sender.superview?.superview?.superview as? UITableViewCell {
+                        self.selectedRow = self.messageTableView.indexPath(for: cell)?.row
+                        self.isLocalMsg = true
+                }
+                
+                self.performSegue(withIdentifier: "ShowMapSeg", sender: self)
+        }
+        @IBAction func camera(_ sender: UIButton) {
+                if Wallet.shared.isStillVip() {
+                        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                                let cameraPicker = UIImagePickerController()
+                                cameraPicker.delegate = self
+                                cameraPicker.allowsEditing = true
+                                cameraPicker.sourceType = .camera
+                                cameraPicker.mediaTypes = ["public.movie", "public.image"]
+                                cameraPicker.videoMaximumDuration = 30
+                                present(cameraPicker, animated: true, completion: nil)
+                        } else {
+                                toastMessage(title: "无相机访问权限")
+                        }
+                } else {
+                        showVipModalViewController()
+                }
+        }
+        
+        @IBAction func album(_ sender: UIButton) {
+                if Wallet.shared.isStillVip() {
+                        let vc = UIImagePickerController()
+                        vc.sourceType = .photoLibrary
+                        vc.mediaTypes = ["public.movie", "public.image"]
+                        vc.videoQuality = .typeMedium
+                        vc.delegate = self
+                        vc.allowsEditing = true
+                        present(vc, animated: true, completion: nil)
+                } else {
+                        showVipModalViewController()
+                }
+        }
+        
+        
+        @IBAction func file(_ sender: UIButton) {
+                if Wallet.shared.isStillVip() {
+                        let vc = UIDocumentPickerViewController(documentTypes: [kUTTypeMovie as String, kUTTypeImage as String, kUTTypeZipArchive as String, kUTTypePDF as String, kUTTypeText as String], in: .import)
+                        vc.delegate = self
+                        vc.allowsMultipleSelection = false
+                        vc.shouldShowFileExtensions = true
+                        present(vc, animated: true, completion: nil)
+                } else {
+                        showVipModalViewController()
+                }
+        }
+        
+        @IBAction func location(_ sender: UIButton) {
+                self.isLocalMsg = false
+                self.performSegue(withIdentifier: "ShowMapSeg", sender: self)
+        }
+        
+        @IBAction func vipGuideBtn(_ sender: UIButton) {
+                showVipModalViewController()
         }
 }
 
@@ -316,7 +321,7 @@ extension MsgViewController{
         @IBAction func recordLongPress(_ sender: UILongPressGestureRecognizer) {
                 
                 if sender.state == .began {
-//                        print("------>>>press began")
+                        //                        print("------>>>press began")
                         if let err =  AudioRecordManager.shared.startRecord() {
                                 self.toastMessage(title: err.localizedDescription)
                                 return
@@ -334,7 +339,7 @@ extension MsgViewController{
                                 recordCancelled = false
                         }
                 } else if sender.state == .ended {
-//                        print("------>>>press end[\(recordCancelled)]")
+                        //                        print("------>>>press end[\(recordCancelled)]")
                         
                         AudioRecordManager.shared.finishRecrod(isReset: recordCancelled)
                         endRecord()
@@ -389,7 +394,7 @@ extension MsgViewController{
                 guard let idxPath = indexPathCache[msgID] else{
                         return
                 }
-//                print("------>>[msgResult] row[\(idxPath.row)]=>msg[\(msgID)]")
+                //                print("------>>[msgResult] row[\(idxPath.row)]=>msg[\(msgID)]")
                 DispatchQueue.main.async {
                         self.messageTableView.reloadRows(at: [idxPath], with: .fade)
                 }
@@ -404,7 +409,7 @@ extension MsgViewController{
                         return
                 }
                 self.msgCacheArray = MessageItem.SortedArray(pid: self.peerUid)
-//                print("------>>> new message notification \(self.msgCacheArray.count)]")
+                //                print("------>>> new message notification \(self.msgCacheArray.count)]")
                 self.insertNewCell()
         }
         
@@ -432,7 +437,7 @@ extension MsgViewController{
                         for i in startCnt ... endCnt - 1{
                                 indes.append(IndexPath.init(row: i, section: 0))
                         }
-//                        print("------>>> start rows[\(startCnt)] to end rows[\(endCnt)]")
+                        //                        print("------>>> start rows[\(startCnt)] to end rows[\(endCnt)]")
                         
                         self.messageTableView.beginUpdates()
                         self.messageTableView.insertRows(at: indes, with: .automatic)
@@ -463,8 +468,8 @@ extension MsgViewController{
         
         @objc func contactUpdate(notification: NSNotification) {
                 DispatchQueue.main.async {
-                self.setPeerBasic()
-                self.messageTableView.reloadData()
+                        self.setPeerBasic()
+                        self.messageTableView.reloadData()
                 }}
         
         // TODO: Update group member
