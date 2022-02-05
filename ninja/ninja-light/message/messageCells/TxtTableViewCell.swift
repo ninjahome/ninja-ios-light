@@ -68,6 +68,7 @@ class TxtTableViewCell: UITableViewCell {
                         }
                         msgBackgroundView.image = inMsgImg
                         self.avatar.setupSelf()
+                        self.nickname.text = ""
                 } else {
                         msgBackgroundView.image = ourImg
                         nickname.text = name

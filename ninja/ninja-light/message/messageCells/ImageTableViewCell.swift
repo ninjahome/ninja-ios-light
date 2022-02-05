@@ -77,8 +77,7 @@ var cellMsg: MessageItem?
                         }
                         
                         self.avatar.setupSelf()
-                        nickname.text = Wallet.shared.nickName ?? Wallet.GenAvatarText()
-
+                        nickname.text = ""
                 } else {
                         nickname.text = name
                         self.avatar.setup(id: from, avaData: avatar)

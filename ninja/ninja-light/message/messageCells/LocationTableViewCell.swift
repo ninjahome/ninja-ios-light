@@ -74,8 +74,7 @@ class LocationTableViewCell: UITableViewCell {
                         default:
                                 spinner?.stopAnimating()
                         }
-                    
-                        nickname.text = Wallet.shared.nickName ?? Wallet.GenAvatarText()
+                        nickname.text = ""
                 } else {
                         let img = UIImage(named: "babycolor")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
                         msgBackgroundView.image = img
