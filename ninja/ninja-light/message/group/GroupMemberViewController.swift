@@ -86,15 +86,20 @@ class GroupMemberViewController: UIViewController {
                         print("groupIds:\(groupIds)")
                         
                 } else {
-                        var groupIds: [String] = []
+                        var groupIds: [CombineConntact] = []
+                        guard selectedIndexs.count > 3 else{
+                                self.toastMessage(title: "too less member")
+                                return
+                        }
+                        
                         for i in selectedIndexs {
-                                groupIds.append(validContactArr[i].peerID)
+                                groupIds.append(validContactArr[i])
                         }
                         
                         showInputDialog(title: "取个群名", message: "", textPlaceholder: "", actionText: "确定", cancelText: "暂不取名") { cancleAction in
-                                self.CreateGroup(ids: groupIds, groupName: "")
+                                self.CreateGroup(member: groupIds, groupName: "")
                         } actionHandler: { text in
-                                self.CreateGroup(ids: groupIds, groupName: text ?? "")
+                                self.CreateGroup(member: groupIds, groupName: text ?? "")
                         }
                 }
         }
@@ -106,43 +111,47 @@ class GroupMemberViewController: UIViewController {
                         return
                 }
                 
-                guard let error = GroupItem.updateGroupMetaInDB(groupItem) else {
+                do{
+                        try GroupItem.syncGroupMeta(groupItem)
                         self.notiMemberChange(groupItem)
                         self.navigationController?.popViewController(animated: true)
                         return
-                }
-                
-                self.toastMessage(title: "Save GroupItem failed \(String(describing: error.localizedDescription))")
+                        
+                }catch let err {
+                        self.toastMessage(title: "Save GroupItem failed[\(err.localizedDescription)]")
+                } 
         }
         
-        fileprivate func CreateGroup(ids: [String], groupName: String) {
-                guard let groupId = GroupItem.NewGroup(ids: ids, groupName: groupName) else {
-                        self.toastMessage(title: "Created group failed")
-                        return
-                }
-                let wallet = Wallet.shared.Addr!
-                groupItem.gid = groupId
-                groupItem.groupName = groupName
-                groupItem.memberIds = ids
-                //                groupItem.memberNicks = nicks as NSArray
-                groupItem.owner = wallet
-                groupItem.leader = wallet
-                groupItem.unixTime = Int64(Date().timeIntervalSince1970)
-                var allIds: [String] = ids
-                allIds.append(wallet)
-                if let grpImg = GroupItem.getGroupAvatar(ids: allIds) {
-                        groupItem.avatar = grpImg
+        fileprivate func CreateGroup(member: [CombineConntact], groupName: String) {
+                
+                self.showIndicator(withTitle: "", and: "creating group")
+                ServiceDelegate.workQueue.async {
+                        defer{
+                                self.hideIndicator()
+                        }
+                        if let err = CombineConntact.updateSetOfContact(ids: member){
+                                self.toastMessage(title: "\(err.localizedDescription)")
+                                return
+                        }
+                
+                do {
+                        self.groupItem = try GroupItem.NewGroup(ids: member,
+                                                                groupName: groupName)
+                        
+                }catch let err{
+                        self.toastMessage(title: "\(err.localizedDescription)")
                 }
                 
-                guard let err = GroupItem.updateGroupMetaInDB(groupItem) else {
+                DispatchQueue.main.async {
+                        
                         let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController
-                        vc.peerUid = groupItem.gid!
-                        vc.groupData = groupItem
+                        vc.peerUid = self.groupItem.gid!
+                        vc.groupData = self.groupItem
                         vc.IS_GROUP = true
                         self.navigationController?.pushViewController(vc, animated: true)
                         return
                 }
-                self.toastMessage(title: "Save GroupItem failed \(String(describing: err.localizedDescription))")
+        }
         }
         
         func enableOrDisableCompleteBtn(number: Int) {
@@ -276,5 +285,4 @@ extension GroupMemberViewController : CellClickDelegate {
                         }
                 }
         }
-        
 }

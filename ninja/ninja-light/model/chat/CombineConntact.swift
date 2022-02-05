@@ -176,6 +176,30 @@ class CombineConntact: NSObject{
                 return newContact
         }
         
+        public static func updateSetOfContact(ids:[CombineConntact]) -> Error?{
+                var modified = false
+                for cont in ids {
+                        let pid = cont.peerID
+                        guard let item = fetchContactFromChain(pid: pid) else{
+                                return NJError.contact("\(pid) is invalid contact")
+                        }
+                        if item.account?.Nonce == cont.account?.Nonce{
+                                continue
+                        }
+                        
+                        cache[pid] = item
+                        cache.updateValue(item, forKey: cont.peerID)
+                        modified = true
+                }
+                
+                if !modified{
+                        return nil
+                }
+                NotificationCenter.default.post(name:NotifyContactChanged,
+                                                object: nil, userInfo:nil)
+                return nil
+        }
+        
         public static func updatePatialContacts() {
                 var error: NSError?
                 guard let data = ChatLibAllFriendIDs(&error) else {

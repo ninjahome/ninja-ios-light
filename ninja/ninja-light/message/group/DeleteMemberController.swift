@@ -66,7 +66,7 @@ class DeleteMemberController: UIViewController {
         
             groupItem?.memberIds = ids ?? []
 //        groupItem?.memberNicks = nicks! as NSArray
-        _ = GroupItem.updateGroupMetaInDB(groupItem!)
+        try? GroupItem.syncGroupMeta(groupItem!)
         self.notiMemberChange(groupItem!)
         self.navigationController?.popViewController(animated: true)
         

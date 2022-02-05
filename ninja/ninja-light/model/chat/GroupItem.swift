@@ -41,6 +41,24 @@ class GroupItem: NSObject {
                 super.init()
         }
         
+        init(gid:String, name:String, members:[String]){
+                super.init()
+                let wallet = Wallet.shared.Addr!
+                self.nonce = 0
+                self.gid = gid
+                self.groupName = name
+                self.memberIds = members
+                self.owner = wallet
+                self.leader = wallet
+                self.unixTime = Int64(Date().timeIntervalSince1970)
+                self.isDelete = false
+                if let avatarData = GroupItem.getGroupAvatar(ids:members){
+                        avatar = avatarData
+                }else{
+                        avatar = defaultAvatar.jpegData(compressionQuality: 1)!
+                }
+        }
+        
         public static func initByJson(json objJson:JSON) -> GroupItem?{
                 guard let memIds = objJson["members"].dictionaryObject?.keys else {
                         return nil
@@ -110,16 +128,15 @@ class GroupItem: NSObject {
                 return obj
         }
         
-        public static func updateGroupMetaInDB(_ group: GroupItem) -> NJError? {
-                group.owner = Wallet.shared.Addr
+        public static func syncGroupMeta(_ group: GroupItem)throws{
                 
-                do {
-                        try CDManager.shared.UpdateOrAddOne(entity: "CDGroup", m: group, predicate: NSPredicate(format: "gid == %@ AND owner == %@", group.gid!, group.owner!))
-                        cache[group.gid!] = group
-                } catch let err {
-                        return NJError.group(err.localizedDescription)
-                }
-                return nil
+                group.owner = Wallet.shared.Addr
+                try CDManager.shared.UpdateOrAddOne(entity: "CDGroup",
+                                                    m: group,
+                                                    predicate: NSPredicate(format: "gid == %@ AND owner == %@",
+                                                                           group.gid!, group.owner!))
+                
+                cache[group.gid!] = group
         }
         
         public static func DeleteGroup(_ gid: String) -> NJError? {
@@ -156,14 +173,13 @@ class GroupItem: NSObject {
         }
         
         public static func getGroupAvatar(ids: [String]) -> Data? {
-                let defaultAvatarData = Data(UIImage(named: "logo_img")!.jpegData(compressionQuality: 1)!)
+                let defaultAvatarData = defaultAvatar.jpegData(compressionQuality: 1)!
                 var counter = 0
                 var imgData = defaultAvatarData
                 for id in ids{
                         if counter >= 9{
                                 break
                         }
-                        
                         if id == Wallet.shared.Addr{
                                 imgData = Wallet.shared.avatarData ?? defaultAvatarData
                         }else{
@@ -176,23 +192,32 @@ class GroupItem: NSObject {
                 if let avatar = ChatLibCommitImg(&err) {
                         return avatar
                 }
-                print("---[group image]---\(err?.localizedDescription ?? "")")
+                print("---[group image]--->>>\(err?.localizedDescription ?? "")")
                 return nil
         }
         
-        public static func NewGroup(ids: [String], groupName: String?) -> String? {
-                var error: NSError?
-                let jsonStr = JSON(ids).description
-                guard let data = jsonStr.data(using: .utf8) else {
-                        return nil
-                }
-                let gid = ChatLibCreateGroup(groupName, data, &error)
+        public static func NewGroup(ids: [CombineConntact], groupName: String?)throws -> GroupItem{
                 
-                if error != nil {
-                        print("new grp err: \(String(describing: error?.localizedDescription))")
-                        return nil
+                let leader = Wallet.shared.Addr!
+                var memIDs:[String] = [leader]
+                for cont in ids{
+                        memIDs.append(cont.peerID)
                 }
-                return gid
+                
+                let data = try JSON(memIDs).rawData()
+                
+                var err: NSError?
+                let gid = ChatLibCreateGroup(groupName, data, &err)
+                if let e = err{
+                        throw e
+                }
+                var grpName = gid
+                if let n = groupName, !n.isEmpty{
+                        grpName = n
+                }
+                let item = GroupItem(gid:gid, name:grpName, members:memIDs)
+                try syncGroupMeta(item)
+                return item
         }
         
         public static func syncAllGroupDataAtOnce(){
@@ -214,8 +239,9 @@ class GroupItem: NSObject {
                                 continue
                         }
                         
-                        if let err = updateGroupMetaInDB(group) {
-                                print("---[update grp]---\(err.localizedDescription ?? "")")
+                        do {try syncGroupMeta(group) }catch let err {
+                                
+                                print("---[update grp]---\(err.localizedDescription )")
                                 continue
                         }
                         
@@ -259,11 +285,12 @@ class GroupItem: NSObject {
                         return nil
                 }
                 
-                if let err = updateGroupMetaInDB(group) {
-                        print("---[update grp]---\(err.localizedDescription ?? "")")
+                do  {
+                        try syncGroupMeta(group)
+                        
+                } catch let err{
+                        print("---[update grp]---?\(err.localizedDescription )")
                 }
-                
-                GroupItem.cache[groupID] = group
                 
                 return group
         }
@@ -272,30 +299,12 @@ class GroupItem: NSObject {
                 var error: NSError?
                 let to = group.memberIds
                 let idsData = ChatLibUnmarshalGoByte(to.toString())
-                //                let nicks = group.memberNicks as! [String]
                 ChatLibAddGroupMembers(group.gid, idsData, &error)
-                
-                //                guard let data = ChatLib.ChatLibPackJoinGroup(nicks.toString(),
-                //                                     group.gid,
-                //                                     group.groupName,
-                //                                     group.leader,
-                //                                     group.banTalked,
-                //                                    newIds.toString()) else{
-                //                        return NJError.msg("pack error failed")
-                //                }
-                
-                //            let msgID = ChatLib.ChatLibSend(to.toString(), data, true)
-                //TODO:: save msgID and wait success callback
                 return nil
         }
         
         public static func KickOutUser(to: String?, groupId: String, leader: String, kickUserId: String) -> NJError? {
                 
-                //            guard let data = ChatLib.ChatLibPackKickOutUser(groupId, leader, kickUserId) else{
-                //                    return NJError.msg("pack error failed")
-                //            }
-                //            let msgID = ChatLib.ChatLibSend(to, data, true)
-                //TODO:: save msgID and wait success callback
                 return nil
         }
         
@@ -319,16 +328,9 @@ class GroupItem: NSObject {
                         return key
                 }
                 
-                //                let nicks = group.memberInfos.map { (key: String, value: String) in
-                //                        return value
-                //                }
-                
                 group.memberIds = newIds
-                //                group.memberNicks = nicks as NSArray
                 
-                if let err = GroupItem.updateGroupMetaInDB(group) {
-                        throw NJError.coreData("kick out update group failed.\(String(describing: err.localizedDescription))")
-                }
+                try GroupItem.syncGroupMeta(group)
                 
                 let NotiKey_ids = "KICK_IDS"
                 let NotiKey_from = "KICK_FROM"
@@ -339,25 +341,13 @@ class GroupItem: NSObject {
         }
         
         public static func QuitGroup(groupItem: GroupItem) -> NJError? {
-                //                let ids = groupItem.memberIds as! [String]
                 let gid = groupItem.gid!
                 var error: NSError?
                 _ = ChatLibDismissGroup(gid, &error)
                 if error != nil {
                         return NJError.group(error!.localizedDescription)
                 }
-                //                var data: Data?
-                //                if groupItem.leader == Wallet.shared.Addr! {
-                //                        data = ChatLib.ChatLibPackDismissGroup(Wallet.shared.Addr, gid)
-                //
-                //                } else {
-                //                        data = ChatLib.ChatLibPackQuitGroup(gid)
-                //                }
-                //                guard let d = data else{
-                //                        return NJError.msg("pack data error")
-                //                }
-                //            let msgID = ChatLib.ChatLibSend(ids.toString(), d, true)
-                //TODO:: save msgID and wait success callback
+                
                 
                 _ = GroupItem.DeleteGroup(gid)
                 ChatItem.remove(gid)
@@ -374,16 +364,8 @@ class GroupItem: NSObject {
                                 return key
                         }
                         
-                        //                        let nicks = group.memberInfos.map { (key: String, value: String) in
-                        //                                return value
-                        //                        }
-                        
                         group.memberIds = newIds
-                        //                        group.memberNicks = nicks as NSArray
-                        
-                        if let err = GroupItem.updateGroupMetaInDB(group) {
-                                throw NJError.coreData("quit group update group failed.\(String(describing: err.localizedDescription))")
-                        }
+                        try GroupItem.syncGroupMeta(group)
                         
                 }
                 
@@ -398,45 +380,6 @@ class GroupItem: NSObject {
                 return String(gid.prefix(2))
                 
         }
-        
-        //        public static func SyncGroupFromMe(by gid: String) -> String {
-        //                guard let group = GroupItem.GetGroup(gid) else {
-        //                        return ""
-        //                }
-        //
-        //                var groupDict: Dictionary<String, Any> = [:]
-        //                groupDict["group_id"] = group.gid
-        //                groupDict["group_name"] = group.groupName
-        //                groupDict["owner_id"] = group.leader
-        //                groupDict["ban_talking"] = group.banTalked
-        //                groupDict["member_id"] = group.memberIds
-        //                groupDict["nick_name"] = group.memberNicks
-        //                let res = getJSONStringFromDictionary(dictionary: groupDict as NSDictionary)
-        //                print(res)
-        //                return res
-        //        }
-        //
-        //        public static func SyncGroup(to: String?, groupId: String?) -> NJError? {
-        //                var error: NSError?
-        //
-        //
-        //                ChatLib.ChatLibSyncGroup(to, groupId, &error)
-        //
-        //                if error != nil {
-        //                        return NJError.msg(error!.localizedDescription)
-        //                }
-        //
-        //                return nil
-        //        }
-        //
-        //        public static func CheckGroupExist(groupId: String, syncTo: String?) -> Bool {
-        //                if GroupItem.cache[groupId] == nil {
-        //                        _ = GroupItem.SyncGroup(to: syncTo, groupId: groupId)
-        //                        return false
-        //                }
-        //
-        //                return true
-        //        }
 }
 
 extension GroupItem: ModelObj {
