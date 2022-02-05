@@ -2602,11 +2602,12 @@
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title=" " image="&gt;_icon"/>
                                         <connections>
-                                            <segue destination="LLa-7X-z6t" kind="show" id="AHq-OK-vel"/>
+                                            <segue destination="LLa-7X-z6t" kind="show" id="2ax-Ri-z9y"/>
                                         </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstItem="Xiq-OR-MS2" firstAttribute="leading" secondItem="213-Uy-ue7" secondAttribute="trailing" constant="12" id="0Dv-dz-ox9"/>
                                     <constraint firstAttribute="trailing" secondItem="r3Z-8r-XyC" secondAttribute="trailing" id="2te-cR-mz2"/>
@@ -2617,6 +2618,9 @@
                                     <constraint firstAttribute="bottom" secondItem="r3Z-8r-XyC" secondAttribute="bottom" id="d0X-7E-8Dl"/>
                                     <constraint firstAttribute="height" constant="60" id="jiV-TA-d0b"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="V0c-1p-UIc" appends="YES" id="Vvm-0Q-r6B"/>
+                                </connections>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" separatorInsetReference="fromAutomaticInsets" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="a52-ja-YbZ">
                                 <rect key="frame" x="0.0" y="158" width="414" height="655"/>
@@ -2702,6 +2706,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t3B-Pz-CKB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="V0c-1p-UIc">
+                    <connections>
+                        <action selector="openGroupListVC:" destination="UIk-eo-O4w" id="3bL-MB-0wj"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="199" y="1184"/>
         </scene>
@@ -2980,7 +2989,7 @@
         <!--群聊-->
         <scene sceneID="O3A-Yc-hHt">
             <objects>
-                <viewController hidesBottomBarWhenPushed="YES" id="LLa-7X-z6t" customClass="GroupListViewController" customModule="ninja_light" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GroupListViewControllerSID" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="LLa-7X-z6t" customClass="GroupListViewController" customModule="ninja_light" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jtc-Io-je0">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -6035,7 +6044,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="BFB-Pp-bKe"/>
+        <segue reference="6uQ-pj-Sdx"/>
         <segue reference="acM-Ky-S9y"/>
         <segue reference="UFj-KF-hEb"/>
     </inferredMetricsTieBreakers>

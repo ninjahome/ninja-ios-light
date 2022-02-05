@@ -69,3 +69,14 @@ extension ContactViewController:UITableViewDelegate, UITableViewDataSource{
                 self.navigationController?.pushViewController(vc, animated: true)
         }
 }
+
+extension ContactViewController{
+        
+        @IBAction func openGroupListVC(_ gesture: UITapGestureRecognizer) {
+                
+                guard let vc = instantiateViewController(vcID: "GroupListViewControllerSID") as? GroupListViewController else{
+                        return
+                }
+                self.navigationController?.pushViewController(vc, animated: true)
+        }
+}
