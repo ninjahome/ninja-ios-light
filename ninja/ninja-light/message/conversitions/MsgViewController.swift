@@ -316,7 +316,7 @@ extension MsgViewController{
         @IBAction func recordLongPress(_ sender: UILongPressGestureRecognizer) {
                 
                 if sender.state == .began {
-                        print("------>>>press began")
+//                        print("------>>>press began")
                         if let err =  AudioRecordManager.shared.startRecord() {
                                 self.toastMessage(title: err.localizedDescription)
                                 return
@@ -334,7 +334,7 @@ extension MsgViewController{
                                 recordCancelled = false
                         }
                 } else if sender.state == .ended {
-                        print("------>>>press end[\(recordCancelled)]")
+//                        print("------>>>press end[\(recordCancelled)]")
                         
                         AudioRecordManager.shared.finishRecrod(isReset: recordCancelled)
                         endRecord()
@@ -389,7 +389,7 @@ extension MsgViewController{
                 guard let idxPath = indexPathCache[msgID] else{
                         return
                 }
-                print("------>>[msgResult] row[\(idxPath.row)]=>msg[\(msgID)]")
+//                print("------>>[msgResult] row[\(idxPath.row)]=>msg[\(msgID)]")
                 DispatchQueue.main.async {
                         self.messageTableView.reloadRows(at: [idxPath], with: .fade)
                 }
@@ -404,7 +404,7 @@ extension MsgViewController{
                         return
                 }
                 self.msgCacheArray = MessageItem.SortedArray(pid: self.peerUid)
-                print("------>>> new message notification \(self.msgCacheArray.count)]")
+//                print("------>>> new message notification \(self.msgCacheArray.count)]")
                 self.insertNewCell()
         }
         
@@ -432,7 +432,7 @@ extension MsgViewController{
                         for i in startCnt ... endCnt - 1{
                                 indes.append(IndexPath.init(row: i, section: 0))
                         }
-                        print("------>>> start rows[\(startCnt)] to end rows[\(endCnt)]")
+//                        print("------>>> start rows[\(startCnt)] to end rows[\(endCnt)]")
                         
                         self.messageTableView.beginUpdates()
                         self.messageTableView.insertRows(at: indes, with: .automatic)
