@@ -87,7 +87,7 @@ class GroupMemberViewController: UIViewController {
                         
                 } else {
                         var groupIds: [CombineConntact] = []
-                        guard selectedIndexs.count > 3 else{
+                        guard selectedIndexs.count >= 2 else{
                                 self.toastMessage(title: "too less member")
                                 return
                         }

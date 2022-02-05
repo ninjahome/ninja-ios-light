@@ -61,7 +61,7 @@ class GroupItem: NSObject {
         }
         
         public static func initByJson(json objJson:JSON) -> GroupItem?{
-                guard let memIds = objJson["members"].dictionaryObject?.keys, memIds.count < 3 else {
+                guard let memIds = objJson["members"].dictionaryObject?.keys, memIds.count >= 2 else {
                         print("------>>> invalid group json data: too less members")
                         return nil
                 }
@@ -229,6 +229,7 @@ class GroupItem: NSObject {
                 }
                 let item = GroupItem(gid:gid, name:grpName, members:memIDs)
                 try syncGroupMeta(item)
+                CDManager.shared.saveContext()
                 return item
         }
         
