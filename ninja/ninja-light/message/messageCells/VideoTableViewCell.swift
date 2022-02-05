@@ -98,7 +98,7 @@ class VideoTableViewCell: UITableViewCell {
                         case .sending:
                                 spinner?.startAnimating()
                         default:
-                                spinner?.stopAnimating()
+                                spinner?.stopAnimating() 
                         }
                         self.avatar.setupSelf()
                         nickname.text = Wallet.shared.nickName ?? Wallet.GenAvatarText()

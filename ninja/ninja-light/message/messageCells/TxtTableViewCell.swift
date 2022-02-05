@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MessageTableViewCell: UITableViewCell {
+class TxtTableViewCell: UITableViewCell {
         
         @IBOutlet weak var msgBackgroundView: UIImageView!
         @IBOutlet weak var msgLabel: UITextView!

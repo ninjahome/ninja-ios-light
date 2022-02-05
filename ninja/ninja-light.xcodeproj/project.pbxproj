@@ -33,7 +33,7 @@
 		0825C21726CB6B23003E0EF3 /* AddCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0825C21626CB6B23003E0EF3 /* AddCollectionCell.swift */; };
 		0825C21A26CB6B40003E0EF3 /* AvatarCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0825C21926CB6B40003E0EF3 /* AvatarCollectionCell.swift */; };
 		0825C21D26CF5887003E0EF3 /* DeleteMemberController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0825C21C26CF5887003E0EF3 /* DeleteMemberController.swift */; };
-		082CF17C263A9C6D0009450E /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082CF17B263A9C6D0009450E /* MessageTableViewCell.swift */; };
+		082CF17C263A9C6D0009450E /* TxtTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082CF17B263A9C6D0009450E /* TxtTableViewCell.swift */; };
 		0860D5C52761FDD000E53FDA /* FileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0860D5C42761FDD000E53FDA /* FileTableViewCell.swift */; };
 		0860D5C727634F7900E53FDA /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0860D5C627634F7900E53FDA /* FileManager+Extension.swift */; };
 		086701B32665C6D900A1E951 /* AudioRecordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086701B22665C6D900A1E951 /* AudioRecordManager.swift */; };
@@ -159,7 +159,7 @@
 		0825C21626CB6B23003E0EF3 /* AddCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCollectionCell.swift; sourceTree = "<group>"; };
 		0825C21926CB6B40003E0EF3 /* AvatarCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarCollectionCell.swift; sourceTree = "<group>"; };
 		0825C21C26CF5887003E0EF3 /* DeleteMemberController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteMemberController.swift; sourceTree = "<group>"; };
-		082CF17B263A9C6D0009450E /* MessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
+		082CF17B263A9C6D0009450E /* TxtTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxtTableViewCell.swift; sourceTree = "<group>"; };
 		0860D5C42761FDD000E53FDA /* FileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTableViewCell.swift; sourceTree = "<group>"; };
 		0860D5C627634F7900E53FDA /* FileManager+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
 		086701B22665C6D900A1E951 /* AudioRecordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecordManager.swift; sourceTree = "<group>"; };
@@ -386,7 +386,7 @@
 			isa = PBXGroup;
 			children = (
 				08F0FA8C268839F200C5C1DF /* VoiceTableViewCell.swift */,
-				082CF17B263A9C6D0009450E /* MessageTableViewCell.swift */,
+				082CF17B263A9C6D0009450E /* TxtTableViewCell.swift */,
 				08F0FA8F26884C2000C5C1DF /* ImageTableViewCell.swift */,
 				08F0FA9526884C5C00C5C1DF /* LocationTableViewCell.swift */,
 				0860D5C42761FDD000E53FDA /* FileTableViewCell.swift */,
@@ -668,7 +668,7 @@
 				08B74A5F26AFF31B00D6F0F8 /* LocationUtils.swift in Sources */,
 				69B8C0F6261DBEED00B4E4AC /* ScannerViewController.swift in Sources */,
 				6969ECC026134294008CB0B2 /* ContactViewController.swift in Sources */,
-				082CF17C263A9C6D0009450E /* MessageTableViewCell.swift in Sources */,
+				082CF17C263A9C6D0009450E /* TxtTableViewCell.swift in Sources */,
 				0825C21726CB6B23003E0EF3 /* AddCollectionCell.swift in Sources */,
 				6969ECBC26134294008CB0B2 /* AppDelegate.swift in Sources */,
 				08EAAE24269735AC00210271 /* ContactAddViewController.swift in Sources */,

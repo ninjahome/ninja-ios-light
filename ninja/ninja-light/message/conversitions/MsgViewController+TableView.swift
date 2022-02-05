@@ -24,7 +24,7 @@ extension MsgViewController: UITableViewDelegate, UITableViewDataSource {
                 case .plainTxt:
                         identifer = msgItem.isOut ? "messageCell" : "messageCellL"
                         
-                        let cell = tableView.dequeueReusableCell(withIdentifier: identifer, for: indexPath) as! MessageTableViewCell
+                        let cell = tableView.dequeueReusableCell(withIdentifier: identifer, for: indexPath) as! TxtTableViewCell
                         cell.updateMessageCell(by: msgItem, name:self.peerName, avatar:self.peerAvatarData)
                         return cell
                 case .voice:
@@ -63,7 +63,7 @@ extension MsgViewController: UITableViewDelegate, UITableViewDataSource {
                         cell.updateMessageCell(by: msgItem, name:self.peerName, avatar:self.peerAvatarData)
                         return cell
                 default:
-                        return MessageTableViewCell()
+                        return TxtTableViewCell()
                 }
         }
 }
