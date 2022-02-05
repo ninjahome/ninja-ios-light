@@ -145,12 +145,12 @@ class GroupMemberViewController: UIViewController {
                         
                         DispatchQueue.main.async {
                                 let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController
-                                vc.peerUid = self.groupItem.gid!
+                                vc.peerUid = self.groupItem.gid
                                 vc.groupData = self.groupItem
                                 vc.IS_GROUP = true
                                 self.navigationController?.pushViewController(vc, animated: true)
                                 NotificationCenter.default.post(name:NotifyGroupChanged,
-                                                                object: self.groupItem.gid!, userInfo:nil)
+                                                                object: self.groupItem.gid, userInfo:nil)
                                 return
                         }
                 }

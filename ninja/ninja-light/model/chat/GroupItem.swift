@@ -22,16 +22,17 @@ struct memberInfo {
 }
 
 class GroupItem: NSObject {
+        
         public static var cache:[String:GroupItem]=[:]
+        
+        
         var nonce: Int64?
-        var gid: String?
+        var gid: String = ""
         var groupName: String?
         var memberIds: [String] = []
-        //        var memberNicks: NSArray?
         var owner: String?
         var unixTime: Int64 = 0
         var leader: String?
-        //        var banTalked: Bool = false
         var isDelete: Bool = false
         var avatar: Data?
         
@@ -60,12 +61,16 @@ class GroupItem: NSObject {
         }
         
         public static func initByJson(json objJson:JSON) -> GroupItem?{
-                guard let memIds = objJson["members"].dictionaryObject?.keys else {
+                guard let memIds = objJson["members"].dictionaryObject?.keys, memIds.count < 3 else {
+                        print("------>>> invalid group json data: too less members")
                         return nil
                 }
-                
+                guard let gid = objJson["gid"].string else{
+                        print("------>>> invalid group json data: no group id")
+                        return nil
+                }
                 let grp = GroupItem()
-                grp.gid = objJson["gid"].string
+                grp.gid = gid
                 grp.nonce = objJson["nonce"].int64
                 grp.leader = objJson["owner"].string
                 grp.groupName = objJson["name"].string
@@ -134,9 +139,9 @@ class GroupItem: NSObject {
                 try CDManager.shared.UpdateOrAddOne(entity: "CDGroup",
                                                     m: group,
                                                     predicate: NSPredicate(format: "gid == %@ AND owner == %@",
-                                                                           group.gid!, group.owner!))
+                                                                           group.gid, group.owner!))
                 
-                cache[group.gid!] = group
+                cache[group.gid] = group
         }
         
         public static func DeleteGroup(_ gid: String) -> NJError? {
@@ -155,16 +160,23 @@ class GroupItem: NSObject {
                 guard let owner = Wallet.shared.Addr else {
                         return
                 }
-                var result: [GroupItem]?
-                result = try? CDManager.shared.Get(entity: "CDGroup", predicate: NSPredicate(format: "owner == %@", owner), sort: [["name" : true]])
-                
-                guard let arr = result else {
-                        return
-                }
-                
-                for obj in arr {
-                        cache[obj.gid!] = obj
-                        print("LOCAL SAVED GROUP:\(obj)")
+                do{
+                        var result: [GroupItem] = []
+                        result = try CDManager.shared.Get(entity: "CDGroup",
+                                                          predicate: NSPredicate(format: "owner == %@", owner),
+                                                          sort: [["name" : true]])
+                        if result.count == 0{
+                                print("------>>>no group at all")
+                                return
+                        }
+                        
+                        for obj in result {
+                                cache[obj.gid] = obj
+                                print("------>>>saved group\(obj.groupName ?? obj.gid) loaded")
+                        }
+                        
+                }catch let err{
+                        print("------>>>loading cached group meta failed =>", err.localizedDescription)
                 }
         }
         
@@ -245,7 +257,7 @@ class GroupItem: NSObject {
                                 continue
                         }
                         
-                        GroupItem.cache[group.gid!] = group
+                        GroupItem.cache[group.gid] = group
                 }
                 
         }
@@ -314,7 +326,7 @@ class GroupItem: NSObject {
                 }
                 
                 if kick.contains(Wallet.shared.Addr!) {
-                        let _ = GroupItem.DeleteGroup(group.gid!)
+                        let _ = GroupItem.DeleteGroup(group.gid)
                         NotificationCenter.default.post(name: NotifyKickMeOutGroup,
                                                         object: group)
                         return
@@ -341,7 +353,7 @@ class GroupItem: NSObject {
         }
         
         public static func QuitGroup(groupItem: GroupItem) -> NJError? {
-                let gid = groupItem.gid!
+                let gid = groupItem.gid
                 var error: NSError?
                 _ = ChatLibDismissGroup(gid, &error)
                 if error != nil {
@@ -406,7 +418,7 @@ extension GroupItem: ModelObj {
                         throw NJError.coreData("Cast to CDGroup failed")
                 }
                 
-                self.gid = cObj.gid
+                self.gid = cObj.gid ?? "<->"
                 self.groupName = cObj.name
                 self.owner = cObj.owner
                 self.memberIds = cObj.members as? [String] ?? []

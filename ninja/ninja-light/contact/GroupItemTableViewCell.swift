@@ -19,14 +19,11 @@ class GroupItemTableViewCell: UITableViewCell {
         
         override func setSelected(_ selected: Bool, animated: Bool) {
                 super.setSelected(selected, animated: animated)
-
-                // Configure the view for the selected state
         }
         
         func initWith(detail: GroupItem, idx: Int) {
                 self.groupName.text = detail.groupName
-                guard let gid = detail.gid else { return }
-                avatar.setup(id: gid, avaData: detail.avatar)
+                avatar.setup(id: detail.gid, avaData: detail.avatar)
         }
 
 }

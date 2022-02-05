@@ -63,7 +63,7 @@ extension GroupListViewController: UITableViewDelegate, UITableViewDataSource {
                 let item = GroupItem.CacheArray()[indexPath.row]
                 vc.groupData = item
                 vc.IS_GROUP = true
-                vc.peerUid = item.gid!
+                vc.peerUid = item.gid
                 self.navigationController?.pushViewController(vc, animated: true)
         }
 }

@@ -54,11 +54,7 @@ class DeleteMemberController: UIViewController {
             return k
         })
         
-//        let nicks = groupItem?.memberInfos.map({ (k: String, v: String) in
-//            return v
-//        })
-        
-            if let err = GroupItem.KickOutUser(to: groupIds?.toString(), groupId: groupItem!.gid!, leader: groupItem!.leader!, kickUserId: delIds.toString()!) {
+            if let err = GroupItem.KickOutUser(to: groupIds?.toString(), groupId: groupItem!.gid, leader: groupItem!.leader!, kickUserId: delIds.toString()!) {
             
             self.toastMessage(title: "kick faild: \(String(describing: err.localizedDescription))")
             return
