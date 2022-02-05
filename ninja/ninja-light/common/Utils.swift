@@ -197,16 +197,18 @@ public let oneDay = TimeInterval(60 * 60 * 24)
 public let oneMinute = TimeInterval(60)
 public func formatMsgTimeStamp(by timeStamp: Int64) -> String {
         let time = Date.init(timeIntervalSince1970: TimeInterval(timeStamp/1000))
-        let now = Date().timeIntervalSince(time)
-        if now < oneDay{
+        if Calendar.current.isDateInToday(time){
                 dateFormatterGet.dateFormat = "HH:mm"
-                if now < oneMinute{
-                        return ""
-                }
+        }else if Calendar.current.isDateInYesterday(time){
+                dateFormatterGet.dateFormat = "昨天 HH:mm"
+        }else if Calendar.current.isDateInWeekend(time){
+                let idx = Calendar.current.component(.weekday, from: Date())
+                let str = Calendar.current.shortWeekdaySymbols[idx]
+                dateFormatterGet.dateFormat = "\(str) HH:mm"
         }else{
-                dateFormatterGet.dateFormat = "yy/MM/dd HH:mm"
+                dateFormatterGet.dateFormat = "MM-dd"
+                
         }
-        
         return dateFormatterGet.string(from: time)
 }
 

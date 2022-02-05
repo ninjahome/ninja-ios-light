@@ -462,9 +462,10 @@ extension MsgViewController{
 extension MsgViewController{
         
         @objc func contactUpdate(notification: NSNotification) {
+                DispatchQueue.main.async {
                 self.setPeerBasic()
                 self.messageTableView.reloadData()
-        }
+                }}
         
         // TODO: Update group member
         @objc func groupUpdate(notification: NSNotification) {

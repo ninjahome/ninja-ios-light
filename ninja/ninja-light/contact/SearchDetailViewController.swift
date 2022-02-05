@@ -39,10 +39,10 @@ class SearchDetailViewController: UIViewController {
                         DispatchQueue.main.async {
                                 self.hideIndicator()
                                 self.populateView()
+                                
+                                NotificationCenter.default.post(name:NotifyContactChanged,
+                                                                object: self.uid, userInfo:nil)
                         }
-                        
-                        NotificationCenter.default.post(name:NotifyContactChanged,
-                                                        object: self.uid, userInfo:nil)
                 }
         }
         
