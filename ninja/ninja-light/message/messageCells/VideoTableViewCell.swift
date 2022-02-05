@@ -35,6 +35,9 @@ class VideoTableViewCell: UITableViewCell {
         override func awakeFromNib() {
                 super.awakeFromNib()
                 // Initialization code
+                let longTap = UILongPressGestureRecognizer(target: self,
+                                                           action: #selector(VideoTableViewCell.longPress(sender:)))
+                self.addGestureRecognizer(longTap)
         }
         
         override func setSelected(_ selected: Bool, animated: Bool) {
@@ -66,7 +69,7 @@ class VideoTableViewCell: UITableViewCell {
                         print("------>>> invalid video file")
                         return
                 }
-             
+                
                 guard let url = videoData.tmpUrl() else{
                         print("------>>> tmp video file url invalid")
                         return
@@ -74,6 +77,7 @@ class VideoTableViewCell: UITableViewCell {
                 let player = AVPlayer(url: url)
                 let vc = AVPlayerViewController()
                 vc.player = player
+                
                 let window = getKeyWindow()
                 window?.rootViewController?.present(vc, animated: true, completion: {
                         vc.player?.play()
@@ -108,5 +112,39 @@ class VideoTableViewCell: UITableViewCell {
                 }
                 
                 time.text = formatMsgTimeStamp(by: message.timeStamp)
+        }
+        
+        @objc func longPress(sender: UILongPressGestureRecognizer
+        ) {
+                guard let videoData = cellMsg?.payload as? videoMsg else{
+                        print("------>>> invalid video file")
+                        return
+                }
+                guard let url = videoData.tmpUrl() else{
+                        print("------>>> tmp video file url invalid")
+                        return
+                }
+                let selectorToCall = #selector(VideoTableViewCell.videoSaved(_:didFinishSavingWithError:context:))
+                let alert = UIAlertController(title: "请选择", message: nil, preferredStyle: .actionSheet)
+                let action = UIAlertAction(title: "保存到相册", style: .default) { (_) in
+                        UISaveVideoAtPathToSavedPhotosAlbum(url.path, self, selectorToCall, nil)
+                }
+                let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+                alert.addAction(action)
+                alert.addAction(cancel)
+                
+                let window = getKeyWindow()
+                window?.rootViewController?.present(alert, animated: true)
+                
+        }
+        @objc func videoSaved(_ video: String, didFinishSavingWithError error: NSError!, context: UnsafeMutableRawPointer){
+                if let theError = error {
+                        print("------>>>error saving the video = \(theError)")
+                        return
+                }
+                
+                DispatchQueue.main.async(execute: { () -> Void in
+                        getKeyWindow()?.rootViewController?.toastMessage(title: "saved success", duration: 1)
+                })
         }
 }
