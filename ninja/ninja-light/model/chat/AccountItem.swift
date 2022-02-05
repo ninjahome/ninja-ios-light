@@ -26,6 +26,15 @@ class AccountItem: NSObject {
                 super.init()
         }
         
+        init(addr:String){
+                super.init()
+                self.Addr = addr
+                self.Nonce = 0
+                self.Balance = 0
+                self.NickName = ""
+                self.Owner = Wallet.shared.Addr!
+        }
+        
         public static func initByOnlineMeta(_ obj: Data) -> AccountItem? {
                 guard let objJson = try? JSON(data: obj) else{
                         print("------>>account details:=> failed to convert raw data to json object")

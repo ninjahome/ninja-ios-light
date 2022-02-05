@@ -248,6 +248,8 @@ class CombineConntact: NSObject{
                                 print("------>>> save account detail failed:\(err?.localizedDescription ?? "<->")")
                         }
                         cc.account = accItem
+                }else{
+                        cc.account = AccountItem(addr: uid)
                 }
                 
                 if json["demo"].exists(){

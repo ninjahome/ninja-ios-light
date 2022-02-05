@@ -254,8 +254,10 @@ extension GroupMemberViewController : CellClickDelegate {
                         guard let data = CombineConntact.fetchContactFromChain(pid: pid) else{
                                 return
                         }
-                        
-                        if data.account?.Nonce == item.account?.Nonce{
+                        guard let nonce = data.account?.Nonce  else{
+                                return
+                        }
+                        if nonce == item.account?.Nonce{
                                 return
                         }
                         
