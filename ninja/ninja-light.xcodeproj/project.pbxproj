@@ -72,6 +72,7 @@
 		08F0FA9026884C2000C5C1DF /* ImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F0FA8F26884C2000C5C1DF /* ImageTableViewCell.swift */; };
 		08F0FA9626884C5C00C5C1DF /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F0FA9526884C5C00C5C1DF /* LocationTableViewCell.swift */; };
 		2B01182227A5508B00C88116 /* CombineConntact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01182127A5508B00C88116 /* CombineConntact.swift */; };
+		2B66DB4427AE1FF100FBE8B6 /* SystemMeesageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66DB4327AE1FF100FBE8B6 /* SystemMeesageViewController.swift */; };
 		6953EAF82622C12F008EC2F0 /* AuthorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6953EAF72622C12F008EC2F0 /* AuthorViewController.swift */; };
 		6969ECBC26134294008CB0B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969ECBB26134294008CB0B2 /* AppDelegate.swift */; };
 		6969ECBE26134294008CB0B2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969ECBD26134294008CB0B2 /* SceneDelegate.swift */; };
@@ -200,6 +201,7 @@
 		08F0FA8F26884C2000C5C1DF /* ImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTableViewCell.swift; sourceTree = "<group>"; };
 		08F0FA9526884C5C00C5C1DF /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
 		2B01182127A5508B00C88116 /* CombineConntact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineConntact.swift; sourceTree = "<group>"; };
+		2B66DB4327AE1FF100FBE8B6 /* SystemMeesageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMeesageViewController.swift; sourceTree = "<group>"; };
 		694D55C52766F5B60044E580 /* MBProgressHUD.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MBProgressHUD.xcframework; path = Carthage/Build/MBProgressHUD.xcframework; sourceTree = "<group>"; };
 		694D55C62766F5B60044E580 /* SwiftyJSON.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = SwiftyJSON.xcframework; path = Carthage/Build/SwiftyJSON.xcframework; sourceTree = "<group>"; };
 		6953EAF72622C12F008EC2F0 /* AuthorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorViewController.swift; sourceTree = "<group>"; };
@@ -470,6 +472,7 @@
 				0809CE872786963300AF2A95 /* BackupGuideViewController.swift */,
 				08C2C229278FD1B90023D773 /* AvatarEditViewController.swift */,
 				0823F777265201B4000DA4DB /* QRViewController.swift */,
+				2B66DB4327AE1FF100FBE8B6 /* SystemMeesageViewController.swift */,
 				0823F77C26520B24000DA4DB /* NickEditViewController.swift */,
 				087BD8122658AF430009459C /* ManageViewController.swift */,
 				087B57F726E1E15900591F8D /* AgentViewController.swift */,
@@ -710,6 +713,7 @@
 				086701BD2667329200A1E951 /* AudioDelegate.swift in Sources */,
 				69B8C0C3261C703800B4E4AC /* WebsocketSrv.swift in Sources */,
 				08781E91275F09F50084D80A /* MsgViewController+TextView.swift in Sources */,
+				2B66DB4427AE1FF100FBE8B6 /* SystemMeesageViewController.swift in Sources */,
 				08B64A0027A255E100D0677F /* MsgViewController+FileView.swift in Sources */,
 				087BD8132658AF430009459C /* ManageViewController.swift in Sources */,
 				7CEFD463261E93FA0002B0B9 /* ContactDetailsViewController.swift in Sources */,
