@@ -51,14 +51,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 }
                 
                 let content = response.notification.request.content
-                print("title: \(content.title)")
-                print("body: \(content.body)")
+                print("------>>>title: \(content.title)")
+                print("------>>>body: \(content.body)")
                 
-                if let userInfo = content.userInfo as? [String: Any],
-                   let aps = userInfo["aps"] as? [String: Any] {
-                        print("aps: \(aps)")
+                guard let userInfo = content.userInfo as? [String: Any] else{
+                        return
                 }
-                
+                if let aps = userInfo["aps"] as? [String: Any]{
+                        print("------>>>aps: \(aps)")
+                }
+                if let newSystemMessage = userInfo["newSystemMessage"] as? String{
+                        print("------>>>newSystemMessage: \(newSystemMessage)")
+                        SystemMeesageViewController.newTargetUrl = newSystemMessage
+                }
         }
         
         func getPushNotifications() {

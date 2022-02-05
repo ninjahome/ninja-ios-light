@@ -19,6 +19,7 @@ class WalletViewController: UITableViewController {
 
         @IBOutlet weak var agentBtn: AgentButton!
         @IBOutlet weak var agentTime: UILabel!
+        @IBOutlet weak var hasNewSysMsgBtn: UIButton!
 
         @IBOutlet weak var appVersion: UILabel!
 
@@ -85,6 +86,8 @@ class WalletViewController: UITableViewController {
                         self.destroySwitch.isOn = Wallet.shared.useDestroy
                         self.nickName.text = Wallet.shared.nickName
                         self.avatar.setupSelf()
+                        
+                        self.hasNewSysMsgBtn.isHidden = SystemMeesageViewController.newTargetUrl.isEmpty
 
                         let status = ServiceDelegate.getAgentStatus()
                         self.agentBtn.currentStatus = status
