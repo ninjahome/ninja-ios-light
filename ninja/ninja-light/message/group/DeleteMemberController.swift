@@ -112,6 +112,10 @@ extension DeleteMemberController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension DeleteMemberController: CellClickDelegate {
+        func loadSelectedContact(_ idx: Int) {
+                return
+        }
+        
     func addDidClick(_ idx: Int) {
         if !selectedIndexs.contains(idx) {
             selectedIndexs.append(idx)

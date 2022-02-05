@@ -55,7 +55,7 @@ class GroupMemberViewController: UIViewController {
                                         invalidContact.append(cont)
                                         return true
                                 }
-                               return  cont.peerID == Wallet.shared.Addr
+                                return  cont.peerID == Wallet.shared.Addr
                         }
                 }
                 self.validContactArr = contacts
@@ -228,6 +228,41 @@ extension GroupMemberViewController : CellClickDelegate {
                 enableOrDisableCompleteBtn(number: selectedIndexs.count)
                 
                 print("------>>>selected list \(selectedIndexs)")
+        }
+        
+        func loadSelectedContact(_ idx:Int){
+                self.showIndicator(withTitle: "", and: "loading")
+                ServiceDelegate.workQueue.async{
+                        defer {
+                                self.hideIndicator()
+                        }
+                        
+                        let item = self.invalidContactArr[idx]
+                        guard let pid = item.contact?.uid else{
+                                return
+                        }
+                        guard let data = CombineConntact.fetchContactFromChain(pid: pid) else{
+                                return
+                        }
+                        
+                        if data.account?.Nonce == item.account?.Nonce{
+                                return
+                        }
+                        
+                        CombineConntact.cache[pid] = data
+                        
+                        NotificationCenter.default.post(name:NotifyContactChanged,
+                                                        object: pid, userInfo:nil)
+                        
+                        if !data.isVIP(){
+                                return
+                        }
+                        self.invalidContactArr.remove(at: idx)
+                        self.validContactArr.append(data)
+                        DispatchQueue.main.async {
+                                self.tableView.reloadData()
+                        }
+                }
         }
         
 }

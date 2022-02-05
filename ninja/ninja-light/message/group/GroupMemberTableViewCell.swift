@@ -8,6 +8,7 @@
 import UIKit
 
 protocol CellClickDelegate {
+        func loadSelectedContact(_ idx: Int)
         func addDidClick(_ idx: Int)
         func delDidClick(_ idx: Int)
 }
@@ -31,6 +32,8 @@ class GroupMemberTableViewCell: UITableViewCell {
                 setSelect(selected: false)
                 vipHint.isHidden = true
                 selectBtn.isHidden = false
+                reloadBtn.isHidden = true
+                reloadBtn.isEnabled = true
         }
         
         override func awakeFromNib() {
@@ -50,6 +53,7 @@ class GroupMemberTableViewCell: UITableViewCell {
                 let isVip = details.isVIP()
                 vipHint.isHidden = isVip
                 selectBtn.isHidden = !isVip
+                reloadBtn.isHidden = isVip
                 self.isUserInteractionEnabled = isVip
         }
         
@@ -77,6 +81,12 @@ class GroupMemberTableViewCell: UITableViewCell {
                 }
         }
         
+        @IBAction func reloadAction(_ sender: UIButton) {
+                guard let idx = index else{
+                        return
+                }
+                self.cellDelegate?.loadSelectedContact(idx)
+        }
         fileprivate func setSelect(selected: Bool) {
                 if selected {
                         selectBtn.setImage(UIImage(named: "pick_icon"), for: .normal)
