@@ -13,48 +13,48 @@ protocol CellClickDelegate {
 }
 
 class GroupMemberTableViewCell: UITableViewCell {
-    
+        
         @IBOutlet weak var avatar: AvatarButton!
         @IBOutlet weak var nickName: UILabel!
-
+        
         @IBOutlet weak var selectBtn: UIButton!
         @IBOutlet weak var deleteBtn: UIButton!
-
+        
         var cellDelegate: CellClickDelegate?
         var index: Int?
         
         @IBOutlet weak var vipHint: UILabel!
         
-
+        
         override func prepareForReuse() {
                 super.prepareForReuse()
-
+                
                 setSelect(selected: false)
                 vipHint.isHidden = true
                 selectBtn.isHidden = false
         }
-    
+        
         override func awakeFromNib() {
                 super.awakeFromNib()
         }
-
+        
         override func setSelected(_ selected: Bool, animated: Bool) {
                 super.setSelected(selected, animated: animated)
         }
-
+        
         func initWith(details: CombineConntact, idx: Int, selected: Bool) {
                 self.index = idx
                 setSelect(selected: selected)
                 
                 //TODO:: refactor
-                self.avatar.setup(id: details.peerID, avaData: details.account?.Avatar)
+                self.avatar.setup(id: details.peerID, avaData: details.account?.Avatar,showDetails: false)
                 self.nickName.text = details.GetNickName() ?? details.peerID
                 let isVip = details.isVIP()
                 vipHint.isHidden = isVip
                 selectBtn.isHidden = !isVip
                 self.isUserInteractionEnabled = isVip
         }
-    
+        
         func initWith(group: GroupItem, idx: Int, selected: Bool) {
                 self.index = idx
                 let id = group.memberIds[idx]
@@ -64,21 +64,21 @@ class GroupMemberTableViewCell: UITableViewCell {
                 self.nickName.text = acc?.GetNickName() ?? acc?.peerID
                 self.avatar.setup(id: id, avaData: acc?.account?.Avatar)
         }
-    
+        
         @IBAction func addToGroupList(_ sender: UIButton) {
                 setSelect(selected: true)
                 if let idx = index {
                         self.cellDelegate?.addDidClick(idx)
                 }
         }
-    
+        
         @IBAction func deleteFromGroupList(_ sender: UIButton) {
                 setSelect(selected: false)
                 if let idx = index {
                         self.cellDelegate?.delDidClick(idx)
                 }
         }
-
+        
         fileprivate func setSelect(selected: Bool) {
                 if selected {
                         selectBtn.setImage(UIImage(named: "pick_icon"), for: .normal)
@@ -88,5 +88,5 @@ class GroupMemberTableViewCell: UITableViewCell {
                         deleteBtn.isHidden = true
                 }
         }
-    
+        
 }

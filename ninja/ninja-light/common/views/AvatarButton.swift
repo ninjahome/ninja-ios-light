@@ -10,16 +10,17 @@ import CloudKit
 
 class AvatarButton: UIButton {
         var peerID:String = ""
-        var isSelf:Bool = false
-        func setup(id: String, avaData: Data?){
+        var showDetails:Bool = false
+        func setup(id: String, avaData: Data?, showDetails:Bool = true){
                 self.peerID = id
                 let backImg = MustImage(data: avaData)
                 self.setBackgroundImage(backImg, for: .normal)
                 self.layer.masksToBounds = true
+                self.showDetails = showDetails
         }
         
         func setupSelf(){
-                self.isSelf = true
+                self.showDetails = false
                 let backImg = MustImage(data:  Wallet.shared.avatarData)
                 self.setBackgroundImage(backImg, for: .normal)
                 self.layer.masksToBounds = true
@@ -27,7 +28,7 @@ class AvatarButton: UIButton {
         
         override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
                 super.touchesEnded(touches, with: event)
-                if isSelf{//TODO:: show self
+                if !showDetails{
                         return
                 }
                 if let _ = CombineConntact.cache[peerID] {
