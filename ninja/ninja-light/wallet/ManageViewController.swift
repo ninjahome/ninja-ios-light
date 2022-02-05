@@ -14,28 +14,6 @@ class ManageViewController: UIViewController {
                 let item = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
                 self.navigationItem.backBarButtonItem = item
         }
-        
-        @IBAction func exportAccount(_ sender: UIButton) {
-                if let walletJson = Wallet.shared.wJson,
-                   let walletImg = generateQRCode(from: walletJson) {
-                        print("walletJson \(walletJson)")
-                        UIImageWriteToSavedPhotosAlbum(walletImg, nil, nil, nil)
-                        self.toastMessage(title: "Save success")
-                } else {
-                        self.toastMessage(title: "Save Failed")
-                }
-        }
-        @IBAction func scanner(_ sender: UIButton) {
-                let vc = instantiateViewController(vcID: "ScannerVC") as! ScannerViewController
-                vc.delegate = self
-                self.present(vc, animated: true, completion: nil)
-        }
-        
-        @IBAction func createWallet(_ sender: UIButton) {
-                let vc = instantiateViewController(vcID: "CreateWalletVC") as! NewWalletViewController
-                self.navigationController?.pushViewController(vc, animated: true)
-        }
-        
 }
 
 extension ManageViewController: ScannerViewControllerDelegate {
@@ -54,9 +32,45 @@ extension ManageViewController: ScannerViewControllerDelegate {
                         }
                         
                         ServiceDelegate.ImportNewAccount(wJson: code, addr: addr, pwd: pwd, parent: self!) {
-//                                ServiceDelegate.InitService()//TODO:: need reload old message?
+                                //                                ServiceDelegate.InitService()//TODO:: need reload old message?
                                 self?.navigationController?.popToRootViewController(animated: true)
                         }
                 }
+        }
+}
+
+extension ManageViewController{
+        
+        @IBAction func createWallet(_ gesture: UITapGestureRecognizer) {
+                
+                let vc = instantiateViewController(vcID: "CreateWalletVC") as! NewWalletViewController
+                self.navigationController?.pushViewController(vc, animated: true)
+        }
+        
+        @IBAction func exportAccount(_ gesture: UITapGestureRecognizer) {
+                
+                
+                guard let walletJson = Wallet.shared.wJson else{
+                        self.toastMessage(title: "Save Failed")
+                        return
+                }
+                
+                self.showIndicator(withTitle: "", and: "exporting")
+                ServiceDelegate.workQueue.async {
+                        guard let walletImg = self.generateQRCode(from: walletJson)else{
+                                self.hideIndicator()
+                                self.toastMessage(title: "generat qr image failed")
+                                return
+                        }
+                        print("------>>>walletJson \(walletJson)")
+                        UIImageWriteToSavedPhotosAlbum(walletImg, nil, nil, nil)
+                        self.hideIndicator()
+                        self.toastMessage(title: "Save success", duration: 1)
+                }
+        }
+        @IBAction func scanner(_ gesture: UITapGestureRecognizer) {
+                let vc = instantiateViewController(vcID: "ScannerVC") as! ScannerViewController
+                vc.delegate = self
+                self.present(vc, animated: true, completion: nil)
         }
 }

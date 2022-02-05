@@ -470,7 +470,7 @@ extension UIViewController {
         //            return Indicator
         //    }
         
-        func toastMessage(title:String) -> Void {
+        func toastMessage(title:String, duration:TimeInterval = 3) -> Void {
                 DispatchQueue.main.async {
                         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
                         hud.mode = MBProgressHUDMode.text
@@ -478,7 +478,7 @@ extension UIViewController {
                         hud.removeFromSuperViewOnHide = true
                         hud.margin = 10
                         hud.offset.y = 250.0
-                        hud.hide(animated: true, afterDelay: 3)
+                        hud.hide(animated: true, afterDelay: duration)
                 }
         }
         

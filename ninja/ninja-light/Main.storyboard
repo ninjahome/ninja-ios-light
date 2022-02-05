@@ -4856,6 +4856,7 @@
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="52" id="EjO-rh-jQy"/>
                                     <constraint firstAttribute="trailing" secondItem="OM7-RF-Vwr" secondAttribute="trailing" id="Lv4-Yq-EVp"/>
@@ -4865,6 +4866,9 @@
                                     <constraint firstItem="OM7-RF-Vwr" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="oiB-Ka-nlX" secondAttribute="trailing" constant="8" symbolic="YES" id="oPQ-Eb-8fq"/>
                                     <constraint firstItem="oiB-Ka-nlX" firstAttribute="leading" secondItem="EIl-yz-1L9" secondAttribute="leading" constant="20" id="qhd-k8-DUO"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="xjS-c1-aJv" appends="YES" id="uEM-OU-IQA"/>
+                                </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rkc-mm-e9L">
                                 <rect key="frame" x="0.0" y="192" width="414" height="52"/>
@@ -4888,6 +4892,7 @@
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstItem="Kbq-0U-zns" firstAttribute="leading" secondItem="rkc-mm-e9L" secondAttribute="leading" constant="20" id="14h-eD-m7Y"/>
                                     <constraint firstItem="LFl-Ne-LVv" firstAttribute="top" secondItem="rkc-mm-e9L" secondAttribute="top" id="D36-cZ-5nh"/>
@@ -4897,6 +4902,9 @@
                                     <constraint firstAttribute="trailing" secondItem="LFl-Ne-LVv" secondAttribute="trailing" id="tsx-Rz-uL0"/>
                                     <constraint firstItem="Kbq-0U-zns" firstAttribute="centerY" secondItem="rkc-mm-e9L" secondAttribute="centerY" id="zgs-kI-pO5"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="ISC-Va-NYX" appends="YES" id="Wy8-N6-BKx"/>
+                                </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pib-Fp-cuw">
                                 <rect key="frame" x="0.0" y="88" width="414" height="52"/>
@@ -4913,12 +4921,10 @@
                                             <constraint firstAttribute="width" constant="54" id="WpZ-Is-Vua"/>
                                         </constraints>
                                         <state key="normal" image="&gt;_icon"/>
-                                        <connections>
-                                            <action selector="createWallet:" destination="XmC-gT-XUb" eventType="touchUpInside" id="cKY-Jc-vFh"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstItem="Bb0-Ls-eio" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="DDf-81-qwU" secondAttribute="trailing" constant="8" symbolic="YES" id="0pW-OZ-aA0"/>
                                     <constraint firstItem="DDf-81-qwU" firstAttribute="centerY" secondItem="Pib-Fp-cuw" secondAttribute="centerY" id="2H3-d6-mL3"/>
@@ -4928,6 +4934,9 @@
                                     <constraint firstAttribute="height" constant="52" id="XIy-6m-Lzk"/>
                                     <constraint firstAttribute="bottom" secondItem="Bb0-Ls-eio" secondAttribute="bottom" id="q8S-ER-hIC"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="xYl-9P-K7N" appends="YES" id="Oen-Xk-7eZ"/>
+                                </connections>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="60E-Pm-6U0"/>
@@ -4950,6 +4959,21 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hKd-ek-SfO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="LfT-9O-rnp" userLabel="Exit" sceneMemberID="exit"/>
+                <tapGestureRecognizer id="xYl-9P-K7N">
+                    <connections>
+                        <action selector="createWallet:" destination="XmC-gT-XUb" id="eJh-mJ-skr"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="xjS-c1-aJv">
+                    <connections>
+                        <action selector="scanner:" destination="XmC-gT-XUb" id="nCy-gl-dsH"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="ISC-Va-NYX">
+                    <connections>
+                        <action selector="exportAccount:" destination="XmC-gT-XUb" id="cg0-w7-iET"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1129" y="3078"/>
         </scene>
