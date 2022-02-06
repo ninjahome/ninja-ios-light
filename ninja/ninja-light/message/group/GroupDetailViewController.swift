@@ -9,44 +9,51 @@ import UIKit
 
 class GroupDetailViewController: UIViewController {
 
-        @IBOutlet weak var groupTitle: UINavigationItem!
         @IBOutlet weak var collectionView: UICollectionView!
-
-        @IBOutlet weak var deleteMemberLabel: UILabel!
         @IBOutlet weak var deleteMemberBtn: UIButton!
-
-        @IBOutlet weak var groupNameBtn: UIButton!
-        @IBOutlet weak var selfNickBtn: UIButton!
-    
-        var groupItem: GroupItem?
+        @IBOutlet weak var viewTitle: UINavigationItem!
+        
+        var groupID: String = ""
+        var groupName:String = ""
+        var groupData:GroupItem!
+        var leaderManagerd:Bool = false
+        
         override func viewDidLoad() {
                 super.viewDidLoad()
                 collectionView.delegate = self
                 collectionView.dataSource = self
-
-                groupTitle.title = groupItem?.groupName
-
-                self.collectionView.reloadData()
-                if let group = groupItem, group.leader != Wallet.shared.Addr {
-                        deleteMemberBtn.isHidden = true
-                        deleteMemberLabel.isHidden = true
+                guard let data = GroupItem.cache[groupID] else{
+                        self.toastMessage(title: "invalid group meta")
+                        return//dismiss //TODO::
                 }
-
-                groupNameBtn.setTitle(groupItem?.groupName, for: .normal)
-                selfNickBtn.setTitle(groupItem?.memberInfos[Wallet.shared.Addr!], for: .normal)
+                self.groupData = data
+                self.leaderManagerd = data.leader == Wallet.shared.Addr
+                setupView()
+        }
+        
+        private func setupView(){
+                if let n = groupData?.groupName, !n.isEmpty{
+                        groupName = n
+                }else{
+                        groupName = groupID
+                }
+                
+                deleteMemberBtn.isEnabled = self.leaderManagerd
+                viewTitle.title = groupName
         }
         
         @IBAction func addMemberBtn(_ sender: UIButton) {
                 let vc = instantiateViewController(vcID: "AddGrpMemberVC") as! GroupMemberViewController
                 vc.isAddMember = true
-                if let group = groupItem {
-                        vc.groupItem = group
-                        vc.existMember = group.memberIds
-                }
+                vc.groupItem = groupData!
+                vc.existMember = groupData!.memberIds
 
                 vc.notiMemberChange = { newGroupInfo in
-                        self.groupItem = newGroupInfo
-                        self.collectionView.reloadData()
+                        self.groupData = newGroupInfo
+                        DispatchQueue.main.async {
+                                self.setupView()
+                                self.collectionView.reloadData()
+                        }
                 }
                 self.navigationController?.pushViewController(vc, animated: true)
         }
@@ -57,7 +64,7 @@ class GroupDetailViewController: UIViewController {
     
         @IBAction func quitOrDismissGroup(_ sender: UIButton) {
 
-                if let group = groupItem {
+                if let group = groupData {
                         let err = GroupItem.QuitGroup(groupItem: group)
                         if err != nil {
                                 self.toastMessage(title: "quit group error.\(String(describing: err?.localizedDescription))")
@@ -69,11 +76,11 @@ class GroupDetailViewController: UIViewController {
         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
                 if segue.identifier == "KickMemberSeg" {
                         let vc: DeleteMemberController = segue.destination as! DeleteMemberController
-                        vc.groupItem = groupItem
-                        vc.existMember = groupItem?.memberIds ?? []
+                        vc.groupItem = groupData
+                        vc.existMember = groupData?.memberIds ?? []
 
                         vc.notiMemberChange = { newGroupInfo in
-                                self.groupItem = newGroupInfo
+                                self.groupData = newGroupInfo
                                 self.collectionView.reloadData()
                         }
                 }
@@ -83,11 +90,7 @@ class GroupDetailViewController: UIViewController {
 extension GroupDetailViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
         func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-                if let idCount = groupItem?.memberIds.count {
-                        print("\(idCount+1)")
-                        return idCount+2
-                }
-                return 1
+                return groupData.memberIds.count + 1
         }
 
         func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -96,17 +99,24 @@ extension GroupDetailViewController: UICollectionViewDelegateFlowLayout, UIColle
                         return cell
                 }
                 
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AvatarCollectionCell", for: indexPath) as! AvatarCollectionCell
-                
-                if let group = groupItem {
-                        var ids: [String] = group.memberIds
-                        ids.append(group.leader!)
-        
-                        let id = ids[indexPath.row - 1]
-                        cell.initApperance(id: id)
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AvatarCollectionCell", for: indexPath)
+                guard let c = cell as? AvatarCollectionCell else{
+                        return cell
                 }
+                let id = groupData.memberIds[indexPath.row - 1]
+                c.initApperance(id: id)
 
                 return cell
         }
+}
 
+extension GroupDetailViewController{
+        
+        @IBAction func kickMemberViewTap(_ gesture: UITapGestureRecognizer) {
+                if !self.leaderManagerd{
+                        self.toastMessage(title: "only leader valid")
+                        return
+                }
+                self.performSegue(withIdentifier: "KickMemberSeg", sender: self)
+        }
 }

@@ -223,7 +223,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 
                 if segue.identifier == "ShowGroupDetailSeg" {
                         let vc: GroupDetailViewController = segue.destination as! GroupDetailViewController
-                        vc.groupItem = GroupItem.cache[peerUid] 
+                        vc.groupID =  peerUid
                 }
                 
         }
