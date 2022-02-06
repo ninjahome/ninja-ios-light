@@ -64,7 +64,6 @@ extension GroupListViewController: UITableViewDelegate, UITableViewDataSource {
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
                 let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController
                 let item = groupArray[indexPath.row]
-                vc.groupData = item
                 vc.IS_GROUP = true
                 vc.peerUid = item.gid
                 self.navigationController?.pushViewController(vc, animated: true)

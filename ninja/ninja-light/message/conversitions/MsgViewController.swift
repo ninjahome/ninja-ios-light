@@ -39,7 +39,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         var peerUid: String = ""
         var peerAvatarData:Data?
         var peerName:String=""
-        var groupData:GroupItem?
         var msgCacheArray: [MessageItem] = []
         var indexPathCache:[Int64:IndexPath] = [:]
         
@@ -170,13 +169,13 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         private func setPeerBasic() {
-                if IS_GROUP {//TODO::
-                        groupData = GroupItem.cache[peerUid]
-                        var count: String = "?"
-                        if let memberCount = self.groupData?.memberIds.count {
-                                count = String(memberCount+1)
+                if IS_GROUP {
+                        guard let groupData = GroupItem.cache[peerUid] else{
+                                print("------>>> invalid group infos for current chat window")
+                                return
                         }
-                        self.peerNickName.title = "\(self.groupData?.groupName ?? "群聊")(\(count))"
+                        let count =  groupData.memberIds.count
+                        self.peerNickName.title = "(\(count))\(groupData.groupName ?? peerUid)"
                         return
                 }
                 
@@ -218,7 +217,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 
                 if segue.identifier == "ShowGroupDetailSeg" {
                         let vc: GroupDetailViewController = segue.destination as! GroupDetailViewController
-                        vc.groupItem = self.groupData
+                        vc.groupItem = GroupItem.cache[peerUid] 
                 }
                 
         }

@@ -3082,11 +3082,8 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7yf-Ma-FVZ">
-                                                    <rect key="frame" x="88" y="20.5" width="40.5" height="19"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="180" id="xPU-Mq-p4K"/>
-                                                    </constraints>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7yf-Ma-FVZ">
+                                                    <rect key="frame" x="88" y="20.5" width="286" height="19"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -3095,6 +3092,7 @@
                                             <constraints>
                                                 <constraint firstItem="bmX-nI-DdT" firstAttribute="leading" secondItem="u3h-I6-sJP" secondAttribute="leading" constant="20" symbolic="YES" id="00X-e8-7Jy"/>
                                                 <constraint firstItem="7yf-Ma-FVZ" firstAttribute="centerY" secondItem="u3h-I6-sJP" secondAttribute="centerY" id="Exw-Fl-mLU"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="7yf-Ma-FVZ" secondAttribute="trailing" constant="20" id="N8P-I5-UpV"/>
                                                 <constraint firstItem="bmX-nI-DdT" firstAttribute="centerY" secondItem="u3h-I6-sJP" secondAttribute="centerY" id="mn9-tU-BOK"/>
                                                 <constraint firstItem="7yf-Ma-FVZ" firstAttribute="leading" secondItem="bmX-nI-DdT" secondAttribute="trailing" constant="20" id="rjW-4Y-dnc"/>
                                             </constraints>
@@ -3125,7 +3123,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5bP-1n-A2W" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1562" y="1682"/>
+            <point key="canvasLocation" x="1560.8695652173915" y="1681.4732142857142"/>
         </scene>
         <!--Search Detail View Controller-->
         <scene sceneID="omo-pD-z6y">

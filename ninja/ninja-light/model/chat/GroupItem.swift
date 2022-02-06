@@ -53,6 +53,7 @@ class GroupItem: NSObject {
                 self.leader = wallet
                 self.unixTime = Int64(Date().timeIntervalSince1970)
                 self.isDelete = false
+                
                 if let avatarData = GroupItem.getGroupAvatar(ids:members){
                         avatar = avatarData
                 }else{
@@ -210,8 +211,8 @@ class GroupItem: NSObject {
         
         public static func NewGroup(ids: [String], groupName: String?)throws -> GroupItem{
                 
-                let leader = Wallet.shared.Addr!
-                var memIDs:[String] = [leader]
+                
+                var memIDs:[String] = []
                 memIDs.append(contentsOf: ids)
                 
                 let data = try JSON(memIDs).rawData()
@@ -225,6 +226,8 @@ class GroupItem: NSObject {
                 if let n = groupName, !n.isEmpty{
                         grpName = n
                 }
+                let leader = Wallet.shared.Addr!
+                memIDs.append(leader)
                 let item = GroupItem(gid:gid, name:grpName, members:memIDs)
                 try syncGroupMeta(item)
                 CDManager.shared.saveContext()

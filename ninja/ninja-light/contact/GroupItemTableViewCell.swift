@@ -14,7 +14,6 @@ class GroupItemTableViewCell: UITableViewCell {
         
         override func awakeFromNib() {
                 super.awakeFromNib()
-                // Initialization code
         }
         
         override func setSelected(_ selected: Bool, animated: Bool) {
@@ -22,7 +21,11 @@ class GroupItemTableViewCell: UITableViewCell {
         }
         
         func initWith(detail: GroupItem, idx: Int) {
-                self.groupName.text = detail.groupName
+                if let gp = detail.groupName, !gp.isEmpty{
+                        self.groupName.text = gp
+                }else{
+                        self.groupName.text = detail.gid
+                }
                 avatar.setup(id: detail.gid, avaData: detail.avatar)
         }
 
