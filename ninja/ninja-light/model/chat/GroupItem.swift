@@ -188,15 +188,18 @@ class GroupItem: NSObject {
         public static func getGroupAvatar(ids: [String]) -> Data? {
                 let defaultAvatarData = defaultAvatar.jpegData(compressionQuality: 1)!
                 var counter = 0
-                var imgData = defaultAvatarData
+                var imgData:Data?// = defaultAvatarData
                 for id in ids{
                         if counter >= 9{
                                 break
                         }
                         if id == Wallet.shared.Addr{
-                                imgData = Wallet.shared.avatarData ?? defaultAvatarData
+                                imgData = Wallet.shared.avatarData
                         }else{
-                                imgData = AccountItem.GetAccount(id)?.Avatar ?? defaultAvatarData
+                                (_, imgData) = ServiceDelegate.queryNickAndAvatar(pid: id)
+                        }
+                        if imgData == nil{
+                                imgData = defaultAvatarData
                         }
                         counter += 1
                         ChatLibAddImg(imgData)

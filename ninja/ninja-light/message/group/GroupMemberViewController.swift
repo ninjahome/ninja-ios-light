@@ -164,9 +164,13 @@ class GroupMemberViewController: UIViewController {
                                 let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController
                                 vc.peerUid = self.groupItem.gid
                                 vc.IS_GROUP = true
-                                self.navigationController?.pushViewController(vc, animated: true)
-                                NotificationCenter.default.post(name:NotifyGroupChanged,
-                                                                object: self.groupItem.gid, userInfo:nil)
+                                var vcs = self.navigationController?.viewControllers
+                                _ = vcs?.popLast()
+                                vcs!.append(vc)
+                                self.navigationController?.setViewControllers(vcs!, animated: true)
+//                                        self.navigationController?.pushViewController(vc, animated: true)
+                                        NotificationCenter.default.post(name:NotifyGroupChanged,
+                                                                        object: self.groupItem.gid, userInfo:nil)
                                 return
                         }
                 }

@@ -133,7 +133,7 @@ extension ServiceDelegate{
                 }
         }
         
-        public static func queryNickAndAvatar(pid:String, callback:((_ name:String?, _ avatar:Data?)->Void)?) ->(String?, Data?){
+        public static func queryNickAndAvatar(pid:String, callback:((_ name:String?, _ avatar:Data?)->Void)? = nil) ->(String?, Data?){
                 if let acc = CombineConntact.cache[pid]{
                         return (acc.GetNickName(), acc.account?.Avatar)
                 }
