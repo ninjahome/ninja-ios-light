@@ -174,8 +174,14 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                                 print("------>>> invalid group infos for current chat window")
                                 return
                         }
+                        
                         let count =  groupData.memberIds.count
-                        self.peerNickName.title = "(\(count))\(groupData.groupName ?? peerUid)"
+                        if let n = groupData.groupName, !n.isEmpty{
+                                self.peerNickName.title = "(\(count)) \(n)"
+                        }else{
+                                self.peerNickName.title = "(\(count)) \(peerUid)"
+                        }
+                       
                         return
                 }
                 
