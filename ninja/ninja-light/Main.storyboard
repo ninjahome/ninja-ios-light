@@ -595,8 +595,8 @@
                                         <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="群聊名称" textAlignment="right" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="img-RW-zq7">
-                                        <rect key="frame" x="276.5" y="12" width="65.5" height="20"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="群ID" textAlignment="right" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="img-RW-zq7">
+                                        <rect key="frame" x="310" y="12" width="32" height="20"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <color key="textColor" red="0.22745099660000001" green="0.22745099660000001" blue="0.31764706970000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <nil key="highlightedColor"/>
@@ -662,7 +662,7 @@
                     <connections>
                         <outlet property="changeNameView" destination="uzu-ty-Chx" id="OJ8-Wr-cPm"/>
                         <outlet property="collectionView" destination="zBb-sL-yTQ" id="XWv-g1-ibT"/>
-                        <outlet property="groupIDLabel" destination="tLQ-14-NEw" id="xsQ-LO-JWe"/>
+                        <outlet property="groupIDLabel" destination="img-RW-zq7" id="jIW-xR-MFO"/>
                         <outlet property="groupNameLabel" destination="ucn-1n-a4o" id="t8d-rF-SQc"/>
                         <outlet property="kickMemView" destination="y2h-8y-sDk" id="GT2-dt-z4m"/>
                         <outlet property="viewTitle" destination="hHC-6b-WII" id="uYh-ho-dqf"/>
