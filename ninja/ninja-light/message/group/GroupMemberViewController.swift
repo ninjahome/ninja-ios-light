@@ -111,8 +111,8 @@ class GroupMemberViewController: UIViewController {
                                 groupIds.append(validContactArr[i])
                         }
                         
-                        showInputDialog(title: "取个群名", message: "", textPlaceholder: "", actionText: "确定", cancelText: "暂不取名") { cancleAction in
-                                self.CreateGroup(member: groupIds, groupName: "")
+                        showInputDialog(title: "设置群名", message: "", textPlaceholder: "", actionText: "确定", cancelText: "取消") { cancleAction in
+                               return
                         } actionHandler: { text in
                                 self.CreateGroup(member: groupIds, groupName: text ?? "")
                         }
@@ -164,10 +164,13 @@ class GroupMemberViewController: UIViewController {
                                 let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController
                                 vc.peerUid = self.groupItem.gid
                                 vc.IS_GROUP = true
-                                var vcs = self.navigationController?.viewControllers
-                                _ = vcs?.popLast()
-                                vcs!.append(vc)
-                                self.navigationController?.setViewControllers(vcs!, animated: true)
+                                guard var vcs = self.navigationController?.viewControllers else{
+                                        self.navigationController?.pushViewController(vc, animated: true)
+                                        return
+                                }
+                                _ = vcs.popLast()
+                                vcs.append(vc)
+                                self.navigationController?.setViewControllers(vcs, animated: true)
                                 NotificationCenter.default.post(name:NotifyGroupChanged,
                                                                 object: self.groupItem.gid, userInfo:nil)
                                 return
