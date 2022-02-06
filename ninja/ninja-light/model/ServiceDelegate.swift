@@ -124,7 +124,7 @@ extension ServiceDelegate{
                         GroupItem.syncAllGroupDataAtOnce()
                         CombineConntact.syncAllContactDataAtOnce()
                         WebsocketSrv.shared.Online()
-                        
+                        CDManager.shared.saveContext()
                         parent.hideIndicator()
                         guard let cb = callback else{
                                 return

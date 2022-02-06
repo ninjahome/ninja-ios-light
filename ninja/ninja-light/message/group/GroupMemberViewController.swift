@@ -205,6 +205,12 @@ extension GroupMemberViewController: UITableViewDelegate, UITableViewDataSource 
                 c.cellDelegate = self
                 return c
         }
+        func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+                guard section == 1 else{
+                        return ""
+                }
+                return "非会员无权限"
+        }
 }
 
 extension GroupMemberViewController : CellClickDelegate {
