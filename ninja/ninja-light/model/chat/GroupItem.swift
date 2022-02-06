@@ -143,6 +143,7 @@ class GroupItem: NSObject {
                                                                            group.gid, group.owner!))
                 
                 cache[group.gid] = group
+                cache.updateValue(group, forKey: group.gid)
         }
         
         public static func DeleteGroup(_ gid: String) -> NJError? {
@@ -357,18 +358,17 @@ class GroupItem: NSObject {
                 
         }
         
-        public static func QuitGroup(groupItem: GroupItem) -> NJError? {
-                let gid = groupItem.gid
+        public static func QuitGroup(gid: String) -> NJError? {
                 var error: NSError?
                 _ = ChatLibDismissGroup(gid, &error)
                 if error != nil {
                         return NJError.group(error!.localizedDescription)
                 }
                 
-                
                 _ = GroupItem.DeleteGroup(gid)
                 ChatItem.remove(gid)
                 MessageItem.removeRead(gid)
+                CDManager.shared.saveContext()
                 
                 return nil
         }
@@ -383,7 +383,6 @@ class GroupItem: NSObject {
                         
                         group.memberIds = newIds
                         try GroupItem.syncGroupMeta(group)
-                        
                 }
                 
         }
@@ -396,6 +395,24 @@ class GroupItem: NSObject {
                 
                 return String(gid.prefix(2))
                 
+        }
+        
+        public static func updateGroupName(group:GroupItem, newName:String)->Error?{
+                
+                var err: NSError?
+                let hashTx = ChatLibChangeGroupName(group.gid, newName, &err)
+                
+                if let e = err{
+                        return e
+                }
+                
+                do{
+                        group.groupName = newName
+                        try syncGroupMeta(group)}catch let err{
+                        return err
+                }
+                print("------>>>group name update hash:\(hashTx)")
+                return nil
         }
 }
 

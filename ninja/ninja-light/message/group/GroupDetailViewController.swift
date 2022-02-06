@@ -10,8 +10,11 @@ import UIKit
 class GroupDetailViewController: UIViewController {
 
         @IBOutlet weak var collectionView: UICollectionView!
-        @IBOutlet weak var deleteMemberBtn: UIButton!
         @IBOutlet weak var viewTitle: UINavigationItem!
+        
+        @IBOutlet weak var kickMemView: UIView!
+        @IBOutlet weak var changeNameView: UIView!
+        @IBOutlet weak var groupNameLabel: UILabel!
         
         var groupID: String = ""
         var groupName:String = ""
@@ -38,8 +41,10 @@ class GroupDetailViewController: UIViewController {
                         groupName = groupID
                 }
                 
-                deleteMemberBtn.isEnabled = self.leaderManagerd
+                kickMemView.isHidden = self.leaderManagerd
+                changeNameView.isHidden = self.leaderManagerd
                 viewTitle.title = groupName
+                groupNameLabel.text = groupName
         }
         
         @IBAction func addMemberBtn(_ sender: UIButton) {
@@ -63,14 +68,11 @@ class GroupDetailViewController: UIViewController {
         }
     
         @IBAction func quitOrDismissGroup(_ sender: UIButton) {
-
-                if let group = groupData {
-                        let err = GroupItem.QuitGroup(groupItem: group)
-                        if err != nil {
-                                self.toastMessage(title: "quit group error.\(String(describing: err?.localizedDescription))")
-                        }
+                if leaderManagerd{
+                        dismissGroup()
+                }else{
+                        quitFromGroup()
                 }
-                self.navigationController?.popToRootViewController(animated: true)
         }
     
         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -84,6 +86,32 @@ class GroupDetailViewController: UIViewController {
                                 self.collectionView.reloadData()
                         }
                 }
+        }
+        
+        private func dismissGroup(){
+                self.ShowYesOrNo(msg: "You're owner and group will be dissmiessed",No: nil){
+                        self.showIndicator(withTitle: "", and: "deleting group")
+                        ServiceDelegate.workQueue.async {
+                                defer{
+                                        self.hideIndicator()
+                                }
+                                if let err = GroupItem.QuitGroup(gid:self.groupID){
+                                        self.toastMessage(title: "\(err.localizedDescription!)")
+                                        return
+                                }
+                                
+                                DispatchQueue.main.async {
+                                        self.navigationController?.popToRootViewController(animated: true)
+                                        NotificationCenter.default.post(name:NotifyGroupChanged,
+                                                                        object: self.groupID, userInfo:nil)
+                                }
+                        }
+                }
+                
+        }
+        
+        private func quitFromGroup(){
+                
         }
 }
 
@@ -118,5 +146,29 @@ extension GroupDetailViewController{
                         return
                 }
                 self.performSegue(withIdentifier: "KickMemberSeg", sender: self)
+        }
+        
+        @IBAction func updateGroupNameViewTap(_ gesture: UITapGestureRecognizer) {
+                
+                self.showInputDialog(title: "New Group Name", message: "", textPlaceholder: "Group Name", actionText: "OK", cancelText: "Cacel", cancelHandler: nil) { text in
+                        guard let newName = text else{
+                                self.toastMessage(title: "invalid new group name", duration: 2)
+                                return
+                        }
+                        
+                        let err = GroupItem.updateGroupName(group:self.groupData, newName:newName)
+                        if let e = err{
+                                self.toastMessage(title: "\(e.localizedDescription)")
+                                return
+                        }
+                        DispatchQueue.main.async {
+                                self.groupName = newName
+                                self.viewTitle.title = newName
+                                self.groupNameLabel.text = newName
+                        }
+                        
+                        NotificationCenter.default.post(name:NotifyGroupChanged,
+                                                        object: self.groupID, userInfo:nil)
+                }
         }
 }

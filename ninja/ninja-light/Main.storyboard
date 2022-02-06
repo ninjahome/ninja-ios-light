@@ -498,7 +498,7 @@
                                 </cells>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y2h-8y-sDk" userLabel="deleteView">
-                                <rect key="frame" x="0.0" y="429" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="475" width="414" height="44"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ARq-WA-iES">
                                         <rect key="frame" x="356" y="7" width="38" height="30"/>
@@ -531,8 +531,50 @@
                                     <outletCollection property="gestureRecognizers" destination="nrp-Vk-fyb" appends="YES" id="yKC-gS-Ti3"/>
                                 </connections>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uzu-ty-Chx" userLabel="chaneNamView">
+                                <rect key="frame" x="0.0" y="429" width="414" height="44"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jfB-JS-LB5">
+                                        <rect key="frame" x="356" y="7" width="38" height="30"/>
+                                        <inset key="contentEdgeInsets" minX="15" minY="4" maxX="0.0" maxY="4"/>
+                                        <state key="normal" image="&gt;_icon"/>
+                                        <connections>
+                                            <action selector="kickMemberBtn:" destination="kwp-eE-p9L" eventType="touchUpInside" id="93g-zq-0rU"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="群聊名称" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hdi-pP-J1V">
+                                        <rect key="frame" x="20" y="12" width="65.5" height="20"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="群聊名称" textAlignment="right" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ucn-1n-a4o">
+                                        <rect key="frame" x="282.5" y="12" width="65.5" height="20"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <color key="textColor" red="0.22745099660000001" green="0.22745099660000001" blue="0.31764706970000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <accessibility key="accessibilityConfiguration" label="DeleteMemberView">
+                                    <bool key="isElement" value="NO"/>
+                                </accessibility>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="jfB-JS-LB5" secondAttribute="trailing" constant="20" id="1gQ-dO-aSs"/>
+                                    <constraint firstItem="hdi-pP-J1V" firstAttribute="centerY" secondItem="uzu-ty-Chx" secondAttribute="centerY" id="8Mg-MH-hWe"/>
+                                    <constraint firstItem="jfB-JS-LB5" firstAttribute="leading" secondItem="ucn-1n-a4o" secondAttribute="trailing" constant="8" id="9rD-V8-1T3"/>
+                                    <constraint firstAttribute="height" constant="44" id="PNL-cB-54h"/>
+                                    <constraint firstItem="hdi-pP-J1V" firstAttribute="leading" secondItem="uzu-ty-Chx" secondAttribute="leading" constant="20" id="YP4-b4-tR5"/>
+                                    <constraint firstItem="ucn-1n-a4o" firstAttribute="centerY" secondItem="uzu-ty-Chx" secondAttribute="centerY" id="aJO-k7-2mN"/>
+                                    <constraint firstItem="jfB-JS-LB5" firstAttribute="centerY" secondItem="hdi-pP-J1V" secondAttribute="centerY" id="rAd-Xb-GZ2"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="DdI-5s-By5" appends="YES" id="0ok-Ai-Cpi"/>
+                                </connections>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="At7-ob-eIK">
-                                <rect key="frame" x="20" y="503" width="374" height="48"/>
+                                <rect key="frame" x="20" y="745" width="374" height="48"/>
                                 <color key="backgroundColor" red="0.95294117647058818" green="0.96078431372549022" blue="0.95686274509803915" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="SpE-t8-Snb"/>
@@ -556,19 +598,24 @@
                         <constraints>
                             <constraint firstItem="c8g-nL-qfY" firstAttribute="trailing" secondItem="y2h-8y-sDk" secondAttribute="trailing" id="7Jc-sO-eeo"/>
                             <constraint firstItem="y2h-8y-sDk" firstAttribute="leading" secondItem="CA1-PW-Iim" secondAttribute="leading" id="9n6-ut-hcc"/>
-                            <constraint firstItem="y2h-8y-sDk" firstAttribute="top" secondItem="zBb-sL-yTQ" secondAttribute="bottom" constant="20" id="Ok9-Iy-4es"/>
+                            <constraint firstItem="uzu-ty-Chx" firstAttribute="top" secondItem="zBb-sL-yTQ" secondAttribute="bottom" constant="20" id="FQA-1V-RXw"/>
+                            <constraint firstItem="y2h-8y-sDk" firstAttribute="top" secondItem="uzu-ty-Chx" secondAttribute="bottom" constant="2" id="N5R-6j-hgw"/>
                             <constraint firstItem="zBb-sL-yTQ" firstAttribute="top" secondItem="c8g-nL-qfY" secondAttribute="top" constant="1" id="QF8-sN-gGi"/>
+                            <constraint firstItem="uzu-ty-Chx" firstAttribute="trailing" secondItem="c8g-nL-qfY" secondAttribute="trailing" id="VtD-yh-m8J"/>
                             <constraint firstItem="zBb-sL-yTQ" firstAttribute="leading" secondItem="c8g-nL-qfY" secondAttribute="leading" id="Zyl-fX-tsL"/>
                             <constraint firstItem="At7-ob-eIK" firstAttribute="leading" secondItem="c8g-nL-qfY" secondAttribute="leading" constant="20" id="bmJ-5c-iQL"/>
+                            <constraint firstItem="uzu-ty-Chx" firstAttribute="leading" secondItem="c8g-nL-qfY" secondAttribute="leading" id="gJh-v8-MGd"/>
                             <constraint firstItem="c8g-nL-qfY" firstAttribute="trailing" secondItem="zBb-sL-yTQ" secondAttribute="trailing" id="gLl-hp-Fuf"/>
                             <constraint firstItem="c8g-nL-qfY" firstAttribute="trailing" secondItem="At7-ob-eIK" secondAttribute="trailing" constant="20" id="hRK-Vk-0aR"/>
-                            <constraint firstItem="At7-ob-eIK" firstAttribute="top" secondItem="y2h-8y-sDk" secondAttribute="bottom" constant="30" id="ySq-Ng-ojf"/>
+                            <constraint firstItem="c8g-nL-qfY" firstAttribute="bottom" secondItem="At7-ob-eIK" secondAttribute="bottom" constant="20" id="ySq-Ng-ojf"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="hHC-6b-WII"/>
                     <connections>
+                        <outlet property="changeNameView" destination="uzu-ty-Chx" id="OJ8-Wr-cPm"/>
                         <outlet property="collectionView" destination="zBb-sL-yTQ" id="XWv-g1-ibT"/>
-                        <outlet property="deleteMemberBtn" destination="ARq-WA-iES" id="QM1-HC-nTh"/>
+                        <outlet property="groupNameLabel" destination="ucn-1n-a4o" id="t8d-rF-SQc"/>
+                        <outlet property="kickMemView" destination="y2h-8y-sDk" id="GT2-dt-z4m"/>
                         <outlet property="viewTitle" destination="hHC-6b-WII" id="uYh-ho-dqf"/>
                         <segue destination="NiN-dG-WjP" kind="show" identifier="KickMemberSeg" id="JRU-PI-GFU"/>
                     </connections>
@@ -577,6 +624,11 @@
                 <tapGestureRecognizer id="nrp-Vk-fyb">
                     <connections>
                         <action selector="kickMemberViewTap:" destination="kwp-eE-p9L" id="gp9-Gv-vOz"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="DdI-5s-By5">
+                    <connections>
+                        <action selector="updateGroupNameViewTap:" destination="kwp-eE-p9L" id="mfH-ze-pgh"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>

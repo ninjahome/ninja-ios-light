@@ -504,6 +504,22 @@ extension UIViewController {
                 }
         }
         
+        func ShowYesOrNo(msg:String, No:(()->())? = nil, Yes:(()->())? = nil){
+                DispatchQueue.main.async {
+                        let ac = UIAlertController(title: "Tips!", message: msg, preferredStyle: .alert)
+                        ac.addAction(UIAlertAction(title: "NO", style: .cancel, handler: { aa in
+                                ac.dismiss(animated: true)
+                                No?()
+                        }))
+                        ac.addAction(UIAlertAction(title: "Yes", style: .default, handler: { aa in
+                                ac.dismiss(animated: true)
+                                Yes?()
+                        }))
+                        self.present(ac, animated: true)
+                }
+        }
+        
+        
         func showPwdInput(title: String, placeHolder:String?, securityShow:Bool = false, type:UIKeyboardType = .default, nextAction:((String?, Bool)->Void)?) {
                 let ap = AlertPayload(title: title,
                                       placeholderTxt: placeHolder,

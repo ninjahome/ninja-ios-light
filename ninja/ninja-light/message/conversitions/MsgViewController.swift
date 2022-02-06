@@ -96,6 +96,12 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                                                        name: NotifyContactChanged,
                                                        object: nil)
                 NotificationCenter.default.addObserver(self,
+                                                       selector:#selector(contactUpdate(notification:)),
+                                                       name: NotifyGroupChanged,
+                                                       object: nil)
+                
+                
+                NotificationCenter.default.addObserver(self,
                                                        selector: #selector(keyboardWillShow(notification:)),
                                                        name: UIResponder.keyboardWillShowNotification,
                                                        object: nil)
@@ -169,7 +175,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         private func setPeerBasic() {
-                if IS_GROUP {
+                if IS_GROUP {//TODO::
                         guard let groupData = GroupItem.cache[peerUid] else{
                                 print("------>>> invalid group infos for current chat window")
                                 return
