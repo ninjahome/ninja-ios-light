@@ -41,8 +41,8 @@ class GroupDetailViewController: UIViewController {
                         groupName = groupID
                 }
                 
-                kickMemView.isHidden = self.leaderManagerd
-                changeNameView.isHidden = self.leaderManagerd
+                kickMemView.isHidden = !self.leaderManagerd
+                changeNameView.isHidden = !self.leaderManagerd
                 viewTitle.title = groupName
                 groupNameLabel.text = groupName
         }

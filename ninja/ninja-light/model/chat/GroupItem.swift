@@ -411,6 +411,7 @@ class GroupItem: NSObject {
                         try syncGroupMeta(group)}catch let err{
                         return err
                 }
+                CDManager.shared.saveContext()
                 print("------>>>group name update hash:\(hashTx)")
                 return nil
         }

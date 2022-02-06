@@ -567,6 +567,7 @@
                                     <constraint firstAttribute="height" constant="44" id="PNL-cB-54h"/>
                                     <constraint firstItem="hdi-pP-J1V" firstAttribute="leading" secondItem="uzu-ty-Chx" secondAttribute="leading" constant="20" id="YP4-b4-tR5"/>
                                     <constraint firstItem="ucn-1n-a4o" firstAttribute="centerY" secondItem="uzu-ty-Chx" secondAttribute="centerY" id="aJO-k7-2mN"/>
+                                    <constraint firstItem="ucn-1n-a4o" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hdi-pP-J1V" secondAttribute="trailing" constant="8" id="q9s-Cd-Scu"/>
                                     <constraint firstItem="jfB-JS-LB5" firstAttribute="centerY" secondItem="hdi-pP-J1V" secondAttribute="centerY" id="rAd-Xb-GZ2"/>
                                 </constraints>
                                 <connections>
@@ -610,7 +611,7 @@
                             <constraint firstItem="c8g-nL-qfY" firstAttribute="bottom" secondItem="At7-ob-eIK" secondAttribute="bottom" constant="20" id="ySq-Ng-ojf"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="hHC-6b-WII"/>
+                    <navigationItem key="navigationItem" leftItemsSupplementBackButton="YES" id="hHC-6b-WII"/>
                     <connections>
                         <outlet property="changeNameView" destination="uzu-ty-Chx" id="OJ8-Wr-cPm"/>
                         <outlet property="collectionView" destination="zBb-sL-yTQ" id="XWv-g1-ibT"/>
@@ -876,7 +877,7 @@
         <!--NickName-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="MsgVC" modalPresentationStyle="fullScreen" hidesBottomBarWhenPushed="YES" id="BYZ-38-t0r" customClass="MsgViewController" customModule="ninja_light" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MsgVC" modalPresentationStyle="fullScreen" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="MsgViewController" customModule="ninja_light" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="2200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2438,6 +2439,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="NickName" id="vfJ-LT-acQ">
+                        <barButtonItem key="backBarButtonItem" title=" " id="qgI-dH-Lwn"/>
                         <barButtonItem key="leftBarButtonItem" title="Item" image="nav_back_icon" id="Zqr-be-pUf">
                             <color key="tintColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
