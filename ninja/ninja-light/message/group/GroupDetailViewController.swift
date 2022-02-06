@@ -15,6 +15,7 @@ class GroupDetailViewController: UIViewController {
         @IBOutlet weak var kickMemView: UIView!
         @IBOutlet weak var changeNameView: UIView!
         @IBOutlet weak var groupNameLabel: UILabel!
+        @IBOutlet weak var groupIDLabel: UILabel!
         
         var groupID: String = ""
         var groupName:String = ""
@@ -37,14 +38,13 @@ class GroupDetailViewController: UIViewController {
         private func setupView(){
                 if let n = groupData?.groupName, !n.isEmpty{
                         groupName = n
-                }else{
-                        groupName = groupID
                 }
                 
                 kickMemView.isHidden = !self.leaderManagerd
                 changeNameView.isHidden = !self.leaderManagerd
                 viewTitle.title = groupName
                 groupNameLabel.text = groupName
+                groupIDLabel.text = groupID
         }
         
         @IBAction func addMemberBtn(_ sender: UIButton) {
@@ -63,6 +63,11 @@ class GroupDetailViewController: UIViewController {
                 self.navigationController?.pushViewController(vc, animated: true)
         }
     
+        @IBAction func copyGroupID(_ sender: UIButton) {
+                UIPasteboard.general.string = groupID
+                self.toastMessage(title: "copy success", duration: 1)
+        }
+        
         @IBAction func kickMemberBtn(_ sender: UIButton) {
                 self.performSegue(withIdentifier: "KickMemberSeg", sender: self)
         }
@@ -153,7 +158,7 @@ extension GroupDetailViewController{
                                 defer{
                                         self.hideIndicator()
                                 }
-                                if let err = GroupItem.QuitGroup(gid:self.groupID){
+                                if let err = GroupItem.DismissGroup(gid:self.groupID){
                                         self.toastMessage(title: "\(err.localizedDescription!)")
                                         return
                                 }

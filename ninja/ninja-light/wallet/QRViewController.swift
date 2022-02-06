@@ -35,7 +35,7 @@ class QRViewController: UIViewController {
     
     @IBAction func copyAddr(_ sender: UIButton) {
         UIPasteboard.general.string = Wallet.shared.Addr
-        self.toastMessage(title: "Copy Success")
+        self.toastMessage(title: "Copy Success",duration: 1)
     }
     
     @IBAction func downloadQR(_ sender: UIButton) {

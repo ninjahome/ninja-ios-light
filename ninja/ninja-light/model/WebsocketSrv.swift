@@ -75,6 +75,11 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
         }
         
         func groupUpdate(_ p0: Data?) {
+                guard let data = p0 else{
+                        print("------>>>[groupUpdate] invalid group update data")
+                        return
+                }
+                print("------>>>[groupUpdate] group data=>", String(data:data, encoding: .utf8))
         }
         
         func grpIM(_ from: String?, gid: String?, cryptKey: Data?, decoded: Data?, payload: Data?, time: Int64) throws {

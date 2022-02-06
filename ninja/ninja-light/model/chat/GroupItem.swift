@@ -358,7 +358,7 @@ class GroupItem: NSObject {
                 
         }
         
-        public static func QuitGroup(gid: String) -> NJError? {
+        public static func DismissGroup(gid: String) -> NJError? {
                 var error: NSError?
                 _ = ChatLibDismissGroup(gid, &error)
                 if error != nil {
@@ -445,19 +445,9 @@ extension GroupItem: ModelObj {
                 self.groupName = cObj.name
                 self.owner = cObj.owner
                 self.memberIds = cObj.members as? [String] ?? []
-                //                self.memberNicks = cObj.memberNicks as? NSArray
                 self.unixTime = cObj.unixTime
                 self.leader = cObj.leader
                 self.avatar = cObj.avatar
                 self.isDelete = cObj.isDelete
-                //                self.UpdateSelfInfos()
-                //        let ids = self.memberIds!
-                //        let nicks = self.memberNicks!
-                //        let count = min(ids.count, nicks.count)
-                //
-                //        for i in 0 ..< count {
-                //            self.memberInfos[ids[i] as! String] = nicks[i] as? String
-                //        }
-                
         }
 }
