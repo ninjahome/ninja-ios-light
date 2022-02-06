@@ -40,6 +40,21 @@ class GroupMemberViewController: UIViewController {
                 self.tableView.tableFooterView = UIView()
                 
                 contactsFilter()
+                NotificationCenter.default.addObserver(self,
+                                                       selector:#selector(updateGroupList(notification:)),
+                                                       name: NotifyGroupChanged,
+                                                       object: nil)
+        }
+        
+        deinit {
+                NotificationCenter.default.removeObserver(self)
+        }
+        
+        @objc func updateGroupList(notification: NSNotification) {
+                contactsFilter()
+                DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                }
         }
         
         fileprivate func contactsFilter(){
@@ -130,13 +145,15 @@ class GroupMemberViewController: UIViewController {
                         defer{
                                 self.hideIndicator()
                         }
-                        if let err = CombineConntact.updateSetOfContact(ids: member){
-                                self.toastMessage(title: "\(err.localizedDescription)")
+                        
+                        let validMemIDs = CombineConntact.updateSetOfContact(ids: member)
+                        if validMemIDs.count < 2{
+                                self.toastMessage(title: "too less valid friend")
                                 return
                         }
                         
                         do {
-                                self.groupItem = try GroupItem.NewGroup(ids: member,
+                                self.groupItem = try GroupItem.NewGroup(ids: validMemIDs,
                                                                         groupName: groupName)
                                 
                         }catch let err{

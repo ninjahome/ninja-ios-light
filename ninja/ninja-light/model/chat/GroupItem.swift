@@ -208,13 +208,11 @@ class GroupItem: NSObject {
                 return nil
         }
         
-        public static func NewGroup(ids: [CombineConntact], groupName: String?)throws -> GroupItem{
+        public static func NewGroup(ids: [String], groupName: String?)throws -> GroupItem{
                 
                 let leader = Wallet.shared.Addr!
                 var memIDs:[String] = [leader]
-                for cont in ids{
-                        memIDs.append(cont.peerID)
-                }
+                memIDs.append(contentsOf: ids)
                 
                 let data = try JSON(memIDs).rawData()
                 

@@ -27,6 +27,9 @@ class GroupListViewController: UIViewController {
                                                        object: nil)
                 
         }
+        deinit {
+                NotificationCenter.default.removeObserver(self)
+        }
         
         @objc func updateGroupList(notification: NSNotification) {
                 if  let gid = notification.object as? String{
@@ -60,7 +63,7 @@ extension GroupListViewController: UITableViewDelegate, UITableViewDataSource {
         
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
                 let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController
-                let item = GroupItem.CacheArray()[indexPath.row]
+                let item = groupArray[indexPath.row]
                 vc.groupData = item
                 vc.IS_GROUP = true
                 vc.peerUid = item.gid

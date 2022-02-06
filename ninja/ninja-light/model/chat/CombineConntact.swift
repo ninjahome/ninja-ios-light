@@ -176,14 +176,24 @@ class CombineConntact: NSObject{
                 return newContact
         }
         
-        public static func updateSetOfContact(ids:[CombineConntact]) -> Error?{
+        public static func updateSetOfContact(ids:[CombineConntact]) -> [String]{
                 var modified = false
+                var tips:String=""
+                var validPid:[String] = []
                 for cont in ids {
                         let pid = cont.peerID
                         guard let item = fetchContactFromChain(pid: pid) else{
-                                return NJError.contact("\(pid) is invalid contact")
+                                print("------>>>\(pid) is invalid contact")
+                                tips.append(cont.GetNickName() ?? pid)
+                                tips.append(",")
+                                continue
                         }
-                        if item.account?.Nonce == cont.account?.Nonce{
+                        guard let newNonce = item.account?.Nonce else{
+                                continue
+                        }
+                        
+                        validPid.append(pid)
+                        if newNonce == cont.account?.Nonce{
                                 continue
                         }
                         
@@ -192,12 +202,11 @@ class CombineConntact: NSObject{
                         modified = true
                 }
                 
-                if !modified{
-                        return nil
+                if modified{
+                        NotificationCenter.default.post(name:NotifyContactChanged,
+                                                        object: nil, userInfo:nil)
                 }
-                NotificationCenter.default.post(name:NotifyContactChanged,
-                                                object: nil, userInfo:nil)
-                return nil
+                return validPid
         }
         
         public static func updatePatialContacts() {
@@ -272,8 +281,6 @@ class CombineConntact: NSObject{
                                 print("------>>> save account detail failed:\(err?.localizedDescription ?? "<->")")
                         }
                         cc.account = accItem
-                }else{
-                        cc.account = AccountItem(addr: uid)
                 }
                 
                 if json["demo"].exists(){
