@@ -168,9 +168,8 @@ class GroupMemberViewController: UIViewController {
                                 _ = vcs?.popLast()
                                 vcs!.append(vc)
                                 self.navigationController?.setViewControllers(vcs!, animated: true)
-//                                        self.navigationController?.pushViewController(vc, animated: true)
-                                        NotificationCenter.default.post(name:NotifyGroupChanged,
-                                                                        object: self.groupItem.gid, userInfo:nil)
+                                NotificationCenter.default.post(name:NotifyGroupChanged,
+                                                                object: self.groupItem.gid, userInfo:nil)
                                 return
                         }
                 }
