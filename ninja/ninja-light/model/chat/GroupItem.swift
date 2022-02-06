@@ -54,7 +54,7 @@ class GroupItem: NSObject {
                 self.unixTime = Int64(Date().timeIntervalSince1970)
                 self.isDelete = false
                 
-                if let avatarData = GroupItem.getGroupAvatar(ids:members){
+                if let avatarData = GroupItem.genGroupAvatar(ids:members){
                         avatar = avatarData
                 }else{
                         avatar = defaultAvatar.jpegData(compressionQuality: 1)!
@@ -98,7 +98,7 @@ class GroupItem: NSObject {
                 if grp.avatar == nil{
                         var allIds = grp.memberIds
                         allIds.append(grp.leader!)
-                        if let grpImg = GroupItem.getGroupAvatar(ids: allIds) {
+                        if let grpImg = GroupItem.genGroupAvatar(ids: allIds) {
                                 grp.avatar = grpImg
                         }
                 }
@@ -106,59 +106,7 @@ class GroupItem: NSObject {
                 return grp
         }
         
-        public static func getMembersOfGroup(gid: String) -> Data? {
-                guard let grpItem = GroupItem.GetGroup(gid) else {
-                        return nil
-                }
-                
-                var ids: [String] = grpItem.memberIds
-                ids.append(grpItem.leader!)
-                
-                let jsonStr = JSON(ids).description
-                guard let data = jsonStr.data(using: .utf8) else {
-                        return nil
-                }
-                
-                return data
-        }
-        
-        public static func GetGroup(_ gid: String) -> GroupItem? {
-                var obj: GroupItem?
-                let owner = Wallet.shared.Addr!
-                
-                obj = try? CDManager.shared.GetOne(entity: "CDGroup", predicate: NSPredicate(format: "gid == %@ AND owner == %@", gid, owner))
-                
-                if obj != nil {
-                        cache[gid] = obj
-                }
-                return obj
-        }
-        
-        public static func syncGroupMeta(_ group: GroupItem)throws{
-                
-                group.owner = Wallet.shared.Addr
-                try CDManager.shared.UpdateOrAddOne(entity: "CDGroup",
-                                                    m: group,
-                                                    predicate: NSPredicate(format: "gid == %@ AND owner == %@",
-                                                                           group.gid, group.owner!))
-                
-                cache[group.gid] = group
-                cache.updateValue(group, forKey: group.gid)
-        }
-        
-        public static func DeleteGroup(_ gid: String) -> NJError? {
-                let owner = Wallet.shared.Addr!
-                do {
-                        try CDManager.shared.Delete(entity: "CDGroup", predicate: NSPredicate(format: "gid == %@ AND owner == %@", gid, owner))
-                        
-                        cache.removeValue(forKey: gid)
-                } catch let err {
-                        return NJError.group(err.localizedDescription)
-                }
-                return nil
-        }
-        
-        public static func LocalSavedGroup() {
+        public static func loadCachedFromDB() {
                 guard let owner = Wallet.shared.Addr else {
                         return
                 }
@@ -186,7 +134,7 @@ class GroupItem: NSObject {
                 return Array(cache.values)
         }
         
-        public static func getGroupAvatar(ids: [String]) -> Data? {
+        public static func genGroupAvatar(ids: [String]) -> Data? {
                 let defaultAvatarData = defaultAvatar.jpegData(compressionQuality: 1)!
                 var counter = 0
                 var imgData:Data?// = defaultAvatarData
@@ -212,85 +160,52 @@ class GroupItem: NSObject {
                 print("---[group image]--->>>\(err?.localizedDescription ?? "")")
                 return nil
         }
+}
+
+//MARK: - private  operation
+extension GroupItem {
         
-        public static func NewGroup(ids: [String], groupName: String?)throws -> GroupItem{
+        
+        private static func GetGroupFromDbBy(_ gid: String) -> GroupItem? {
                 
-                
-                var memIDs:[String] = []
-                memIDs.append(contentsOf: ids)
-                
-                let data = try JSON(memIDs).rawData()
-                
-                var err: NSError?
-                let gid = ChatLibCreateGroup(groupName, data, &err)
-                if let e = err{
-                        throw e
+                let owner = Wallet.shared.Addr!
+                var obj: GroupItem?
+                obj = try? CDManager.shared.GetOne(entity: "CDGroup",
+                                                   predicate: NSPredicate(format: "gid == %@ AND owner == %@", gid, owner))
+                guard let item = obj else{
+                        cache.removeValue(forKey: gid)
+                        return nil
                 }
-                var grpName = gid
-                if let n = groupName, !n.isEmpty{
-                        grpName = n
-                }
-                let leader = Wallet.shared.Addr!
-                memIDs.append(leader)
-                let item = GroupItem(gid:gid, name:grpName, members:memIDs)
-                try syncGroupMeta(item)
-                CDManager.shared.saveContext()
+                cache[gid] = item
+                cache.updateValue(item, forKey: gid)
                 return item
         }
         
-        public static func syncAllGroupDataAtOnce(){
+        private static func syncGroupToDB(_ group: GroupItem)throws{
                 
-                var err: NSError?
-                guard let data = ChatLibSyncGroupWithDetails(&err) else{
-                        print("------>>> sync group metas when import account:", err?.localizedDescription ?? "<->")
-                        return
-                }
-                guard let grpArr = try? JSON(data:data) else{
-                        print("------>>>pasrse group array message failed")
-                        return
-                }
+                group.owner = Wallet.shared.Addr
+                try CDManager.shared.UpdateOrAddOne(entity: "CDGroup",
+                                                    m: group,
+                                                    predicate: NSPredicate(format: "gid == %@ AND owner == %@",
+                                                                           group.gid, group.owner!))
                 
-                for (index, groupJson):(String, JSON) in grpArr {
-                        
-                        guard let group = GroupItem.initByJson(json: groupJson) else{
-                                print("------>>>[syncAllGroupDataAtOnce]failed parse group item[\(index)]")
-                                continue
-                        }
-                        
-                        do {try syncGroupMeta(group) }catch let err {
-                                
-                                print("---[update grp]---\(err.localizedDescription )")
-                                continue
-                        }
-                        
-                        GroupItem.cache[group.gid] = group
-                }
-                
+                cache[group.gid] = group
+                cache.updateValue(group, forKey: group.gid)
         }
         
-        public static func updatePartialGroup() -> NSError?{
-                var err: NSError?
-                
-                guard let data = ChatLibSyncGroupIDs(&err) else{
-                        return err
-                }
-                guard let groups = try? JSON(data: data)["groups"] else{
-                        return NJError.group("no groupship") as NSError
-                }
-                
-                for (gid , _):(String, JSON) in groups {
+        private static func deleteGroupFromDB(_ gid: String) -> NJError? {
+                let owner = Wallet.shared.Addr!
+                do {
+                        try CDManager.shared.Delete(entity: "CDGroup", predicate: NSPredicate(format: "gid == %@ AND owner == %@", gid, owner))
                         
-                        if let _ = GetGroup(gid){
-                                continue
-                        }
-                        
-                        let _ = syncGroupMetaBy(groupID: gid)
+                        cache.removeValue(forKey: gid)
+                } catch let err {
+                        return NJError.group(err.localizedDescription)
                 }
-                
                 return nil
         }
         
-        public static func syncGroupMetaBy(groupID: String) -> GroupItem? {
+        private static func syncGroupMetaFromChainBy(groupID: String) -> GroupItem? {
                 var err: NSError?
                 
                 guard let data = ChatLibGroupMeta(groupID, &err) else {
@@ -304,7 +219,7 @@ class GroupItem: NSObject {
                 }
                 
                 do  {
-                        try syncGroupMeta(group)
+                        try syncGroupToDB(group)
                         
                 } catch let err{
                         print("---[update grp]---?\(err.localizedDescription )")
@@ -312,111 +227,8 @@ class GroupItem: NSObject {
                 
                 return group
         }
-        
-        public static func AddMemberToGroup(group: GroupItem, newIds: [String]) -> NJError? {
-                var error: NSError?
-                let to = group.memberIds
-                let idsData = ChatLibUnmarshalGoByte(to.toString())
-                ChatLibAddGroupMembers(group.gid, idsData, &error)
-                return nil
-        }
-        
-        public static func KickOutUser(to: String?, groupId: String, leader: String, kickUserId: String) -> NJError? {
-                
-                return nil
-        }
-        
-        public static func KickOutUserNoti(group: GroupItem, kickIds: String?, from: String) throws {
-                guard let kick = kickIds?.toArray() else {
-                        return
-                }
-                
-                if kick.contains(Wallet.shared.Addr!) {
-                        let _ = GroupItem.DeleteGroup(group.gid)
-                        NotificationCenter.default.post(name: NotifyKickMeOutGroup,
-                                                        object: group)
-                        return
-                }
-                
-                for k in kick {
-                        group.memberInfos.removeValue(forKey: k as! String)
-                }
-                
-                let newIds = group.memberInfos.map { (key: String, value: String) in
-                        return key
-                }
-                
-                group.memberIds = newIds
-                
-                try GroupItem.syncGroupMeta(group)
-                
-                let NotiKey_ids = "KICK_IDS"
-                let NotiKey_from = "KICK_FROM"
-                NotificationCenter.default.post(name: NotifyKickOutGroup,
-                                                object: self,
-                                                userInfo: [NotiKey_ids: kickIds!, NotiKey_from: from])
-                
-        }
-        
-        public static func DismissGroup(gid: String) -> NJError? {
-                var error: NSError?
-                _ = ChatLibDismissGroup(gid, &error)
-                if error != nil {
-                        return NJError.group(error!.localizedDescription)
-                }
-                
-                _ = GroupItem.DeleteGroup(gid)
-                ChatItem.remove(gid)
-                MessageItem.removeRead(gid)
-                CDManager.shared.saveContext()
-                
-                return nil
-        }
-        
-        public static func QuitGroupNoti(from: String?, groupId: String, quitId: String) throws {
-                if let group = GroupItem.GetGroup(groupId) {
-                        group.memberInfos.removeValue(forKey: quitId)
-                        
-                        let newIds = group.memberInfos.map { (key: String, value: String) in
-                                return key
-                        }
-                        
-                        group.memberIds = newIds
-                        try GroupItem.syncGroupMeta(group)
-                }
-                
-        }
-        
-        public static func GetAvatarText(by gid: String) -> String {
-                let gItem = GroupItem.cache[gid]
-                if let nick = gItem?.groupName {
-                        return String(nick.prefix(2))
-                }
-                
-                return String(gid.prefix(2))
-                
-        }
-        
-        public static func updateGroupName(group:GroupItem, newName:String)->Error?{
-                
-                var err: NSError?
-                let hashTx = ChatLibChangeGroupName(group.gid, newName, &err)
-                
-                if let e = err{
-                        return e
-                }
-                
-                do{
-                        group.groupName = newName
-                        try syncGroupMeta(group)}catch let err{
-                        return err
-                }
-                CDManager.shared.saveContext()
-                print("------>>>group name update hash:\(hashTx)")
-                return nil
-        }
 }
-
+//MARK: - core data operation
 extension GroupItem: ModelObj {
         
         func fullFillObj(obj: NSManagedObject) throws {
@@ -449,5 +261,212 @@ extension GroupItem: ModelObj {
                 self.leader = cObj.leader
                 self.avatar = cObj.avatar
                 self.isDelete = cObj.isDelete
+        }
+}
+//MARK: - basic group operation
+extension GroupItem{
+        
+        public static func NewGroup(ids: [String], groupName: String?)throws -> GroupItem{
+                
+                var memIDs:[String] = []
+                memIDs.append(contentsOf: ids)
+                
+                let data = try JSON(memIDs).rawData()
+                
+                var err: NSError?
+                let gid = ChatLibCreateGroup(groupName, data, &err)
+                if let e = err{
+                        throw e
+                }
+                var grpName = gid
+                if let n = groupName, !n.isEmpty{
+                        grpName = n
+                }
+                let leader = Wallet.shared.Addr!
+                memIDs.append(leader)
+                let item = GroupItem(gid:gid, name:grpName, members:memIDs)
+                try syncGroupToDB(item)
+                CDManager.shared.saveContext()
+                return item
+        }
+        
+        
+        public static func DismissGroup(gid: String) -> NJError? {
+                var error: NSError?
+                _ = ChatLibDismissGroup(gid, &error)
+                if error != nil {
+                        return NJError.group(error!.localizedDescription)
+                }
+                
+                _ = GroupItem.deleteGroupFromDB(gid)
+                ChatItem.remove(gid)
+                MessageItem.removeRead(gid)
+                CDManager.shared.saveContext()
+                
+                return nil
+        }
+        
+        public static func updateGroupName(group:GroupItem, newName:String)->Error?{
+                
+                var err: NSError?
+                let hashTx = ChatLibChangeGroupName(group.gid, newName, &err)
+                
+                if let e = err{
+                        return e
+                }
+                
+                do{
+                        group.groupName = newName
+                        try syncGroupToDB(group)}catch let err{
+                                return err
+                        }
+                CDManager.shared.saveContext()
+                print("------>>>group name update hash:\(hashTx)")
+                return nil
+        }
+        
+        public static func syncAllGroupDataFromChainAtOnce(){
+                
+                var err: NSError?
+                guard let data = ChatLibSyncGroupWithDetails(&err) else{
+                        print("------>>> sync group metas when import account:", err?.localizedDescription ?? "<->")
+                        return
+                }
+                guard let grpArr = try? JSON(data:data) else{
+                        print("------>>>pasrse group array message failed")
+                        return
+                }
+                
+                for (index, groupJson):(String, JSON) in grpArr {
+                        
+                        guard let group = GroupItem.initByJson(json: groupJson) else{
+                                print("------>>>[syncAllGroupDataAtOnce]failed parse group item[\(index)]")
+                                continue
+                        }
+                        
+                        do {try syncGroupToDB(group) }catch let err {
+                                
+                                print("---[update grp]---\(err.localizedDescription )")
+                                continue
+                        }
+                        
+                        GroupItem.cache[group.gid] = group
+                }
+        }
+        
+        public static func AddMemberToGroup(group: GroupItem, newIds: [String]) -> Error? {
+                var error: NSError?
+                let to = group.memberIds
+                let idsData = ChatLibUnmarshalGoByte(to.toString())
+                ChatLibAddGroupMembers(group.gid, idsData, &error)
+                if let err = error{
+                        return err
+                }
+                do {
+                        try GroupItem.syncGroupToDB(group)
+                        
+                } catch let err{
+                        return err
+                }
+                return nil
+        }
+        
+        public static func KickOutUser(group: GroupItem, kickUserId: [String]) -> NJError? {
+                
+                try? GroupItem.syncGroupToDB(group)
+                return nil
+        }
+        
+        public static func KickOutUserNoti(group: GroupItem, kickIds: String?, from: String) throws {
+                guard let kick = kickIds?.toArray() else {
+                        return
+                }
+                
+                if kick.contains(Wallet.shared.Addr!) {
+                        let _ = GroupItem.deleteGroupFromDB(group.gid)
+                        NotificationCenter.default.post(name: NotifyKickMeOutGroup,
+                                                        object: group)
+                        return
+                }
+                
+                for k in kick {
+                        group.memberInfos.removeValue(forKey: k as! String)
+                }
+                
+                let newIds = group.memberInfos.map { (key: String, value: String) in
+                        return key
+                }
+                
+                group.memberIds = newIds
+                
+                try GroupItem.syncGroupToDB(group)
+                
+                let NotiKey_ids = "KICK_IDS"
+                let NotiKey_from = "KICK_FROM"
+                NotificationCenter.default.post(name: NotifyKickOutGroup,
+                                                object: self,
+                                                userInfo: [NotiKey_ids: kickIds!, NotiKey_from: from])
+                
+        }
+        
+        public static func QuitGroupNoti(from: String?, groupId: String, quitId: String) throws {
+                if let group = GroupItem.GetGroupFromDbBy(groupId) {
+                        group.memberInfos.removeValue(forKey: quitId)
+                        
+                        let newIds = group.memberInfos.map { (key: String, value: String) in
+                                return key
+                        }
+                        
+                        group.memberIds = newIds
+                        try GroupItem.syncGroupToDB(group)
+                }
+                
+        }
+}
+
+//MARK: - call from or to websocket
+extension GroupItem{
+        
+        public static func getMembersOfGroup(gid: String) -> Data? {
+                guard let grpItem = GroupItem.GetGroupFromDbBy(gid) else {
+                        return nil
+                }
+                
+                var ids: [String] = grpItem.memberIds
+                ids.append(grpItem.leader!)
+                
+                let jsonStr = JSON(ids).description
+                guard let data = jsonStr.data(using: .utf8) else {
+                        return nil
+                }
+                
+                return data
+        }
+        
+        public static func updatePartialGroup() -> NSError?{
+                var err: NSError?
+                
+                guard let data = ChatLibSyncGroupIDs(&err) else{
+                        return err
+                }
+                guard let groups = try? JSON(data: data)["groups"] else{
+                        return NJError.group("no groupship") as NSError
+                }
+                
+                for (gid , _):(String, JSON) in groups {
+                        
+                        if let _ = GetGroupFromDbBy(gid){
+                                continue
+                        }
+                        
+                        let _ = syncGroupMetaFromChainBy(groupID: gid)
+                }
+                
+                return nil
+        }
+        
+        
+        public static func GroupMeataNotified(data: Data){
+                print("------>>>[groupUpdate] group data=>", String(data:data, encoding: .utf8))
         }
 }

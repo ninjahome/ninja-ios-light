@@ -36,7 +36,7 @@ class MesasgeItemTableViewCell: UITableViewCell {
                 var nickName:String?
                 
                 if details.isGroup {
-                        let grp = GroupItem.GetGroup(itemId)//TODO::
+                        let grp = GroupItem.cache[itemId]
                         avaData = grp?.avatar
                         nickName = grp?.groupName
                 } else {

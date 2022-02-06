@@ -79,7 +79,9 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
                         print("------>>>[groupUpdate] invalid group update data")
                         return
                 }
-                print("------>>>[groupUpdate] group data=>", String(data:data, encoding: .utf8))
+                ServiceDelegate.workQueue.async {
+                        GroupItem.GroupMeataNotified(data:data)
+                }
         }
         
         func grpIM(_ from: String?, gid: String?, cryptKey: Data?, decoded: Data?, payload: Data?, time: Int64) throws {

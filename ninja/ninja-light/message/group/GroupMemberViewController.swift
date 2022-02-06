@@ -112,7 +112,7 @@ class GroupMemberViewController: UIViewController {
                         }
                         
                         showInputDialog(title: "设置群名", message: "", textPlaceholder: "", actionText: "确定", cancelText: "取消") { cancleAction in
-                               return
+                                return
                         } actionHandler: { text in
                                 self.CreateGroup(member: groupIds, groupName: text ?? "")
                         }
@@ -126,15 +126,9 @@ class GroupMemberViewController: UIViewController {
                         return
                 }
                 
-                do{
-                        try GroupItem.syncGroupMeta(groupItem)
-                        self.notiMemberChange(groupItem)
-                        self.navigationController?.popViewController(animated: true)
-                        return
-                        
-                }catch let err {
-                        self.toastMessage(title: "Save GroupItem failed[\(err.localizedDescription)]")
-                }
+                self.notiMemberChange(groupItem)
+                self.navigationController?.popViewController(animated: true)
+                
         }
         
         fileprivate func CreateGroup(member: [CombineConntact], groupName: String) {

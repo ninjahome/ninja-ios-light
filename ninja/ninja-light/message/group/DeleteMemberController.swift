@@ -54,15 +54,13 @@ class DeleteMemberController: UIViewController {
             return k
         })
         
-            if let err = GroupItem.KickOutUser(to: groupIds?.toString(), groupId: groupItem!.gid, leader: groupItem!.leader!, kickUserId: delIds.toString()!) {
+            if let err = GroupItem.KickOutUser(group: groupItem!, kickUserId: delIds) {
             
             self.toastMessage(title: "kick faild: \(String(describing: err.localizedDescription))")
             return
         }
         
             groupItem?.memberIds = ids ?? []
-//        groupItem?.memberNicks = nicks! as NSArray
-        try? GroupItem.syncGroupMeta(groupItem!)
         self.notiMemberChange(groupItem!)
         self.navigationController?.popViewController(animated: true)
         

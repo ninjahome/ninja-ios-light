@@ -75,7 +75,7 @@ extension ServiceDelegate{
         
         public static func InitService() {
                 CombineConntact.ReloadSavedContact()
-                GroupItem.LocalSavedGroup()
+                GroupItem.loadCachedFromDB()
                 MessageItem.prepareMessage()
                 ChatItem.ReloadChatRoom()//TODO:: update chat item by new loaded message item queue
                 
@@ -92,7 +92,6 @@ extension ServiceDelegate{
         
         public static func SyncChainData(data:Data){
                 workQueue.async {
-                        
                         if let wallet = Wallet.initByData(data){
                                let err = Wallet.shared.UpdateWallet(w: wallet)
                                 if err != nil{
@@ -121,7 +120,7 @@ extension ServiceDelegate{
                         
                         print("------>>>new wallet \(String(describing: Wallet.shared.Addr))")
                         ServiceDelegate.cleanAllData()
-                        GroupItem.syncAllGroupDataAtOnce()
+                        GroupItem.syncAllGroupDataFromChainAtOnce()
                         CombineConntact.syncAllContactDataAtOnce()
                         WebsocketSrv.shared.Online()
                         CDManager.shared.saveContext()
