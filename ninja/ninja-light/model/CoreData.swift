@@ -115,6 +115,25 @@ extension CDManager{
                 return result.first
         }
         
+        
+        func Update(entity:String, predicate:NSPredicate? = nil, update:((_ obj:inout NSManagedObject)->()))throws{
+                
+                let managedContext = persistentContainer.viewContext
+                let fetchRequest =  NSFetchRequest<NSManagedObject>(entityName: entity)
+                
+                if let myPredicate = predicate {
+                        fetchRequest.predicate = myPredicate
+                }
+                fetchRequest.fetchLimit = 1
+                let objArr = try managedContext.fetch(fetchRequest)
+                if objArr.count == 0 {
+                        return
+                }
+                var object = objArr.first!
+                update(&object)
+        }
+        
+        
         func UpdateOrAddOne<T>(entity:String, m:T, predicate:NSPredicate? = nil)throws where T: ModelObj{
                 
                 let managedContext = persistentContainer.viewContext

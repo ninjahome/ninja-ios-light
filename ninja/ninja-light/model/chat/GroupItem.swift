@@ -26,13 +26,13 @@ class GroupItem: NSObject {
         public static var cache:[String:GroupItem]=[:]
         
         
-        var nonce: Int64?
+        var nonce: Int64=0
         var gid: String = ""
         var groupName: String?
         var memberIds: [String] = []
-        var owner: String?
+        var owner: String=Wallet.shared.Addr!
         var unixTime: Int64 = 0
-        var leader: String?
+        var leader: String = ""
         var isDelete: Bool = false
         var avatar: Data?
         
@@ -61,6 +61,21 @@ class GroupItem: NSObject {
                 }
         }
         
+        public func ToString() ->String{
+                return """
+                ------------------\(self.nonce)------------------"
+                =id\t\(self.gid)=
+                =name\t\(self.groupName ?? "<->")=
+                =leader\t\(self.leader)=
+                =isDelete\t\(self.isDelete)=
+                =memberIds\t\(self.memberIds.toString() ?? "<->")=
+                =unixTime\t\(self.unixTime)=
+                =owner\t\(self.owner)=
+                =avatar\t\(self.avatar?.count ?? 0)=
+                --------------------------------------------------"
+                """
+        }
+        
         public static func initByJson(json objJson:JSON) -> GroupItem?{
                 guard let memIds = objJson["members"].dictionaryObject?.keys, memIds.count >= 2 else {
                         print("------>>> invalid group json data: too less members")
@@ -72,8 +87,8 @@ class GroupItem: NSObject {
                 }
                 let grp = GroupItem()
                 grp.gid = gid
-                grp.nonce = objJson["nonce"].int64
-                grp.leader = objJson["owner"].string
+                grp.nonce = objJson["nonce"].int64 ?? 0
+                grp.leader = objJson["owner"].string!
                 grp.groupName = objJson["name"].string
                 grp.isDelete = objJson["deleted"].bool ?? false
                 
@@ -85,8 +100,8 @@ class GroupItem: NSObject {
                 grp.memberIds = ids
                 grp.owner = Wallet.shared.Addr!
                 
-                if AccountItem.GetAccount(grp.leader!) == nil {
-                        _ = AccountItem.loadAccountDetailFromChain(addr: grp.leader!)
+                if AccountItem.GetAccount(grp.leader) == nil {
+                        _ = AccountItem.loadAccountDetailFromChain(addr: grp.leader)
                 }
                 
                 for i in grp.memberIds {
@@ -97,7 +112,7 @@ class GroupItem: NSObject {
                 
                 if grp.avatar == nil{
                         var allIds = grp.memberIds
-                        allIds.append(grp.leader!)
+                        allIds.append(grp.leader)
                         if let grpImg = GroupItem.genGroupAvatar(ids: allIds) {
                                 grp.avatar = grpImg
                         }
@@ -113,7 +128,7 @@ class GroupItem: NSObject {
                 do{
                         var result: [GroupItem] = []
                         result = try CDManager.shared.Get(entity: "CDGroup",
-                                                          predicate: NSPredicate(format: "owner == %@", owner),
+                                                          predicate: NSPredicate(format: "isDelete == true AND owner == %@", owner),
                                                           sort: [["name" : true]])
                         if result.count == 0{
                                 print("------>>>no group at all")
@@ -165,13 +180,12 @@ class GroupItem: NSObject {
 //MARK: - private  operation
 extension GroupItem {
         
-        
-        private static func GetGroupFromDbBy(_ gid: String) -> GroupItem? {
+        private static func getGroupFromDB(_ gid: String) -> GroupItem? {
                 
                 let owner = Wallet.shared.Addr!
                 var obj: GroupItem?
                 obj = try? CDManager.shared.GetOne(entity: "CDGroup",
-                                                   predicate: NSPredicate(format: "gid == %@ AND owner == %@", gid, owner))
+                                                   predicate: NSPredicate(format: "isDelete == true AND gid == %@ AND owner == %@", gid, owner))
                 guard let item = obj else{
                         cache.removeValue(forKey: gid)
                         return nil
@@ -183,26 +197,32 @@ extension GroupItem {
         
         private static func syncGroupToDB(_ group: GroupItem)throws{
                 
-                group.owner = Wallet.shared.Addr
+                group.owner = Wallet.shared.Addr!
                 try CDManager.shared.UpdateOrAddOne(entity: "CDGroup",
                                                     m: group,
                                                     predicate: NSPredicate(format: "gid == %@ AND owner == %@",
-                                                                           group.gid, group.owner!))
+                                                                           group.gid, group.owner))
+                if group.isDelete{
+                        cache.removeValue(forKey: group.gid)
+                        return
+                }
                 
                 cache[group.gid] = group
                 cache.updateValue(group, forKey: group.gid)
         }
         
-        private static func deleteGroupFromDB(_ gid: String) -> NJError? {
-                let owner = Wallet.shared.Addr!
-                do {
-                        try CDManager.shared.Delete(entity: "CDGroup", predicate: NSPredicate(format: "gid == %@ AND owner == %@", gid, owner))
+        private static func deleteGroupFromDB(_ gid: String)throws{
+                try CDManager.shared.Update(entity: "CDGroup",
+                                            predicate: NSPredicate(format: "gid == %@", gid)){
+                        obj in
                         
-                        cache.removeValue(forKey: gid)
-                } catch let err {
-                        return NJError.group(err.localizedDescription)
+                        guard let group  = obj as? CDGroup else{
+                                return
+                        }
+                        group.isDelete = true
                 }
-                return nil
+                
+                cache.removeValue(forKey: gid)
         }
         
         private static func syncGroupMetaFromChainBy(groupID: String) -> GroupItem? {
@@ -255,10 +275,10 @@ extension GroupItem: ModelObj {
                 
                 self.gid = cObj.gid ?? "<->"
                 self.groupName = cObj.name
-                self.owner = cObj.owner
+                self.owner = cObj.owner!
                 self.memberIds = cObj.members as? [String] ?? []
                 self.unixTime = cObj.unixTime
-                self.leader = cObj.leader
+                self.leader = cObj.leader!
                 self.avatar = cObj.avatar
                 self.isDelete = cObj.isDelete
         }
@@ -298,7 +318,7 @@ extension GroupItem{
                         return NJError.group(error!.localizedDescription)
                 }
                 
-                _ = GroupItem.deleteGroupFromDB(gid)
+                try? GroupItem.deleteGroupFromDB(gid)
                 ChatItem.remove(gid)
                 MessageItem.removeRead(gid)
                 CDManager.shared.saveContext()
@@ -383,7 +403,7 @@ extension GroupItem{
                 }
                 
                 if kick.contains(Wallet.shared.Addr!) {
-                        let _ = GroupItem.deleteGroupFromDB(group.gid)
+                        try? GroupItem.deleteGroupFromDB(group.gid)
                         NotificationCenter.default.post(name: NotifyKickMeOutGroup,
                                                         object: group)
                         return
@@ -410,7 +430,7 @@ extension GroupItem{
         }
         
         public static func QuitGroupNoti(from: String?, groupId: String, quitId: String) throws {
-                if let group = GroupItem.GetGroupFromDbBy(groupId) {
+                if let group = GroupItem.getGroupFromDB(groupId) {
                         group.memberInfos.removeValue(forKey: quitId)
                         
                         let newIds = group.memberInfos.map { (key: String, value: String) in
@@ -428,12 +448,12 @@ extension GroupItem{
 extension GroupItem{
         
         public static func getMembersOfGroup(gid: String) -> Data? {
-                guard let grpItem = GroupItem.GetGroupFromDbBy(gid) else {
+                guard let grpItem = GroupItem.getGroupFromDB(gid) else {
                         return nil
                 }
                 
                 var ids: [String] = grpItem.memberIds
-                ids.append(grpItem.leader!)
+                ids.append(grpItem.leader)
                 
                 let jsonStr = JSON(ids).description
                 guard let data = jsonStr.data(using: .utf8) else {
@@ -455,7 +475,7 @@ extension GroupItem{
                 
                 for (gid , _):(String, JSON) in groups {
                         
-                        if let _ = GetGroupFromDbBy(gid){
+                        if let _ = getGroupFromDB(gid){
                                 continue
                         }
                         
@@ -465,8 +485,32 @@ extension GroupItem{
                 return nil
         }
         
-        
         public static func GroupMeataNotified(data: Data){
-                print("------>>>[groupUpdate] group data=>", String(data:data, encoding: .utf8))
+                
+                guard let newItem = initByJson(json: JSON(data)) else{
+                        return
+                }
+                
+                let oldItem = getGroupFromDB(newItem.gid)
+                
+                guard oldItem == nil || oldItem!.nonce != newItem.nonce else{
+                        print("------>>>[GroupMeataNotified] same group nonce=>", newItem.nonce)
+                        return
+                }
+                
+                do {
+                        print("------>>>new group item", newItem.ToString())
+                        try syncGroupToDB(newItem)
+                        ChatItem.updateLatestrMsg(pid: newItem.gid,
+                                                  msg: "Group Update",
+                                                  time: newItem.unixTime,
+                                                  unread: 0, isGrp: true)
+                        
+                        NotificationCenter.default.post(name:NotifyGroupChanged,
+                                                        object: newItem.gid,
+                                                        userInfo:nil)
+                }catch let err{
+                        print("------>>>[GroupMeataNotified] error=>", err.localizedDescription)
+                }
         }
 }
