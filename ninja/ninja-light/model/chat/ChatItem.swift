@@ -126,6 +126,9 @@ class ChatItem: NSObject{
         }
         
         public static func remove(_ pid:String) {
+                
+                ChatItemCache[pid]?.resetUnread()
+                
                 noLock.lock()
                 defer{
                         noLock.unlock()

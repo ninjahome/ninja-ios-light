@@ -35,6 +35,12 @@ class MessageListViewController: UIViewController{
                                                        name: NotifyMsgSumChanged,
                                                        object: nil)
                 
+                
+                NotificationCenter.default.addObserver(self,
+                                                       selector:#selector(updateLatestItem(notification:)),
+                                                       name: NotifyGroupChanged,
+                                                       object: nil)
+                
                 NotificationCenter.default.addObserver(self,
                                                        selector:#selector(wsOffline(notification:)),
                                                        name: NotifyWebsocketOffline,
@@ -212,7 +218,6 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
                 
                 ServiceDelegate.workQueue.async {
                         let item = self.sortedArray[indexPath.row]
-                        item.resetUnread()
                         self.sortedArray.remove(at: indexPath.row)
                         ChatItem.remove(item.ItemID)
                         MessageItem.removeRead(item.ItemID)

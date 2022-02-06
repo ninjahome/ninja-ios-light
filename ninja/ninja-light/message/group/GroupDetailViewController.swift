@@ -87,32 +87,6 @@ class GroupDetailViewController: UIViewController {
                         }
                 }
         }
-        
-        private func dismissGroup(){
-                self.ShowYesOrNo(msg: "You're owner and group will be dissmiessed",No: nil){
-                        self.showIndicator(withTitle: "", and: "deleting group")
-                        ServiceDelegate.workQueue.async {
-                                defer{
-                                        self.hideIndicator()
-                                }
-                                if let err = GroupItem.QuitGroup(gid:self.groupID){
-                                        self.toastMessage(title: "\(err.localizedDescription!)")
-                                        return
-                                }
-                                
-                                DispatchQueue.main.async {
-                                        self.navigationController?.popToRootViewController(animated: true)
-                                        NotificationCenter.default.post(name:NotifyGroupChanged,
-                                                                        object: self.groupID, userInfo:nil)
-                                }
-                        }
-                }
-                
-        }
-        
-        private func quitFromGroup(){
-                
-        }
 }
 
 extension GroupDetailViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
@@ -170,5 +144,32 @@ extension GroupDetailViewController{
                         NotificationCenter.default.post(name:NotifyGroupChanged,
                                                         object: self.groupID, userInfo:nil)
                 }
+        }
+        
+        private func dismissGroup(){
+                self.ShowYesOrNo(msg: "You're owner and group will be dissmiessed",No: nil){
+                        self.showIndicator(withTitle: "", and: "deleting group")
+                        ServiceDelegate.workQueue.async {
+                                defer{
+                                        self.hideIndicator()
+                                }
+                                if let err = GroupItem.QuitGroup(gid:self.groupID){
+                                        self.toastMessage(title: "\(err.localizedDescription!)")
+                                        return
+                                }
+                                
+                                DispatchQueue.main.async {
+                                        self.dismiss(animated: true)
+                                        self.navigationController?.popToRootViewController(animated: true)
+                                        NotificationCenter.default.post(name:NotifyGroupChanged,
+                                                                        object: self.groupID, userInfo:nil)
+                                }
+                        }
+                }
+                
+        }
+        
+        private func quitFromGroup(){
+                
         }
 }
