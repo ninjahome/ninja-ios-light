@@ -9,7 +9,7 @@ import UIKit
 
 protocol CellClickDelegate {
         func loadSelectedContact(_ idx: Int)
-        func addDidClick(_ idx: Int)
+        func addDidClick(_ idx: Int)->Bool
         func delDidClick(_ idx: Int)
 }
 
@@ -56,10 +56,10 @@ class GroupMemberTableViewCell: UITableViewCell {
         }
         
         @IBAction func addToGroupList(_ sender: UIButton) {
-                setSelect(selected: true)
-                if let idx = index {
-                        self.cellDelegate?.addDidClick(idx)
+                guard let idx = index, self.cellDelegate?.addDidClick(idx) == true else{
+                        return
                 }
+                setSelect(selected: true)
         }
         
         @IBAction func deleteFromGroupList(_ sender: UIButton) {

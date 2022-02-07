@@ -12,10 +12,6 @@ import LocalAuthentication
 import MobileCoreServices
 import ChatLib
 
-
-
-public let defaultAvatar = UIImage(named: "logo_img")!
-
 public func MustImage(data:Data?)->UIImage{
         guard let d = data else{
                 return defaultAvatar

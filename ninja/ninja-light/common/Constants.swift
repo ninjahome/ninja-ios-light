@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 let NotifyContactChanged = NSNotification.Name(rawValue:"contact_new_changed")
 
@@ -39,3 +40,7 @@ let AvatarColors: [String] = ["F4CCE3", "D6CCF4", "BACEF0",
                     "D8D8D8"]
 
 let AppVersionKey = "APP_VERSION_IN_BUNDLE"
+
+let MaxMembersInGroup = 50
+
+public let defaultAvatar = UIImage(named: "logo_img")!

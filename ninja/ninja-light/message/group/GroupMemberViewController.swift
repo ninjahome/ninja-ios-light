@@ -98,7 +98,7 @@ class GroupMemberViewController: UIViewController {
                         groupItem.memberIds = groupIds
                         
                         self.AddMember(newIds: newIds)
-                        print("groupIds:\(groupIds)")
+                        print("------>>>groupIds:\(groupIds)")
                         
                 } else {
                         var groupIds: [CombineConntact] = []
@@ -219,13 +219,18 @@ extension GroupMemberViewController: UITableViewDelegate, UITableViewDataSource 
                 guard section == 1 else{
                         return ""
                 }
-                return "非会员无权限"
+                return "非会员无法加入"
         }
 }
 
 extension GroupMemberViewController : CellClickDelegate {
         
-        func addDidClick(_ idx: Int) {
+        func addDidClick(_ idx: Int) -> Bool{
+                
+                if selectedIndexs.count > MaxMembersInGroup{
+                        self.toastMessage(title: "more than 50",duration: 1)
+                        return false
+                }
                 
                 if !selectedIndexs.contains(idx) {
                         selectedIndexs.append(idx)
@@ -243,7 +248,9 @@ extension GroupMemberViewController : CellClickDelegate {
                 
                 enableOrDisableCompleteBtn(number: selectedIndexs.count)
                 
-                print("selected list \(selectedIndexs)")
+                print("------>>>selected list \(selectedIndexs)")
+                
+                return true
         }
         
         func delDidClick(_ idx: Int) {
