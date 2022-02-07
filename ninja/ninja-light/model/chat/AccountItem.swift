@@ -94,21 +94,6 @@ class AccountItem: NSObject {
                 }
                 return nil
         }
-        
-        public static func loadAccountDetailFromChain(addr: String) -> AccountItem? {
-                var error: NSError?
-                
-                if let data = ChatLibAccountDetail(addr, &error), error == nil {
-                        guard let newItem = AccountItem.initByOnlineMeta(data) else{
-                                return nil
-                        }
-                        
-                        _ = UpdateOrAddAccount(newItem)
-                        return newItem
-                }
-                print("------>> load account detail from chain err:\(error!.localizedDescription)")
-                return nil
-        }
 }
 
 extension AccountItem: ModelObj {
@@ -156,7 +141,6 @@ extension AccountItem{
                                 extraCache[pid] = item
                                 return item
                         }
-                        
                 }
                 
                 var error: NSError?
