@@ -3194,7 +3194,7 @@
                                     <constraint firstItem="uQM-lr-CDw" firstAttribute="top" secondItem="PCm-PD-sfS" secondAttribute="top" constant="100" id="Alc-Ee-kBC"/>
                                     <constraint firstItem="vrh-KU-M3P" firstAttribute="top" secondItem="uQM-lr-CDw" secondAttribute="bottom" constant="12" id="FJ0-hp-Vkb"/>
                                     <constraint firstAttribute="trailing" secondItem="eWy-sS-Uft" secondAttribute="trailing" constant="36" id="Nc3-cP-oAJ"/>
-                                    <constraint firstAttribute="height" constant="288" id="NyE-iZ-kVK"/>
+                                    <constraint firstAttribute="height" priority="999" constant="288" id="NyE-iZ-kVK"/>
                                     <constraint firstItem="abe-3c-vqx" firstAttribute="leading" secondItem="PCm-PD-sfS" secondAttribute="leading" constant="20" id="YUm-tX-Brl"/>
                                     <constraint firstItem="eWy-sS-Uft" firstAttribute="leading" secondItem="PCm-PD-sfS" secondAttribute="leading" constant="36" id="a2e-J0-Zov"/>
                                     <constraint firstItem="vrh-KU-M3P" firstAttribute="centerX" secondItem="PCm-PD-sfS" secondAttribute="centerX" id="pMn-TQ-mSs"/>
@@ -3291,6 +3291,7 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="wLn-C9-QOr" secondAttribute="trailing" constant="32" id="1Wa-hN-O1i"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="ERb-SC-y41" secondAttribute="bottom" constant="40" id="4eG-k9-CfW"/>
                                     <constraint firstItem="fr0-GV-yno" firstAttribute="leading" secondItem="fWG-eB-40l" secondAttribute="leading" constant="36" id="5J3-aN-hRF"/>
                                     <constraint firstItem="n9X-vh-4ic" firstAttribute="top" secondItem="ERb-SC-y41" secondAttribute="top" constant="10" id="6vx-Py-vyZ"/>
                                     <constraint firstItem="wLn-C9-QOr" firstAttribute="top" secondItem="fr0-GV-yno" secondAttribute="bottom" constant="6" id="9mQ-6V-dP4"/>

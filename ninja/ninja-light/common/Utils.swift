@@ -628,6 +628,16 @@ extension UIViewController {
                 modalViewController.modalPresentationStyle = .popover
                 present(modalViewController, animated: true, completion: nil)
         }
+        
+        func replaceByViewController(vc:UIViewController){
+                guard var vcs = self.navigationController?.viewControllers else{
+                        self.navigationController?.pushViewController(vc, animated: true)
+                        return
+                }
+                _ = vcs.popLast()
+                vcs.append(vc)
+                self.navigationController?.setViewControllers(vcs, animated: true)
+        }
 }
 
 

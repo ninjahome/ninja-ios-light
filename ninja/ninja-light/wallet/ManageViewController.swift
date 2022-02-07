@@ -32,8 +32,9 @@ extension ManageViewController: ScannerViewControllerDelegate {
                         }
                         
                         ServiceDelegate.ImportNewAccount(wJson: code, addr: addr, pwd: pwd, parent: self!) {
-                                //                                ServiceDelegate.InitService()//TODO:: need reload old message?
-                                self?.navigationController?.popToRootViewController(animated: true)
+                                DispatchQueue.main.async {
+                                        self?.navigationController?.popToRootViewController(animated: true)
+                                }
                         }
                 }
         }

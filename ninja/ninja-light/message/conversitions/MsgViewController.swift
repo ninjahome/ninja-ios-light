@@ -168,7 +168,8 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         @IBAction func BackToMsgList(_ sender: UIBarButtonItem) {
-                self.navigationController?.popViewController(animated: true)
+//                self.navigationController?.popViewController(animated: true)
+                self.navigationController?.popToRootViewController(animated: true)
         }
         
         private func isInContact() -> Bool {
