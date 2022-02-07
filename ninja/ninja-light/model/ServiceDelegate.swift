@@ -80,6 +80,7 @@ extension ServiceDelegate{
                 ChatItem.ReloadChatRoom()//TODO:: update chat item by new loaded message item queue
                 
                 dateFormatterGet.timeStyle = .medium
+                WebsocketSrv.shared.Online()
         }
         
         public static func cleanAllData() {

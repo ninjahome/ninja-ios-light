@@ -71,7 +71,6 @@ class AuthorViewController: UIViewController {
                                 try Wallet.shared.New(auth)
                                 _ = Wallet.shared.Active(auth)
                                 ServiceDelegate.InitService()
-                                
                                 DispatchQueue.main.async {
                                         self.dismiss(animated: true){
                                                 self.delegate?.OpenSuccess()
@@ -97,8 +96,6 @@ class AuthorViewController: UIViewController {
                         }
                         
                         ServiceDelegate.InitService()
-                        Wallet.shared.accountNonce()
-                        WebsocketSrv.shared.Online()
                         
                         DispatchQueue.main.async {
                                 self.dismiss(animated: true){
