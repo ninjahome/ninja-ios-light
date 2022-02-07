@@ -109,12 +109,6 @@ class GroupItem: NSObject {
                         _ = AccountItem.extraLoad(pid: id)
                 }
                 
-                if grp.avatar == nil{
-                        if let grpImg = GroupItem.genGroupAvatar(ids: grp.memberIds) {
-                                grp.avatar = grpImg
-                        }
-                }
-                
                 return grp
         }
         
@@ -259,9 +253,14 @@ extension GroupItem: ModelObj {
                 cObj.unixTime = self.unixTime
                 cObj.leader = self.leader
                 cObj.isDelete = self.isDelete
+                if self.avatar == nil ||
+                        (cObj.nonce != self.nonce && self.memberIds.count <= 9){
+                        if let grpImg = GroupItem.genGroupAvatar(ids: self.memberIds) {
+                                self.avatar = grpImg
+                        }
+                }
                 cObj.avatar = self.avatar
                 cObj.nonce = self.nonce
-                
         }
         
         func initByObj(obj: NSManagedObject) throws {
