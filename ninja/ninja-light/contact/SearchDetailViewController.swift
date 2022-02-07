@@ -77,6 +77,7 @@ class SearchDetailViewController: UIViewController {
                         cc.account = self.accountData
                         cc.contact = contact
                         let err = cc.SyncNewItemToChain()
+                        CDManager.shared.saveContext()
                         DispatchQueue.main.async {
                                 self.hideIndicator()
                                 if let e = err{
