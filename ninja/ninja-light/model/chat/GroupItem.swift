@@ -313,14 +313,16 @@ extension GroupItem{
         
         
         public static func DismissGroup(gid: String) -> NJError? {
+                
+                try? GroupItem.deleteGroupFromDB(gid)
+                ChatItem.remove(gid)
+                
                 var error: NSError?
                 _ = ChatLibDismissGroup(gid, &error)
                 if error != nil {
                         return NJError.group(error!.localizedDescription)
                 }
                 
-                try? GroupItem.deleteGroupFromDB(gid)
-                ChatItem.remove(gid)
                 MessageItem.removeRead(gid)
                 CDManager.shared.saveContext()
                 

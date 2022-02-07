@@ -42,13 +42,11 @@ class NewWalletViewController: UIViewController {
                 
                 self.showIndicator(withTitle: "", and: "creating")
                 ServiceDelegate.workQueue.async {
-                        defer{
-                                self.hideIndicator()
-                        }
                         
                         do {
                                 try Wallet.shared.New(password)
                         } catch let err as NSError{
+                                self.hideIndicator()
                                 self.toastMessage(title: err.localizedDescription)
                                 return
                         }
@@ -57,6 +55,7 @@ class NewWalletViewController: UIViewController {
                                 setFirstUser()
                         }
                         DispatchQueue.main.async {
+                                self.hideIndicator()
                                 self.performSegue(withIdentifier: "CreateNewAccountSeg", sender: self)
                         }
                 }

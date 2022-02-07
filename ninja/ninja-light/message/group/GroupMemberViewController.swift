@@ -116,10 +116,7 @@ class GroupMemberViewController: UIViewController {
                 self.showIndicator(withTitle: "", and: "updating group")
                 
                 ServiceDelegate.workQueue.async {
-                        defer{
-                                self.hideIndicator()
-                        }
-                        
+                       
                         var newIds: [String] = []
                         for i in self.selectedIndexs {
                                 newIds.append(self.validContactArr[i].peerID)
@@ -135,9 +132,10 @@ class GroupMemberViewController: UIViewController {
 //
                         if let err = GroupItem.AddMemberToGroup(group: self.groupItem, newIds: newIds) {
                                 self.toastMessage(title: "\(err.localizedDescription)")
+                                self.hideIndicator()
                                 return
                         }
-                        
+                        self.hideIndicator()
                         self.notiMemberChange?(self.groupItem)
                 }
                 
@@ -148,9 +146,6 @@ class GroupMemberViewController: UIViewController {
                 self.showIndicator(withTitle: "", and: "creating group")
                 
                 ServiceDelegate.workQueue.async {
-                        defer{
-                                self.hideIndicator()
-                        }
                         
 //                        let validMemIDs = CombineConntact.updateSetOfContact(ids: member)
 //                        if validMemIDs.count < 2{
@@ -163,11 +158,13 @@ class GroupMemberViewController: UIViewController {
                                                                         groupName: groupName)
                                 
                         }catch let err{
+                                self.hideIndicator()
                                 self.toastMessage(title: "\(err.localizedDescription)")
                                 return
                         }
                         
                         DispatchQueue.main.async {
+                                self.hideIndicator()
                                 NotificationCenter.default.post(name:NotifyGroupChanged,
                                                                 object: self.groupItem.gid, userInfo:nil)
                                 let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController

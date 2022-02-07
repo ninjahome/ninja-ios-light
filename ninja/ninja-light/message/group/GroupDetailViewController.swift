@@ -212,15 +212,15 @@ extension GroupDetailViewController{
                 self.ShowYesOrNo(msg: "You're owner and group will be dissmiessed",No: nil){
                         self.showIndicator(withTitle: "", and: "deleting group")
                         ServiceDelegate.workQueue.async {
-                                defer{
-                                        self.hideIndicator()
-                                }
+                               
                                 if let err = GroupItem.DismissGroup(gid:self.groupID){
+                                        self.hideIndicator()
                                         self.toastMessage(title: "\(err.localizedDescription!)")
                                         return
                                 }
                                 
                                 DispatchQueue.main.async {
+                                        self.hideIndicator()
                                         self.dismiss(animated: true)
                                         self.navigationController?.popToRootViewController(animated: true)
                                         NotificationCenter.default.post(name:NotifyGroupChanged,
