@@ -56,6 +56,8 @@ class VideoTableViewCell: UITableViewCell {
                 if let err = WebsocketSrv.shared.SendMessage(msg: msg){
                         print("------>>> retry failed:=>", err)
                         msg.status = .faild
+                        retry?.isHidden = false
+                        spinner?.stopAnimating()
                 }
         }
         

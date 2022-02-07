@@ -462,6 +462,7 @@ extension MsgViewController{
                 let pid = msg.groupId ?? msg.to
                 
                 if let err = WebsocketSrv.shared.SendMessage(msg: msg){
+                        msg.status = .faild
                         self.toastMessage(title: err.localizedDescription)
                         return
                 }
