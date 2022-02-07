@@ -153,6 +153,8 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                                                         object: self.peerID, userInfo:nil)
                         self.dismiss(animated: true)
                         self.navigationController?.popViewController(animated: true)
+                        
+                        CDManager.shared.saveContext()
                         return
                 }
                 self.ShowTips(msg: e.localizedDescription ?? "operation failed")
