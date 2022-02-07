@@ -82,6 +82,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.msgCacheArray = MessageItem.SortedArray(pid: self.peerUid)
                 populateView()
                 
+                
                 NotificationCenter.default.addObserver(self,
                                                        selector:#selector(newMsg(notification:)),
                                                        name: NotifyMessageAdded,

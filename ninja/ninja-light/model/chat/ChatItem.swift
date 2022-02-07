@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 
 class ChatItem: NSObject{
-        public static var ChatItemCache:[String: ChatItem]  = [:]
+        private static var cache:[String: ChatItem]  = [:]
         
         public static var TotalUnreadNo = 0
         public static var CurrentPID:String = ""
@@ -52,7 +52,7 @@ class ChatItem: NSObject{
                 TotalUnreadNo = 0
                 for obj in data {
                         TotalUnreadNo += obj.unreadNo
-                        ChatItemCache[obj.ItemID] = obj
+                        cache[obj.ItemID] = obj
                 }
         }
 
@@ -66,7 +66,7 @@ class ChatItem: NSObject{
                 defer{
                         noLock.unlock()
                 }
-                var chat = ChatItemCache[pid]
+                var chat = cache[pid]
                 if let c = chat{
                         if c.updateTime > time {
                                 return
@@ -85,7 +85,7 @@ class ChatItem: NSObject{
                                                              predicate: NSPredicate(format: "peerID == %@ AND owner == %@", pid, owner))
                 }
                 
-                ChatItemCache[pid] = chat
+                cache[pid] = chat
                 TotalUnreadNo = TotalUnreadNo + unreadNo
                 
                 NotificationCenter.default.post(name: NotifyMsgSumChanged,
@@ -99,7 +99,7 @@ class ChatItem: NSObject{
                         noLock.unlock()
                 }
                 
-                var sortedArray = Array(ChatItemCache.values)
+                var sortedArray = Array(cache.values)
                 guard sortedArray.count > 1 else {
                         return sortedArray
                 }
@@ -127,7 +127,7 @@ class ChatItem: NSObject{
         
         public static func remove(_ pid:String) {
                 
-                ChatItemCache[pid]?.resetUnread()
+                cache[pid]?.resetUnread()
                 
                 noLock.lock()
                 defer{
@@ -136,14 +136,14 @@ class ChatItem: NSObject{
                 let owner = Wallet.shared.Addr!
                 try? CDManager.shared.Delete(entity: "CDChatItem",
                                              predicate: NSPredicate(format: "owner == %@ AND peerID == %@ ", owner, pid))
-                ChatItemCache.removeValue(forKey: pid)
+                cache.removeValue(forKey: pid)
         }
         public static func deleteAll(){
                 noLock.lock()
                 defer{
                         noLock.unlock()
                 }
-                ChatItemCache.removeAll()
+                cache.removeAll()
         }
 }
 

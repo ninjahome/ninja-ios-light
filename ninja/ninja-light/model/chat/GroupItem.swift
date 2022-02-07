@@ -500,15 +500,18 @@ extension GroupItem{
                 
                 do {
                         print("------>>>new group item", newItem.ToString())
-                        try syncGroupToDB(newItem)
                         var msg = "Group Update"
                         if newItem.isDelete{
                                 msg = "Group Delete"
+                                try deleteGroupFromDB(newItem.gid)
+                                ChatItem.remove(newItem.gid)
+                        }else{
+                                try syncGroupToDB(newItem)
+                                ChatItem.updateLatestrMsg(pid: newItem.gid,
+                                                          msg: msg,
+                                                          time: newItem.unixTime,
+                                                          unread: 0, isGrp: true)
                         }
-                        ChatItem.updateLatestrMsg(pid: newItem.gid,
-                                                  msg: msg,
-                                                  time: newItem.unixTime,
-                                                  unread: 0, isGrp: true)
                         
                         NotificationCenter.default.post(name:NotifyGroupChanged,
                                                         object: newItem.gid,

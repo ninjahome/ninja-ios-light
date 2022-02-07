@@ -167,7 +167,7 @@ class MessageListViewController: UIViewController{
                         let item = sortedArray[idx]
                         vc.peerUid = item.ItemID
                         vc.IS_GROUP = item.isGroup
-                        CDManager.shared.saveContext()//TODO::
+                        CDManager.shared.saveContext()
                         return
                 }
                 if segue.identifier == "ShowAutherSEG"{
