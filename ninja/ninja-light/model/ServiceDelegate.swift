@@ -137,7 +137,7 @@ extension ServiceDelegate{
                 if let acc = CombineConntact.cache[pid]{
                         return (acc.GetNickName(), acc.account?.Avatar)
                 }
-                if let acc = AccountItem.extraCache[pid]{
+                if let acc = AccountItem.extraLoad(pid: pid){
                         return (acc.NickName, acc.Avatar)
                 }
                 

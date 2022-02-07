@@ -8,7 +8,7 @@
 import UIKit
 
 class GroupDetailViewController: UIViewController {
-
+        
         @IBOutlet weak var collectionView: UICollectionView!
         @IBOutlet weak var viewTitle: UINavigationItem!
         
@@ -52,7 +52,7 @@ class GroupDetailViewController: UIViewController {
                 vc.isAddMember = true
                 vc.groupItem = groupData!
                 vc.existMember = groupData!.memberIds
-
+                
                 vc.notiMemberChange = { newGroupInfo in
                         self.groupData = newGroupInfo
                         DispatchQueue.main.async {
@@ -62,7 +62,7 @@ class GroupDetailViewController: UIViewController {
                 }
                 self.navigationController?.pushViewController(vc, animated: true)
         }
-    
+        
         @IBAction func copyGroupID(_ sender: UIButton) {
                 UIPasteboard.general.string = groupID
                 self.toastMessage(title: "copy success", duration: 1)
@@ -71,7 +71,7 @@ class GroupDetailViewController: UIViewController {
         @IBAction func kickMemberBtn(_ sender: UIButton) {
                 self.performSegue(withIdentifier: "KickMemberSeg", sender: self)
         }
-    
+        
         @IBAction func quitOrDismissGroup(_ sender: UIButton) {
                 if leaderManagerd{
                         dismissGroup()
@@ -79,13 +79,13 @@ class GroupDetailViewController: UIViewController {
                         quitFromGroup()
                 }
         }
-    
+        
         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
                 if segue.identifier == "KickMemberSeg" {
                         let vc: DeleteMemberController = segue.destination as! DeleteMemberController
                         vc.groupItem = groupData
                         vc.existMember = groupData?.memberIds ?? []
-
+                        
                         vc.notiMemberChange = { newGroupInfo in
                                 self.groupData = newGroupInfo
                                 self.collectionView.reloadData()
@@ -95,13 +95,16 @@ class GroupDetailViewController: UIViewController {
 }
 
 extension GroupDetailViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    
+        
         func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-                return groupData.memberIds.count + 1
+                if self.leaderManagerd{
+                        return groupData.memberIds.count + 1
+                }
+                return groupData.memberIds.count
         }
-
+        
         func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-                if indexPath.row == 0 {
+                if self.leaderManagerd && indexPath.row == 0 {
                         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddCollectionCell", for: indexPath) as! AddCollectionCell
                         return cell
                 }
@@ -110,9 +113,13 @@ extension GroupDetailViewController: UICollectionViewDelegateFlowLayout, UIColle
                 guard let c = cell as? AvatarCollectionCell else{
                         return cell
                 }
-                let id = groupData.memberIds[indexPath.row - 1]
+                var dataIdx = indexPath.row
+                if self.leaderManagerd{
+                        dataIdx = dataIdx - 1
+                }
+                let id = groupData.memberIds[dataIdx]
                 c.initApperance(id: id)
-
+                
                 return cell
         }
 }

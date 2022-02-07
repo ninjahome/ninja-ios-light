@@ -12,7 +12,8 @@ import SwiftyJSON
 
 class AccountItem: NSObject {
         
-        public static var extraCache: [String: AccountItem] = [:]
+        private static var extraCache: [String: AccountItem] = [:]
+        private static var cacheLock = NSLock()
         
         var Nonce: Int64?
         var Addr: String?
@@ -127,7 +128,10 @@ extension AccountItem: ModelObj {
 extension AccountItem{
         
         public static func extraLoad(pid:String, forceUpdate:Bool=false)->AccountItem?{
-                
+                cacheLock.lock()
+                defer {
+                        cacheLock.unlock()
+                }
                 if !forceUpdate{
                         
                         if let item = extraCache[pid]{
