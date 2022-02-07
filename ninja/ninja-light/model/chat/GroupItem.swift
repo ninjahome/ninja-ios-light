@@ -501,8 +501,12 @@ extension GroupItem{
                 do {
                         print("------>>>new group item", newItem.ToString())
                         try syncGroupToDB(newItem)
+                        var msg = "Group Update"
+                        if newItem.isDelete{
+                                msg = "Group Delete"
+                        }
                         ChatItem.updateLatestrMsg(pid: newItem.gid,
-                                                  msg: "Group Update",
+                                                  msg: msg,
                                                   time: newItem.unixTime,
                                                   unread: 0, isGrp: true)
                         

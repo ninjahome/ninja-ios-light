@@ -24,7 +24,7 @@ protocol IMPayLoad {
 
 class MessageItem: NSObject {
         public static let NotiKey = "peerUid"
-        public static let MaxItemNoPerID = 1000
+        public static let MaxItemNoPerID = 1000//TODO::load more on pull down chat window
         
         var timeStamp: Int64 = ChatLibNowInMilliSeconds()
         var from: String = ""
@@ -100,7 +100,7 @@ class MessageItem: NSObject {
         }
         
         
-        //pull to load more unread message
+        //TODO:: pull to load more unread message
         public static func loadUnread() {
                 guard let owner = Wallet.shared.Addr else {
                         return
@@ -134,18 +134,6 @@ class MessageItem: NSObject {
                         
                         cacheItemWithoutLock(pid: peerUid, item: msg)
                 }
-        }
-        
-        public static func getItemByTime(mid: Int64, to: String) -> MessageItem? {
-                let owner = Wallet.shared.Addr!
-                var result: MessageItem?
-                do {
-                        result = try CDManager.shared.GetOne(entity: "CDUnread",
-                                                             predicate: NSPredicate(format: "owner == %@ AND to == %@ AND unixTime == %@", owner, to, NSNumber(value: mid)))
-                } catch let err {
-                        print(err.localizedDescription)
-                }
-                return result
         }
         
         public static func removeRead(_ uid: String){
