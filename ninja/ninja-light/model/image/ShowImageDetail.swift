@@ -81,18 +81,18 @@ extension ShowImageDetail {
                 guard let imgView = backgroundView.subviews.first as? UIImageView else {
                         return
                 }
+                
+                let keyWindow = getKeyWindow()
                 let alert = UIAlertController(title: "请选择", message: nil, preferredStyle: .actionSheet)
                 let action = UIAlertAction(title: "保存到相册", style: .default) { (_) in
-
-
-                UIImageWriteToSavedPhotosAlbum(imgView.image!, nil, nil, nil)
-
+                        UIImageWriteToSavedPhotosAlbum(imgView.image!, nil, nil, nil)
+                        //TODO::show tips
+                        keyWindow?.rootViewController?.toastMessage(title: "saved success")
                 }
                 let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
                 alert.addAction(action)
                 alert.addAction(cancel)
 
-                let keyWindow = getKeyWindow()
                 guard let window = keyWindow?.rootViewController else {
                         return
                 }

@@ -163,8 +163,7 @@ extension GroupDetailViewController: UICollectionViewDelegateFlowLayout, UIColle
                         dataIdx = dataIdx - 1
                 }
                 let id = groupData.memberIds[dataIdx]
-                c.initApperance(id: id, isMember: id != groupData.leader)
-                
+                c.initApperance(id: id, isLeader:  id == groupData.leader)
                 return cell
         }
 }
