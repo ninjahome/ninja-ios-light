@@ -131,7 +131,7 @@ class GroupItem: NSObject {
                 do{
                         var result: [GroupItem] = []
                         result = try CDManager.shared.Get(entity: "CDGroup",
-                                                          predicate: NSPredicate(format: "isDelete == true AND owner == %@", owner),
+                                                          predicate: NSPredicate(format: "isDelete == false AND owner == %@", owner),
                                                           sort: [["name" : true]])
                         if result.count == 0{
                                 print("------>>>no group at all")
@@ -188,7 +188,7 @@ extension GroupItem {
                 let owner = Wallet.shared.Addr!
                 var obj: GroupItem?
                 obj = try? CDManager.shared.GetOne(entity: "CDGroup",
-                                                   predicate: NSPredicate(format: "isDelete == true AND gid == %@ AND owner == %@", gid, owner))
+                                                   predicate: NSPredicate(format: "isDelete == false AND gid == %@ AND owner == %@", gid, owner))
                 guard let item = obj else{
                         cache.removeValue(forKey: gid)
                         return nil
