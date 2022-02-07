@@ -10,8 +10,9 @@ import UIKit
 class AvatarCollectionCell: UICollectionViewCell {
         @IBOutlet weak var MemberIcon: AvatarButton!
         @IBOutlet weak var nickName: UILabel!
+        @IBOutlet weak var groupLeaderImg: UIImageView!
         
-        func initApperance(id: String) {
+        func initApperance(id: String,isMember:Bool = true) {
                 
                 if id == Wallet.shared.Addr{
                         MemberIcon.setupSelf()
@@ -27,5 +28,6 @@ class AvatarCollectionCell: UICollectionViewCell {
                 }
                 MemberIcon.setup(id: id, avaData: avatar)
                 nickName.text = name ?? ""
+                groupLeaderImg.isHidden = isMember
         }
 }

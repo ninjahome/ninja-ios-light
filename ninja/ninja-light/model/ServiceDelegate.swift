@@ -155,4 +155,10 @@ extension ServiceDelegate{
                 
                 return (nil, nil)
         }
+        
+        public static func updateGroupInBackGround(group:GroupItem){
+                workQueue.async {
+                        ChatLibGroupNonce(group.gid, group.nonce)
+                }
+        }
 }

@@ -260,6 +260,7 @@ extension GroupItem: ModelObj {
                 cObj.leader = self.leader
                 cObj.isDelete = self.isDelete
                 cObj.avatar = self.avatar
+                cObj.nonce = self.nonce
                 
         }
         
@@ -276,6 +277,7 @@ extension GroupItem: ModelObj {
                 self.leader = cObj.leader!
                 self.avatar = cObj.avatar
                 self.isDelete = cObj.isDelete
+                self.nonce = cObj.nonce
         }
 }
 //MARK: - basic group operation
@@ -375,14 +377,17 @@ extension GroupItem{
         }
         
         public static func AddMemberToGroup(group: GroupItem, newIds: [String]) -> Error? {
-                var error: NSError?
-                let to = group.memberIds
-                let idsData = ChatLibUnmarshalGoByte(to.toString())
-                ChatLibAddGroupMembers(group.gid, idsData, &error)
-                if let err = error{
-                        return err
-                }
+                
                 do {
+                        let idsData = try JSON(newIds).rawData()
+                        var err: NSError?
+                        let hash_tx = ChatLibAddGroupMembers(group.gid, idsData, &err)
+                        if let e = err{
+                                return e
+                        }
+                        print("------>>>chain update success:=>", hash_tx)
+                        group.memberIds.append(contentsOf: newIds)
+                        //TODO:: change gorup avatar
                         try GroupItem.syncGroupToDB(group)
                         
                 } catch let err{
@@ -392,7 +397,6 @@ extension GroupItem{
         }
         
         public static func KickOutUser(group: GroupItem, kickUserId: [String]) -> NJError? {
-                
                 try? GroupItem.syncGroupToDB(group)
                 return nil
         }

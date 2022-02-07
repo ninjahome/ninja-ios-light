@@ -17,6 +17,8 @@ class GroupDetailViewController: UIViewController {
         @IBOutlet weak var groupNameLabel: UILabel!
         @IBOutlet weak var groupIDLabel: UILabel!
         
+        @IBOutlet var vipFlagGroups: [UIImageView]!
+        
         var groupID: String = ""
         var groupName:String = ""
         var groupData:GroupItem!
@@ -33,33 +35,67 @@ class GroupDetailViewController: UIViewController {
                 self.groupData = data
                 self.leaderManagerd = data.leader == Wallet.shared.Addr
                 setupView()
+                ServiceDelegate.updateGroupInBackGround(group: data)
+                
+                NotificationCenter.default.addObserver(self,
+                                                       selector:#selector(updateGroupDetails(notification:)),
+                                                       name: NotifyGroupChanged,
+                                                       object: nil)
         }
         
+        
+        deinit {
+                NotificationCenter.default.removeObserver(self)
+        }
+        
+        @objc func updateGroupDetails(notification: NSNotification) {
+                DispatchQueue.main.async {
+                        self.setupView()
+                        self.collectionView.reloadData()
+                }
+        }
         private func setupView(){
                 if let n = groupData?.groupName, !n.isEmpty{
                         groupName = n
                 }
-                
                 kickMemView.isHidden = !self.leaderManagerd
                 changeNameView.isHidden = !self.leaderManagerd
                 viewTitle.title = groupName
                 groupNameLabel.text = groupName
                 groupIDLabel.text = groupID
+                let isVip = Wallet.shared.isStillVip()
+                for item in vipFlagGroups{
+                        item.isHidden = isVip
+                }
         }
         
         @IBAction func addMemberBtn(_ sender: UIButton) {
-                let vc = instantiateViewController(vcID: "AddGrpMemberVC") as! GroupMemberViewController
-                vc.isAddMember = true
-                vc.groupItem = groupData!
-                vc.existMember = groupData!.memberIds
+                if !Wallet.shared.isStillVip(){
+                        showVipModalViewController()
+                        return
+                }
+                
+                guard let grpData = groupData else{
+                        self.toastMessage(title: "invalid group data", duration: 1.2)
+                        return
+                }
+                guard let vc = instantiateViewController(vcID: "AddGrpMemberVC") as? GroupMemberViewController else{
+                        self.toastMessage(title: "invalid target")
+                        return
+                }
+                
+                vc.isInAddingMode = true
+                vc.groupItem = grpData
                 
                 vc.notiMemberChange = { newGroupInfo in
                         self.groupData = newGroupInfo
                         DispatchQueue.main.async {
-                                self.setupView()
-                                self.collectionView.reloadData()
+                                self.navigationController?.popViewController(animated: true)
+                                NotificationCenter.default.post(name:NotifyGroupChanged,
+                                                                object: newGroupInfo.gid, userInfo:nil)
                         }
                 }
+                
                 self.navigationController?.pushViewController(vc, animated: true)
         }
         
@@ -69,10 +105,19 @@ class GroupDetailViewController: UIViewController {
         }
         
         @IBAction func kickMemberBtn(_ sender: UIButton) {
+                if !Wallet.shared.isStillVip(){
+                        showVipModalViewController()
+                        return
+                }
+                
                 self.performSegue(withIdentifier: "KickMemberSeg", sender: self)
         }
         
         @IBAction func quitOrDismissGroup(_ sender: UIButton) {
+                if !Wallet.shared.isStillVip(){
+                        showVipModalViewController()
+                        return
+                }
                 if leaderManagerd{
                         dismissGroup()
                 }else{
@@ -118,7 +163,7 @@ extension GroupDetailViewController: UICollectionViewDelegateFlowLayout, UIColle
                         dataIdx = dataIdx - 1
                 }
                 let id = groupData.memberIds[dataIdx]
-                c.initApperance(id: id)
+                c.initApperance(id: id, isMember: id != groupData.leader)
                 
                 return cell
         }
@@ -135,26 +180,32 @@ extension GroupDetailViewController{
         }
         
         @IBAction func updateGroupNameViewTap(_ gesture: UITapGestureRecognizer) {
+                if !Wallet.shared.isStillVip(){
+                        showVipModalViewController()
+                        return
+                }
                 
                 self.showInputDialog(title: "New Group Name", message: "", textPlaceholder: "Group Name", actionText: "OK", cancelText: "Cacel", cancelHandler: nil) { text in
                         guard let newName = text else{
                                 self.toastMessage(title: "invalid new group name", duration: 2)
                                 return
                         }
-                        
-                        let err = GroupItem.updateGroupName(group:self.groupData, newName:newName)
-                        if let e = err{
-                                self.toastMessage(title: "\(e.localizedDescription)")
-                                return
+                        ServiceDelegate.workQueue.async {
+                                let err = GroupItem.updateGroupName(group:self.groupData, newName:newName)
+                                if let e = err{
+                                        self.toastMessage(title: "\(e.localizedDescription)")
+                                        return
+                                }
+                                
+                                NotificationCenter.default.post(name:NotifyGroupChanged,
+                                                                object: self.groupID, userInfo:nil)
                         }
+                        
                         DispatchQueue.main.async {
                                 self.groupName = newName
                                 self.viewTitle.title = newName
                                 self.groupNameLabel.text = newName
                         }
-                        
-                        NotificationCenter.default.post(name:NotifyGroupChanged,
-                                                        object: self.groupID, userInfo:nil)
                 }
         }
         

@@ -481,10 +481,15 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </button>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="group_leader" translatesAutoresizingMaskIntoConstraints="NO" id="cwg-Dx-r2A">
+                                                    <rect key="frame" x="9" y="48" width="38" height="16"/>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="cwg-Dx-r2A" firstAttribute="centerX" secondItem="FLG-zd-0wU" secondAttribute="centerX" id="25z-Mn-7ny"/>
                                                 <constraint firstItem="FLG-zd-0wU" firstAttribute="top" secondItem="jFf-8K-Qzi" secondAttribute="top" id="A4S-Er-2fg"/>
                                                 <constraint firstAttribute="bottom" secondItem="V27-BV-SKh" secondAttribute="bottom" id="UdD-GY-eDm"/>
+                                                <constraint firstItem="FLG-zd-0wU" firstAttribute="bottom" secondItem="cwg-Dx-r2A" secondAttribute="centerY" id="dXj-cH-Da2"/>
                                                 <constraint firstItem="V27-BV-SKh" firstAttribute="leading" secondItem="jFf-8K-Qzi" secondAttribute="leading" id="fCc-w5-OTe"/>
                                                 <constraint firstItem="FLG-zd-0wU" firstAttribute="centerX" secondItem="jFf-8K-Qzi" secondAttribute="centerX" id="wbV-bU-2WP"/>
                                             </constraints>
@@ -492,6 +497,7 @@
                                         <size key="customSize" width="56" height="80"/>
                                         <connections>
                                             <outlet property="MemberIcon" destination="FLG-zd-0wU" id="6gH-Xb-KJI"/>
+                                            <outlet property="groupLeaderImg" destination="cwg-Dx-r2A" id="pFQ-6n-8iv"/>
                                             <outlet property="nickName" destination="V27-BV-SKh" id="2tX-LY-AMM"/>
                                         </connections>
                                     </collectionViewCell>
@@ -514,6 +520,13 @@
                                         <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VIP" translatesAutoresizingMaskIntoConstraints="NO" id="nPE-lL-R4S">
+                                        <rect key="frame" x="110" y="15" width="26" height="14"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="14" id="Elh-Yd-hih"/>
+                                            <constraint firstAttribute="width" constant="26" id="R1i-mv-UzG"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <accessibility key="accessibilityConfiguration" label="DeleteMemberView">
@@ -524,7 +537,9 @@
                                     <constraint firstItem="7DS-xf-U7a" firstAttribute="leading" secondItem="y2h-8y-sDk" secondAttribute="leading" constant="20" id="Dtj-55-xcb"/>
                                     <constraint firstItem="ARq-WA-iES" firstAttribute="centerY" secondItem="7DS-xf-U7a" secondAttribute="centerY" id="Dzc-tH-RmV"/>
                                     <constraint firstItem="7DS-xf-U7a" firstAttribute="centerY" secondItem="y2h-8y-sDk" secondAttribute="centerY" id="FFO-Hl-Na3"/>
+                                    <constraint firstItem="nPE-lL-R4S" firstAttribute="leading" secondItem="7DS-xf-U7a" secondAttribute="trailing" constant="8" id="Kb7-aG-4kt"/>
                                     <constraint firstAttribute="trailing" secondItem="ARq-WA-iES" secondAttribute="trailing" constant="20" id="Q94-zK-0pJ"/>
+                                    <constraint firstItem="nPE-lL-R4S" firstAttribute="centerY" secondItem="y2h-8y-sDk" secondAttribute="centerY" id="hpB-BO-yWE"/>
                                     <constraint firstAttribute="height" constant="44" id="jVh-DH-Voi"/>
                                 </constraints>
                                 <connections>
@@ -554,6 +569,13 @@
                                         <color key="textColor" red="0.22745099660000001" green="0.22745099660000001" blue="0.31764706970000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VIP" translatesAutoresizingMaskIntoConstraints="NO" id="7Bf-bL-ErQ">
+                                        <rect key="frame" x="93.5" y="15" width="26" height="14"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="26" id="JD6-4A-yv6"/>
+                                            <constraint firstAttribute="height" constant="14" id="x4g-8Z-aeZ"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <accessibility key="accessibilityConfiguration" label="DeleteMemberView">
@@ -561,11 +583,13 @@
                                 </accessibility>
                                 <gestureRecognizers/>
                                 <constraints>
+                                    <constraint firstItem="7Bf-bL-ErQ" firstAttribute="centerY" secondItem="uzu-ty-Chx" secondAttribute="centerY" id="1Yz-uP-3vT"/>
                                     <constraint firstAttribute="trailing" secondItem="jfB-JS-LB5" secondAttribute="trailing" constant="20" id="1gQ-dO-aSs"/>
                                     <constraint firstItem="hdi-pP-J1V" firstAttribute="centerY" secondItem="uzu-ty-Chx" secondAttribute="centerY" id="8Mg-MH-hWe"/>
                                     <constraint firstItem="jfB-JS-LB5" firstAttribute="leading" secondItem="ucn-1n-a4o" secondAttribute="trailing" constant="8" id="9rD-V8-1T3"/>
                                     <constraint firstAttribute="height" constant="44" id="PNL-cB-54h"/>
                                     <constraint firstItem="hdi-pP-J1V" firstAttribute="leading" secondItem="uzu-ty-Chx" secondAttribute="leading" constant="20" id="YP4-b4-tR5"/>
+                                    <constraint firstItem="7Bf-bL-ErQ" firstAttribute="leading" secondItem="hdi-pP-J1V" secondAttribute="trailing" constant="8" id="YZK-eN-9Q1"/>
                                     <constraint firstItem="ucn-1n-a4o" firstAttribute="centerY" secondItem="uzu-ty-Chx" secondAttribute="centerY" id="aJO-k7-2mN"/>
                                     <constraint firstItem="ucn-1n-a4o" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hdi-pP-J1V" secondAttribute="trailing" constant="8" id="q9s-Cd-Scu"/>
                                     <constraint firstItem="jfB-JS-LB5" firstAttribute="centerY" secondItem="hdi-pP-J1V" secondAttribute="centerY" id="rAd-Xb-GZ2"/>
@@ -637,6 +661,13 @@
                                     <action selector="quitOrDismissGroup:" destination="kwp-eE-p9L" eventType="touchUpInside" id="sbq-kg-dU3"/>
                                 </connections>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VIP" translatesAutoresizingMaskIntoConstraints="NO" id="6Zb-4Q-Ufv">
+                                <rect key="frame" x="356" y="751" width="26" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="26" id="OBC-U8-hMu"/>
+                                    <constraint firstAttribute="height" constant="14" id="dWW-g8-vMz"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="c8g-nL-qfY"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.94509803920000002" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -648,9 +679,11 @@
                             <constraint firstItem="Z38-wh-fvP" firstAttribute="trailing" secondItem="c8g-nL-qfY" secondAttribute="trailing" id="Q9Z-ZV-2KE"/>
                             <constraint firstItem="zBb-sL-yTQ" firstAttribute="top" secondItem="c8g-nL-qfY" secondAttribute="top" constant="1" id="QF8-sN-gGi"/>
                             <constraint firstItem="Z38-wh-fvP" firstAttribute="leading" secondItem="c8g-nL-qfY" secondAttribute="leading" id="UU2-74-vFn"/>
+                            <constraint firstItem="6Zb-4Q-Ufv" firstAttribute="top" secondItem="At7-ob-eIK" secondAttribute="top" constant="6" id="V6Y-y4-SrH"/>
                             <constraint firstItem="uzu-ty-Chx" firstAttribute="trailing" secondItem="c8g-nL-qfY" secondAttribute="trailing" id="VtD-yh-m8J"/>
                             <constraint firstItem="zBb-sL-yTQ" firstAttribute="leading" secondItem="c8g-nL-qfY" secondAttribute="leading" id="Zyl-fX-tsL"/>
                             <constraint firstItem="At7-ob-eIK" firstAttribute="leading" secondItem="c8g-nL-qfY" secondAttribute="leading" constant="20" id="bmJ-5c-iQL"/>
+                            <constraint firstItem="6Zb-4Q-Ufv" firstAttribute="trailing" secondItem="At7-ob-eIK" secondAttribute="trailing" constant="-12" id="cd7-RH-hZo"/>
                             <constraint firstItem="uzu-ty-Chx" firstAttribute="leading" secondItem="c8g-nL-qfY" secondAttribute="leading" id="gJh-v8-MGd"/>
                             <constraint firstItem="c8g-nL-qfY" firstAttribute="trailing" secondItem="zBb-sL-yTQ" secondAttribute="trailing" id="gLl-hp-Fuf"/>
                             <constraint firstItem="c8g-nL-qfY" firstAttribute="trailing" secondItem="At7-ob-eIK" secondAttribute="trailing" constant="20" id="hRK-Vk-0aR"/>
@@ -666,6 +699,9 @@
                         <outlet property="groupNameLabel" destination="ucn-1n-a4o" id="t8d-rF-SQc"/>
                         <outlet property="kickMemView" destination="y2h-8y-sDk" id="GT2-dt-z4m"/>
                         <outlet property="viewTitle" destination="hHC-6b-WII" id="uYh-ho-dqf"/>
+                        <outletCollection property="vipFlagGroups" destination="6Zb-4Q-Ufv" collectionClass="NSMutableArray" id="amu-U2-7dS"/>
+                        <outletCollection property="vipFlagGroups" destination="nPE-lL-R4S" collectionClass="NSMutableArray" id="6GY-cy-sQX"/>
+                        <outletCollection property="vipFlagGroups" destination="7Bf-bL-ErQ" collectionClass="NSMutableArray" id="nER-60-sQs"/>
                         <segue destination="NiN-dG-WjP" kind="show" identifier="KickMemberSeg" id="JRU-PI-GFU"/>
                     </connections>
                 </viewController>
@@ -6149,6 +6185,7 @@
         <image name="file_icon" width="58" height="58"/>
         <image name="groupC_img" width="42" height="42"/>
         <image name="group_chat_icon" width="22" height="22"/>
+        <image name="group_leader" width="38" height="16"/>
         <image name="logo_img" width="122" height="122"/>
         <image name="map_img" width="182" height="81"/>
         <image name="message_pick_icon" width="24" height="24"/>

@@ -19,18 +19,16 @@ class GroupMemberViewController: UIViewController {
         var setEnable: Bool = false
         var validContactArr: [CombineConntact] = []
         var invalidContactArr: [CombineConntact] = []
-        var isAddMember: Bool = false
+        var isInAddingMode: Bool = false
         var isDelMember: Bool = false
-        var existMember: [String] = []
-        
         var groupItem: GroupItem = GroupItem.init()
         
-        var notiMemberChange: NotiGroupChange!
+        var notiMemberChange: NotiGroupChange?
         
         override func viewDidLoad() {
                 super.viewDidLoad()
                 
-                if isAddMember {
+                if isInAddingMode {
                         actTitle.title = "添加新成员"
                 }
                 
@@ -60,9 +58,15 @@ class GroupMemberViewController: UIViewController {
         fileprivate func contactsFilter(){
                 var contacts = CombineConntact.CacheArray()
                 var invalidContact:[CombineConntact] = []
-                if isAddMember {
+                if isInAddingMode {
+                        
                         contacts.removeAll { cont in
-                                existMember.contains(cont.peerID)
+                                let freeUser = !cont.isVIP()
+                                if freeUser{
+                                        invalidContact.append(cont)
+                                        return true
+                                }
+                                return groupItem.memberIds .contains(cont.peerID) || freeUser
                         }
                 } else {
                         contacts.removeAll { cont in
@@ -86,29 +90,18 @@ class GroupMemberViewController: UIViewController {
                         return
                 }
                 
-                if isAddMember {
-                        
-                        var groupIds = groupItem.memberIds
-                        var newIds: [String] = []
-                        for i in selectedIndexs {
-                                newIds.append(validContactArr[i].peerID)
-                                groupIds.append(validContactArr[i].peerID)
-                        }
-                        
-                        groupItem.memberIds = groupIds
-                        
-                        self.AddMember(newIds: newIds)
-                        print("------>>>groupIds:\(groupIds)")
+                if isInAddingMode {
+                        self.AddMember()
                         
                 } else {
-                        var groupIds: [CombineConntact] = []
+                        var groupIds: [String] = []
                         guard selectedIndexs.count >= 2 else{
                                 self.toastMessage(title: "too less member")
                                 return
                         }
                         
                         for i in selectedIndexs {
-                                groupIds.append(validContactArr[i])
+                                groupIds.append(validContactArr[i].peerID)
                         }
                         
                         showInputDialog(title: "设置群名", message: "", textPlaceholder: "", actionText: "确定", cancelText: "取消") { cancleAction in
@@ -119,19 +112,38 @@ class GroupMemberViewController: UIViewController {
                 }
         }
         
-        fileprivate func AddMember(newIds: [String]) {
+        fileprivate func AddMember() {
+                self.showIndicator(withTitle: "", and: "updating group")
                 
-                if let err = GroupItem.AddMemberToGroup(group: self.groupItem, newIds: newIds) {
-                        self.toastMessage(title: "add member to group faild.\(String(describing: err.localizedDescription))")
-                        return
+                ServiceDelegate.workQueue.async {
+                        defer{
+                                self.hideIndicator()
+                        }
+                        
+                        var newIds: [String] = []
+                        for i in self.selectedIndexs {
+                                newIds.append(self.validContactArr[i].peerID)
+                        }
+                        
+//
+//                        let validMemIDs = CombineConntact.updateSetOfContact(ids: newIds)
+//
+//                        if validMemIDs.count == 0{
+//                                self.toastMessage(title: "some body's membership is outdate")
+//                                return
+//                        }
+//
+                        if let err = GroupItem.AddMemberToGroup(group: self.groupItem, newIds: newIds) {
+                                self.toastMessage(title: "\(err.localizedDescription)")
+                                return
+                        }
+                        
+                        self.notiMemberChange?(self.groupItem)
                 }
-                
-                self.notiMemberChange(groupItem)
-                self.navigationController?.popViewController(animated: true)
                 
         }
         
-        fileprivate func CreateGroup(member: [CombineConntact], groupName: String) {
+        fileprivate func CreateGroup(member: [String], groupName: String) {
                 
                 self.showIndicator(withTitle: "", and: "creating group")
                 
@@ -140,18 +152,19 @@ class GroupMemberViewController: UIViewController {
                                 self.hideIndicator()
                         }
                         
-                        let validMemIDs = CombineConntact.updateSetOfContact(ids: member)
-                        if validMemIDs.count < 2{
-                                self.toastMessage(title: "too less valid friend")
-                                return
-                        }
+//                        let validMemIDs = CombineConntact.updateSetOfContact(ids: member)
+//                        if validMemIDs.count < 2{
+//                                self.toastMessage(title: "too less valid friend")
+//                                return
+//                        }
                         
                         do {
-                                self.groupItem = try GroupItem.NewGroup(ids: validMemIDs,
+                                self.groupItem = try GroupItem.NewGroup(ids: member,
                                                                         groupName: groupName)
                                 
                         }catch let err{
                                 self.toastMessage(title: "\(err.localizedDescription)")
+                                return
                         }
                         
                         DispatchQueue.main.async {
@@ -160,12 +173,11 @@ class GroupMemberViewController: UIViewController {
                                 let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController
                                 vc.peerUid = self.groupItem.gid
                                 vc.IS_GROUP = true
-//                                self.replaceByViewController(vc: vc)
+                                //                                self.replaceByViewController(vc: vc)
                                 self.navigationController?.pushViewController(vc, animated: true)
                         }
                 }
         }
-        
         func enableOrDisableCompleteBtn(number: Int) {
                 finishBtn.setTitle("完成(\(number))", for: .normal)
                 
@@ -236,7 +248,7 @@ extension GroupMemberViewController : CellClickDelegate {
                         selectedIndexs.append(idx)
                 }
                 
-                if isAddMember {
+                if isInAddingMode {
                         if selectedIndexs.count > 0 {
                                 self.setEnable = true
                         }
@@ -259,7 +271,7 @@ extension GroupMemberViewController : CellClickDelegate {
                         selectedIndexs.remove(at: existedIdx)
                 }
                 
-                if isAddMember {
+                if isInAddingMode {
                         if selectedIndexs.count < 1 {
                                 self.setEnable = false
                         }
