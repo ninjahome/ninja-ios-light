@@ -92,11 +92,16 @@ class GroupItem: NSObject {
                 grp.groupName = objJson["name"].string
                 grp.isDelete = objJson["deleted"].bool ?? false
                 
-                var ids : [String] = []
+                if let time = objJson["touch_time"].string {
+                        grp.unixTime = GoTimeStringToSwiftDate(str: time)
+                }
+                
+                var ids : [String] = [grp.leader]
                 for k in memIds {
                         let uid = String(k)
                         ids.append(uid)
                 }
+                
                 grp.memberIds = ids
                 grp.owner = Wallet.shared.Addr!
                 
@@ -104,16 +109,14 @@ class GroupItem: NSObject {
                         _ = AccountItem.loadAccountDetailFromChain(addr: grp.leader)
                 }
                 
-                for i in grp.memberIds {
-                        if AccountItem.GetAccount(i) == nil {
-                                _ = AccountItem.loadAccountDetailFromChain(addr: i )
+                for id in grp.memberIds {
+                        if AccountItem.GetAccount(id) == nil {
+                                _ = AccountItem.loadAccountDetailFromChain(addr: id)
                         }
                 }
                 
                 if grp.avatar == nil{
-                        var allIds = grp.memberIds
-                        allIds.append(grp.leader)
-                        if let grpImg = GroupItem.genGroupAvatar(ids: allIds) {
+                        if let grpImg = GroupItem.genGroupAvatar(ids: grp.memberIds) {
                                 grp.avatar = grpImg
                         }
                 }
@@ -255,12 +258,10 @@ extension GroupItem: ModelObj {
                 guard let cObj = obj as? CDGroup else {
                         throw NJError.coreData("Cast to CDGroup failed")
                 }
-                //                self.UpdateSelfInfos()
                 cObj.gid = self.gid
                 cObj.name = self.groupName
                 cObj.owner = self.owner
                 cObj.members = self.memberIds as NSObject
-                //                cObj.memberNicks = self.memberNicks
                 cObj.unixTime = self.unixTime
                 cObj.leader = self.leader
                 cObj.isDelete = self.isDelete
@@ -512,7 +513,7 @@ extension GroupItem{
                                                           time: newItem.unixTime,
                                                           unread: 0, isGrp: true)
                         }
-                        
+                        CDManager.shared.saveContext()
                         NotificationCenter.default.post(name:NotifyGroupChanged,
                                                         object: newItem.gid,
                                                         userInfo:nil)

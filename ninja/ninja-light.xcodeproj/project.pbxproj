@@ -60,7 +60,6 @@
 		08B74A5F26AFF31B00D6F0F8 /* LocationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B74A5E26AFF31B00D6F0F8 /* LocationUtils.swift */; };
 		08B74A6726B3B90D00D6F0F8 /* GroupMemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B74A6626B3B90D00D6F0F8 /* GroupMemberViewController.swift */; };
 		08B74A6B26B637D800D6F0F8 /* GroupMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B74A6A26B637D800D6F0F8 /* GroupMemberTableViewCell.swift */; };
-		08BFE0CA2722749F000BADAD /* LockCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BFE0C92722749F000BADAD /* LockCache.swift */; };
 		08C2C22A278FD1BA0023D773 /* AvatarEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C2C229278FD1B90023D773 /* AvatarEditViewController.swift */; };
 		08CCDC6F26A3C3A200B0D7DA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CCDC6E26A3C3A200B0D7DA /* MapViewController.swift */; };
 		08EAAD3F2695847900210271 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08EAAD3E2695847900210271 /* SystemConfiguration.framework */; };
@@ -190,7 +189,6 @@
 		08B74A5E26AFF31B00D6F0F8 /* LocationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationUtils.swift; sourceTree = "<group>"; };
 		08B74A6626B3B90D00D6F0F8 /* GroupMemberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberViewController.swift; sourceTree = "<group>"; };
 		08B74A6A26B637D800D6F0F8 /* GroupMemberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberTableViewCell.swift; sourceTree = "<group>"; };
-		08BFE0C92722749F000BADAD /* LockCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockCache.swift; sourceTree = "<group>"; };
 		08C2C229278FD1B90023D773 /* AvatarEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarEditViewController.swift; sourceTree = "<group>"; };
 		08CCDC6E26A3C3A200B0D7DA /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		08EAAD3E2695847900210271 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -326,7 +324,6 @@
 				69B8C0DB261D334100B4E4AC /* ChatItem.swift */,
 				69B8C0E0261D334900B4E4AC /* MessageItem.swift */,
 				69B8C0EE261DA17B00B4E4AC /* CliMessage.swift */,
-				08BFE0C92722749F000BADAD /* LockCache.swift */,
 				0886B1AE2772BEC500257C15 /* AccountItem.swift */,
 			);
 			path = chat;
@@ -705,7 +702,6 @@
 				086701B32665C6D900A1E951 /* AudioRecordManager.swift in Sources */,
 				69B8C0C8261C8AD100B4E4AC /* ServiceDelegate.swift in Sources */,
 				0886B1B5277B044100257C15 /* GroupItemTableViewCell.swift in Sources */,
-				08BFE0CA2722749F000BADAD /* LockCache.swift in Sources */,
 				08B74A6B26B637D800D6F0F8 /* GroupMemberTableViewCell.swift in Sources */,
 				0860D5C52761FDD000E53FDA /* FileTableViewCell.swift in Sources */,
 				0825C21126BF9638003E0EF3 /* GroupItem.swift in Sources */,

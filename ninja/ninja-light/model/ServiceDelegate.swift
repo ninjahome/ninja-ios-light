@@ -121,10 +121,10 @@ extension ServiceDelegate{
                         
                         print("------>>>new wallet \(String(describing: Wallet.shared.Addr))")
                         ServiceDelegate.cleanAllData()
-                        GroupItem.syncAllGroupDataFromChainAtOnce()
                         CombineConntact.syncAllContactDataAtOnce()
-                        WebsocketSrv.shared.Online()
+                        GroupItem.syncAllGroupDataFromChainAtOnce()
                         CDManager.shared.saveContext()
+                        WebsocketSrv.shared.Online()
                         parent.hideIndicator()
                         guard let cb = callback else{
                                 return

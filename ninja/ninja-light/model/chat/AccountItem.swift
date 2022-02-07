@@ -19,7 +19,7 @@ class AccountItem: NSObject {
         var NickName: String?
         var Avatar: Data?
         var Balance: Int64?
-        var TouchTime: Int64?
+        var TouchTime: Int64 = 0
         var Owner: String?
         
         public override init() {
@@ -48,7 +48,9 @@ class AccountItem: NSObject {
                 let str = objJson["avatar"].string
                 data.Avatar = ChatLibUnmarshalGoByte(str)
                 data.Balance = objJson["balance"].int64
-                data.TouchTime = objJson["touch_time"].int64
+                if let time = objJson["touch_time"].string {
+                        data.TouchTime = GoTimeStringToSwiftDate(str: time)
+                }
                 return data
                 
         }
@@ -59,7 +61,9 @@ class AccountItem: NSObject {
                 acc.Addr = account["addr"].string
                 acc.NickName = account["name"].string
                 acc.Balance = account["balance"].int64
-                acc.TouchTime = account["touch_time"].int64
+                if let time = account["touch_time"].string {
+                        acc.TouchTime = GoTimeStringToSwiftDate(str: time)
+                }
                 acc.Owner = Wallet.shared.Addr!
                 
                 let str = account["avatar"].string ?? ""
@@ -119,7 +123,7 @@ extension AccountItem: ModelObj {
                 cObj.balance = self.Balance ?? 0
                 
                 cObj.nonce = self.Nonce ?? 0
-                cObj.touch_time = self.TouchTime ?? 0
+                cObj.touch_time = self.TouchTime 
         }
         
         func initByObj(obj: NSManagedObject) throws {

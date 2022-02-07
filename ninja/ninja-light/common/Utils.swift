@@ -208,6 +208,15 @@ public func formatMsgTimeStamp(by timeStamp: Int64) -> String {
         return dateFormatterGet.string(from: time)
 }
 
+public func GoTimeStringToSwiftDate(str:String)->Int64{
+        let f = ISO8601DateFormatter()
+        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        guard let date = f.date(from: str) else{
+                return 0
+        }
+        return Int64(date.timeIntervalSince1970)
+}
+
 public func formatTimeStamp(by timeStamp: Int64) -> String {
         let time = Date.init(timeIntervalSince1970: TimeInterval(timeStamp))
         dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
