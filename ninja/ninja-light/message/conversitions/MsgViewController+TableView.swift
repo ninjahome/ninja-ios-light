@@ -25,25 +25,25 @@ extension MsgViewController: UITableViewDelegate, UITableViewDataSource {
                         identifer = msgItem.isOut ? "messageCell" : "messageCellL"
                         
                         let cell = tableView.dequeueReusableCell(withIdentifier: identifer, for: indexPath) as! TxtTableViewCell
-                        cell.updateMessageCell(by: msgItem, name:self.peerName, avatar:self.peerAvatarData)
+                        cell.updateMessageCell(by: msgItem, name:self.peerName, avatar:self.peerAvatarData, isGroup: self.IS_GROUP)
                         return cell
                 case .voice:
                         identifer = msgItem.isOut ? "voiceCell" : "voiceCellL"
                         
                         let cell = tableView.dequeueReusableCell(withIdentifier: identifer, for: indexPath) as! VoiceTableViewCell
-                        cell.updateMessageCell(by: msgItem, name:self.peerName, avatar:self.peerAvatarData)
+                        cell.updateMessageCell(by: msgItem, name:self.peerName, avatar:self.peerAvatarData, isGroup: self.IS_GROUP)
                         return cell
                 case .image:
                         identifer = msgItem.isOut ? "imageCell" : "imageCellL"
                         
                         let cell = tableView.dequeueReusableCell(withIdentifier: identifer, for: indexPath) as! ImageTableViewCell
-                        cell.updateMessageCell(by: msgItem, name:self.peerName, avatar:self.peerAvatarData)
+                        cell.updateMessageCell(by: msgItem, name:self.peerName, avatar:self.peerAvatarData, isGroup: self.IS_GROUP)
                         return cell
                 case .location:
                         identifer = msgItem.isOut ? "locationCell" : "locationCellL"
                         
                         let cell = tableView.dequeueReusableCell(withIdentifier: identifer, for: indexPath) as! LocationTableViewCell
-                        cell.updateMessageCell(by: msgItem, name:self.peerName, avatar:self.peerAvatarData)
+                        cell.updateMessageCell(by: msgItem, name:self.peerName, avatar:self.peerAvatarData, isGroup: self.IS_GROUP)
                         return cell
                 case .file:
                         guard let fil = msgItem.payload as?fileMsg else{
@@ -53,14 +53,14 @@ extension MsgViewController: UITableViewDelegate, UITableViewDataSource {
                                 identifer = msgItem.isOut ? "videoCell" : "videoCellL"
                                 
                                 let cell = tableView.dequeueReusableCell(withIdentifier: identifer, for: indexPath) as! VideoTableViewCell
-                                cell.updateMessageCell(by: msgItem, name:self.peerName, avatar:self.peerAvatarData)
+                                cell.updateMessageCell(by: msgItem, name:self.peerName, avatar:self.peerAvatarData, isGroup: self.IS_GROUP)
                                 return cell
                         }
                         
                         identifer = msgItem.isOut ? "fileCell" : "fileCellL"
                         
                         let cell = tableView.dequeueReusableCell(withIdentifier: identifer, for: indexPath) as! FileTableViewCell
-                        cell.updateMessageCell(by: msgItem, name:self.peerName, avatar:self.peerAvatarData)
+                        cell.updateMessageCell(by: msgItem, name:self.peerName, avatar:self.peerAvatarData, isGroup: self.IS_GROUP)
                         return cell
                 default:
                         return TxtTableViewCell()

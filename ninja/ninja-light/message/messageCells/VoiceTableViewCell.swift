@@ -54,7 +54,7 @@ class VoiceTableViewCell: UITableViewCell {
                 }
         }
         
-        func updateMessageCell (by message: MessageItem, name:String, avatar:Data?) {
+        func updateMessageCell (by message: MessageItem, name:String, avatar:Data?, isGroup:Bool) {
                 self.curMsg = message
                 guard let voice = message.payload as? audioMsg else {
                         return
@@ -84,8 +84,11 @@ class VoiceTableViewCell: UITableViewCell {
                 } else {
                         let img = UIImage(named: "babycolor")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
                         msgBackgroundView.image = img
-                        nickname.text = name
-                        self.avatar.setup(id: from, avaData: avatar)
+                        
+                        PopulatePeerCell(nickname:self.nickname,
+                                         avatarBtn: self.avatar,
+                                         from: from, name: name, avatar: avatar, isGroup: isGroup)
+                        
                 }
                 
                 time.text = formatMsgTimeStamp(by: message.timeStamp)

@@ -64,7 +64,7 @@ class FileTableViewCell: UITableViewCell {
                 }
         }
 
-        func updateMessageCell (by message: MessageItem, name:String, avatar:Data?) {
+        func updateMessageCell (by message: MessageItem, name:String, avatar:Data?, isGroup:Bool) {
                 cellMsg = message
                 msgBackgroundView.layer.cornerRadius = 8
                 msgBackgroundView.clipsToBounds = true

@@ -7,6 +7,34 @@
 
 import UIKit
 
+func PopulatePeerCell(nickname:UILabel,
+                             avatarBtn:AvatarButton,
+                             from: String, name:String, avatar:Data?, isGroup:Bool){
+        if !isGroup{
+                initMemberInfos(nickname:nickname,
+                                avatarBtn: avatarBtn,
+                                pid: from, name: name, avatar: avatar)
+        }else{
+                let (peerName, peerAvatar) = ServiceDelegate.queryNickAndAvatar(pid: from) { name, avatar in
+                        DispatchQueue.main.async {
+                                initMemberInfos(nickname:nickname,
+                                                avatarBtn: avatarBtn,
+                                                pid: from, name: name, avatar: avatar)
+                        }
+                }
+                initMemberInfos(nickname:nickname,
+                                avatarBtn: avatarBtn,
+                                pid: from, name: peerName, avatar: peerAvatar)
+        }
+}
+
+private func initMemberInfos(nickname:UILabel,
+                             avatarBtn:AvatarButton,
+                             pid:String, name:String?, avatar:Data?){
+        nickname.text = name
+        avatarBtn.setup(id: pid, avaData: avatar)
+}
+
 class TxtTableViewCell: UITableViewCell {
         
         @IBOutlet weak var msgBackgroundView: UIImageView!
@@ -50,7 +78,7 @@ class TxtTableViewCell: UITableViewCell {
                 }
         }
         
-        func updateMessageCell (by message: MessageItem, name:String, avatar:Data?) {
+        func updateMessageCell (by message: MessageItem, name:String, avatar:Data?, isGroup:Bool) {
                 self.curMsg = message
                 let from = message.from
                 guard let msgText = message.payload as? txtMsg else{
@@ -73,10 +101,13 @@ class TxtTableViewCell: UITableViewCell {
                         self.nickname.text = ""
                 } else {
                         msgBackgroundView.image = ourImg
-                        nickname.text = name
-                        self.avatar.setup(id: from, avaData: avatar)
+                        PopulatePeerCell(nickname:self.nickname,
+                                         avatarBtn: self.avatar,
+                                         from: from, name: name, avatar: avatar, isGroup: isGroup)
                 }
                 
                 time.text = formatMsgTimeStamp(by: message.timeStamp)
         }
+        
+        
 }

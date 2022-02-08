@@ -48,7 +48,7 @@ class LocationTableViewCell: UITableViewCell {
                         spinner?.stopAnimating()
                 }
         }
-        func updateMessageCell (by message: MessageItem, name:String, avatar:Data?) {
+        func updateMessageCell (by message: MessageItem, name:String, avatar:Data?, isGroup:Bool) {
                 self.curMsg = message
                 let from = message.from
 
