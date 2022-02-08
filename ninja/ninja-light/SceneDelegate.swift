@@ -39,6 +39,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
         
         func sceneDidDisconnect(_ scene: UIScene) {
                 CDManager.shared.saveContext()
+                WebsocketSrv.shared.Offline()
 
                 // Called as the scene is being released by the system.
                 // This occurs shortly after the scene enters the background, or when its session is discarded.
@@ -54,6 +55,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
         }
         
         func sceneWillResignActive(_ scene: UIScene) {
+                CDManager.shared.saveContext()
+                WebsocketSrv.shared.Offline()
                 // Called when the scene will move from an active state to an inactive state.
                 // This may occur due to temporary interruptions (ex. an incoming phone call).
         }

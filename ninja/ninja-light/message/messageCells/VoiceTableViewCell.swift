@@ -94,7 +94,6 @@ class VoiceTableViewCell: UITableViewCell {
                 time.text = formatMsgTimeStamp(by: message.timeStamp)
         }
         
-        
         func setBtn(isOut: Bool, data: Data, long: Int) {
                 playBtn.backgroundColor = .clear
                 let rawImg = UIImage(named: "voice_00009")!
