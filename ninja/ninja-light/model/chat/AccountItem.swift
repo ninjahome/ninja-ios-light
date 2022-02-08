@@ -56,7 +56,7 @@ class AccountItem: NSObject {
                 
         }
         
-        public static func initByJson(_ account: JSON) -> AccountItem {
+        public static func initByJson(_ account: JSON, needSyncAvatar:Bool = false) -> AccountItem {
                 let acc = AccountItem()
                 acc.Nonce = account["nonce"].int64
                 acc.Addr = account["addr"].string
@@ -68,7 +68,7 @@ class AccountItem: NSObject {
                 acc.Owner = Wallet.shared.Addr!
                 
                 let str = account["avatar"].string ?? ""
-                if str == ""{
+                if str == "" && needSyncAvatar{
                         acc.Avatar = ChatLibAccountAvatar(acc.Addr, nil)
                 }else{
                         acc.Avatar = ChatLibUnmarshalGoByte(str)

@@ -269,17 +269,17 @@ class CombineConntact: NSObject{
                 }
                 
                 for (uid, contact):(String,JSON) in allContactJson {
-                        let cc = CombineConntact.saveDataFromChain(json:contact, uid:uid)
+                        let cc = CombineConntact.saveDataFromChain(json:contact, uid:uid, needSyncAvatar: true)
                         cache[uid] = cc
                 }
         }
         
         
-        private static func saveDataFromChain(json:JSON, uid:String)->CombineConntact{
+        private static func saveDataFromChain(json:JSON, uid:String, needSyncAvatar:Bool = false)->CombineConntact{
                 let cc =  CombineConntact()
                 
                 if json["account"].exists(){
-                        let accItem = AccountItem.initByJson(json["account"])
+                        let accItem = AccountItem.initByJson(json["account"],needSyncAvatar:needSyncAvatar)
                         let err = AccountItem.UpdateOrAddAccount(accItem)
                         if err != nil{
                                 print("------>>> save account detail failed:\(err?.localizedDescription ?? "<->")")

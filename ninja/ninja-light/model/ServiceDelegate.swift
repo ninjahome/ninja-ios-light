@@ -10,12 +10,11 @@ import ChatLib
 import UIKit
 
 class ServiceDelegate: NSObject {
-        
         public static let workQueue = DispatchQueue.init(label: "Serivce Queue", qos: .utility)
         public static let DevTypeIOS = 1
         public static let Debug = true
         public static let networkID = Int8(2)
-            
+        
         public static func getAgentStatus() -> AgentStatus {
 
                 let balance = Wallet.shared.getBalance()
