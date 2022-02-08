@@ -104,15 +104,6 @@ class GroupDetailViewController: UIViewController {
                 self.toastMessage(title: "copy success", duration: 1)
         }
         
-        @IBAction func kickMemberBtn(_ sender: UIButton) {
-                if !Wallet.shared.isStillVip(){
-                        showVipModalViewController()
-                        return
-                }
-                
-                self.performSegue(withIdentifier: "KickMemberSeg", sender: self)
-        }
-        
         @IBAction func quitOrDismissGroup(_ sender: UIButton) {
                 if !Wallet.shared.isStillVip(){
                         showVipModalViewController()
@@ -127,13 +118,15 @@ class GroupDetailViewController: UIViewController {
         
         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
                 if segue.identifier == "KickMemberSeg" {
-                        let vc: DeleteMemberController = segue.destination as! DeleteMemberController
+                        guard  let vc: DeleteMemberController = segue.destination as? DeleteMemberController else{
+                                return
+                        }
                         vc.groupItem = groupData
-                        vc.existMember = groupData?.memberIds ?? []
-                        
                         vc.notiMemberChange = { newGroupInfo in
                                 self.groupData = newGroupInfo
-                                self.collectionView.reloadData()
+                                DispatchQueue.main.async {
+                                        self.collectionView.reloadData()
+                                }
                         }
                 }
         }
@@ -175,6 +168,12 @@ extension GroupDetailViewController{
                         self.toastMessage(title: "only leader valid")
                         return
                 }
+                
+                if !Wallet.shared.isStillVip(){
+                        showVipModalViewController()
+                        return
+                }
+                
                 self.performSegue(withIdentifier: "KickMemberSeg", sender: self)
         }
         
@@ -228,10 +227,12 @@ extension GroupDetailViewController{
                                 }
                         }
                 }
-                
         }
         
         private func quitFromGroup(){
-                
+                if !Wallet.shared.isStillVip(){
+                        showVipModalViewController()
+                        return
+                }
         }
 }

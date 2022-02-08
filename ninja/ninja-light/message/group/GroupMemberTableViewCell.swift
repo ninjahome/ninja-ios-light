@@ -45,14 +45,20 @@ class GroupMemberTableViewCell: UITableViewCell {
                 self.nickName.text = details.GetNickName() ?? details.peerID
         }
         
-        func initWith(group: GroupItem, idx: Int, selected: Bool) {
+        func initWith(memberUID: String, idx: Int, selected: Bool) {
                 self.index = idx
-                let id = group.memberIds[idx]
                 setSelect(selected: selected)
-                let acc = CombineConntact.cache[id]
-                //TODO:: refactor
-                self.nickName.text = acc?.GetNickName() ?? acc?.peerID
-                self.avatar.setup(id: id, avaData: acc?.account?.Avatar)
+                let (name, avatar) = ServiceDelegate.queryNickAndAvatar(pid: memberUID) { name, avatar in
+                        DispatchQueue.main.async {
+                                self.initCellInfo(pid: memberUID, name: name, avatar: avatar)
+                        }
+                }
+                initCellInfo(pid: memberUID, name: name, avatar: avatar)
+        }
+        
+        private func initCellInfo(pid:String, name:String?, avatar:Data?){
+                self.nickName.text = name
+                self.avatar.setup(id: pid, avaData: avatar)
         }
         
         @IBAction func addToGroupList(_ sender: UIButton) {

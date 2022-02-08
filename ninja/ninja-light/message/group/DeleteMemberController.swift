@@ -12,23 +12,28 @@ class DeleteMemberController: UIViewController {
         @IBOutlet weak var tableView: UITableView!
         @IBOutlet weak var finishBtn: UIButton!
         
-        var selectedIndexs = [Int]()
-        var setEnable: Bool = false
+        private var selectedIndexs = [Int]()
+        private var setEnable: Bool = false
         
-        var existMember: [String] = []
-        var groupItem: GroupItem?
-        
+        private var existMember: [String] = []
+        var groupItem: GroupItem!
         var notiMemberChange: NotiGroupChange!
         
         
         override func viewDidLoad() {
                 super.viewDidLoad()
-                
                 self.tableView.delegate = self
                 self.tableView.dataSource = self
                 self.tableView.rowHeight = 64
                 self.tableView.tableFooterView = UIView()
-                
+                guard var mem = self.groupItem?.memberIds else{
+                        print("------>>> invalid data to populate this view")
+                        return
+                }
+                mem.removeAll { uid in
+                        uid == Wallet.shared.Addr!
+                }
+                self.existMember = mem
         }
         
         @IBAction func returnBackItem(_ sender: UIBarButtonItem) {
@@ -66,7 +71,6 @@ class DeleteMemberController: UIViewController {
                 
         }
         
-        
         func enableOrDisableCompleteBtn(number: Int) {
                 finishBtn.setTitle("完成(\(number))", for: .normal)
                 
@@ -89,20 +93,17 @@ extension DeleteMemberController: UITableViewDataSource, UITableViewDelegate {
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "CreateGroupMemberTableViewCell", for: indexPath)
                 
-                if let c = cell as? GroupMemberTableViewCell {
-                        
-                        let selected = selectedIndexs.contains(indexPath.row)
-                        
-                        
-                        c.initWith(group: self.groupItem!, idx: indexPath.row, selected: selected)
-                        c.cellDelegate = self
-                        
-                        return c
+                guard  let c = cell as? GroupMemberTableViewCell else{
+                        return cell
                 }
                 
-                return cell
+                let selected = selectedIndexs.contains(indexPath.row)
+                c.initWith(memberUID: self.existMember[indexPath.row],
+                           idx: indexPath.row,
+                           selected: selected)
+                c.cellDelegate = self
+                return c
         }
-        
 }
 
 extension DeleteMemberController: CellClickDelegate {
@@ -125,7 +126,7 @@ extension DeleteMemberController: CellClickDelegate {
                 
                 enableOrDisableCompleteBtn(number: selectedIndexs.count)
                 
-                print("selected list \(selectedIndexs)")
+                print("------>>>selected list \(selectedIndexs)")
                 return true
         }
         
@@ -140,8 +141,6 @@ extension DeleteMemberController: CellClickDelegate {
                 
                 enableOrDisableCompleteBtn(number: selectedIndexs.count)
                 
-                print("selected list \(selectedIndexs)")
+                print("------>>>selected list \(selectedIndexs)")
         }
-        
-        
 }

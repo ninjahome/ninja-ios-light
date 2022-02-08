@@ -510,9 +510,6 @@
                                         <rect key="frame" x="356" y="7" width="38" height="30"/>
                                         <inset key="contentEdgeInsets" minX="15" minY="4" maxX="0.0" maxY="4"/>
                                         <state key="normal" image="&gt;_icon"/>
-                                        <connections>
-                                            <action selector="kickMemberBtn:" destination="kwp-eE-p9L" eventType="touchUpInside" id="5v3-46-kTQ"/>
-                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="删除群成员" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7DS-xf-U7a">
                                         <rect key="frame" x="20" y="12" width="82" height="20"/>
@@ -5831,7 +5828,7 @@
                                                         <constraint firstAttribute="width" constant="48" id="gXA-aG-vXB"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <state key="normal" title="豆豆">
+                                                    <state key="normal">
                                                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
                                                     <userDefinedRuntimeAttributes>
