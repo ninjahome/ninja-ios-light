@@ -180,6 +180,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 if IS_GROUP {//TODO::
                         guard let groupData = GroupItem.cache[peerUid] else{
                                 print("------>>> invalid group infos for current chat window")
+                                self.navigationController?.popToRootViewController(animated: true)
                                 return
                         }
                         
