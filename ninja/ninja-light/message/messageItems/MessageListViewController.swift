@@ -107,12 +107,10 @@ class MessageListViewController: UIViewController{
         }
         
         @objc func updateLatestItem(notification: NSNotification) {
-                ServiceDelegate.workQueue.async { [weak self] in
-                        self?.sortedArray = ChatItem.SortedArra()
-                        DispatchQueue.main.async {
-                                self?.tableView.reloadData()
-                                self?.updateMsgBadge()
-                        }
+                DispatchQueue.main.async {
+                        self.sortedArray = ChatItem.SortedArra()
+                        self.tableView.reloadData()
+                        self.updateMsgBadge()
                 }
         }
         
@@ -189,7 +187,8 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MesasgeItemTableViewCell", for: indexPath)
                 if let c = cell as? MesasgeItemTableViewCell {
-                        let item = sortedArray[indexPath.row]
+                        let indx = indexPath.row
+                        let item = sortedArray[indx]
                         c.initWith(details: item)
                         return c
                 }

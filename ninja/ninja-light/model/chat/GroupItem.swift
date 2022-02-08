@@ -75,8 +75,8 @@ class GroupItem: NSObject {
         }
         
         public static func initByJson(json objJson:JSON) -> GroupItem?{
-                guard let memIds = objJson["members"].dictionaryObject?.keys, memIds.count >= 2 else {
-                        print("------>>> invalid group json data: too less members")
+                guard let memIds = objJson["members"].dictionaryObject?.keys, memIds.count > 0 else {
+                        print("------>>> invalid group json data: no members")
                         return nil
                 }
                 guard let gid = objJson["gid"].string else{
@@ -338,9 +338,10 @@ extension GroupItem{
                 
                 do{
                         group.groupName = newName
-                        try syncGroupToDB(group)}catch let err{
-                                return err
-                        }
+                        try syncGroupToDB(group)
+                }catch let err{
+                        return err
+                }
                 CDManager.shared.saveContext()
                 print("------>>>group name update hash:\(hashTx)")
                 return nil
@@ -387,7 +388,7 @@ extension GroupItem{
                         print("------>>>add group member to chain success:=>", hash_tx)
                         group.memberIds.append(contentsOf: newIds)
                         try GroupItem.syncGroupToDB(group)
-                        
+                        CDManager.shared.saveContext()
                 } catch let err{
                         return NJError.group("\(err.localizedDescription)")
                 }
@@ -413,13 +414,35 @@ extension GroupItem{
                                 kickUserId[uid] == true
                         }
                         try GroupItem.syncGroupToDB(group)
+                        CDManager.shared.saveContext()
                 }catch let err{
                         return NJError.group("\(err.localizedDescription)")
                 }
                 return nil
         }
         
-        public static func QuitGroupNoti(from: String?, groupId: String, quitId: String) throws {
+        public static func QuitFromGroup(group: GroupItem)  -> NJError? {
+                do{
+                        let addr = Wallet.shared.Addr!
+                        guard group.memberIds.contains(addr) else{
+                                return NJError.group("no such member in this group")
+                        }
+                        var err:NSError?
+                        let hash_tx = ChatLibQuitFromGroup(group.gid, &err)
+                        if let e = err{
+                                return NJError.group("\(e.localizedDescription)")
+                        }
+                        print("------>>>quit from group success:=>", hash_tx)
+                        guard let idx = group.memberIds.firstIndex(of: addr) else{
+                                return nil
+                        }
+                        group.memberIds.remove(at: idx)
+                        try GroupItem.syncGroupToDB(group)
+                        CDManager.shared.saveContext()
+                        return nil
+                }catch let err{
+                        return NJError.group("\(err.localizedDescription)")
+                }
         }
 }
 

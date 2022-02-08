@@ -30,6 +30,8 @@ class GroupDetailViewController: UIViewController {
                 collectionView.dataSource = self
                 guard let data = GroupItem.cache[groupID] else{
                         self.toastMessage(title: "invalid group meta")
+                        self.dismiss(animated: true)
+                        self.navigationController?.popToRootViewController(animated: true)
                         return//dismiss //TODO::
                 }
                 self.groupData = data
@@ -87,15 +89,7 @@ class GroupDetailViewController: UIViewController {
                 vc.isInAddingMode = true
                 vc.groupItem = grpData
                 
-                vc.notiMemberChange = { newGroupInfo in
-                        self.groupData = newGroupInfo
-                        DispatchQueue.main.async {
-                                NotificationCenter.default.post(name:NotifyGroupChanged,
-                                                                object: newGroupInfo.gid, userInfo:nil)
-                                self.navigationController?.popViewController(animated: true)
-                        }
-                }
-                
+                vc.notiMemberChange = self.memberChnaged
                 self.navigationController?.pushViewController(vc, animated: true)
         }
         
@@ -122,14 +116,7 @@ class GroupDetailViewController: UIViewController {
                                 return
                         }
                         vc.groupItem = groupData
-                        vc.notiMemberChange = { newGroupInfo in
-                                self.groupData = newGroupInfo
-                                DispatchQueue.main.async {
-                                        self.navigationController?.popViewController(animated: true)
-                                        NotificationCenter.default.post(name:NotifyGroupChanged,
-                                                                        object: newGroupInfo.gid, userInfo:nil)
-                                }
-                        }
+                        vc.notiMemberChange = self.memberChnaged
                 }
         }
 }
@@ -217,20 +204,14 @@ extension GroupDetailViewController{
                 self.ShowYesOrNo(msg: "You're owner and group will be dissmiessed",No: nil){
                         self.showIndicator(withTitle: "", and: "deleting group")
                         ServiceDelegate.workQueue.async {
-                               
+                                
                                 if let err = GroupItem.DismissGroup(gid:self.groupID){
                                         self.hideIndicator()
                                         self.toastMessage(title: "\(err.localizedDescription!)")
                                         return
                                 }
                                 
-                                DispatchQueue.main.async {
-                                        self.hideIndicator()
-                                        self.dismiss(animated: true)
-                                        self.navigationController?.popToRootViewController(animated: true)
-                                        NotificationCenter.default.post(name:NotifyGroupChanged,
-                                                                        object: self.groupID, userInfo:nil)
-                                }
+                                self.exitGroupView()
                         }
                 }
         }
@@ -239,6 +220,40 @@ extension GroupDetailViewController{
                 if !Wallet.shared.isStillVip(){
                         showVipModalViewController()
                         return
+                }
+                
+                self.showIndicator(withTitle: "", and: "processing")
+                ServiceDelegate.workQueue.async {
+                        
+                        let err = GroupItem.QuitFromGroup(group:self.groupData)
+                        if let e = err{
+                                self.hideIndicator()
+                                self.toastMessage(title: "\(e.localizedDescription ?? "quit failed")")
+                                return
+                        }
+                        
+                        self.exitGroupView()
+                }
+        }
+        
+        private func exitGroupView(){
+                DispatchQueue.main.async {
+                        self.hideIndicator()
+                        self.dismiss(animated: true)
+                        self.navigationController?.popToRootViewController(animated: true)
+                        NotificationCenter.default.post(name:NotifyGroupChanged,
+                                                        object: self.groupID, userInfo:nil)
+                }
+        }
+        
+        
+        
+        private func memberChnaged(_ newGroupInfo:GroupItem){
+                self.groupData = newGroupInfo
+                DispatchQueue.main.async {
+                        self.navigationController?.popViewController(animated: true)
+                        NotificationCenter.default.post(name:NotifyGroupChanged,
+                                                        object: newGroupInfo.gid, userInfo:nil)
                 }
         }
 }
