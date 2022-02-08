@@ -222,18 +222,22 @@ extension GroupDetailViewController{
                         return
                 }
                 
-                self.showIndicator(withTitle: "", and: "processing")
-                ServiceDelegate.workQueue.async {
-                        
-                        let err = GroupItem.QuitFromGroup(group:self.groupData)
-                        if let e = err{
-                                self.hideIndicator()
-                                self.toastMessage(title: "\(e.localizedDescription ?? "quit failed")")
-                                return
+                self.ShowYesOrNo(msg: "确认") {
+                        return
+                } Yes: {
+                        self.showIndicator(withTitle: "", and: "processing")
+                        ServiceDelegate.workQueue.async {
+                                
+                                let err = GroupItem.QuitFromGroup(group:self.groupData)
+                                if let e = err{
+                                        self.hideIndicator()
+                                        self.toastMessage(title: "\(e.localizedDescription ?? "quit failed")")
+                                        return
+                                }
+                                
+                                self.exitGroupView()
                         }
-                        
-                        self.exitGroupView()
-                }
+                }               
         }
         
         private func exitGroupView(){
