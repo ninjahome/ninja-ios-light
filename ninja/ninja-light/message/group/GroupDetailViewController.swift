@@ -175,6 +175,10 @@ extension GroupDetailViewController{
                         showVipModalViewController()
                         return
                 }
+                guard self.groupData.memberIds.count > 3 else{
+                        self.ShowTips(msg: "not enough member to delete")
+                        return
+                }
                 
                 self.performSegue(withIdentifier: "KickMemberSeg", sender: self)
         }

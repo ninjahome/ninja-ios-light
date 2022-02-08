@@ -44,11 +44,21 @@ class DeleteMemberController: UIViewController {
                 if !setEnable {
                         return
                 }
+                
+                let leftNo = groupItem.memberIds.count - selectedIndexs.count
+                guard  leftNo >= 3 else{
+                        self.ShowTips(msg: "members will be less than 3")
+                        return
+                }
+                
+                self.deleteMemberAction()
+                
+        }
+        func deleteMemberAction(){
                 var delIds: [String:Bool] = [:]
                 for i in selectedIndexs {
                         delIds[existMember[i]] = true
                 }
-                
                 self.showIndicator(withTitle: "", and: "deleting")
                 ServiceDelegate.workQueue.async {
                         

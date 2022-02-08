@@ -476,26 +476,37 @@ extension GroupItem{
                         print("------>>>[GroupMeataNotified] same group nonce=>", newItem.nonce)
                         return
                 }
+                
                 let groupID = newItem.gid
-                do {
-                        print("------>>>new group item", newItem.ToString())
-                        var msg = "Group Update"
-                        if newItem.isDelete{
-                                msg = "Group Delete"
-                                try deleteGroupFromDB(groupID)
-                                ChatItem.remove(groupID)
-                                MessageItem.removeRead(groupID)
-                        }else{
-                                try syncGroupToDB(newItem)
-                                ChatItem.updateLatestrMsg(pid: groupID,
-                                                          msg: msg,
-                                                          time: newItem.unixTime * 1000,
-                                                          unread: 0, isGrp: true)
-                        }
+                defer{
                         CDManager.shared.saveContext()
                         NotificationCenter.default.post(name:NotifyGroupChanged,
                                                         object: groupID,
                                                         userInfo:nil)
+                }
+                do {
+                        print("------>>>new group item", newItem.ToString())
+                        var msg = "Group Update"
+                        if newItem.isDelete{
+                                try deleteGroupFromDB(groupID)
+                                ChatItem.remove(groupID)
+                                MessageItem.removeRead(groupID)
+                                return
+                        }
+                        if !newItem.memberIds.contains(Wallet.shared.Addr!){
+                                try deleteGroupFromDB(groupID)
+                                ChatItem.remove(groupID)
+                                MessageItem.removeRead(groupID)
+                                return
+                        }
+                        
+                        msg = "group update"
+                        try syncGroupToDB(newItem)
+                        ChatItem.updateLatestrMsg(pid: groupID,
+                                                  msg: msg,
+                                                  time: newItem.unixTime * 1000,
+                                                  unread: 0, isGrp: true)
+                        
                 }catch let err{
                         print("------>>>[GroupMeataNotified] error=>", err.localizedDescription)
                 }
