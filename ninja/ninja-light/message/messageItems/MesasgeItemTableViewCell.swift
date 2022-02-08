@@ -43,7 +43,7 @@ class MesasgeItemTableViewCell: UITableViewCell {
                         (nickName, avaData) = chatItemInfo(pid: itemId)
                 }
                 
-                avatar.setup(id: itemId, avaData: avaData)
+                avatar.setup(id: itemId, avaData: avaData,showDetails: false)
                 if let name = nickName, !name.isEmpty{
                         self.nickName.text = name
                 }else{
