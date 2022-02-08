@@ -90,9 +90,9 @@ class GroupDetailViewController: UIViewController {
                 vc.notiMemberChange = { newGroupInfo in
                         self.groupData = newGroupInfo
                         DispatchQueue.main.async {
-                                self.navigationController?.popViewController(animated: true)
                                 NotificationCenter.default.post(name:NotifyGroupChanged,
                                                                 object: newGroupInfo.gid, userInfo:nil)
+                                self.navigationController?.popViewController(animated: true)
                         }
                 }
                 
@@ -125,7 +125,9 @@ class GroupDetailViewController: UIViewController {
                         vc.notiMemberChange = { newGroupInfo in
                                 self.groupData = newGroupInfo
                                 DispatchQueue.main.async {
-                                        self.collectionView.reloadData()
+                                        self.navigationController?.popViewController(animated: true)
+                                        NotificationCenter.default.post(name:NotifyGroupChanged,
+                                                                        object: newGroupInfo.gid, userInfo:nil)
                                 }
                         }
                 }

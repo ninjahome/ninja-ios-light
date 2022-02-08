@@ -44,31 +44,23 @@ class DeleteMemberController: UIViewController {
                 if !setEnable {
                         return
                 }
-                
-                
-                let groupIds = groupItem?.memberIds
-                //        var groupNicks = groupItem?.memberNicks as! [String]
-                var delIds: [String] = []
-                
+                var delIds: [String:Bool] = [:]
                 for i in selectedIndexs {
-                        delIds.append(existMember[i] )
-                        groupItem?.memberInfos.removeValue(forKey: existMember[i] )
+                        delIds[existMember[i]] = true
                 }
                 
-                let ids = groupItem?.memberInfos.map({ (k: String, v: String) in
-                        return k
-                })
-                
-                if let err = GroupItem.KickOutUser(group: groupItem!, kickUserId: delIds) {
+                self.showIndicator(withTitle: "", and: "deleting")
+                ServiceDelegate.workQueue.async {
                         
-                        self.toastMessage(title: "kick faild: \(String(describing: err.localizedDescription))")
-                        return
+                        if let err = GroupItem.KickOutUser(group: self.groupItem, kickUserId: delIds){
+                                self.hideIndicator()
+                                self.toastMessage(title: "\(err.localizedDescription ?? "")", duration: 2)
+                                return
+                        }
+                        
+                        self.hideIndicator()
+                        self.notiMemberChange(self.groupItem!)
                 }
-                
-                groupItem?.memberIds = ids ?? []
-                self.notiMemberChange(groupItem!)
-                self.navigationController?.popViewController(animated: true)
-                
         }
         
         func enableOrDisableCompleteBtn(number: Int) {
@@ -80,8 +72,6 @@ class DeleteMemberController: UIViewController {
                         finishBtn.backgroundColor = UIColor(hex: "A9A9AE")
                 }
         }
-        
-        
 }
 
 extension DeleteMemberController: UITableViewDataSource, UITableViewDelegate {

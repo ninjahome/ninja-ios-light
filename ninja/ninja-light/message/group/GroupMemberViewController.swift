@@ -131,7 +131,7 @@ class GroupMemberViewController: UIViewController {
 //                        }
 //
                         if let err = GroupItem.AddMemberToGroup(group: self.groupItem, newIds: newIds) {
-                                self.toastMessage(title: "\(err.localizedDescription)")
+                                self.toastMessage(title: "\(err.localizedDescription ?? "add member failed")")
                                 self.hideIndicator()
                                 return
                         }

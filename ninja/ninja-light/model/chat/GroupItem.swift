@@ -36,8 +36,6 @@ class GroupItem: NSObject {
         var isDelete: Bool = false
         var avatar: Data?
         
-        var memberInfos: [String:String] = [:]
-        
         override init() {
                 super.init()
         }
@@ -377,75 +375,51 @@ extension GroupItem{
                 }
         }
         
-        public static func AddMemberToGroup(group: GroupItem, newIds: [String]) -> Error? {
+        public static func AddMemberToGroup(group: GroupItem, newIds: [String]) -> NJError? {
                 
                 do {
                         let idsData = try JSON(newIds).rawData()
                         var err: NSError?
                         let hash_tx = ChatLibAddGroupMembers(group.gid, idsData, &err)
                         if let e = err{
-                                return e
+                                return NJError.group("\(e.localizedDescription)")
                         }
-                        print("------>>>chain update success:=>", hash_tx)
+                        print("------>>>add group member to chain success:=>", hash_tx)
                         group.memberIds.append(contentsOf: newIds)
-                        //TODO:: change gorup avatar
                         try GroupItem.syncGroupToDB(group)
                         
                 } catch let err{
-                        return err
+                        return NJError.group("\(err.localizedDescription)")
                 }
                 return nil
         }
         
-        public static func KickOutUser(group: GroupItem, kickUserId: [String]) -> NJError? {
-                try? GroupItem.syncGroupToDB(group)
+        public static func KickOutUser(group: GroupItem, kickUserId: [String:Bool]) -> NJError? {
+                do{
+                        var err:NSError?
+                        var uidArr:[String] = []
+                        for uid in kickUserId {
+                                uidArr.append(uid.key)
+                        }
+                        
+                        let memJsonData = try JSON(uidArr).rawData()
+                        let hash_tx = ChatLibKickOutMembers(group.gid, memJsonData, &err)
+                        if let e = err{
+                                return NJError.group("\(e.localizedDescription)")
+                        }
+                        
+                        print("------>>>delete group member from chain success:=>", hash_tx)
+                        group.memberIds.removeAll { uid in
+                                kickUserId[uid] == true
+                        }
+                        try GroupItem.syncGroupToDB(group)
+                }catch let err{
+                        return NJError.group("\(err.localizedDescription)")
+                }
                 return nil
-        }
-        
-        public static func KickOutUserNoti(group: GroupItem, kickIds: String?, from: String) throws {
-                guard let kick = kickIds?.toArray() else {
-                        return
-                }
-                
-                if kick.contains(Wallet.shared.Addr!) {
-                        try? GroupItem.deleteGroupFromDB(group.gid)
-                        NotificationCenter.default.post(name: NotifyKickMeOutGroup,
-                                                        object: group)
-                        return
-                }
-                
-                for k in kick {
-                        group.memberInfos.removeValue(forKey: k as! String)
-                }
-                
-                let newIds = group.memberInfos.map { (key: String, value: String) in
-                        return key
-                }
-                
-                group.memberIds = newIds
-                
-                try GroupItem.syncGroupToDB(group)
-                
-                let NotiKey_ids = "KICK_IDS"
-                let NotiKey_from = "KICK_FROM"
-                NotificationCenter.default.post(name: NotifyKickOutGroup,
-                                                object: self,
-                                                userInfo: [NotiKey_ids: kickIds!, NotiKey_from: from])
-                
         }
         
         public static func QuitGroupNoti(from: String?, groupId: String, quitId: String) throws {
-                if let group = GroupItem.getGroupFromDB(groupId) {
-                        group.memberInfos.removeValue(forKey: quitId)
-                        
-                        let newIds = group.memberInfos.map { (key: String, value: String) in
-                                return key
-                        }
-                        
-                        group.memberIds = newIds
-                        try GroupItem.syncGroupToDB(group)
-                }
-                
         }
 }
 
@@ -502,7 +476,7 @@ extension GroupItem{
                         print("------>>>[GroupMeataNotified] same group nonce=>", newItem.nonce)
                         return
                 }
-                        let groupID = newItem.gid
+                let groupID = newItem.gid
                 do {
                         print("------>>>new group item", newItem.ToString())
                         var msg = "Group Update"
