@@ -109,8 +109,9 @@ class VideoTableViewCell: UITableViewCell {
                         self.avatar.setupSelf()
                         self.nickname.text = ""
                 } else {
-                        nickname.text = name
-                        self.avatar.setup(id: from, avaData: avatar)
+                        PopulatePeerCell(nickname:self.nickname,
+                                         avatarBtn: self.avatar,
+                                         from: from, name: name, avatar: avatar, isGroup: isGroup)
                 }
                 
                 time.text = formatMsgTimeStamp(by: message.timeStamp)

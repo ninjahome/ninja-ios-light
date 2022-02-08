@@ -202,7 +202,6 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
                 ServiceDelegate.workQueue.async {
                         let item = self.sortedArray[indexPath.row]
                         item.resetUnread()
-                        CDManager.shared.saveContext()
                         DispatchQueue.main.async {
                                 tableView.beginUpdates()
                                 tableView.reloadRows(at: [indexPath], with: .automatic)

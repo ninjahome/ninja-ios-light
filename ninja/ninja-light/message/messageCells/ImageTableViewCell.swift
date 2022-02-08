@@ -81,8 +81,9 @@ var cellMsg: MessageItem?
                         self.avatar.setupSelf()
                         nickname.text = ""
                 } else {
-                        nickname.text = name
-                        self.avatar.setup(id: from, avaData: avatar)
+                        PopulatePeerCell(nickname:self.nickname,
+                                         avatarBtn: self.avatar,
+                                         from: from, name: name, avatar: avatar, isGroup: isGroup)
                 }
 
                 time.text = formatMsgTimeStamp(by: message.timeStamp)

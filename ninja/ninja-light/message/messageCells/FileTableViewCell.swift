@@ -10,38 +10,38 @@ import AVKit
 import AVFoundation
 
 class FileTableViewCell: UITableViewCell {
-
+        
         @IBOutlet weak var msgBackgroundView: UIImageView!
-//        @IBOutlet weak var thumbtailImage: UIImageView!
-
+        //        @IBOutlet weak var thumbtailImage: UIImageView!
+        
         @IBOutlet weak var openFileBtn: UIButton!
         @IBOutlet weak var avatar: AvatarButton!
         @IBOutlet weak var nickname: UILabel!
         @IBOutlet weak var time: UILabel!
-
+        
         @IBOutlet weak var spinner: UIActivityIndicatorView?
-
+        
         @IBOutlet weak var retry: UIButton?
-
+        
         var cellMsg: MessageItem?
-
+        
         override func prepareForReuse() {
                 super.prepareForReuse()
-
+                
                 spinner?.stopAnimating()
                 retry?.isHidden = true
         }
-
+        
         override func awakeFromNib() {
                 super.awakeFromNib()
                 // Initialization code
         }
-
+        
         override func setSelected(_ selected: Bool, animated: Bool) {
                 super.setSelected(selected, animated: animated)
                 // Configure the view for the selected state
         }
-    
+        
         @IBAction func retry(_ sender: UIButton) {
                 
                 guard let msg = self.cellMsg else{
@@ -63,14 +63,14 @@ class FileTableViewCell: UITableViewCell {
                 if cellMsg != nil {
                 }
         }
-
+        
         func updateMessageCell (by message: MessageItem, name:String, avatar:Data?, isGroup:Bool) {
                 cellMsg = message
                 msgBackgroundView.layer.cornerRadius = 8
                 msgBackgroundView.clipsToBounds = true
                 
                 let from = message.from
-
+                
                 if message.isOut {
                         switch message.status {
                         case .faild:
@@ -85,11 +85,11 @@ class FileTableViewCell: UITableViewCell {
                         self.avatar.setupSelf()
                         nickname.text = ""
                 } else {
-                        nickname.text = name
-                        self.avatar.setup(id: from, avaData: avatar)
-                        
+                        PopulatePeerCell(nickname:self.nickname,
+                                         avatarBtn: self.avatar,
+                                         from: from, name: name, avatar: avatar, isGroup: isGroup)
                 }
-
+                
                 time.text = formatMsgTimeStamp(by: message.timeStamp)
         }
 }

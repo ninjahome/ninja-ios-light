@@ -70,6 +70,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.navigationController?.interactivePopGestureRecognizer?.delegate = _delegate
                 ChatItem.CurrentPID = ""
                 AudioPlayManager.shared.stopPlay()
+                CDManager.shared.saveContext()
         }
         
         override func viewDidLoad() {

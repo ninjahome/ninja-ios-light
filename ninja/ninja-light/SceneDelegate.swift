@@ -57,8 +57,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
         func sceneWillResignActive(_ scene: UIScene) {
                 CDManager.shared.saveContext()
                 WebsocketSrv.shared.Offline()
-                // Called when the scene will move from an active state to an inactive state.
-                // This may occur due to temporary interruptions (ex. an incoming phone call).
         }
         
         func sceneWillEnterForeground(_ scene: UIScene) {
@@ -77,8 +75,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
                 // Save changes in the application's managed object context when the application transitions to the background.
                 UserDefaults(suiteName: "group.com.hop.ninja.light")?.set(1, forKey: "count")
                 UIApplication.shared.applicationIconBadgeNumber = 0
-                CDManager.shared.saveContext()
-                WebsocketSrv.shared.Offline()
         }
 }
 

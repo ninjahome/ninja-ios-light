@@ -10,7 +10,7 @@ import UIKit
 class LocationTableViewCell: UITableViewCell {
         @IBOutlet weak var msgBackgroundView: UIImageView!
         @IBOutlet weak var locationStr: UILabel!
-
+        
         @IBOutlet weak var avatar: AvatarButton!
         @IBOutlet weak var nickname: UILabel!
         @IBOutlet weak var time: UILabel!
@@ -23,11 +23,11 @@ class LocationTableViewCell: UITableViewCell {
         override func prepareForReuse() {
                 super.prepareForReuse()
         }
-
+        
         override func awakeFromNib() {
                 super.awakeFromNib()
         }
-
+        
         override func setSelected(_ selected: Bool, animated: Bool) {
                 super.setSelected(selected, animated: animated)
         }
@@ -51,7 +51,7 @@ class LocationTableViewCell: UITableViewCell {
         func updateMessageCell (by message: MessageItem, name:String, avatar:Data?, isGroup:Bool) {
                 self.curMsg = message
                 let from = message.from
-
+                
                 msgBackgroundView.layer.cornerRadius = 8
                 msgBackgroundView.clipsToBounds = true
                 
@@ -81,12 +81,13 @@ class LocationTableViewCell: UITableViewCell {
                         let img = UIImage(named: "babycolor")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
                         msgBackgroundView.image = img
                         miniMapLeading.constant = 8
-                    
-                        nickname.text = name
-                        self.avatar.setup(id: from, avaData: avatar)
+                        
+                        
+                        PopulatePeerCell(nickname:self.nickname,
+                                         avatarBtn: self.avatar,
+                                         from: from, name: name, avatar: avatar, isGroup: isGroup)
                 }
                 
                 time.text = formatMsgTimeStamp(by: message.timeStamp)
         }
-
 }
