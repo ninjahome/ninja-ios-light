@@ -43,6 +43,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
         
         override func viewDidLoad() {
                 super.viewDidLoad()
+                
                 self.hideKeyboardWhenTappedAround()
                 
                 self.showIndicator(withTitle: "waiting", and: "loading contact")
@@ -73,7 +74,6 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
         
         @IBAction func backBtn(_ sender: UIButton) {
                 self.navigationController?.popViewController(animated: true)
-//                self.navigationController?.popToRootViewController(animated: true)
         }
         
         @IBAction func saveChanges(_ sender: UIButton) {
@@ -84,6 +84,8 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 
                 guard let obj = self.contactData else{
                         self.toastMessage(title: "no valid contact data")
+                        self.dismiss(animated: true)
+                        self.navigationController?.popToRootViewController(animated: true)
                         return
                 }
                 
@@ -120,7 +122,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 self.showIndicator(withTitle: "waiting", and: "deleting contact")
                 ServiceDelegate.workQueue.async {
                         let err =  obj.removeFromChain()
-                        self.closeOrShowErrorTips(err:err)
+                        self.closeOrShowErrorTips(err:err, isDelete: true)
                 }
         }
         
@@ -145,16 +147,20 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 self.avator.setup(id: self.peerID, avaData: contactData?.account?.Avatar)
         }
         
-        private func closeOrShowErrorTips(err:NJError?) {DispatchQueue.main.async {
+        private func closeOrShowErrorTips(err:NJError?, isDelete:Bool = false) {DispatchQueue.main.async {
                 self.hideIndicator()
                 
                 guard let e = err else{
+                        
+                        CDManager.shared.saveContext()
                         NotificationCenter.default.post(name:NotifyContactChanged,
                                                         object: self.peerID, userInfo:nil)
                         self.dismiss(animated: true)
-                        self.navigationController?.popViewController(animated: true)
-                        
-                        CDManager.shared.saveContext()
+                        if isDelete{
+                                self.navigationController?.popToRootViewController(animated: true)
+                        }else{
+                                self.navigationController?.popViewController(animated: true)
+                        }
                         return
                 }
                 self.ShowTips(msg: e.localizedDescription ?? "operation failed")
