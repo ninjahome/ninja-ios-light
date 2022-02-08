@@ -12,6 +12,7 @@ class GroupListViewController: UIViewController {
         @IBOutlet weak var tableView: UITableView!
         
         var groupArray:[GroupItem] = []
+        var indexPathCache:[String:IndexPath] = [:]
         
         override func viewDidLoad() {
                 super.viewDidLoad()
@@ -26,20 +27,47 @@ class GroupListViewController: UIViewController {
                                                        name: NotifyGroupChanged,
                                                        object: nil)
                 
+                NotificationCenter.default.addObserver(self,
+                                                       selector:#selector(updateGroupAvatar(notification:)),
+                                                       name: NotifyGroupAvatarChanged,
+                                                       object: nil)
+                
         }
         deinit {
                 NotificationCenter.default.removeObserver(self)
         }
         
+        @objc func updateGroupAvatar(notification: NSNotification) {
+//                simpleReload()
+                guard let gid = notification.object as? String,
+                      let newItem =   GroupItem.cache[gid]else{
+                        simpleReload()
+                        return
+                }
+
+                DispatchQueue.main.async {
+                        print("------>new group item\(gid) update")
+                        guard let idx = self.indexPathCache[gid] else{
+                                self.simpleReload()
+                                return
+                        }
+                        self.groupArray[idx.row] = newItem
+                        self.tableView.beginUpdates()
+                        self.tableView.reloadRows(at: [idx], with: .automatic)
+                        self.tableView.endUpdates()
+                }
+        }
+        
         @objc func updateGroupList(notification: NSNotification) {
                 if  let gid = notification.object as? String{
                         print("------>new item\(gid) create")
+                        //TODO::
                 }
-                groupArray =  GroupItem.CacheArray()
-                self.reload()
+                simpleReload()
         }
-        
-        private func reload() {DispatchQueue.main.async {
+        private func simpleReload(){DispatchQueue.main.async {
+                self.groupArray =  GroupItem.CacheArray()
+                self.indexPathCache.removeAll()
                 self.tableView.reloadData()
         }
         }
@@ -57,6 +85,7 @@ extension GroupListViewController: UITableViewDelegate, UITableViewDataSource {
                         return cell
                 }
                 let item = groupArray[indexPath.row]
+                indexPathCache[item.gid] = indexPath
                 c.initWith(detail: item, idx: indexPath.row)
                 return c
         }

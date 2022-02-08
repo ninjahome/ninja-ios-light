@@ -21,6 +21,7 @@ class MessageListViewController: UIViewController{
         
         var SelectedRowID: Int? = nil
         var sortedArray: [ChatItem] = []
+        var indexCache:[String:IndexPath] = [:]
         
         override func viewDidLoad() {
                 super.viewDidLoad()
@@ -39,6 +40,11 @@ class MessageListViewController: UIViewController{
                 NotificationCenter.default.addObserver(self,
                                                        selector:#selector(updateLatestItem(notification:)),
                                                        name: NotifyGroupChanged,
+                                                       object: nil)
+                
+                NotificationCenter.default.addObserver(self,
+                                                       selector:#selector(updateGroupAvatar(notification:)),
+                                                       name: NotifyGroupAvatarChanged,
                                                        object: nil)
                 
                 NotificationCenter.default.addObserver(self,
@@ -107,15 +113,37 @@ class MessageListViewController: UIViewController{
         }
         
         @objc func updateLatestItem(notification: NSNotification) {
+                self.simpleReload()
+        }
+        private func simpleReload(){
                 DispatchQueue.main.async {
+                        self.indexCache.removeAll()
                         self.sortedArray = ChatItem.SortedArra()
                         self.tableView.reloadData()
                         self.updateMsgBadge()
                 }
         }
-        
         @objc func wsOnlineErr(notification: NSNotification) {
                 print("WSOnline error....")
+        }
+        
+        @objc func updateGroupAvatar(notification: NSNotification) {
+                guard let gid = notification.object as? String else{
+                        self.simpleReload()
+                        return
+                }
+                
+                DispatchQueue.main.async {
+                        print("------>new group item\(gid) update")
+                        guard let idx = self.indexCache[gid] else{
+                                self.simpleReload()
+                                return
+                        }
+                        
+                        self.tableView.beginUpdates()
+                        self.tableView.reloadRows(at: [idx], with: .automatic)
+                        self.tableView.endUpdates()
+                }
         }
         
         override func viewWillAppear(_ animated: Bool) {
@@ -189,6 +217,7 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
                 if let c = cell as? MesasgeItemTableViewCell {
                         let indx = indexPath.row
                         let item = sortedArray[indx]
+                        indexCache[item.ItemID] = indexPath
                         c.initWith(details: item)
                         return c
                 }

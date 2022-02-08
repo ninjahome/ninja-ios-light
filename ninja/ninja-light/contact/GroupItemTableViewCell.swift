@@ -26,6 +26,11 @@ class GroupItemTableViewCell: UITableViewCell {
                 }else{
                         self.groupName.text = detail.gid
                 }
+                
+                if detail.avatar?.count  == 1{
+                        ServiceDelegate.InitGorupAvatar(group:detail)
+                }
+                
                 avatar.setup(id: detail.gid, avaData: detail.avatar)
         }
 

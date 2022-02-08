@@ -24,6 +24,10 @@ let NotifyJoinGroup = NSNotification.Name(rawValue: "add_new_member_to_group")
 let NotifyKickOutGroup = NSNotification.Name(rawValue: "kick_out_member_from_group")
 let NotifyKickMeOutGroup = NSNotification.Name(rawValue: "kick_me_out_member_from_group")
 
+
+let NotifyGroupAvatarChanged = NSNotification.Name(rawValue: "group_avatar_changed")
+
+
 let dateFormatterGet = DateFormatter()
 
 let kAudioFileTypeWav = "wav"
@@ -44,3 +48,5 @@ let AppVersionKey = "APP_VERSION_IN_BUNDLE"
 let MaxMembersInGroup = 50
 
 public let defaultAvatar = UIImage(named: "logo_img")!
+public let defaultAvatarData = UIImage(named: "logo_img")!.jpegData(compressionQuality: 1)!
+public let nilAvatar = "1".data(using: .utf8)

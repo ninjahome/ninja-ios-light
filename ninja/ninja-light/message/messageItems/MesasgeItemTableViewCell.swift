@@ -37,6 +37,9 @@ class MesasgeItemTableViewCell: UITableViewCell {
                 
                 if details.isGroup {
                         let grp = GroupItem.cache[itemId]
+                        if grp?.avatar?.count  == 1{
+                                ServiceDelegate.InitGorupAvatar(group:grp ?? GroupItem())
+                        }
                         avaData = grp?.avatar
                         nickName = grp?.groupName
                 } else {

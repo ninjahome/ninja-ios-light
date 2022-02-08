@@ -142,7 +142,7 @@ extension ServiceDelegate{
                 }
                 
                 ServiceDelegate.workQueue.async {
-                        guard let acc = AccountItem.extraLoad(pid: pid) else{
+                        guard let acc = AccountItem.extraLoad(pid: pid, forceUpdate: true) else{
                                 return
                         }
                         
@@ -159,6 +159,78 @@ extension ServiceDelegate{
         public static func updateGroupInBackGround(group:GroupItem){
                 workQueue.async {
                         ChatLibGroupNonce(group.gid, group.nonce)
+                }
+        }
+        
+        private static var groupAvatarTask:[String:Bool] = [:]
+        private static let groupAvatarTaskLock:NSLock = NSLock()
+        
+        public static func InitGorupAvatar(group:GroupItem){
+                if group.memberIds.count < 3{
+                        print("------>>> invalid group number:=>", group.memberIds.count)
+                        return
+                }
+                groupAvatarTaskLock.lock()
+                if groupAvatarTask[group.gid] == true{
+                        groupAvatarTaskLock.unlock()
+                        return
+                }
+                groupAvatarTask[group.gid] = true
+                groupAvatarTaskLock.unlock()
+                
+                workQueue.async {
+                        var avatarArr:[Data]=[]
+                        var imgData:Data?
+                        var counter = 0
+                        
+                        for memID in group.memberIds {
+                                if memID == Wallet.shared.Addr!{
+                                        imgData = Wallet.shared.avatarData ?? defaultAvatarData
+                                }
+                                if let acc = CombineConntact.cache[memID]{
+                                        imgData = acc.account?.Avatar
+                                }
+                                if let acc = AccountItem.extraLoad(pid: memID){
+                                        imgData = acc.Avatar
+                                }
+                                guard let data = imgData else{
+                                        continue
+                                }
+                        
+                                counter += 1
+                                avatarArr.append(data)
+                                if counter >= 9{
+                                        break
+                                }
+                        }
+                        
+                        for data in avatarArr {
+                                ChatLibAddImg(data)
+                        }
+                        
+                        var maxSup = group.memberIds.count
+                        if maxSup > 9{
+                                maxSup = 9
+                        }
+                        
+                        maxSup = maxSup - counter
+                        for _ in 0..<maxSup{
+                                ChatLibAddImg(defaultAvatarData)
+                        }
+                        var err: NSError?
+                        var groupAvatar = ChatLibCommitImg(&err)
+                        if let e = err{
+                                print("------>>> create group avatar failed:=>", e.localizedDescription)
+                                groupAvatar = defaultAvatarData
+                        }
+                        
+                        if let err = group.UpdateAvatarData(by: groupAvatar ?? defaultAvatarData){
+                                print("------>>> UpdateAvatarData failed:=>", err.localizedDescription ?? "<->")
+                        }
+                        
+                        groupAvatarTaskLock.lock()
+                        groupAvatarTask.removeValue(forKey: group.gid)
+                        groupAvatarTaskLock.unlock()
                 }
         }
 }

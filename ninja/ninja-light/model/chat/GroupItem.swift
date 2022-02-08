@@ -23,7 +23,7 @@ struct memberInfo {
 
 //MARK: - basic init
 class GroupItem: NSObject {
-        
+        public static let CDEntityName = "CDGroup"
         public static var cache:[String:GroupItem]=[:]
         
         var nonce: Int64=0
@@ -51,12 +51,7 @@ class GroupItem: NSObject {
                 self.leader = wallet
                 self.unixTime = Int64(Date().timeIntervalSince1970)
                 self.isDelete = false
-                
-                if let avatarData = GroupItem.genGroupAvatar(ids:members){
-                        avatar = avatarData
-                }else{
-                        avatar = defaultAvatar.jpegData(compressionQuality: 1)!
-                }
+                self.avatar = nilAvatar
         }
         
         public func ToString() ->String{
@@ -103,11 +98,27 @@ class GroupItem: NSObject {
                 grp.memberIds = ids
                 grp.owner = Wallet.shared.Addr!
                 
-                for id in grp.memberIds {
-                        _ = AccountItem.extraLoad(pid: id)
-                }
-                
                 return grp
+        }
+        func UpdateAvatarData(by data:Data) ->NJError?{
+                do{
+                        try CDManager.shared.Update(entity: GroupItem.CDEntityName,
+                                                    predicate: NSPredicate(format: "gid == %@", self.gid), update: { obj in
+                                guard let group  = obj as? CDGroup else{
+                                        return
+                                }
+                                group.avatar = data
+                        })
+                        self.avatar = data
+                        GroupItem.cache.updateValue(self, forKey: self.gid)
+                        CDManager.shared.saveContext()
+                        NotificationCenter.default.post(name:NotifyGroupAvatarChanged,
+                                                        object: self.gid,
+                                                        userInfo:nil)
+                        return nil
+                }catch let err{
+                        return NJError.group("save data base err:[\(err.localizedDescription)]")
+                }
         }
 }
 //MARK: - cache operation
@@ -121,7 +132,7 @@ extension GroupItem{
                 }
                 do{
                         var result: [GroupItem] = []
-                        result = try CDManager.shared.Get(entity: "CDGroup",
+                        result = try CDManager.shared.Get(entity: CDEntityName,
                                                           predicate: NSPredicate(format: "isDelete == false AND owner == %@", owner),
                                                           sort: [["name" : true]])
                         if result.count == 0{
@@ -142,43 +153,18 @@ extension GroupItem{
         public static func CacheArray() -> [GroupItem] {
                 return Array(cache.values)
         }
-        
-        public static func genGroupAvatar(ids: [String]) -> Data? {
-                let defaultAvatarData = defaultAvatar.jpegData(compressionQuality: 1)!
-                var counter = 0
-                var imgData:Data?// = defaultAvatarData
-                for id in ids{
-                        if counter >= 9{
-                                break
-                        }
-                        if id == Wallet.shared.Addr{
-                                imgData = Wallet.shared.avatarData
-                        }else{
-                                (_, imgData) = ServiceDelegate.queryNickAndAvatar(pid: id)
-                        }
-                        if imgData == nil{
-                                imgData = defaultAvatarData
-                        }
-                        counter += 1
-                        ChatLibAddImg(imgData)
-                }
-                var err: NSError?
-                if let avatar = ChatLibCommitImg(&err) {
-                        return avatar
-                }
-                print("---[group image]--->>>\(err?.localizedDescription ?? "")")
-                return nil
-        }
 }
 
 //MARK: - private  operation
 extension GroupItem {
         
-        private static func getGroupFromDB(_ gid: String) -> GroupItem? {
-                
+        private static func getGroupFromMemOrDB(_ gid: String) -> GroupItem? {
+                if let grp = cache[gid]{
+                        return grp
+                }
                 let owner = Wallet.shared.Addr!
                 var obj: GroupItem?
-                obj = try? CDManager.shared.GetOne(entity: "CDGroup",
+                obj = try? CDManager.shared.GetOne(entity: CDEntityName,
                                                    predicate: NSPredicate(format: "isDelete == false AND gid == %@ AND owner == %@", gid, owner))
                 guard let item = obj else{
                         cache.removeValue(forKey: gid)
@@ -192,7 +178,7 @@ extension GroupItem {
         private static func syncGroupToDB(_ group: GroupItem)throws{
                 
                 group.owner = Wallet.shared.Addr!
-                try CDManager.shared.UpdateOrAddOne(entity: "CDGroup",
+                try CDManager.shared.UpdateOrAddOne(entity: CDEntityName,
                                                     m: group,
                                                     predicate: NSPredicate(format: "gid == %@ AND owner == %@",
                                                                            group.gid, group.owner))
@@ -206,7 +192,7 @@ extension GroupItem {
         }
         
         private static func deleteGroupFromDB(_ gid: String)throws{
-                try CDManager.shared.Update(entity: "CDGroup",
+                try CDManager.shared.Update(entity: CDEntityName,
                                             predicate: NSPredicate(format: "gid == %@", gid)){
                         obj in
                         
@@ -233,6 +219,7 @@ extension GroupItem {
                 }
                 
                 do  {
+                        group.avatar = nilAvatar
                         try syncGroupToDB(group)
                         
                 } catch let err{
@@ -365,8 +352,11 @@ extension GroupItem{
                                 continue
                         }
                         
-                        do {try syncGroupToDB(group) }catch let err {
+                        do {
+                                group.avatar = nilAvatar
+                                try syncGroupToDB(group)
                                 
+                        }catch let err {
                                 print("---[update grp]---\(err.localizedDescription )")
                                 continue
                         }
@@ -449,7 +439,7 @@ extension GroupItem{
 extension GroupItem{
         
         public static func getMembersOfGroup(gid: String) -> Data? {
-                guard let grpItem = GroupItem.getGroupFromDB(gid) else {
+                guard let grpItem = GroupItem.getGroupFromMemOrDB(gid) else {
                         return nil
                 }
                 
@@ -476,7 +466,7 @@ extension GroupItem{
                 
                 for (gid , _):(String, JSON) in groups {
                         
-                        if let _ = getGroupFromDB(gid){
+                        if let _ = getGroupFromMemOrDB(gid){
                                 continue
                         }
                         
@@ -492,7 +482,7 @@ extension GroupItem{
                         return
                 }
                 
-                let oldItem = getGroupFromDB(newItem.gid)
+                let oldItem = getGroupFromMemOrDB(newItem.gid)
                 
                 guard oldItem == nil || oldItem!.nonce != newItem.nonce else{
                         print("------>>>[GroupMeataNotified] same group nonce=>", newItem.nonce)
@@ -507,6 +497,7 @@ extension GroupItem{
                                                         userInfo:nil)
                 }
                 do {
+                        
                         print("------>>>new group item", newItem.ToString())
                         var msg = "Group Update"
                         if newItem.isDelete{
@@ -523,6 +514,7 @@ extension GroupItem{
                         }
                         
                         msg = "group update"
+                        newItem.avatar = nilAvatar
                         try syncGroupToDB(newItem)
                         ChatItem.updateLatestrMsg(pid: groupID,
                                                   msg: msg,
