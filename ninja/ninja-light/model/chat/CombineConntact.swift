@@ -17,6 +17,10 @@ class CombineConntact: NSObject{
         var account:AccountItem?
         var peerID:String=""
         
+        public static func deleteAll(){
+                cache.removeAll()
+        }
+        
         public func GetNickName()->String?{
                 
                 if let alias = self.contact?.alias, !alias.isEmpty{
@@ -171,7 +175,7 @@ class CombineConntact: NSObject{
                         print("------>>> parse friend details to json object failed")
                         return nil
                 }
-                let newContact = SaveDataOnChain(json: jsonObj, uid: peerID)
+                let newContact = saveDataFromChain(json: jsonObj, uid: peerID)
                 
                 return newContact
         }
@@ -251,7 +255,7 @@ class CombineConntact: NSObject{
                                                 object: nil, userInfo:nil)
         }
         
-        public static func syncAllContactDataAtOnce() {
+        public static func SyncAllContactDataAtOnce() {
                 var error: NSError?
                 
                 guard let data = ChatLibSyncFriendWithDetails(&error)else{
@@ -265,13 +269,13 @@ class CombineConntact: NSObject{
                 }
                 
                 for (uid, contact):(String,JSON) in allContactJson {
-                        let cc = CombineConntact.SaveDataOnChain(json:contact, uid:uid)
+                        let cc = CombineConntact.saveDataFromChain(json:contact, uid:uid)
                         cache[uid] = cc
                 }
         }
         
         
-        public static func SaveDataOnChain(json:JSON, uid:String)->CombineConntact{
+        private static func saveDataFromChain(json:JSON, uid:String)->CombineConntact{
                 let cc =  CombineConntact()
                 
                 if json["account"].exists(){
@@ -290,7 +294,6 @@ class CombineConntact: NSObject{
                 }
                 
                 cc.peerID = uid
-                
                 return cc
         }
 }

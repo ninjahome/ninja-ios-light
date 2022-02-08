@@ -188,7 +188,6 @@ class Wallet: NSObject {
                 }
                 Update(item)
                 do{
-                        try CDManager.shared.Delete(entity: "CDWallet")
                         try CDManager.shared.UpdateOrAddOne(entity: "CDWallet", m: self)
                         
                 }catch let err{
@@ -200,7 +199,9 @@ class Wallet: NSObject {
         func UpdateWallet(w: Wallet) -> NJError? {
                 Update(w)
                 do {
-                        try CDManager.shared.UpdateOrAddOne(entity: "CDWallet", m: self, predicate: NSPredicate(format: "address == %@ AND jsonStr == %@", self.Addr!, self.wJson!))
+                        try CDManager.shared.UpdateOrAddOne(entity: "CDWallet",
+                                                            m: self, predicate:
+                                                                NSPredicate(format: "address == %@ AND jsonStr == %@", self.Addr!, self.wJson!))
                 } catch let err {
                         return NJError.wallet(err.localizedDescription)
                 }
@@ -210,7 +211,9 @@ class Wallet: NSObject {
         func UpdateNick(by nick: String) -> NJError? {
                 self.nickName = nick
                 do {
-                        try CDManager.shared.UpdateOrAddOne(entity: "CDWallet", m: self, predicate: NSPredicate(format: "address == %@ AND jsonStr == %@", self.Addr!, self.wJson!))
+                        try CDManager.shared.UpdateOrAddOne(entity: "CDWallet",
+                                                            m: self, predicate:
+                                                                NSPredicate(format: "address == %@ AND jsonStr == %@", self.Addr!, self.wJson!))
                 } catch let err {
                         return NJError.wallet(err.localizedDescription)
                 }
@@ -233,7 +236,9 @@ class Wallet: NSObject {
         func UpdateUseDestroy(by use: Bool) -> NJError? {
                 self.useDestroy = use
                 do {
-                        try CDManager.shared.UpdateOrAddOne(entity: "CDWallet", m: self, predicate: NSPredicate(format: "address == %@ AND jsonStr == %@", self.Addr!, self.wJson!))
+                        try CDManager.shared.UpdateOrAddOne(entity: "CDWallet",
+                                                            m: self,
+                                                            predicate: NSPredicate(format: "address == %@ AND jsonStr == %@", self.Addr!, self.wJson!))
                 } catch let err {
                         return NJError.wallet(err.localizedDescription)
                 }
@@ -318,7 +323,6 @@ class Wallet: NSObject {
                 }
                 return String(nick.prefix(2))
         }
-        
 }
 
 extension Wallet: ModelObj {

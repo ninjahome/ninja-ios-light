@@ -21,10 +21,10 @@ struct memberInfo {
         }
 }
 
+//MARK: - basic init
 class GroupItem: NSObject {
         
         public static var cache:[String:GroupItem]=[:]
-        
         
         var nonce: Int64=0
         var gid: String = ""
@@ -109,7 +109,12 @@ class GroupItem: NSObject {
                 
                 return grp
         }
-        
+}
+//MARK: - cache operation
+extension GroupItem{
+        public static func deleteAll(){
+                cache.removeAll()
+        }
         public static func loadCachedFromDB() {
                 guard let owner = Wallet.shared.Addr else {
                         return
@@ -251,12 +256,6 @@ extension GroupItem: ModelObj {
                 cObj.unixTime = self.unixTime
                 cObj.leader = self.leader
                 cObj.isDelete = self.isDelete
-                if self.avatar == nil ||
-                        (cObj.nonce != self.nonce && self.memberIds.count <= 9){
-                        if let grpImg = GroupItem.genGroupAvatar(ids: self.memberIds) {
-                                self.avatar = grpImg
-                        }
-                }
                 cObj.avatar = self.avatar
                 cObj.nonce = self.nonce
         }
@@ -347,7 +346,7 @@ extension GroupItem{
                 return nil
         }
         
-        public static func syncAllGroupDataFromChainAtOnce(){
+        public static func SyncAllGroupDataFromChainAtOnce(){
                 
                 var err: NSError?
                 guard let data = ChatLibSyncGroupWithDetails(&err) else{

@@ -83,11 +83,11 @@ extension ServiceDelegate{
                 WebsocketSrv.shared.Online()
         }
         
-        public static func cleanAllData() {
-                CombineConntact.cache.removeAll()
+        public static func cleanAllMemoryCache() {
+                CombineConntact.deleteAll()
                 ChatItem.deleteAll()
                 MessageItem.deleteAll()
-                GroupItem.cache.removeAll()
+                GroupItem.deleteAll()
         }
 
         
@@ -120,11 +120,12 @@ extension ServiceDelegate{
                         }
                         
                         print("------>>>new wallet \(String(describing: Wallet.shared.Addr))")
-                        ServiceDelegate.cleanAllData()
-                        CombineConntact.syncAllContactDataAtOnce()
-                        GroupItem.syncAllGroupDataFromChainAtOnce()
+                        ServiceDelegate.cleanAllMemoryCache()
+                        CombineConntact.SyncAllContactDataAtOnce()
+                        GroupItem.SyncAllGroupDataFromChainAtOnce()
                         CDManager.shared.saveContext()
                         WebsocketSrv.shared.Online()
+                        
                         parent.hideIndicator()
                         guard let cb = callback else{
                                 return

@@ -36,7 +36,7 @@ class NewWalletViewController: UIViewController {
                 }
                 
                 if Wallet.shared.Addr != nil {
-                        ServiceDelegate.cleanAllData()
+                        ServiceDelegate.cleanAllMemoryCache()
                 }
                 
                 
