@@ -112,7 +112,7 @@ class GroupItem: NSObject {
                         self.avatar = data
                         GroupItem.cache.updateValue(self, forKey: self.gid)
                         CDManager.shared.saveContext()
-                        NotificationCenter.default.post(name:NotifyGroupAvatarChanged,
+                        NotificationCenter.default.post(name:NotifyGroupNameOrAvatarChanged,
                                                         object: self.gid,
                                                         userInfo:nil)
                         return nil

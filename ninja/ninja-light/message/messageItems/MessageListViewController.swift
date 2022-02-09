@@ -43,8 +43,8 @@ class MessageListViewController: UIViewController{
                                                        object: nil)
                 
                 NotificationCenter.default.addObserver(self,
-                                                       selector:#selector(updateGroupAvatar(notification:)),
-                                                       name: NotifyGroupAvatarChanged,
+                                                       selector:#selector(updateGroupAvatarOrName(notification:)),
+                                                       name: NotifyGroupNameOrAvatarChanged,
                                                        object: nil)
                 
                 NotificationCenter.default.addObserver(self,
@@ -127,7 +127,7 @@ class MessageListViewController: UIViewController{
                 print("WSOnline error....")
         }
         
-        @objc func updateGroupAvatar(notification: NSNotification) {
+        @objc func updateGroupAvatarOrName(notification: NSNotification) {
                 guard let gid = notification.object as? String else{
                         self.simpleReload()
                         return

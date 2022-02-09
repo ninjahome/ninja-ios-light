@@ -28,8 +28,8 @@ class GroupListViewController: UIViewController {
                                                        object: nil)
                 
                 NotificationCenter.default.addObserver(self,
-                                                       selector:#selector(updateGroupAvatar(notification:)),
-                                                       name: NotifyGroupAvatarChanged,
+                                                       selector:#selector(updateGroupAvatarOrName(notification:)),
+                                                       name: NotifyGroupNameOrAvatarChanged,
                                                        object: nil)
                 
         }
@@ -37,7 +37,7 @@ class GroupListViewController: UIViewController {
                 NotificationCenter.default.removeObserver(self)
         }
         
-        @objc func updateGroupAvatar(notification: NSNotification) {
+        @objc func updateGroupAvatarOrName(notification: NSNotification) {
 //                simpleReload()
                 guard let gid = notification.object as? String,
                       let newItem =   GroupItem.cache[gid]else{

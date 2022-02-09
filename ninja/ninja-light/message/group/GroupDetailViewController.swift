@@ -188,7 +188,7 @@ extension GroupDetailViewController{
                                         return
                                 }
                                 
-                                NotificationCenter.default.post(name:NotifyGroupChanged,
+                                NotificationCenter.default.post(name:NotifyGroupNameOrAvatarChanged,
                                                                 object: self.groupID, userInfo:nil)
                         }
                         

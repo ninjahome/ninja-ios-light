@@ -101,6 +101,10 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                                                        selector:#selector(contactUpdate(notification:)),
                                                        name: NotifyGroupChanged,
                                                        object: nil)
+                NotificationCenter.default.addObserver(self,
+                                                       selector:#selector(peerNameUpdate(notification:)),//TODO::
+                                                       name: NotifyGroupNameOrAvatarChanged,
+                                                       object: nil)
                 
                 
                 NotificationCenter.default.addObserver(self,
@@ -394,6 +398,26 @@ extension MsgViewController{
 
 extension MsgViewController{
         
+        @objc func contactUpdate(notification: NSNotification) {
+                DispatchQueue.main.async {
+                        self.setPeerBasic()
+                        self.messageTableView.reloadData()
+                }}
+        
+        @objc func peerNameUpdate(notification: NSNotification) {
+                guard let pid = notification.object as? String else{
+                        return
+                }
+                
+                guard peerUid == pid else{
+                        return
+                }
+                
+                DispatchQueue.main.async {
+                        self.setPeerBasic()
+                }
+        }
+        
         @objc func msgResult(notification: NSNotification){
                 guard let msgID = notification.object as? Int64 else{
                         print("------>>> invalid msg resul notification")
@@ -477,17 +501,6 @@ extension MsgViewController{
 }
 
 extension MsgViewController{
-        
-        @objc func contactUpdate(notification: NSNotification) {
-                DispatchQueue.main.async {
-                        self.setPeerBasic()
-                        self.messageTableView.reloadData()
-                }}
-        
-        // TODO: Update group member
-        @objc func groupUpdate(notification: NSNotification) {
-                //TODO
-        }
         
         @objc func keyboardWillShow(notification:NSNotification) {
                 
