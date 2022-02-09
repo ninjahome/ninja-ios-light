@@ -23,6 +23,8 @@ protocol IMPayLoad {
 }
 
 class MessageItem: NSObject {
+        
+        public static let TimeOutDuration = 1000 * 60 * 2
         public static let NotiKey = "peerUid"
         public static let MaxItemNoPerID = 1000//TODO::load more on pull down chat window
         
@@ -321,6 +323,15 @@ extension MessageItem: ModelObj {
                 uObj.to = self.to
                 uObj.unixTime = self.timeStamp
                 uObj.status = self.status.rawValue
+                
+                if self.status == .sending{
+                        let now = ChatLibNowInMilliSeconds()
+                        if now - self.timeStamp > MessageItem.TimeOutDuration{
+                                self.status = .faild
+                                uObj.status = self.status.rawValue
+                        }
+                }
+                
                 uObj.groupId = self.groupId
                 self.uObj = uObj
         }
@@ -329,10 +340,10 @@ extension MessageItem: ModelObj {
                 guard let uObj = obj as? CDUnread else {
                         throw NJError.coreData("cast to unread item obj failed")
                 }
-                self.typ = CMT(rawValue: Int(uObj.type)) ?? CMT(rawValue: 1)!
                 
                 self.from = uObj.from!
                 self.isOut = uObj.isOut
+                self.typ = CMT(rawValue: Int(uObj.type)) ?? CMT(rawValue: 1)!
                 
                 switch self.typ {
                 case .plainTxt:
@@ -349,10 +360,19 @@ extension MessageItem: ModelObj {
                         print("init by msg obj: no such type")
                 }
                 self.to = uObj.to ?? "<->"//TODO::
-                self.timeStamp = uObj.unixTime
-                self.status = sendingStatus(rawValue: uObj.status) ?? .sent
                 self.groupId = uObj.groupId
                 self.uObj = uObj
+                
+                
+                self.timeStamp = uObj.unixTime
+                self.status = sendingStatus(rawValue: uObj.status) ?? .sent
+                if self.status == .sending{
+                        let now = ChatLibNowInMilliSeconds()
+                        if now - self.timeStamp > MessageItem.TimeOutDuration{
+                                self.status = .faild
+                                uObj.status = self.status.rawValue
+                        }
+                }
         }
 }
 
