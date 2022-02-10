@@ -10,7 +10,7 @@ import CoreData
 
 class ChatItem: NSObject{
         private static var cache:[String: ChatItem]  = [:]
-        
+        private static let EntityName = "CDChatItem"
         public static var TotalUnreadNo = 0
         public static var CurrentPID:String = ""
         private static let noLock = NSLock()
@@ -40,7 +40,7 @@ class ChatItem: NSObject{
                 var result:[ChatItem]?
                 let owner = Wallet.shared.Addr!
                 do{
-                        result = try CDManager.shared.Get(entity: "CDChatItem",
+                        result = try CDManager.shared.Get(entity: EntityName,
                                                           predicate: NSPredicate(format: "owner == %@", owner),
                                                           sort: [["updateTime" : true]])
                         guard let data = result else {
@@ -84,7 +84,7 @@ class ChatItem: NSObject{
                                 c.cObj?.updateTime = time
                         }else{
                                 chat = ChatItem.init(id: pid, time: time, msg: msg, isGrp: isGrp, unread:no)
-                                try CDManager.shared.UpdateOrAddOne(entity: "CDChatItem",
+                                try CDManager.shared.UpdateOrAddOne(entity: EntityName,
                                                                     m: chat!,
                                                                     predicate: NSPredicate(format: "peerID == %@ AND owner == %@", pid, owner))
                         }
@@ -133,25 +133,33 @@ class ChatItem: NSObject{
                 CDManager.shared.saveContext()
         }
         
-        public static func remove(_ pid:String) {
-                
-                cache[pid]?.resetUnread()
-                
+        public static func remove(_ pid:String)throws{
                 noLock.lock()
                 defer{
                         noLock.unlock()
                 }
+                cache[pid]?.resetUnread()
                 let owner = Wallet.shared.Addr!
-                try? CDManager.shared.Delete(entity: "CDChatItem",
-                                             predicate: NSPredicate(format: "owner == %@ AND peerID == %@ ", owner, pid))
+                try CDManager.shared.Delete(entity: EntityName,
+                                            predicate: NSPredicate(format: "owner == %@ AND peerID == %@ ", owner, pid))
+                
                 cache.removeValue(forKey: pid)
         }
+        
         public static func deleteAll(){
                 noLock.lock()
                 defer{
                         noLock.unlock()
                 }
                 cache.removeAll()
+        }
+        
+        public static func getItem(cid:String) -> ChatItem?{
+                noLock.lock()
+                defer{
+                        noLock.unlock()
+                }
+                return cache[cid]
         }
 }
 

@@ -28,12 +28,26 @@ class DeleteMemberController: UIViewController {
                 self.tableView.tableFooterView = UIView()
                 guard var mem = self.groupItem?.memberIds else{
                         print("------>>> invalid data to populate this view")
+                        self.navigationController?.popToRootViewController(animated: true)
                         return
                 }
                 mem.removeAll { uid in
                         uid == Wallet.shared.Addr!
                 }
                 self.existMember = mem
+                
+                
+                NotificationCenter.default.addObserver(self,
+                                                       selector:#selector(groupDeleted(notification:)),
+                                                       name: NotifyGroupDeleteChanged,
+                                                       object: nil)
+        }
+        
+        @objc func groupDeleted(notification: NSNotification) {
+                guard let gid = notification.object as? String, gid == groupItem.gid else{
+                        return
+                }
+                self.navigationController?.popToRootViewController(animated: true)
         }
         
         @IBAction func returnBackItem(_ sender: UIBarButtonItem) {

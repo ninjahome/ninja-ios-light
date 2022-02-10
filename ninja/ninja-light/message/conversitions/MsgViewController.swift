@@ -102,8 +102,16 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                                                        name: NotifyGroupChanged,
                                                        object: nil)
                 NotificationCenter.default.addObserver(self,
-                                                       selector:#selector(peerNameUpdate(notification:)),//TODO::
+                                                       selector:#selector(peerNameUpdate(notification:)),
                                                        name: NotifyGroupNameOrAvatarChanged,
+                                                       object: nil)
+                NotificationCenter.default.addObserver(self,
+                                                       selector:#selector(peerNameUpdate(notification:)),
+                                                       name: NotifyGroupMemberChanged,
+                                                       object: nil)
+                NotificationCenter.default.addObserver(self,
+                                                       selector:#selector(currentGroupDismiessed(notification:)),
+                                                       name: NotifyGroupDeleteChanged,
                                                        object: nil)
                 
                 
@@ -182,7 +190,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         private func setPeerBasic() {
-                if IS_GROUP {//TODO::
+                if IS_GROUP {
                         guard let groupData = GroupItem.cache[peerUid] else{
                                 print("------>>> invalid group infos for current chat window")
                                 self.navigationController?.popToRootViewController(animated: true)
@@ -195,7 +203,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                         }else{
                                 self.peerNickName.title = "(\(count)) \(peerUid)"
                         }
-                       
                         return
                 }
                 
@@ -405,16 +412,22 @@ extension MsgViewController{
                 }}
         
         @objc func peerNameUpdate(notification: NSNotification) {
-                guard let pid = notification.object as? String else{
-                        return
-                }
-                
-                guard peerUid == pid else{
+                guard let pid = notification.object as? String, peerUid == pid else{
                         return
                 }
                 
                 DispatchQueue.main.async {
                         self.setPeerBasic()
+                }
+        }
+        @objc func currentGroupDismiessed(notification: NSNotification) {
+                guard let pid = notification.object as? String,
+                        peerUid == pid,  IS_GROUP else{
+                        return
+                }
+                DispatchQueue.main.async {
+                        self.dismiss(animated: true)
+                        self.navigationController?.popToRootViewController(animated: true)
                 }
         }
         
@@ -462,23 +475,26 @@ extension MsgViewController{
         
         private func insertNewCell(){
                 DispatchQueue.main.async {
-                        let startCnt = self.messageTableView.numberOfRows(inSection: 0)
-                        let endCnt = self.msgCacheArray.count
-                        if startCnt >= endCnt{
-                                print("------>>> finish insert rows[\(endCnt)] in table")
-                                return
-                        }
-                        var indes :[IndexPath] = []
-                        for i in startCnt ... endCnt - 1{
-                                indes.append(IndexPath.init(row: i, section: 0))
-                        }
-                        //                        print("------>>> start rows[\(startCnt)] to end rows[\(endCnt)]")
+//                        let startCnt = self.messageTableView.numberOfRows(inSection: 0)
+//                        let endCnt = self.msgCacheArray.count
+//                        if startCnt >= endCnt{
+//                                print("------>>> finish insert rows[\(endCnt)] in table")
+//                                return
+//                        }
+//                        var indes :[IndexPath] = []
+//                        for i in startCnt ... endCnt - 1{
+//                                indes.append(IndexPath.init(row: i, section: 0))
+//                        }
+//                        //                        print("------>>> start rows[\(startCnt)] to end rows[\(endCnt)]")
+//
+//                        self.messageTableView.beginUpdates()
+//                        self.messageTableView.insertRows(at: indes, with: .automatic)
+//                        self.messageTableView.endUpdates()
                         
-                        self.messageTableView.beginUpdates()
-                        self.messageTableView.insertRows(at: indes, with: .automatic)
-                        self.messageTableView.endUpdates()
-                        
-                        self.messageTableView.scrollToRow(at: indes[indes.count - 1], at: .bottom, animated: true)
+                        self.messageTableView.reloadData()
+                        //indes[indes.count - 1]
+                        self.messageTableView.scrollToRow(at: IndexPath.init(row: self.msgCacheArray.count - 1, section: 0),
+                                                          at: .bottom, animated: true)
                 }
         }
         

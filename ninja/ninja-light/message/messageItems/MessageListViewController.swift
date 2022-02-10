@@ -48,6 +48,11 @@ class MessageListViewController: UIViewController{
                                                        object: nil)
                 
                 NotificationCenter.default.addObserver(self,
+                                                       selector:#selector(groupDeleteFromChatList(notification:)),
+                                                       name: NotifyGroupDeleteChanged,
+                                                       object: nil)
+                
+                NotificationCenter.default.addObserver(self,
                                                        selector:#selector(wsOffline(notification:)),
                                                        name: NotifyWebsocketOffline,
                                                        object: nil)
@@ -127,8 +132,27 @@ class MessageListViewController: UIViewController{
                 print("WSOnline error....")
         }
         
-        @objc func updateGroupAvatarOrName(notification: NSNotification) {
+        @objc func groupDeleteFromChatList(notification: NSNotification) {
                 guard let gid = notification.object as? String else{
+                        self.simpleReload()
+                        return
+                }
+                
+                DispatchQueue.main.async {
+                        print("------>new group item\(gid) delete")
+                        guard let idx = self.indexCache[gid] else{
+                                self.simpleReload()
+                                return
+                        }
+                        
+                        self.tableView.beginUpdates()
+                        self.tableView.reloadRows(at: [idx], with: .automatic)
+                        self.tableView.endUpdates()
+                }
+        }
+        
+        @objc func updateGroupAvatarOrName(notification: NSNotification) {
+                guard let gid = notification.object as? String, let newItem = ChatItem.getItem(cid: gid) else{
                         self.simpleReload()
                         return
                 }
@@ -139,7 +163,7 @@ class MessageListViewController: UIViewController{
                                 self.simpleReload()
                                 return
                         }
-                        
+                        self.sortedArray[idx.row] = newItem
                         self.tableView.beginUpdates()
                         self.tableView.reloadRows(at: [idx], with: .automatic)
                         self.tableView.endUpdates()
@@ -247,7 +271,7 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
                 ServiceDelegate.workQueue.async {
                         let item = self.sortedArray[indexPath.row]
                         self.sortedArray.remove(at: indexPath.row)
-                        ChatItem.remove(item.ItemID)
+                        try? ChatItem.remove(item.ItemID)
                         MessageItem.removeRead(item.ItemID)
                         
                         DispatchQueue.main.async {

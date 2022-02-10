@@ -297,20 +297,23 @@ extension GroupItem{
         
         
         public static func DismissGroup(gid: String) -> NJError? {
-                
-                try? GroupItem.deleteGroupFromDB(gid)
-                ChatItem.remove(gid)
-                
-                var error: NSError?
-                _ = ChatLibDismissGroup(gid, &error)
-                if error != nil {
-                        return NJError.group(error!.localizedDescription)
+                do{
+                        try GroupItem.deleteGroupFromDB(gid)
+                        try ChatItem.remove(gid)
+                        
+                        var error: NSError?
+                        _ = ChatLibDismissGroup(gid, &error)
+                        if error != nil {
+                                return NJError.group(error!.localizedDescription)
+                        }
+                        
+                        MessageItem.removeRead(gid)
+                        CDManager.shared.saveContext()
+                        
+                        return nil
+                }catch let err{
+                        return NJError.group("dissmiss failed \(err.localizedDescription)")
                 }
-                
-                MessageItem.removeRead(gid)
-                CDManager.shared.saveContext()
-                
-                return nil
         }
         
         public static func updateGroupName(group:GroupItem, newName:String)->Error?{
@@ -492,34 +495,31 @@ extension GroupItem{
                 let groupID = newItem.gid
                 defer{
                         CDManager.shared.saveContext()
-                        NotificationCenter.default.post(name:NotifyGroupChanged,
-                                                        object: groupID,
-                                                        userInfo:nil)
                 }
                 do {
                         
                         print("------>>>new group item", newItem.ToString())
-                        var msg = "Group Update"
-                        if newItem.isDelete{
+                       
+                        if newItem.isDelete || !newItem.memberIds.contains(Wallet.shared.Addr!){
                                 try deleteGroupFromDB(groupID)
-                                ChatItem.remove(groupID)
+                                try ChatItem.remove(groupID)
                                 MessageItem.removeRead(groupID)
-                                return
-                        }
-                        if !newItem.memberIds.contains(Wallet.shared.Addr!){
-                                try deleteGroupFromDB(groupID)
-                                ChatItem.remove(groupID)
-                                MessageItem.removeRead(groupID)
+                                
+                                NotificationCenter.default.post(name:NotifyGroupDeleteChanged,
+                                                                object: groupID,
+                                                                userInfo:nil)
                                 return
                         }
                         
-                        msg = "group update"
-                        newItem.avatar = nilAvatar
+                        newItem.avatar = nilAvatar//TODO::to be tested
                         try syncGroupToDB(newItem)
                         ChatItem.updateLatestrMsg(pid: groupID,
-                                                  msg: msg,
+                                                  msg: "group update",
                                                   time: newItem.unixTime * 1000,
                                                   unread: 0, isGrp: true)
+                        NotificationCenter.default.post(name:NotifyGroupChanged,
+                                                        object: groupID,
+                                                        userInfo:nil)
                         
                 }catch let err{
                         print("------>>>[GroupMeataNotified] error=>", err.localizedDescription)

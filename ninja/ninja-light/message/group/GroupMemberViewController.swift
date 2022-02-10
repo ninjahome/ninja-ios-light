@@ -42,10 +42,24 @@ class GroupMemberViewController: UIViewController {
                                                        selector:#selector(updateGroupList(notification:)),
                                                        name: NotifyGroupChanged,
                                                        object: nil)
+                
+                NotificationCenter.default.addObserver(self,
+                                                       selector:#selector(groupDeleted(notification:)),
+                                                       name: NotifyGroupDeleteChanged,
+                                                       object: nil)
         }
         
         deinit {
                 NotificationCenter.default.removeObserver(self)
+        }
+        
+        
+        @objc func groupDeleted(notification: NSNotification) {
+                guard isInAddingMode, let gid = notification.object as? String, groupItem.gid == gid else{
+                        return
+                }
+                
+                self.navigationController?.popToRootViewController(animated: true)
         }
         
         @objc func updateGroupList(notification: NSNotification) {

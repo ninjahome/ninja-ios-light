@@ -26,7 +26,8 @@ let NotifyKickMeOutGroup = NSNotification.Name(rawValue: "kick_me_out_member_fro
 
 
 let NotifyGroupNameOrAvatarChanged = NSNotification.Name(rawValue: "group_avatar_changed")
-
+let NotifyGroupMemberChanged = NSNotification.Name(rawValue: "group_member_changed")
+let NotifyGroupDeleteChanged = NSNotification.Name(rawValue: "group_delete_changed")
 
 let dateFormatterGet = DateFormatter()
 

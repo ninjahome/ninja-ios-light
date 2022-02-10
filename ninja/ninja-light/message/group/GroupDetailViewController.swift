@@ -176,7 +176,12 @@ extension GroupDetailViewController{
                         return
                 }
                 
-                self.showInputDialog(title: "New Group Name", message: "", textPlaceholder: "Group Name", actionText: "OK", cancelText: "Cacel", cancelHandler: nil) { text in
+                self.showInputDialog(title: "New Group Name",
+                                     message: "",
+                                     textPlaceholder: "Group Name",
+                                     actionText: "OK",
+                                     cancelText: "Cacel",
+                                     cancelHandler: nil) { text in
                         guard let newName = text else{
                                 self.toastMessage(title: "invalid new group name", duration: 2)
                                 return
@@ -245,7 +250,7 @@ extension GroupDetailViewController{
                         self.hideIndicator()
                         self.dismiss(animated: true)
                         self.navigationController?.popToRootViewController(animated: true)
-                        NotificationCenter.default.post(name:NotifyGroupChanged,
+                        NotificationCenter.default.post(name:NotifyGroupDeleteChanged,
                                                         object: self.groupID, userInfo:nil)
                 }
         }
@@ -253,11 +258,13 @@ extension GroupDetailViewController{
         
         
         private func memberChnaged(_ newGroupInfo:GroupItem){
-                self.groupData = newGroupInfo
                 DispatchQueue.main.async {
                         self.navigationController?.popViewController(animated: true)
-                        NotificationCenter.default.post(name:NotifyGroupChanged,
+                        NotificationCenter.default.post(name:NotifyGroupMemberChanged,
                                                         object: newGroupInfo.gid, userInfo:nil)
+                        
+                        self.groupData = newGroupInfo
+                        self.collectionView.reloadData()
                 }
         }
 }

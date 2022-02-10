@@ -87,7 +87,7 @@ class CombineConntact: NSObject{
                 CombineConntact.cache.removeValue(forKey: self.peerID)
                 
                 //TODO:: need a full test
-                ChatItem.remove(self.peerID)
+                do {try  ChatItem.remove(self.peerID)}catch let err{return NJError.contact("\(err.localizedDescription)")}
                 
                 //TODO:: need a full test
                 MessageItem.removeRead(self.peerID)

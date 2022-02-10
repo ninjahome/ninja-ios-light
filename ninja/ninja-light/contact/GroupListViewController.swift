@@ -32,11 +32,39 @@ class GroupListViewController: UIViewController {
                                                        name: NotifyGroupNameOrAvatarChanged,
                                                        object: nil)
                 
+                NotificationCenter.default.addObserver(self,
+                                                       selector:#selector(groupItemDeleted(notification:)),
+                                                       name: NotifyGroupDeleteChanged,
+                                                       object: nil)
+                
         }
         deinit {
                 NotificationCenter.default.removeObserver(self)
         }
         
+        @objc func groupItemDeleted(notification: NSNotification) {
+                guard let gid = notification.object as? String else{
+                        simpleReload()
+                        return
+                }
+               
+                DispatchQueue.main.async {
+                        print("------>new group item\(gid) deleted")
+                        guard let idx = self.indexPathCache[gid] else{
+                                self.simpleReload()
+                                return
+                        }
+                        guard idx.row < self.groupArray.count else{
+                                self.simpleReload()
+                                return
+                        }
+                        
+                        self.groupArray.remove(at: idx.row)
+                        self.tableView.beginUpdates()
+                        self.tableView.deleteRows(at: [idx], with: .automatic)
+                        self.tableView.endUpdates()
+                }
+        }
         @objc func updateGroupAvatarOrName(notification: NSNotification) {
 //                simpleReload()
                 guard let gid = notification.object as? String,
