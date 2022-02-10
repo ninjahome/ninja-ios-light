@@ -47,7 +47,7 @@ class SearchDetailViewController: UIViewController {
         }
         
         private func populateView(){
-                avatar.setup(id: uid, avaData: accountData?.Avatar)
+                avatar.setup(id: uid, avaData: accountData?.Avatar, showDetails: false)
                 nickName.text = accountData?.NickName//TODO::
                 backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
                 vipFlagImgView.isHidden = Wallet.shared.isStillVip()

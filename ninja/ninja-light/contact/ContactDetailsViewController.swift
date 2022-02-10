@@ -144,7 +144,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 nickTextField.text = data.contact?.alias
                 memoTextView.text = data.contact?.remark
                 backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
-                self.avator.setup(id: self.peerID, avaData: contactData?.account?.Avatar)
+                self.avator.setup(id: self.peerID, avaData: contactData?.account?.Avatar, showDetails: false)
         }
         
         private func closeOrShowErrorTips(err:NJError?, isDelete:Bool = false) {DispatchQueue.main.async {
