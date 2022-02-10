@@ -151,7 +151,12 @@ class ChatItem: NSObject{
                 defer{
                         noLock.unlock()
                 }
+                for (_, item) in cache{
+                        item.resetUnread()
+                }
                 cache.removeAll()
+                TotalUnreadNo = 0
+                CDManager.shared.saveContext()
         }
         
         public static func getItem(cid:String) -> ChatItem?{
@@ -160,6 +165,19 @@ class ChatItem: NSObject{
                         noLock.unlock()
                 }
                 return cache[cid]
+        }
+        
+        public static func clearAllUnreadFlag(){
+                noLock.lock()
+                defer{
+                        noLock.unlock()
+                }
+                
+                TotalUnreadNo = 0
+                for (_, item) in cache{
+                        item.resetUnread()
+                }
+                CDManager.shared.saveContext()
         }
 }
 

@@ -169,6 +169,7 @@ class WalletViewController: UITableViewController {
                         self.showIndicator(withTitle: "", and: "deleting message caches")
                         ServiceDelegate.workQueue.async {
                                 MessageItem.removeAllRead()
+                                ChatItem.clearAllUnreadFlag()
                                 self.hideIndicator()
                         }
                 }

@@ -154,13 +154,25 @@ class MessageListViewController: UIViewController{
                                 self.simpleReload()
                                 return
                         }
-                        self.sortedArray.remove(at: idx.row)
-                        self.tableView.beginUpdates()
-                        self.tableView.deleteRows(at: [idx], with: .automatic)
-                        self.tableView.endUpdates()
+                        self.removeOneCellAtRow(idx: idx)
                 }
         }
-        
+        private func removeOneCellAtRow(idx:IndexPath){
+                let item = self.sortedArray[idx.row]
+                item.resetUnread()
+                self.sortedArray.remove(at: idx.row)
+                
+                try? ChatItem.remove(item.ItemID)
+                MessageItem.removeRead(item.ItemID)
+                self.updateMsgBadge()
+                
+                self.tableView.beginUpdates()
+                self.tableView.deleteRows(at: [idx], with: .automatic)
+                self.tableView.endUpdates()
+                
+                
+                CDManager.shared.saveContext()
+        }
         @objc func updateGroupAvatarOrName(notification: NSNotification) {
                 guard let gid = notification.object as? String, let newItem = ChatItem.getItem(cid: gid) else{
                         self.simpleReload()
@@ -260,7 +272,7 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
         
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
                 self.SelectedRowID = indexPath.row
-         
+                
                 let item = self.sortedArray[indexPath.row]
                 item.resetUnread()
                 self.performSegue(withIdentifier: "ShowMessageDetailsSEG", sender: self)
@@ -274,17 +286,8 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
                         return
                 }
                 
-                ServiceDelegate.workQueue.async {
-                        let item = self.sortedArray[indexPath.row]
-                        self.sortedArray.remove(at: indexPath.row)
-                        try? ChatItem.remove(item.ItemID)
-                        MessageItem.removeRead(item.ItemID)
-                        
-                        DispatchQueue.main.async {
-                                self.updateMsgBadge()
-                                tableView.deleteRows(at: [indexPath], with: .fade)
-                        }
-                }
+                self.removeOneCellAtRow(idx: indexPath)
+                
         }
 }
 extension MessageListViewController:WalletDelegate{
