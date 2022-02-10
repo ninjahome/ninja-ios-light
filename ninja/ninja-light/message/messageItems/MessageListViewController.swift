@@ -169,9 +169,6 @@ class MessageListViewController: UIViewController{
                 self.tableView.beginUpdates()
                 self.tableView.deleteRows(at: [idx], with: .automatic)
                 self.tableView.endUpdates()
-                
-                
-                CDManager.shared.saveContext()
         }
         @objc func updateGroupAvatarOrName(notification: NSNotification) {
                 guard let gid = notification.object as? String, let newItem = ChatItem.getItem(cid: gid) else{
@@ -287,7 +284,7 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
                 }
                 
                 self.removeOneCellAtRow(idx: indexPath)
-                
+                CDManager.shared.saveContext()
         }
 }
 extension MessageListViewController:WalletDelegate{
