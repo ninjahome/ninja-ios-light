@@ -18,13 +18,7 @@ let NotifyWebsocketOffline = NSNotification.Name(rawValue:"websocket_status_offl
 let NotifyWebsocketOnline = NSNotification.Name(rawValue:"websocket_status_online")
 let NotifyOnlineError = NSNotification.Name(rawValue: "websocket_online_error")
 
-
 let NotifyGroupChanged = NSNotification.Name(rawValue: "group_meta_changed")
-let NotifyJoinGroup = NSNotification.Name(rawValue: "add_new_member_to_group")
-let NotifyKickOutGroup = NSNotification.Name(rawValue: "kick_out_member_from_group")
-let NotifyKickMeOutGroup = NSNotification.Name(rawValue: "kick_me_out_member_from_group")
-
-
 let NotifyGroupNameOrAvatarChanged = NSNotification.Name(rawValue: "group_avatar_changed")
 let NotifyGroupMemberChanged = NSNotification.Name(rawValue: "group_member_changed")
 let NotifyGroupDeleteChanged = NSNotification.Name(rawValue: "group_delete_changed")

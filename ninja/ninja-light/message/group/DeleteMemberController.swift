@@ -47,7 +47,9 @@ class DeleteMemberController: UIViewController {
                 guard let gid = notification.object as? String, gid == groupItem.gid else{
                         return
                 }
-                self.navigationController?.popToRootViewController(animated: true)
+                DispatchQueue.main.async {
+                        self.navigationController?.popToRootViewController(animated: true)
+                }
         }
         
         @IBAction func returnBackItem(_ sender: UIBarButtonItem) {

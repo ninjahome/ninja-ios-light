@@ -58,8 +58,9 @@ class GroupMemberViewController: UIViewController {
                 guard isInAddingMode, let gid = notification.object as? String, groupItem.gid == gid else{
                         return
                 }
-                
-                self.navigationController?.popToRootViewController(animated: true)
+                DispatchQueue.main.async {
+                        self.navigationController?.popToRootViewController(animated: true)
+                }
         }
         
         @objc func updateGroupList(notification: NSNotification) {
