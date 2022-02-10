@@ -11,7 +11,7 @@ class WalletViewController: UITableViewController {
         @IBOutlet weak var address: UILabel!
     
         @IBOutlet weak var vipBackground: UIView!
-        @IBOutlet weak var faceIDSwitch: UISwitch!
+//        @IBOutlet weak var faceIDSwitch: UISwitch!
         @IBOutlet weak var destroySwitch: UISwitch!
 
         @IBOutlet weak var avatar: AvatarButton!
@@ -82,7 +82,7 @@ class WalletViewController: UITableViewController {
                 
                 DispatchQueue.main.async {
                         self.address.text = Wallet.shared.Addr
-                        self.faceIDSwitch.isOn = Wallet.shared.useFaceID
+//                        self.faceIDSwitch.isOn = Wallet.shared.useFaceID
                         self.destroySwitch.isOn = Wallet.shared.useDestroy
                         self.nickName.text = Wallet.shared.nickName
                         self.avatar.setupSelf()
@@ -123,32 +123,32 @@ class WalletViewController: UITableViewController {
 //                }
         }
         
-        @IBAction func setUseFaceID(_ sender: UISwitch) {
-                if sender.isOn {
-                        biometryUsage { (usageRes) in
-                                if usageRes {
-                                        self.showPwdInput(title: "请输入解锁密码", placeHolder: "请输入密码", securityShow: true) { (password, isOK) in
-                                                guard let pwd = password, isOK else{
-                                                        return
-                                                }
-
-                                                if !Wallet.shared.openFaceID(auth: pwd) {
-                                                        return
-                                                }
-
-                                                self.dismiss(animated: true)
-                                        }
-                                } else {
-                                        self.faceIDSwitch.isOn = !sender.isOn
-                                }
-                        }
-                } else {
-                        if let err = Wallet.shared.UpdateUseFaceID(by: sender.isOn) {
-                                faceIDSwitch.isOn = !sender.isOn
-                                self.toastMessage(title: err.localizedDescription)
-                        }
-                }
-        }
+//        @IBAction func setUseFaceID(_ sender: UISwitch) {
+//                if sender.isOn {
+//                        biometryUsage { (usageRes) in
+//                                if usageRes {
+//                                        self.showPwdInput(title: "请输入解锁密码", placeHolder: "请输入密码", securityShow: true) { (password, isOK) in
+//                                                guard let pwd = password, isOK else{
+//                                                        return
+//                                                }
+//
+//                                                if !Wallet.shared.openFaceID(auth: pwd) {
+//                                                        return
+//                                                }
+//
+//                                                self.dismiss(animated: true)
+//                                        }
+//                                } else {
+//                                        self.faceIDSwitch.isOn = !sender.isOn
+//                                }
+//                        }
+//                } else {
+//                        if let err = Wallet.shared.UpdateUseFaceID(by: sender.isOn) {
+//                                faceIDSwitch.isOn = !sender.isOn
+//                                self.toastMessage(title: err.localizedDescription)
+//                        }
+//                }
+//        }
     
         @IBAction func setDestroy(_ sender: UISwitch) {
                 if sender.isOn {
