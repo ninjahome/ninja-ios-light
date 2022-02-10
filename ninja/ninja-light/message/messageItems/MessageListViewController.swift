@@ -42,6 +42,12 @@ class MessageListViewController: UIViewController{
                                                        name: NotifyGroupChanged,
                                                        object: nil)
                 
+                
+                NotificationCenter.default.addObserver(self,
+                                                       selector:#selector(updateLatestItem(notification:)),
+                                                       name: NotifyGroupCreated,
+                                                       object: nil)
+                
                 NotificationCenter.default.addObserver(self,
                                                        selector:#selector(updateGroupAvatarOrName(notification:)),
                                                        name: NotifyGroupNameOrAvatarChanged,

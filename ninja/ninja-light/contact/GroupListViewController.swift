@@ -28,6 +28,11 @@ class GroupListViewController: UIViewController {
                                                        object: nil)
                 
                 NotificationCenter.default.addObserver(self,
+                                                       selector:#selector(updateGroupList(notification:)),
+                                                       name: NotifyGroupCreated,
+                                                       object: nil)
+                
+                NotificationCenter.default.addObserver(self,
                                                        selector:#selector(updateGroupAvatarOrName(notification:)),
                                                        name: NotifyGroupNameOrAvatarChanged,
                                                        object: nil)
@@ -47,7 +52,7 @@ class GroupListViewController: UIViewController {
                         simpleReload()
                         return
                 }
-               
+                
                 DispatchQueue.main.async {
                         print("------>new group item\(gid) deleted")
                         guard let idx = self.indexPathCache[gid] else{
@@ -66,13 +71,13 @@ class GroupListViewController: UIViewController {
                 }
         }
         @objc func updateGroupAvatarOrName(notification: NSNotification) {
-//                simpleReload()
+                //                simpleReload()
                 guard let gid = notification.object as? String,
                       let newItem =   GroupItem.cache[gid]else{
-                        simpleReload()
-                        return
-                }
-
+                              simpleReload()
+                              return
+                      }
+                
                 DispatchQueue.main.async {
                         print("------>new group item\(gid) update")
                         guard let idx = self.indexPathCache[gid] else{
