@@ -158,6 +158,67 @@ extension GroupItem{
 //MARK: - private  operation
 extension GroupItem {
         
+        private static func isDeleted(group:GroupItem) -> Bool{
+                
+                let owner = Wallet.shared.Addr!
+                
+                if group.isDelete{
+                        return true
+                }
+                
+                for memID in group.memberIds{
+                        if memID == owner{
+                                return false
+                        }
+                }
+                
+                return true
+        }
+        
+        public static func CheckGroupIsDeleted(gid:String){ServiceDelegate.workQueue.async {
+                
+                var obj: GroupItem?
+                do{
+                        obj = try CDManager.shared.GetOne(entity: CDEntityName,
+                                                          predicate: NSPredicate(format: "gid == %@", gid))
+                }catch let err{
+                        print("------->>>", err)
+                        NotificationCenter.default.post(name:NotifyGroupDeleteChanged,
+                                                        object: gid,
+                                                        userInfo:nil)
+                }
+                if let group = obj{
+                        
+                        guard isDeleted(group: group) else{
+                                return
+                        }
+                        NotificationCenter.default.post(name:NotifyGroupDeleteChanged,
+                                                        object: gid,
+                                                        userInfo:nil)
+                        return
+                        
+                }
+                
+                
+                guard let newGroup = syncGroupMetaFromChainBy(groupID: gid) else{
+                        print("------>>> no group data on chain for:=>", gid)
+                        NotificationCenter.default.post(name:NotifyGroupDeleteChanged,
+                                                        object: gid,
+                                                        userInfo:nil)
+                        return
+                }
+                
+                guard isDeleted(group: newGroup) else{
+                        return
+                }
+                
+                NotificationCenter.default.post(name:NotifyGroupDeleteChanged,
+                                                object: gid,
+                                                userInfo:nil)
+                
+                
+        }}
+        
         private static func getGroupFromMemOrDB(_ gid: String) -> GroupItem? {
                 if let grp = cache[gid]{
                         return grp
@@ -499,7 +560,7 @@ extension GroupItem{
                 do {
                         
                         print("------>>>new group item", newItem.ToString())
-                       
+                        
                         if newItem.isDelete || !newItem.memberIds.contains(Wallet.shared.Addr!){
                                 try deleteGroupFromDB(groupID)
                                 try ChatItem.remove(groupID)

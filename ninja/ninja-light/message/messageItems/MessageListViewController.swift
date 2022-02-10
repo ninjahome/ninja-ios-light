@@ -144,9 +144,13 @@ class MessageListViewController: UIViewController{
                                 self.simpleReload()
                                 return
                         }
-                        
+                        guard idx.row < self.sortedArray.count else{
+                                self.simpleReload()
+                                return
+                        }
+                        self.sortedArray.remove(at: idx.row)
                         self.tableView.beginUpdates()
-                        self.tableView.reloadRows(at: [idx], with: .automatic)
+                        self.tableView.deleteRows(at: [idx], with: .automatic)
                         self.tableView.endUpdates()
                 }
         }
@@ -250,17 +254,13 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
         
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
                 self.SelectedRowID = indexPath.row
+         
+                let item = self.sortedArray[indexPath.row]
+                item.resetUnread()
                 self.performSegue(withIdentifier: "ShowMessageDetailsSEG", sender: self)
-                
-                ServiceDelegate.workQueue.async {
-                        let item = self.sortedArray[indexPath.row]
-                        item.resetUnread()
-                        DispatchQueue.main.async {
-                                tableView.beginUpdates()
-                                tableView.reloadRows(at: [indexPath], with: .automatic)
-                                tableView.endUpdates()
-                        }
-                }
+                tableView.beginUpdates()
+                tableView.reloadRows(at: [indexPath], with: .automatic)
+                tableView.endUpdates()
         }
         
         func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

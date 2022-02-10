@@ -51,3 +51,4 @@ let MaxMembersInGroup = 50
 public let defaultAvatar = UIImage(named: "logo_img")!
 public let defaultAvatarData = UIImage(named: "logo_img")!.jpegData(compressionQuality: 1)!
 public let nilAvatar = "1".data(using: .utf8)
+public let nilAvatarLen = nilAvatar?.count

@@ -36,12 +36,17 @@ class MesasgeItemTableViewCell: UITableViewCell {
                 var nickName:String?
                 
                 if details.isGroup {
-                        let grp = GroupItem.cache[itemId]
-                        if grp?.avatar?.count  == 1{
-                                ServiceDelegate.InitGorupAvatar(group:grp ?? GroupItem())
+                        if let grp = GroupItem.cache[itemId] {
+                                if grp.avatar?.count  == nilAvatarLen{
+                                        ServiceDelegate.InitGorupAvatar(group:grp)
+                                }
+                                avaData = grp.avatar
+                                nickName = grp.groupName
+                        }else{
+                                GroupItem.CheckGroupIsDeleted(gid:itemId)
                         }
-                        avaData = grp?.avatar
-                        nickName = grp?.groupName
+                        
+                       
                 } else {
                         (nickName, avaData) = chatItemInfo(pid: itemId)
                 }
