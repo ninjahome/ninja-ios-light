@@ -152,7 +152,7 @@ class ChatItem: NSObject{
                         noLock.unlock()
                 }
                 for (_, item) in cache{
-                        item.resetUnread()
+                        item.unreadNo = 0
                 }
                 cache.removeAll()
                 TotalUnreadNo = 0
@@ -175,7 +175,7 @@ class ChatItem: NSObject{
                 
                 TotalUnreadNo = 0
                 for (_, item) in cache{
-                        item.resetUnread()
+                        item.unreadNo = 0
                 }
                 CDManager.shared.saveContext()
         }
