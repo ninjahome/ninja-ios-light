@@ -16,7 +16,8 @@
 "Confirm"="确定";
 "Waiting"="请稍后";
 "Importing account"="导入账号中";
-"Transfering"="转账中";
+"Transfering"="授权中";
+"Invalid transfer days"="授权天数无效";
 "Faild"="失败";
 "Password can't be empty"="密码不能为空";
 "Two passwords are not same"="两次输入密码不相同";

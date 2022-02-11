@@ -35,6 +35,11 @@ class ConfirmTransferViewController: UIViewController {
                         return
                 }
                 
+                guard dayInt >= 1 else {
+                        self.toastMessage(title: "Invalid transfer days".locStr)
+                        return
+                }
+                
                 guard let addr = transAddress else {
                         return
                 }
@@ -43,9 +48,11 @@ class ConfirmTransferViewController: UIViewController {
                 ServiceDelegate.workQueue.async {
                         if let err = ServiceDelegate.transferLicense(to: addr, days: dayInt) {
                                 self.toastMessage(title: "Faild".locStr+"\(err.localizedDescription)")
+                                self.hideIndicator()
                                 return
                         }
                         DispatchQueue.main.async {
+                                self.hideIndicator()
                                 self.navigationController?.popToRootViewController(animated: true)
                         }}
                 
