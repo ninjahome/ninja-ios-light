@@ -168,19 +168,19 @@ class MessageItem: NSObject {
         func coinvertToLastMsg() -> String{
                 switch self.typ {
                 case .plainTxt:
-                        return "[Text Message]"
+                        return "[Text]".locStr
                 case .voice:
-                        return "[Voice Message]"
+                        return "[Voice]".locStr
                 case .location:
-                        return "[Location]"
+                        return "[Location]".locStr
                 case .contact:
-                        return "[Contact]"
+                        return "[Contact]".locStr
                 case .image:
-                        return "[Image]"
+                        return "[Image]".locStr
                 case .file:
-                        return "[File]"
+                        return "[File]".locStr
                 case .unknown:
-                        return "unknown"
+                        return "Unknown".locStr
                 }
         }
         

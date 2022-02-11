@@ -111,7 +111,7 @@ class GroupMemberViewController: UIViewController {
                 } else {
                         var groupIds: [String] = []
                         guard selectedIndexs.count >= 2 else{
-                                self.toastMessage(title: "too less member")
+                                self.toastMessage(title: "Too less member".locStr)
                                 return
                         }
                         
@@ -119,7 +119,7 @@ class GroupMemberViewController: UIViewController {
                                 groupIds.append(validContactArr[i].peerID)
                         }
                         
-                        showInputDialog(title: "设置群名", message: "", textPlaceholder: "", actionText: "确定", cancelText: "取消") { cancleAction in
+                        showInputDialog(title: "Set group name".locStr, message: "", textPlaceholder: "", actionText: "Confirm".locStr, cancelText: "Cancel".locStr) { cancleAction in
                                 return
                         } actionHandler: { text in
                                 self.CreateGroup(member: groupIds, groupName: text ?? "")
@@ -146,7 +146,7 @@ class GroupMemberViewController: UIViewController {
 //                        }
 //
                         if let err = GroupItem.AddMemberToGroup(group: self.groupItem, newIds: newIds) {
-                                self.toastMessage(title: "\(err.localizedDescription ?? "add member failed")")
+                                self.toastMessage(title: "\(err.localizedDescription ?? "Add member failed".locStr)")
                                 self.hideIndicator()
                                 return
                         }
@@ -251,7 +251,7 @@ extension GroupMemberViewController : CellClickDelegate {
         func addDidClick(_ idx: Int) -> Bool{
                 
                 if selectedIndexs.count > MaxMembersInGroup{
-                        self.toastMessage(title: "more than 50",duration: 1)
+                        self.toastMessage(title: "More than 50".locStr,duration: 1)
                         return false
                 }
                 

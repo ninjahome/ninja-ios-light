@@ -31,11 +31,11 @@ class BackupGuideViewController: UIViewController {
         
         @IBAction func backupQR(_ sender: UIButton) {
                 guard let data = qr else {
-                        self.toastMessage(title: "invalid Account, please reboot")
+                        self.toastMessage(title: "Invalid Account, please reboot".locStr)
                         return
                 }
                 UIImageWriteToSavedPhotosAlbum(data, nil, nil, nil)
-                self.toastMessage(title: "Save success")
+                self.toastMessage(title: "Save success".locStr)
                 afterWallet()
         }
         

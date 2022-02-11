@@ -83,13 +83,13 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 }
                 
                 guard let obj = self.contactData else{
-                        self.toastMessage(title: "no valid contact data")
+                        self.toastMessage(title: "Invalid contact data".locStr)
                         self.dismiss(animated: true)
                         self.navigationController?.popToRootViewController(animated: true)
                         return
                 }
                 
-                self.showIndicator(withTitle: "waiting", and: "saving contact")
+                self.showIndicator(withTitle: "Waiting".locStr, and: "Saving contact".locStr)
                 let alias = self.nickTextField.text
                 let remark = self.memoTextView.text
                 ServiceDelegate.workQueue.async {
@@ -115,7 +115,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
         
         @IBAction func deleteContact(_ sender: UIButton) {
                 guard let obj = self.contactData else{
-                        self.toastMessage(title: "no valid contact data")
+                        self.toastMessage(title: "Invalid contact data".locStr)
                         return
                 }
                 
@@ -128,7 +128,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
         
         @IBAction func copyContactAddr(_ sender: UIButton) {
                 UIPasteboard.general.string = self.peerID
-                self.toastMessage(title: "Copy Success")
+                self.toastMessage(title: "Copy Success".locStr)
         }
         
         @IBAction func contactQRAlert(_ sender: UIButton) {

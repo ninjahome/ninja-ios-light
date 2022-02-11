@@ -62,6 +62,7 @@
 		08B74A6B26B637D800D6F0F8 /* GroupMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B74A6A26B637D800D6F0F8 /* GroupMemberTableViewCell.swift */; };
 		08C2C22A278FD1BA0023D773 /* AvatarEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C2C229278FD1B90023D773 /* AvatarEditViewController.swift */; };
 		08CCDC6F26A3C3A200B0D7DA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CCDC6E26A3C3A200B0D7DA /* MapViewController.swift */; };
+		08CFB6D427B6302F007590A7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08CFB6D627B6302F007590A7 /* Localizable.strings */; };
 		08EAAD3F2695847900210271 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08EAAD3E2695847900210271 /* SystemConfiguration.framework */; };
 		08EAAE112695973B00210271 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08EAAE102695973B00210271 /* Main.storyboard */; };
 		08EAAE142695977300210271 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08EAAE132695977300210271 /* LaunchScreen.storyboard */; };
@@ -191,6 +192,8 @@
 		08B74A6A26B637D800D6F0F8 /* GroupMemberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberTableViewCell.swift; sourceTree = "<group>"; };
 		08C2C229278FD1B90023D773 /* AvatarEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarEditViewController.swift; sourceTree = "<group>"; };
 		08CCDC6E26A3C3A200B0D7DA /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		08CFB6D527B6302F007590A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		08CFB6D727B63032007590A7 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		08EAAD3E2695847900210271 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		08EAAE102695973B00210271 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		08EAAE132695977300210271 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -509,6 +512,7 @@
 				69F8D10B261AEA39009D7AF3 /* Utils.swift */,
 				7CEFD46E261E9ACA0002B0B9 /* Constants.swift */,
 				0886B1B027730A1B00257C15 /* BigInt.swift */,
+				08CFB6D627B6302F007590A7 /* Localizable.strings */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -590,6 +594,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				"zh-Hans",
 				Base,
 			);
 			mainGroup = 6969ECAF26134293008CB0B2;
@@ -616,6 +621,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				08EAAE142695977300210271 /* LaunchScreen.storyboard in Resources */,
+				08CFB6D427B6302F007590A7 /* Localizable.strings in Resources */,
 				6969ECC826134295008CB0B2 /* Assets.xcassets in Resources */,
 				08EAAE112695973B00210271 /* Main.storyboard in Resources */,
 			);
@@ -730,6 +736,18 @@
 			targetProxy = 08B64A1B27A29AB200D0677F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		08CFB6D627B6302F007590A7 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				08CFB6D527B6302F007590A7 /* en */,
+				08CFB6D727B63032007590A7 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		08B64A1F27A29AB200D0677F /* Debug */ = {

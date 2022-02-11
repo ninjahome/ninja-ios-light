@@ -17,15 +17,15 @@ extension MsgViewController: RecordAudioDelegate {
         }
         
         func audioRecordTooShort() {
-                self.toastMessage(title: "Record too short")
+                self.toastMessage(title: "Record too short".locStr)
         }
         
         func audioRecordFailed() {
-                self.toastMessage(title: "Record failed")
+                self.toastMessage(title: "Record failed".locStr)
         }
         
         func audioRecordCanceled() {
-                self.toastMessage(title: "Record canceled")
+                self.toastMessage(title: "Record canceled".locStr)
         }
         
         func audioRecordWavFinish(_ uploadWavData: Data, recordTime: Double, fileHash: String) {

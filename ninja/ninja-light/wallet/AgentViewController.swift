@@ -27,7 +27,7 @@ class AgentViewController: UIViewController {
         @IBAction func copyId(_ sender: UIButton) {
                 if let text = serviceId.text {
                         UIPasteboard.general.string = text
-                        self.toastMessage(title: "Copy Success")
+                        self.toastMessage(title: "Copy Success".locStr)
                 }
         }
 }

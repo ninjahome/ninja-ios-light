@@ -128,11 +128,11 @@ class VideoTableViewCell: UITableViewCell {
                         return
                 }
                 let selectorToCall = #selector(VideoTableViewCell.videoSaved(_:didFinishSavingWithError:context:))
-                let alert = UIAlertController(title: "请选择", message: nil, preferredStyle: .actionSheet)
-                let action = UIAlertAction(title: "保存到相册", style: .default) { (_) in
+                let alert = UIAlertController(title: "Choose opertion".locStr, message: nil, preferredStyle: .actionSheet)
+                let action = UIAlertAction(title: "Save to album".locStr, style: .default) { (_) in
                         UISaveVideoAtPathToSavedPhotosAlbum(url.path, self, selectorToCall, nil)
                 }
-                let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+                let cancel = UIAlertAction(title: "Cancel".locStr, style: .cancel, handler: nil)
                 alert.addAction(action)
                 alert.addAction(cancel)
                 
@@ -147,7 +147,7 @@ class VideoTableViewCell: UITableViewCell {
                 }
                 
                 DispatchQueue.main.async(execute: { () -> Void in
-                        getKeyWindow()?.rootViewController?.toastMessage(title: "saved success", duration: 1)
+                        getKeyWindow()?.rootViewController?.toastMessage(title: "Save success".locStr, duration: 1)
                 })
         }
 }

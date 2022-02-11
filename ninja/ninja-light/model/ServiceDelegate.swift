@@ -107,13 +107,13 @@ extension ServiceDelegate{
         
         public static func ImportNewAccount(wJson:String, addr:String, pwd:String, parent:UIViewController, callback:(()->Void)?){
                 
-                parent.showSyncIndicator(withTitle: "waiting", and: "importing account")
+                parent.showSyncIndicator(withTitle: "Waiting".locStr, and: "Importing account".locStr)
                 workQueue.async {
                         
                         WebsocketSrv.shared.Offline()
                         
                         if let err = Wallet.shared.Import(cipher: wJson, addr: addr, auth: pwd){
-                                parent.toastMessage(title: err.localizedDescription)
+                                parent.toastMessage(title: "\(err.localizedDescription)")
                                 parent.hideIndicator()
                                 return
                         }

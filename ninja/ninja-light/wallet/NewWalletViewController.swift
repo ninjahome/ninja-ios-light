@@ -27,11 +27,11 @@ class NewWalletViewController: UIViewController {
         
         @IBAction func CreateWallet(_ sender: UIButton) {
                 guard let password = self.password1.text,password != ""else {
-                        self.toastMessage(title: "Password can't be empty")
+                        self.toastMessage(title: "Password can't be empty".locStr)
                         return
                 }
                 if password != self.password2.text{
-                        self.toastMessage(title: "2 passwords are not same")
+                        self.toastMessage(title: "Two passwords are not same".locStr)
                         return
                 }
                 
@@ -40,7 +40,7 @@ class NewWalletViewController: UIViewController {
                 }
                 
                 
-                self.showIndicator(withTitle: "", and: "creating")
+                self.showIndicator(withTitle: "", and: "Creating".locStr)
                 ServiceDelegate.workQueue.async {
                         
                         do {
@@ -74,7 +74,7 @@ extension NewWalletViewController: ScannerViewControllerDelegate {
                 
                 print("------>>>New wallet code\(code)")
                 guard let addr = Wallet.shared.serializeWalletJson(cipher: code) else {
-                        self.toastMessage(title: "invaild ninja wallet address")
+                        self.toastMessage(title: "Invaild ninja wallet address".locStr)
                         return
                 }
                 

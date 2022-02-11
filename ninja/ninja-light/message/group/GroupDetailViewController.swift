@@ -29,7 +29,7 @@ class GroupDetailViewController: UIViewController {
                 collectionView.delegate = self
                 collectionView.dataSource = self
                 guard let data = GroupItem.cache[groupID] else{
-                        self.toastMessage(title: "invalid group meta")
+                        self.toastMessage(title: "Invalid group data".locStr)
                         self.dismiss(animated: true)
                         self.navigationController?.popToRootViewController(animated: true)
                         return//dismiss //TODO::
@@ -78,11 +78,11 @@ class GroupDetailViewController: UIViewController {
                 }
                 
                 guard let grpData = groupData else{
-                        self.toastMessage(title: "invalid group data", duration: 1.2)
+                        self.toastMessage(title: "Invalid group data".locStr, duration: 1.2)
                         return
                 }
                 guard let vc = instantiateViewController(vcID: "AddGrpMemberVC") as? GroupMemberViewController else{
-                        self.toastMessage(title: "invalid target")
+                        self.toastMessage(title: "Invalid target".locStr)
                         return
                 }
                 
@@ -95,7 +95,7 @@ class GroupDetailViewController: UIViewController {
         
         @IBAction func copyGroupID(_ sender: UIButton) {
                 UIPasteboard.general.string = groupID
-                self.toastMessage(title: "copy success", duration: 1)
+                self.toastMessage(title: "Copy success".locStr, duration: 1)
         }
         
         @IBAction func quitOrDismissGroup(_ sender: UIButton) {
@@ -154,7 +154,7 @@ extension GroupDetailViewController{
         
         @IBAction func kickMemberViewTap(_ gesture: UITapGestureRecognizer) {
                 if !self.leaderManagerd{
-                        self.toastMessage(title: "only leader valid")
+                        self.toastMessage(title: "Only leader valid")
                         return
                 }
                 
@@ -183,7 +183,7 @@ extension GroupDetailViewController{
                                      cancelText: "Cacel",
                                      cancelHandler: nil) { text in
                         guard let newName = text else{
-                                self.toastMessage(title: "invalid new group name", duration: 2)
+                                self.toastMessage(title: "Invalid new group name".locStr, duration: 2)
                                 return
                         }
                         ServiceDelegate.workQueue.async {
@@ -236,7 +236,7 @@ extension GroupDetailViewController{
                                 let err = GroupItem.QuitFromGroup(group:self.groupData)
                                 if let e = err{
                                         self.hideIndicator()
-                                        self.toastMessage(title: "\(e.localizedDescription ?? "quit failed")")
+                                        self.toastMessage(title: "\(e.localizedDescription ?? "Quit failed".locStr)")
                                         return
                                 }
                                 

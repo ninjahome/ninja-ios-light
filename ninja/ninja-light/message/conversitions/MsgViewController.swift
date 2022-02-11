@@ -271,7 +271,7 @@ extension MsgViewController{
                                 cameraPicker.videoMaximumDuration = 30
                                 present(cameraPicker, animated: true, completion: nil)
                         } else {
-                                toastMessage(title: "无相机访问权限")
+                                toastMessage(title: "No Camera Permission".locStr)
                         }
                 } else {
                         showVipModalViewController()
@@ -322,18 +322,18 @@ extension MsgViewController{
         
         func willCancelRecord() {
                 self.recordingPoint.layer.contents = UIImage(named: "voicecancel_icon")?.cgImage
-                self.recordingTip.text = "松手取消发送"
+                self.recordingTip.text = "Release to cancel".locStr
         }
         
         func showCancelRecord() {
                 self.recordingPoint.layer.contents = UIImage(named: "voiceBG_icon")?.cgImage
-                self.recordingTip.text = "上滑取消"
+                self.recordingTip.text = "Slide to cancel".locStr
         }
         
         func beganRecord() {
                 self.recordingPoint.isHidden = false
                 self.recordingTip.isHidden = false
-                self.recordBtn.setTitle("松开发送", for: .normal)
+                self.recordBtn.setTitle("Release to send".locStr, for: .normal)
         }
         
         func endRecord() {
@@ -341,7 +341,7 @@ extension MsgViewController{
                 self.recordingTip.text = ""
                 self.recordingPoint.isHidden = true
                 self.recordingTip.isHidden = true
-                self.recordBtn.setTitle("按住说话", for: .normal)
+                self.recordBtn.setTitle("Press to record".locStr, for: .normal)
         }
         
         @IBAction func recordLongPress(_ sender: UILongPressGestureRecognizer) {
@@ -390,7 +390,7 @@ extension MsgViewController{
                 
                 AVAudioSession.sharedInstance().requestRecordPermission { allowed in
                         if !allowed {
-                                self.toastMessage(title: "need microphone right in setting")
+                                self.toastMessage(title: "Need microphone right in setting".locStr)
                                 return
                         }
                         DispatchQueue.main.async {
@@ -437,7 +437,7 @@ extension MsgViewController{
                         return
                 }
                 guard msgID > 0 else{
-                        self.toastMessage(title: "No rights to send message")
+                        self.toastMessage(title: "No rights to send message".locStr)
                         return
                 }
                 

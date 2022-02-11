@@ -156,7 +156,7 @@ class WalletViewController: UITableViewController {
                 } else {
                         if let err = Wallet.shared.UpdateUseDestroy(by: false) {
                                 destroySwitch.isOn = true
-                                self.toastMessage(title: err.localizedDescription)
+                                self.toastMessage(title: "Faild".locStr+"\(err.localizedDescription ?? "")")
                         }
                 }
         }
@@ -173,7 +173,7 @@ class WalletViewController: UITableViewController {
                                 self.hideIndicator()
                         }
                 }
-                let cancleAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+                let cancleAction = UIAlertAction(title: "Cancel".locStr, style: .cancel, handler: nil)
 
                 alertActionController.addAction(deleteAction)
                 alertActionController.addAction(cancleAction)

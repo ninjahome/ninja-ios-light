@@ -129,7 +129,7 @@ extension DeleteMemberController: CellClickDelegate {
         
         func addDidClick(_ idx: Int) ->Bool{
                 if selectedIndexs.count > MaxMembersInGroup{
-                        self.toastMessage(title: "more than 50 people", duration: 1)
+                        self.toastMessage(title: "More than 50".locStr, duration: 1)
                         return false
                 }
                 if !selectedIndexs.contains(idx) {

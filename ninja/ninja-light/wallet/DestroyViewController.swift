@@ -24,7 +24,7 @@ class DestroyViewController: UIViewController {
         
         @IBAction func confirmDestroyBtn(_ sender: UIButton) {
                 guard let pwd = pwdField1.text, pwd == pwdField2.text  else{
-                        self.toastMessage(title: "Invaild password")
+                        self.toastMessage(title: "Invaild password".locStr)
                         return
                 }
                 if Wallet.shared.openDestroy(auth: pwd) {
@@ -35,7 +35,7 @@ class DestroyViewController: UIViewController {
                                 callback.DestroyStatusResult(status: true)
                         }
                 } else {
-                        self.toastMessage(title: "Open destroy mode faild")
+                        self.toastMessage(title: "Open destroy mode faild".locStr)
                 }
                 
         }

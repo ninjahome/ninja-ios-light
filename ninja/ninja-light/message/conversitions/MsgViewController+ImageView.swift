@@ -42,7 +42,7 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                 }
                 
                 guard let data = imagedata else{
-                        self.toastMessage(title: "no valid image data")
+                        self.toastMessage(title: "Invalid image data".locStr)
                         return
                 }
                 
@@ -63,7 +63,7 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
         private func videoDidSelected(url: URL) {
                 let name = url.lastPathComponent
                 guard let data = try? Data(contentsOf: url), !data.isEmpty else{
-                        self.toastMessage(title: "empty video file")
+                        self.toastMessage(title: "Empty video file".locStr)
                         return
                 }
                 let maxSize = ChatLibMaxFileSize()
@@ -74,7 +74,7 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                         return
                 }
                 
-                self.showIndicator(withTitle: "", and: "compressing")
+                self.showIndicator(withTitle: "", and: "Compressing".locStr)
                 ServiceDelegate.workQueue.async {
                         
                         VideoFileManager.compressVideo(from:curSize, to:maxSize, videoURL: url) {(status, resultUrl) in
@@ -83,10 +83,10 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                                 
                                 switch status{
                                 case .failed:
-                                        self.toastMessage(title: "failed")
+                                        self.toastMessage(title: "Failed".locStr)
                                         break
                                 case .cancelled:
-                                        self.toastMessage(title: "cancelled")
+                                        self.toastMessage(title: "Cancelled".locStr)
                                         break
                                 default:
                                         self.sendVideoFile(url: resultUrl)
@@ -112,11 +112,11 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                 
                 let name = url.lastPathComponent
                 guard let data = try? Data(contentsOf: url), !data.isEmpty else{
-                        self.toastMessage(title: "empty video file")
+                        self.toastMessage(title: "Empty video file".locStr)
                         return
                 }
                 if data.count > ChatLibMaxFileSize(){
-                        self.toastMessage(title: "file too big[\(data.count)]")
+                        self.toastMessage(title: "File size out of limit".locStr+"[\(data.count)]")
                         return
                 }
                 

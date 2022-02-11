@@ -31,15 +31,15 @@ class ContactAddViewController: UIViewController {
         
         @IBAction func search(_ sender: UIButton) {
                 guard let addr = searchAddr.text else {
-                        self.toastMessage(title: "empty ninja address")
+//                        self.toastMessage(title: "Empty ninja address")
                         return
                 }
-                guard ContactItem.IsValidContactID(addr) else{
-                        self.toastMessage(title: "invalid ninja address")
+                guard ContactItem.IsValidContactID(addr) else {
+                        self.toastMessage(title: "Invalid ninja address".locStr)
                         return
                 }
-                if Wallet.shared.Addr == addr{
-                        self.toastMessage(title: "you're brilliant")
+                if Wallet.shared.Addr == addr {
+                        self.toastMessage(title: "Invalid operation".locStr)
                         return
                 }
                 
@@ -70,7 +70,7 @@ extension ContactAddViewController: ScannerViewControllerDelegate {
                 print("------>>> scaned user code=[\(code)]")
                 self.searchAddr.text = code
                 guard ContactItem.IsValidContactID(code) else{
-                        self.toastMessage(title: "invalid ninja address")
+                        self.toastMessage(title: "Invaild ninja wallet address".locStr)
                         return
                 }
                 self.contactID = code

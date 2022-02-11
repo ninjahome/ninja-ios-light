@@ -33,7 +33,7 @@ extension MsgViewController: UIDocumentPickerDelegate {
                 }
                 
                 guard let videoD = VideoFileManager.readVideoData(videoURL: dirURL) else {
-                        self.toastMessage(title: "invalid video data")
+                        self.toastMessage(title: "Invalid video data".locStr)
                         return
                 }
                 

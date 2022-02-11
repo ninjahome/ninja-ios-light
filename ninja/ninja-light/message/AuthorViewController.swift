@@ -64,7 +64,7 @@ class AuthorViewController: UIViewController {
         
         //TODO:: to be tested
         func destroy(auth: String) {
-                self.showIndicator(withTitle: "", and: "opening")
+                self.showIndicator(withTitle: "", and: "Opening".locStr)
                 
                 ServiceDelegate.workQueue.async {
                         do {
@@ -85,7 +85,7 @@ class AuthorViewController: UIViewController {
         }
         
         func unlock(auth pwd: String) {
-                self.showIndicator(withTitle: "", and: "opening")
+                self.showIndicator(withTitle: "", and: "Opening".locStr)
                 
                 ServiceDelegate.workQueue.async {
                         if let err = Wallet.shared.Active(pwd) {

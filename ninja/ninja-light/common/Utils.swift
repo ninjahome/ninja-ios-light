@@ -300,6 +300,10 @@ extension String {
                 return nil
         }
         
+        var locStr:String {
+                return NSLocalizedString(self, comment: "")
+        }
+
 }
 extension Data {
     func hexEncodedString() -> String {
@@ -617,14 +621,14 @@ extension UIViewController {
                 var error: NSError?
                 
                 if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-                        let reason = "是否允许App使用您的\(context.biometryType)"
+                        let reason = "Ask for your permission to use".locStr+"\(context.biometryType)"
                         context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { (success, authError) in
                                 DispatchQueue.main.async {
                                         onCompletion(success)
                                 }
                         }
                 } else {
-                        self.toastMessage(title: "加载\(context.biometryType.rawValue)失败")
+                        self.toastMessage(title: "Faild to use".locStr+"\(context.biometryType.rawValue)")
                 }
         }
         

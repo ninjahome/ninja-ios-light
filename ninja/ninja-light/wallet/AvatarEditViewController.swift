@@ -59,7 +59,7 @@ extension AvatarEditViewController: UIImagePickerControllerDelegate & UINavigati
                         let compressedData =  ServiceDelegate.CompressImg(origin: imgData, targetSize: maxSzie)
                         print("maxSzie is[\(maxSzie)] image[\(imageSize)] need to compress to[\(compressedData?.count ?? 0)]")
                         guard let d = compressedData else {
-                                self.toastMessage(title: "Image size out of limit")
+                                self.toastMessage(title: "Image size out of limit".locStr)
                                 return
                         }
                         imgData = d

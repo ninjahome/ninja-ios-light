@@ -82,7 +82,7 @@ class TxtTableViewCell: UITableViewCell {
                 self.curMsg = message
                 let from = message.from
                 guard let msgText = message.payload as? txtMsg else{
-                        msgLabel.text = "Invalid Text MSG"
+                        msgLabel.text = "Invalid Text Message".locStr
                         return
                 }
                 msgLabel.text = msgText.txt

@@ -22,11 +22,11 @@ extension ManageViewController: ScannerViewControllerDelegate {
                 
                 print("------>>>\(code)")
                 guard let addr = Wallet.shared.serializeWalletJson(cipher: code) else {
-                        self.toastMessage(title: "invaild ninja wallet address")
+                        self.toastMessage(title: "Invaild ninja wallet address".locStr)
                         return
                 }
                 
-                self.showPwdInput(title: "请输入密码导入账号", placeHolder: "请输入密码") {[weak self] (auth, isOK) in
+                self.showPwdInput(title: "Import account".locStr, placeHolder: "Please input password".locStr) {[weak self] (auth, isOK) in
                         guard let pwd = auth, isOK else{
                                 return
                         }
@@ -52,21 +52,21 @@ extension ManageViewController{
                 
                 
                 guard let walletJson = Wallet.shared.wJson else{
-                        self.toastMessage(title: "Save Failed")
+                        self.toastMessage(title: "Save Failed".locStr)
                         return
                 }
                 
-                self.showIndicator(withTitle: "", and: "exporting")
+                self.showIndicator(withTitle: "", and: "exporting".locStr)
                 ServiceDelegate.workQueue.async {
                         guard let walletImg = self.generateQRCode(from: walletJson)else{
                                 self.hideIndicator()
-                                self.toastMessage(title: "generat qr image failed")
+                                self.toastMessage(title: "Generat qr image failed".locStr)
                                 return
                         }
                         print("------>>>walletJson \(walletJson)")
                         UIImageWriteToSavedPhotosAlbum(walletImg, nil, nil, nil)
                         self.hideIndicator()
-                        self.toastMessage(title: "Save success", duration: 1)
+                        self.toastMessage(title: "Save success".locStr, duration: 1)
                 }
         }
         @IBAction func scanner(_ gesture: UITapGestureRecognizer) {
