@@ -199,7 +199,7 @@ public func formatMsgTimeStamp(by timeStamp: Int64) -> String {
                 dateFormatterGet.dateFormat = "昨天 HH:mm"
         }else if Calendar.current.isDateInWeekend(time){
                 let idx = Calendar.current.component(.weekday, from: Date())
-                let str = Calendar.current.shortWeekdaySymbols[idx%7]
+                let str = Calendar.current.shortWeekdaySymbols[idx - 1]
                 dateFormatterGet.dateFormat = "\(str) HH:mm"
         }else{
                 dateFormatterGet.dateFormat = "MM-dd"
