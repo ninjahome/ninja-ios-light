@@ -24,8 +24,10 @@ class AudioRecordManager:NSObject {
         var currntUrl = FileManager.TmpDirectory().appendingPathComponent(TempWavRecordPath)
         
         let recoredSetting = [AVSampleRateKey: NSNumber(8000.0),
+                          AVEncoderBitRateKey: NSNumber(8000.0),
                                 AVFormatIDKey: NSNumber(value: kAudioFormatMPEG4AAC),
                         AVNumberOfChannelsKey: NSNumber(1),
+                           AVAudioFileTypeKey:kAudioFileM4AType,
                      AVEncoderBitDepthHintKey:16,
                      AVEncoderAudioQualityKey: NSNumber(value: AVAudioQuality.high.rawValue)] as [String : Any]
         
