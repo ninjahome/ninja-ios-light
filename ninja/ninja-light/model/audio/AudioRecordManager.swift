@@ -23,13 +23,13 @@ class AudioRecordManager:NSObject {
         weak var delegate: RecordAudioDelegate?
         var currntUrl = FileManager.TmpDirectory().appendingPathComponent(TempWavRecordPath)
         
-        let recoredSetting = [AVSampleRateKey: NSNumber(8000.0),
-                          AVEncoderBitRateKey: NSNumber(8000.0),
+        let recoredSetting = [AVSampleRateKey: NSNumber(22050.0),
+                          AVEncoderBitRateKey: NSNumber(22050.0),
                                 AVFormatIDKey: NSNumber(value: kAudioFormatMPEG4AAC),
                         AVNumberOfChannelsKey: NSNumber(1),
                            AVAudioFileTypeKey:kAudioFileM4AType,
                      AVEncoderBitDepthHintKey:16,
-                     AVEncoderAudioQualityKey: NSNumber(value: AVAudioQuality.high.rawValue)] as [String : Any]
+                     AVEncoderAudioQualityKey: NSNumber(value: AVAudioQuality.medium.rawValue)] as [String : Any]
         
         
         func startRecord() -> Error?{
