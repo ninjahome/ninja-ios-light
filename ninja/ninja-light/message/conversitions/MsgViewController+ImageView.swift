@@ -41,9 +41,19 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                         imagedata = img.png
                 }
                 
-                guard let data = imagedata else{
+                guard var data = imagedata else{
                         self.toastMessage(title: "Invalid image data".locStr)
                         return
+                }
+                
+                let maxSize = ChatLibMaxFileSize()
+                let curSize = data.count
+                if curSize > maxSize{
+                        guard let d = ServiceDelegate.CompressImg(origin: data, targetSize:maxSize) else{
+                                self.toastMessage(title: "Invalid image data".locStr)
+                                return
+                        }
+                        data = d
                 }
                 
                 var gid:String? = nil
