@@ -457,7 +457,6 @@ extension MsgViewController{
                 if uid != self.peerUid {
                         return
                 }
-                self.msgCacheArray = MessageItem.SortedArray(pid: self.peerUid)
                 self.insertNewCell()
         }
         
@@ -490,9 +489,10 @@ extension MsgViewController{
 //                        self.messageTableView.beginUpdates()
 //                        self.messageTableView.insertRows(at: indes, with: .automatic)
 //                        self.messageTableView.endUpdates()
-                        
-                        self.messageTableView.reloadData()
                         //indes[indes.count - 1]
+                        
+                        self.msgCacheArray = MessageItem.SortedArray(pid: self.peerUid)
+                        self.messageTableView.reloadData()
                         self.messageTableView.scrollToRow(at: IndexPath.init(row: self.msgCacheArray.count - 1, section: 0),
                                                           at: .bottom, animated: true)
                 }
@@ -510,8 +510,6 @@ extension MsgViewController{
                         self.toastMessage(title: e.localizedDescription)
                         return
                 }
-                
-                self.msgCacheArray = MessageItem.SortedArray(pid: pid)
                 self.insertNewCell()
         }
 }
