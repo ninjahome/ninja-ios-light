@@ -70,3 +70,11 @@
 "[Contact]"="[名片]";
 "[Group]"="[群消息]";
 "Unknown"="[未知]";
+
+"Scanning not supported"="";
+"Your device does not support scanning a code from an item. Please use a device with a camera."="";
+"Empty data to show"="数据为空";
+
+"save data base err:"="保存失败";
+"You're owner and group will be dissmiessed"="群主退群将解散该群聊";
+"deleting group"="正在解散群聊";

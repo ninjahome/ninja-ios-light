@@ -72,8 +72,8 @@ class ScannerViewController: UIViewController {
         }
 
         func failed() {
-                let ac = UIAlertController(title: "Scanning not supported", message:
-                        "Your device does not support scanning a code from an item. Please use a device with a camera.",
+                let ac = UIAlertController(title: "Scanning not supported".locStr, message:
+                                                "Your device does not support scanning a code from an item. Please use a device with a camera.".locStr,
                                            preferredStyle: .alert)
                 ac.addAction(UIAlertAction(title: "OK", style: .default))
                 present(ac, animated: true)

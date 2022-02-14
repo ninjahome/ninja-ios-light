@@ -16,7 +16,7 @@ class QRCodeShowViewController: UIViewController {
                 super.viewDidLoad()
                 self.view.layer.cornerRadius = 16
                 guard let image = QRImage else{
-                        self.ShowTips(msg: NSLocalizedString("Empty data to show", comment: ""))
+                        self.ShowTips(msg: NSLocalizedString("Empty data to show".locStr, comment: ""))
                         self.dismiss(animated: true)
                         return
                 }

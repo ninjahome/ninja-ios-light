@@ -117,7 +117,7 @@ class GroupItem: NSObject {
                                                         userInfo:nil)
                         return nil
                 }catch let err{
-                        return NJError.group("save data base err:[\(err.localizedDescription)]")
+                        return NJError.group("save data base err:".locStr+"[\(err.localizedDescription)]")
                 }
         }
 }

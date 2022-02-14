@@ -206,8 +206,8 @@ extension GroupDetailViewController{
         }
         
         private func dismissGroup(){
-                self.ShowYesOrNo(msg: "You're owner and group will be dissmiessed",No: nil){
-                        self.showIndicator(withTitle: "", and: "deleting group")
+                self.ShowYesOrNo(msg: "You're owner and group will be dissmiessed".locStr,No: nil){
+                        self.showIndicator(withTitle: "", and: "deleting group".locStr)
                         ServiceDelegate.workQueue.async {
                                 
                                 if let err = GroupItem.DismissGroup(gid:self.groupID){
