@@ -222,6 +222,7 @@ class MessageItem: NSObject {
                                                   time: msg.timeStamp,
                                                   unread: unread,
                                                   isGrp: msg.groupId != nil)
+                        CDManager.shared.saveContext()
                         return nil
                 }catch let err{
                         print("------>>> save new message failed:[\(err.localizedDescription)]")
