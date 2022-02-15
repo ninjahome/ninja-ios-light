@@ -41,10 +41,6 @@
 	<string>Export wallet QR code image</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Import wallet QR code image</string>
-	<key>NSSupportsSuddenTermination</key>
-	<false/>
-	<key>UIApplicationExitsOnSuspend</key>
-	<false/>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -65,7 +61,7 @@
 		</dict>
 	</dict>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<false/>
+	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
