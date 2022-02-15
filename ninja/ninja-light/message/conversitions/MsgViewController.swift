@@ -493,6 +493,7 @@ extension MsgViewController{
                         
                         self.msgCacheArray = MessageItem.SortedArray(pid: self.peerUid)
                         self.messageTableView.reloadData()
+                        self.messageTableView.layoutIfNeeded()
                         self.messageTableView.scrollToRow(at: IndexPath.init(row: self.msgCacheArray.count - 1, section: 0),
                                                           at: .bottom, animated: true)
                 }
