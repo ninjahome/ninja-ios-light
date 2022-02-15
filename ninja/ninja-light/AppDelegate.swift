@@ -139,8 +139,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         func applicationWillEnterForeground(_ application: UIApplication) {
                 UserDefaults(suiteName: "group.com.hop.ninja.light")?.set(1, forKey: "count")
-                
                 UIApplication.shared.applicationIconBadgeNumber = 0
         }
-        
 }
