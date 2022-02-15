@@ -38,7 +38,7 @@ func compressImage(_ origin: Data?) -> Data? {
         let limitSize = 4*1024*1024
         if size > limitSize {
                 var error: NSError?
-                let data = ChatLibCompressImg(origin, limitSize, &error)
+                let data = ChatLibCompressImg(origin, Int32(limitSize), &error)
                 if error != nil {
                         print("---[compress image]---\(error?.localizedDescription ?? "")")
                 }
