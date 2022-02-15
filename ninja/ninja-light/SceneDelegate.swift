@@ -55,6 +55,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
         }
         
         func sceneWillResignActive(_ scene: UIScene) {
+                CDManager.shared.saveContext()
         }
         
         func sceneWillEnterForeground(_ scene: UIScene) {
