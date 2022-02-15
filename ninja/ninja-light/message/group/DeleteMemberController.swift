@@ -75,7 +75,7 @@ class DeleteMemberController: UIViewController {
                 for i in selectedIndexs {
                         delIds[existMember[i]] = true
                 }
-                self.showIndicator(withTitle: "", and: "deleting")
+                self.showIndicator(withTitle: "", and: "deleting".locStr)
                 ServiceDelegate.workQueue.async {
                         
                         if let err = GroupItem.KickOutUser(group: self.groupItem, kickUserId: delIds){

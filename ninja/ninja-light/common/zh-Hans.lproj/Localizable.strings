@@ -13,6 +13,9 @@
 "Invalid operation"="无效操作";
 "Save to album"="保存到相册";
 "Cancel"="取消";
+"OK"="确定";
+"Yes"="确定";
+"Tips!"="提示";
 "Confirm"="确定";
 "Waiting"="请稍后";
 "Importing account"="导入账号中";
@@ -22,7 +25,7 @@
 "Password can't be empty"="密码不能为空";
 "Two passwords are not same"="两次输入密码不相同";
 "Creating"="创建中";
-"Invaild ninja wallet address"="无效的钱包地址";
+"Invaild ninja wallet address"="无效的地址";
 "Invalid Account, please reboot"="账号无效，请重新注册";
 "Image size out of limit"="图片超过限制大小";
 "File size out of limit"="文件超过限制大小";
@@ -51,6 +54,9 @@
 "Only leader valid"="非群主无权限";
 "Invalid new group name"="无效群名称";
 "Quit failed"="退群失败";
+"Quit Group"="退出群聊";
+"Group Name"="群名称";
+"New Group Name"="更新群名称";
 "Too less member"="群成员过少";
 "Add member failed"="添加成员失败";
 "More than 50"="群成员不能超过50";
@@ -59,7 +65,7 @@
 "Slide to cancel"="上滑取消";
 "Release to send"="松开发送";
 "Press to record"="按住说话";
-"Opening"="正在打开钱包";
+"Opening"="正在打开";
 "Invalid Text Message"="无效文本信息";
 "[Image]"="[图片]";
 "[Text]"="[文本]";
@@ -78,3 +84,8 @@
 "save data base err:"="保存失败";
 "You're owner and group will be dissmiessed"="群主退群将解散该群聊";
 "deleting group"="正在解散群聊";
+"deleting message caches"="正在清空聊天记录";
+"delete messages"="清空聊天记录";
+"waiting"="";
+"deleting contact"="正在删除联系人";
+"deleting"="正在删除";

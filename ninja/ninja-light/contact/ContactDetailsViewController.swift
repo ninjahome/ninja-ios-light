@@ -119,7 +119,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                         return
                 }
                 
-                self.showIndicator(withTitle: "waiting", and: "deleting contact")
+                self.showIndicator(withTitle: "waiting".locStr, and: "deleting contact".locStr)
                 ServiceDelegate.workQueue.async {
                         let err =  obj.removeFromChain()
                         self.closeOrShowErrorTips(err:err, isDelete: true)

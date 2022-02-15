@@ -78,7 +78,7 @@ extension NewWalletViewController: ScannerViewControllerDelegate {
                         return
                 }
                 
-                self.showPwdInput(title: "请输入密码导入账号", placeHolder: "请输入密码", securityShow: true) { (auth, isOK) in
+                self.showPwdInput(title: "Import account".locStr, placeHolder: "Please input password".locStr, securityShow: true) { (auth, isOK) in
                         guard let pwd = auth, isOK else{
                                 return
                         }

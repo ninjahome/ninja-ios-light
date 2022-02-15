@@ -165,8 +165,8 @@ class WalletViewController: UITableViewController {
                 let alertActionController = UIAlertController.init(title: "", message: "将删除所有个人和群的聊天记录", preferredStyle: .actionSheet)
                 alertActionController.modalPresentationStyle = .popover
 
-                let deleteAction = UIAlertAction(title: "清空聊天记录", style: .destructive) { action in
-                        self.showIndicator(withTitle: "", and: "deleting message caches")
+                let deleteAction = UIAlertAction(title: "delete messages".locStr, style: .destructive) { action in
+                        self.showIndicator(withTitle: "", and: "deleting message caches".locStr)
                         ServiceDelegate.workQueue.async {
                                 MessageItem.removeAllRead()
                                 ChatItem.clearAllUnreadFlag()

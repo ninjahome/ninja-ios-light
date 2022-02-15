@@ -507,20 +507,20 @@ extension UIViewController {
         
         func ShowTips(msg:String){
                 DispatchQueue.main.async {
-                        let ac = UIAlertController(title: "Tips!", message: msg, preferredStyle: .alert)
-                        ac.addAction(UIAlertAction(title: "OK", style: .default))
+                        let ac = UIAlertController(title: "Tips!".locStr, message: msg, preferredStyle: .alert)
+                        ac.addAction(UIAlertAction(title: "OK".locStr, style: .default))
                         self.present(ac, animated: true)
                 }
         }
         
         func ShowYesOrNo(msg:String, No:(()->())? = nil, Yes:(()->())? = nil){
                 DispatchQueue.main.async {
-                        let ac = UIAlertController(title: "Tips!", message: msg, preferredStyle: .alert)
-                        ac.addAction(UIAlertAction(title: "NO", style: .cancel, handler: { aa in
+                        let ac = UIAlertController(title: "Tips!".locStr, message: msg, preferredStyle: .alert)
+                        ac.addAction(UIAlertAction(title: "Cancel".locStr, style: .cancel, handler: { aa in
                                 ac.dismiss(animated: true)
                                 No?()
                         }))
-                        ac.addAction(UIAlertAction(title: "Yes", style: .default, handler: { aa in
+                        ac.addAction(UIAlertAction(title: "Yes".locStr, style: .default, handler: { aa in
                                 ac.dismiss(animated: true)
                                 Yes?()
                         }))

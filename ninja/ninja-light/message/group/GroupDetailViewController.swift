@@ -176,11 +176,11 @@ extension GroupDetailViewController{
                         return
                 }
                 
-                self.showInputDialog(title: "New Group Name",
+                self.showInputDialog(title: "New Group Name".locStr,
                                      message: "",
-                                     textPlaceholder: "Group Name",
-                                     actionText: "OK",
-                                     cancelText: "Cacel",
+                                     textPlaceholder: "Group Name".locStr,
+                                     actionText: "OK".locStr,
+                                     cancelText: "Cacel".locStr,
                                      cancelHandler: nil) { text in
                         guard let newName = text else{
                                 self.toastMessage(title: "Invalid new group name".locStr, duration: 2)
@@ -230,7 +230,7 @@ extension GroupDetailViewController{
                 self.ShowYesOrNo(msg: "确认") {
                         return
                 } Yes: {
-                        self.showIndicator(withTitle: "", and: "processing")
+                        self.showIndicator(withTitle: "Quit Group".locStr, and: "processing")
                         ServiceDelegate.workQueue.async {
                                 
                                 let err = GroupItem.QuitFromGroup(group:self.groupData)
