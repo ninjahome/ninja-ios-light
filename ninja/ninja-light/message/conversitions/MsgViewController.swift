@@ -507,11 +507,13 @@ extension MsgViewController{
                         self.toastMessage(title: err.localizedDescription)
                         return
                 }
-                if let e = MessageItem.processNewMessage(pid: pid, msg: msg, unread: 0){
-                        self.toastMessage(title: e.localizedDescription)
-                        return
+                ServiceDelegate.workQueue.async {
+                        if let e = MessageItem.processNewMessage(pid: pid, msg: msg, unread: 0){
+                                self.toastMessage(title: e.localizedDescription)
+                                return
+                        }
+                        self.insertNewCell()
                 }
-                self.insertNewCell()
         }
 }
 
