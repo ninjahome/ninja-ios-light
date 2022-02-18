@@ -449,6 +449,7 @@ extension UIViewController {
                 //                Indicator.tintColor = UIColor(hex: "4BB5EF")
                 Indicator.detailsLabel.text = Description
                 Indicator.show(animated: true)
+                
         }}
         
         func hidedSuccIndicator() {
