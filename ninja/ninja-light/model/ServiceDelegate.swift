@@ -56,7 +56,7 @@ class ServiceDelegate: NSObject {
         
         public static func CompressImg(origin:Data, targetSize:Int)->Data?{
                 var err:NSError?
-                guard let newData = ChatLibCompressImg(origin, targetSize, &err) else{
+                guard let newData = ChatLibCompressImg(origin, Int32(targetSize), &err) else{
                         print("------>>>compress image failed:\(err?.localizedDescription ?? "<->")")
                         return nil
                 }

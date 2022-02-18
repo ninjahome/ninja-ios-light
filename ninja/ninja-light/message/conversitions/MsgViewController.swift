@@ -285,7 +285,7 @@ extension MsgViewController{
                         vc.mediaTypes = ["public.movie", "public.image"]
                         vc.videoQuality = .typeMedium
                         vc.delegate = self
-                        vc.allowsEditing = true
+//                        vc.allowsEditing = true
                         present(vc, animated: true, completion: nil)
                 } else {
                         showVipModalViewController()

@@ -41,21 +41,31 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                         imagedata = img.png
                 }
                 
-                guard var data = imagedata else{
+                guard let data = imagedata else{
                         self.toastMessage(title: "Invalid image data".locStr)
                         return
                 }
                 
                 let maxSize = ChatLibMaxFileSize()
                 let curSize = data.count
-                if curSize > maxSize{
+                guard curSize > maxSize else{
+                        sendImgMsg(data: data)
+                        return
+                }
+                
+                self.showIndicator(withTitle: "", and: "压缩......")
+                ServiceDelegate.workQueue.async {
                         guard let d = ServiceDelegate.CompressImg(origin: data, targetSize:maxSize) else{
+                                self.hideIndicator()
                                 self.toastMessage(title: "Invalid image data".locStr)
                                 return
                         }
-                        data = d
+                        self.hideIndicator()
+                        self.sendImgMsg(data: d)
                 }
-                
+        }
+        
+        private func sendImgMsg(data:Data){
                 var gid:String? = nil
                 if IS_GROUP{
                         gid = self.peerUid
@@ -67,7 +77,6 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                                            gid: gid)
                 
                 sendMessage(msg: msg)
-                
         }
         
         private func videoDidSelected(url: URL) {
