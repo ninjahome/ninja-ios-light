@@ -439,18 +439,29 @@ extension UIViewController {
                 Indicator.show(animated: true)
         }}
         
-        func showSyncIndicator(withTitle title: String, and Description:String) {DispatchQueue.main.async {
-                let Indicator = MBProgressHUD.showAdded(to: self.view, animated: true)
-                Indicator.label.text = title
-                Indicator.isUserInteractionEnabled = false
-                Indicator.mode = .customView
-                Indicator.customView = UIImageView(image: UIImage(named: "loading"))
-                
-                //                Indicator.tintColor = UIColor(hex: "4BB5EF")
-                Indicator.detailsLabel.text = Description
-                Indicator.show(animated: true)
-                
-        }}
+        func showSyncIndicator(withTitle title: String, and Description:String) {
+                DispatchQueue.main.async {
+                        let Indicator = MBProgressHUD.showAdded(to: self.view, animated: true)
+                        Indicator.label.text = title
+                        Indicator.isUserInteractionEnabled = false
+                        Indicator.mode = .annularDeterminate
+        //                Indicator.customView = UIImageView(image: UIImage(named: "loading"))
+                        var pro = 0.1
+                        
+                        Indicator.tintColor = UIColor(hex: "4BB5EF")
+                        Indicator.detailsLabel.text = Description
+                        Indicator.show(animated: true)
+                        for i in 1...9 {
+                                DispatchQueue.main.asyncAfter(deadline: .now()+TimeInterval(Double(i)*0.5)) {
+                                        Indicator.progress = Float(pro)
+                                        pro += 0.1
+                                }
+                        }
+                        
+
+                }
+                                
+        }
         
         func hidedSuccIndicator() {
                 MBProgressHUD.hide(for: self.view, animated: true)

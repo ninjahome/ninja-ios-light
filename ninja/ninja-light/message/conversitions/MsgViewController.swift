@@ -75,7 +75,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         
         override func viewDidLoad() {
                 super.viewDidLoad()
-                
+        
                 AudioRecordManager.shared.delegate = self
                 messageTableView.delegate = self
                 messageTableView.dataSource = self
