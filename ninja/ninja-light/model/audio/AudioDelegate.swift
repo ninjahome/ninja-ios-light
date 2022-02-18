@@ -9,7 +9,7 @@ import Foundation
 
 protocol RecordAudioDelegate: AnyObject {
 
-    func audioRecordUpdateMetra(_ metra: Float)
+    func audioRecordUpdateMetra(_ metra: Double)
 
     func audioRecordTooShort()
     
@@ -22,10 +22,8 @@ protocol RecordAudioDelegate: AnyObject {
      - parameter uploadAmrData:     上传的 amr Data
      - parameter fileHash:          amr 音频数据的 MD5 值 (NSData)
      */
-    func audioRecordFinish(_ uploadAmrData: Data, recordTime: Float, fileHash: String)
     
-    func audioRecordWavFinish(_ uploadWavData: Data, recordTime: Float, fileHash: String)
-
+    func audioRecordWavFinish(_ uploadWavData: Data, recordTime: Double, fileHash: String)
 }
 
 @objc protocol PlayAudioDelegate: AnyObject {

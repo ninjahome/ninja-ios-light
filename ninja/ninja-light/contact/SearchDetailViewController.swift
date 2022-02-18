@@ -8,85 +8,97 @@
 import UIKit
 
 class SearchDetailViewController: UIViewController {
-
-    
-    @IBOutlet weak var backContent: UIView!
-    @IBOutlet weak var avatar: UIButton!
-    @IBOutlet weak var uidText: UILabel!
+        @IBOutlet weak var backContent: UIView!
         
-    var uid: String?
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        @IBOutlet weak var avatar: AvatarButton!
+        @IBOutlet weak var uidText: UILabel!
+        @IBOutlet weak var nickName: UILabel!
+        @IBOutlet weak var vipFlagImgView: UIImageView!
+        @IBOutlet weak var alias: UITextField!
+        @IBOutlet weak var remark: UITextView!
         
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
- 
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        uidText.text = uid
+        var uid: String = ""
+        private var accountData: AccountItem?
         
-        let avatarText = (uid?.prefix(2))!
-        avatar.setTitle(String(avatarText), for: .normal)
-        
-        backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
-        
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-    }
-    
-    @IBAction func backBtn(_ sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)
-    }
-    
-    @IBAction func saveToContact(_ sender: Any) {
-        
-        let contact = ContactItem.init()
-        contact.uid = self.uid
-        //                contact.nickName = self.nickName.text
-        //                contact.remark = remarks.text
-        //                contact.avatar = self.avatar.image?.pngData()//TODO::Load avatar from netework
-        guard let err = ContactItem.UpdateContact(contact) else{
-                NotificationCenter.default.post(name:NotifyContactChanged,
-                                                object: nil, userInfo:nil)
-                return
-        }
-
-        self.toastMessage(title: err.localizedDescription)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "SaveNewContactSeg" {
-
-            let contact = ContactItem.init()
-            contact.uid = self.uid
-
-            let vc = segue.destination as! ContactDetailsViewController
-            vc.itemUID = self.uid
-            vc.itemData = contact
-
+        override func viewWillAppear(_ animated: Bool) {
+                super.viewWillAppear(animated)
+                self.navigationController?.setNavigationBarHidden(true, animated: true)
         }
         
-        if segue.identifier == "StrangerMessageDetailSeg" {
-            guard let id = self.uid else {
-                return
-            }
-            let vc : MsgViewController = segue.destination as! MsgViewController
-            vc.peerUid = id
+        override func viewDidLoad() {
+                super.viewDidLoad()
+                uidText.text = uid
+                self.hideKeyboardWhenTappedAround()
+                self.showIndicator(withTitle: "loading", and: "account data on chain")
+                ServiceDelegate.workQueue.async {
+                        guard let data = AccountItem.extraLoad(pid: self.uid, forceUpdate: true) else{
+                                self.hideIndicator()
+                                return
+                        }
+                        self.accountData = data
+                        DispatchQueue.main.async {
+                                self.hideIndicator()
+                                self.populateView()
+                                
+                                NotificationCenter.default.post(name:NotifyContactChanged,
+                                                                object: self.uid, userInfo:nil)
+                        }
+                }
         }
-    }
-    
-    @IBAction func chatWith(_ sender: Any) {
-        guard self.uid != nil else {
-                return
+        
+        private func populateView(){
+                avatar.setup(id: uid, avaData: accountData?.Avatar, showDetails: false)
+                nickName.text = accountData?.NickName//TODO::
+                backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
+                vipFlagImgView.isHidden = Wallet.shared.isStillVip()
         }
-//        self.performSegue(withIdentifier: "ShowMessageDetailsSEG", sender: self)
-
-    }
-    
-    
+        
+        override func viewWillDisappear(_ animated: Bool) {
+                super.viewWillDisappear(animated)
+                self.navigationController?.setNavigationBarHidden(false, animated: true)
+        }
+        
+        @IBAction func backBtn(_ sender: UIButton) {
+                self.navigationController?.popViewController(animated: true)
+        }
+        
+        @IBAction func saveToContact(_ sender: Any) {
+                
+                if !Wallet.shared.isStillVip(){
+                        showVipModalViewController()
+                        return
+                }
+                
+                let contact = ContactItem.init(pid: self.uid, alias: self.alias.text, remark: self.remark.text)
+                self.showIndicator(withTitle: "waiting", and: "save to Chain")
+                ServiceDelegate.workQueue.async {
+                        let cc = CombineConntact()
+                        cc.peerID = self.uid
+                        cc.account = self.accountData
+                        cc.contact = contact
+                        let err = cc.SyncNewItemToChain()
+                        CDManager.shared.saveContext()
+                        DispatchQueue.main.async {
+                                self.hideIndicator()
+                                if let e = err{
+                                        self.ShowTips(msg: e.localizedDescription)
+                                        return
+                                }
+                                
+                                NotificationCenter.default.post(name:NotifyContactChanged,
+                                                                object: self.uid, userInfo:nil)
+                                self.startChat()
+                        }
+                }
+        }
+        
+        @IBAction func sendMsg(_ sender: UIButton) {
+                startChat()
+        }
+        
+        func startChat() {
+                let vc = instantiateViewController(vcID: "MsgVC") as! MsgViewController
+                vc.peerUid = self.uid
+                self.navigationController?.pushViewController(vc, animated: true)
+        }
 }

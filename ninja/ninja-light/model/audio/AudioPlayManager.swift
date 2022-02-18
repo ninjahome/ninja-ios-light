@@ -9,52 +9,60 @@ import Foundation
 import AVFoundation
 
 class AudioPlayManager: NSObject, AVAudioPlayerDelegate {
-    
-    var audioPlayer:AVAudioPlayer!
-//    weak var delegate: PlayAudioDelegate?
-    
-    let session = AVAudioSession.sharedInstance()
-    
-    class var sharedInstance : AudioPlayManager {
-        struct Static {
-            static let instance : AudioPlayManager = AudioPlayManager()
+        
+        private var audioPlayer:AVAudioPlayer?
+        let session = AVAudioSession.sharedInstance()
+        public static let shared : AudioPlayManager = AudioPlayManager()
+        
+        override init() {
+                super.init()
         }
-        return Static.instance
-    }
-    
-    override init() {
-        super.init()
-        do{
-            try session.setCategory(AVAudioSession.Category.playback)
-            try session.setActive(true)
-        }catch {
-            print(error)
-            return
+        func stopPlay(){
+                guard let player = self.audioPlayer, player.isPlaying else{
+                        return
+                }
+                player.stop()
         }
-    }
-    
-    func playMusic(file: Data, stop: Bool = false) {
-        do {
-            if audioPlayer?.isPlaying ?? false || stop {
-                audioPlayer?.stop()
-                return
-            }
-            audioPlayer = try AVAudioPlayer(data: file)
-            audioPlayer?.delegate = self
-
-            audioPlayer?.prepareToPlay()
-            audioPlayer?.play()
-            
-            print("播放成功")
-        } catch {
-            print(error)
-            return
+        
+        func playMusic(rawData: Data) {
+                
+                do {
+                        try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+                        
+                        if let oldPlayer = self.audioPlayer, oldPlayer.isPlaying {
+                                oldPlayer.stop()
+                        }
+                        try session.setActive(true)
+                        audioPlayer = try AVAudioPlayer(data: rawData)
+                        audioPlayer?.delegate = self
+                        
+                        if (audioPlayer!.prepareToPlay()){
+                                audioPlayer!.play()
+                        }
+                        audioPlayer!.play()
+                } catch let err{
+                        print("------>>>play music failed[\(err)], data len:[\(rawData.count)]")
+                        try? session.setActive(false, options: [.notifyOthersOnDeactivation])
+                        return
+                }
         }
-    }
-    
-    
-    
+        
+        func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer,
+                                         successfully flag: Bool){
+                
+                print("------>>>play music result[\(flag)]")
+                do {
+                        try session.setActive(false, options: [.notifyOthersOnDeactivation])
+                        
+                }catch let err{
+                        print("------>>>session setActive false failed[\(err)]")
+                }
+        }
+        
+        func audioPlayerEndInterruption(_ player: AVAudioPlayer, withOptions flags: Int){
+                print("------>>>audioPlayerEndInterruption flags =[\(flags)]")
+        }
+        func audioPlayerBeginInterruption(_ player: AVAudioPlayer){
+                print("------>>>audioPlayerBeginInterruption")
+        }
 }
-//usage:
-//self.audioPlayer = AudioPlayManager()
-//self.audioPlayer.playMusic(file: Data)

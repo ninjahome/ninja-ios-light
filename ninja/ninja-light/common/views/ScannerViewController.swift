@@ -22,7 +22,7 @@ class ScannerViewController: UIViewController {
     override func viewDidLoad() {
                 super.viewDidLoad()
                 scanCubeView.layer.borderWidth = 2
-        scanCubeView.layer.borderColor = UIColor.init(red: 59/255.0, green: 135/255.0, blue: 127/255.0, alpha: 1).cgColor
+                scanCubeView.layer.borderColor = UIColor.init(red: 59/255.0, green: 135/255.0, blue: 127/255.0, alpha: 1).cgColor
                 captureSession = AVCaptureSession()
 
                 guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else { return }
@@ -72,10 +72,10 @@ class ScannerViewController: UIViewController {
         }
 
         func failed() {
-                let ac = UIAlertController(title: "Scanning not supported", message:
-                        "Your device does not support scanning a code from an item. Please use a device with a camera.",
+                let ac = UIAlertController(title: "Scanning not supported".locStr, message:
+                                                "Your device does not support scanning a code from an item. Please use a device with a camera.".locStr,
                                            preferredStyle: .alert)
-                ac.addAction(UIAlertAction(title: "OK", style: .default))
+                ac.addAction(UIAlertAction(title: "OK".locStr, style: .default))
                 present(ac, animated: true)
                 captureSession = nil
         }
@@ -103,70 +103,66 @@ class ScannerViewController: UIViewController {
         override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
                 return .portrait
         }
+        
         @IBAction func ImportPhotoBtn(_ sender: UIButton) {
-            let vc = UIImagePickerController()
-            vc.sourceType = .photoLibrary
-            vc.delegate = self
-            vc.allowsEditing = false
-            present(vc, animated: true, completion: nil)
+                let vc = UIImagePickerController()
+                vc.sourceType = .photoLibrary
+                vc.delegate = self
+                vc.allowsEditing = false
+                self.present(vc, animated: true, completion: nil)
         }
     
         @IBAction func Cancel(_ sender: Any) {
             self.dismiss(animated: true, completion: nil)
             self.navigationController?.popToRootViewController(animated: true)
         }
-    
-    
-    
 }
 
 extension ScannerViewController: AVCaptureMetadataOutputObjectsDelegate, UIImagePickerControllerDelegate,UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
-        if #available(iOS 13.0, *) {
-            picker.navigationBar.barTintColor = .systemBackground
-        }
-        picker.dismiss(animated: true, completion: nil)
-        let qrcodeImg = (info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerOriginalImage")] as? UIImage)!
-        
-        
-        let detector = CIDetector(ofType: CIDetectorTypeQRCode, context: nil, options: [CIDetectorAccuracy: CIDetectorAccuracyHigh])!
-        let ciImage = CIImage(image: qrcodeImg)!
-        
-        let features = detector.features(in: ciImage) as? [CIQRCodeFeature]
-        var codeStr = ""
-        
-        for feature in features! {
-            codeStr += feature.messageString!
-        }
-        if codeStr != "" {
-//            if ContactItem.IsValidContactID(codeStr) || Wallet.shared.IsValidWalletJson(codeStr) {
-                self.delegate?.codeDetected(code: codeStr)
-//            } else {
-//                self.ShowTips(msg: "scan result: \(codeStr)")
-//            }
-        } else {
-            self.toastMessage(title: "invaild ninja qr code")
-        }
-        self.dismiss(animated: true, completion: nil)
-        self.navigationController?.popViewController(animated: true)
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
-    }
-    
-    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-            captureSession.stopRunning()
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
 
-            if let metadataObject = metadataObjects.first {
-                    guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
-                    guard let stringValue = readableObject.stringValue else { return }
-                    AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-            
-                    self.delegate?.codeDetected(code: stringValue)
-            }
-            dismiss(animated: true)
-    }
+                if #available(iOS 13.0, *) {
+                        picker.navigationBar.barTintColor = .systemBackground
+                }
+                picker.dismiss(animated: true, completion: nil)
+                let qrcodeImg = (info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerOriginalImage")] as? UIImage)!
+
+
+                let detector = CIDetector(ofType: CIDetectorTypeQRCode, context: nil, options: [CIDetectorAccuracy: CIDetectorAccuracyHigh])!
+                let ciImage = CIImage(image: qrcodeImg)!
+
+                let features = detector.features(in: ciImage) as? [CIQRCodeFeature]
+                var codeStr = ""
+
+                for feature in features! {
+                        codeStr += feature.messageString!
+                }
+                
+                self.dismiss(animated: true) {
+//                        if codeStr != "" {
+                                self.delegate?.codeDetected(code: codeStr)
+//                        } else {
+//                                self.toastMessage(title: "invaild ninja qr code")
+//                        }
+                }
+//                self.navigationController?.popViewController(animated: true)
+        }
+    
+        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+                picker.dismiss(animated: true, completion: nil)
+        }
+    
+        func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+                captureSession.stopRunning()
+
+                if let metadataObject = metadataObjects.first {
+                        guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
+                        guard let stringValue = readableObject.stringValue else { return }
+                        AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+
+                        self.delegate?.codeDetected(code: stringValue)
+                }
+                dismiss(animated: true)
+        }
 
 }

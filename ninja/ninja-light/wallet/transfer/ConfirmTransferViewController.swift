@@ -8,60 +8,58 @@
 import UIKit
 
 class ConfirmTransferViewController: UIViewController {
-
-    @IBOutlet weak var transferAddr: UILabel!
-    @IBOutlet weak var expire: UILabel!
-    @IBOutlet weak var inputTransferDays: UITextField!
-    @IBOutlet weak var confirmBtn: UIButton!
-    
-    var transAddress: String?
-    var expireDays: Int?
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        transferAddr.text = transAddress
-        expireDays = AgentService.shared.expireDays
-        expire.text = "剩余激活天数\(expireDays ?? 0)天"
         
-        self.hideKeyboardWhenTappedAround()
-    }
-    
-    @IBAction func transferAll(_ sender: UIButton) {
-        inputTransferDays.text = String(expireDays ??  0)
-    }
-    
-    @IBAction func confirmTransfer(_ sender: UIButton) {
-        guard let days = inputTransferDays.text, let dayInt = Int(days) else {
-            return
+        @IBOutlet weak var transferAddr: UILabel!
+        @IBOutlet weak var expire: UILabel!
+        @IBOutlet weak var inputTransferDays: UITextField!
+        @IBOutlet weak var confirmBtn: UIButton!
+        
+        var transAddress: String?
+        
+        override func viewDidLoad() {
+                super.viewDidLoad()
+                transferAddr.text = transAddress
+                let expireDays = Wallet.shared.getBalance()
+                expire.text = String(format: "剩余激活天数 %.2f 天", expireDays)
+                self.hideKeyboardWhenTappedAround()
         }
         
-        guard let addr = transAddress else {
-            return
+        @IBAction func transferAll(_ sender: UIButton) {
+                
+                let expireDays = Wallet.shared.getBalance()
+                inputTransferDays.text = String(expireDays )
         }
         
-        if AgentService.shared.transferLicense(to: addr, days: dayInt) {
-            
-            self.toastMessage(title: "success")
-            self.navigationController?.popToRootViewController(animated: true)
-        } else {
-            
-            self.toastMessage(title: "faild")
+        @IBAction func confirmTransfer(_ sender: UIButton) {
+                guard let days = inputTransferDays.text, let dayInt = Int(days) else {
+                        return
+                }
+                
+                guard dayInt >= 1 else {
+                        self.toastMessage(title: "Invalid transfer days".locStr)
+                        return
+                }
+                
+                guard let addr = transAddress else {
+                        return
+                }
+                
+                self.showIndicator(withTitle: "", and: "Transfering".locStr)
+                ServiceDelegate.workQueue.async {
+                        if let err = ServiceDelegate.transferLicense(to: addr, days: dayInt) {
+                                self.toastMessage(title: "Faild".locStr+"\(err.localizedDescription)")
+                                self.hideIndicator()
+                                return
+                        }
+                        DispatchQueue.main.async {
+                                self.hideIndicator()
+                                self.navigationController?.popToRootViewController(animated: true)
+                        }}
+                
         }
         
-    }
-    
-    @IBAction func returnItem(_ sender: UIBarButtonItem) {
-        self.navigationController?.popViewController(animated: true)
-    }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+        @IBAction func returnItem(_ sender: UIBarButtonItem) {
+                self.navigationController?.popViewController(animated: true)
+        }
+        
 }

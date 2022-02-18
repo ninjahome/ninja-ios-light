@@ -7,31 +7,46 @@
 
 import UIKit
 
+protocol SetupDestroyDelegate {
+        func DestroyStatusResult(status : Bool)
+}
+
 class DestroyViewController: UIViewController {
-    
-    @IBOutlet weak var pwdField1: UITextField!
-    @IBOutlet weak var pwdField2: UITextField!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.hideKeyboardWhenTappedAround()
-    }
-    
-    @IBAction func confirmDestroyBtn(_ sender: UIButton) {
-        if let pwd = pwdField1.text, pwd == pwdField2.text {
-            if Wallet.shared.openDestroy(auth: pwd) {
-                self.dismiss(animated: true, completion: nil)
-            } else {
-                self.toastMessage(title: "Open destroy mode faild")
-            }
-        } else {
-            self.toastMessage(title: "Invaild password")
+        
+        @IBOutlet weak var pwdField1: UITextField!
+        @IBOutlet weak var pwdField2: UITextField!
+        var statusResultDelegate:SetupDestroyDelegate?
+        
+        override func viewDidLoad() {
+                super.viewDidLoad()
+                self.hideKeyboardWhenTappedAround()
         }
-    }
-    
-    
-    @IBAction func dismissView(_ sender: UIButton) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
+        
+        @IBAction func confirmDestroyBtn(_ sender: UIButton) {
+                guard let pwd = pwdField1.text, pwd == pwdField2.text  else{
+                        self.toastMessage(title: "Invaild password".locStr)
+                        return
+                }
+                if Wallet.shared.openDestroy(auth: pwd) {
+                        self.dismiss(animated: true){
+                                guard let callback = self.statusResultDelegate else{
+                                        return
+                                }
+                                callback.DestroyStatusResult(status: true)
+                        }
+                } else {
+                        self.toastMessage(title: "Open destroy mode faild".locStr)
+                }
+                
+        }
+        
+        
+        @IBAction func dismissView(_ sender: UIButton) {
+                self.dismiss(animated: true){
+                        guard let callback = self.statusResultDelegate else{
+                                return
+                        }
+                        callback.DestroyStatusResult(status: false)
+                }
+        }
 }

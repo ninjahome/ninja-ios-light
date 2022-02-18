@@ -35,17 +35,17 @@ class QRViewController: UIViewController {
     
     @IBAction func copyAddr(_ sender: UIButton) {
         UIPasteboard.general.string = Wallet.shared.Addr
-        self.toastMessage(title: "Copy Success")
+            self.toastMessage(title: "Copy Success".locStr, duration: 1)
     }
     
     @IBAction func downloadQR(_ sender: UIButton) {
         
         if let exportImg = generateViewImg(info: infoView) {
             UIImageWriteToSavedPhotosAlbum(exportImg, self, nil, nil)
-            self.toastMessage(title: "Save success")
+                self.toastMessage(title: "Save success".locStr)
         } else if qr != nil {
             UIImageWriteToSavedPhotosAlbum(qr!, nil, nil, nil)
-            self.toastMessage(title: "Save success")
+                self.toastMessage(title: "Save success".locStr)
         }
         
     }

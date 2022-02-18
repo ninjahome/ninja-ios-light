@@ -8,16 +8,25 @@
 import UIKit
 
 class AvatarCollectionCell: UICollectionViewCell {
-//    var ava: Avatar?
-//    var uid: String?
-    
-    @IBOutlet weak var MemberIcon: AvatarButton!
-    
-    func initApperance(id: String) {
-        MemberIcon.type = AvatarButtonType.contact
-        MemberIcon.avaInfo = AvatarInfo.init(id: id)
-//        MemberIcon.backgroundColor = UIColor.init(hex: avatar.color)
-//        MemberIcon.setTitle(avatar.text, for: .normal)
-    }
-    
+        @IBOutlet weak var MemberIcon: AvatarButton!
+        @IBOutlet weak var nickName: UILabel!
+        @IBOutlet weak var groupLeaderImg: UIImageView!
+        
+        func initApperance(id: String,isLeader:Bool = false) {
+                groupLeaderImg.isHidden = !isLeader
+                if id == Wallet.shared.Addr{
+                        MemberIcon.setupSelf()
+                        nickName.text = Wallet.shared.nickName
+                        return
+                }
+                
+                let (name, avatar) = ServiceDelegate.queryNickAndAvatar(pid: id) { name, avatar in
+                        DispatchQueue.main.async {
+                                self.MemberIcon.setup(id: id, avaData: avatar)
+                                self.nickName.text = name ?? ""
+                        }
+                }
+                MemberIcon.setup(id: id, avaData: avatar)
+                nickName.text = name ?? ""
+        }
 }

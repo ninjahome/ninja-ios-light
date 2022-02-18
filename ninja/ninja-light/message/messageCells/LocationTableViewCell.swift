@@ -8,78 +8,86 @@
 import UIKit
 
 class LocationTableViewCell: UITableViewCell {
-    @IBOutlet weak var msgBackgroundView: UIImageView!
-    @IBOutlet weak var locationStr: UILabel!
-    
-    @IBOutlet weak var avatar: AvatarButton!
-    @IBOutlet weak var nickname: UILabel!
-    @IBOutlet weak var time: UILabel!
-
-    @IBOutlet weak var miniMapTrailing: NSLayoutConstraint!
-    @IBOutlet weak var miniMapLeading: NSLayoutConstraint!
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-//        miniMapTrailing.constant = 0
-//        miniMapLeading.constant = 0
-    }
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+        @IBOutlet weak var msgBackgroundView: UIImageView!
+        @IBOutlet weak var locationStr: UILabel!
         
-        // Configure the view for the selected state
-    }
-    
-    func updateMessageCell (by message: MessageItem) {
+        @IBOutlet weak var avatar: AvatarButton!
+        @IBOutlet weak var nickname: UILabel!
+        @IBOutlet weak var time: UILabel!
+        @IBOutlet weak var retry: UIButton?
+        @IBOutlet weak var spinner: UIActivityIndicatorView?
+        @IBOutlet weak var miniMapTrailing: NSLayoutConstraint!
+        @IBOutlet weak var miniMapLeading: NSLayoutConstraint!
         
-        guard let from = message.from else {
-            return
-        }
-
-        msgBackgroundView.layer.cornerRadius = 8
-        msgBackgroundView.clipsToBounds = true
-        
-        if let localMsg = message.payload as? locationMsg {
-            print("*****LOCATION message.payload\(localMsg.la)。\(localMsg.lo)。\(localMsg.str)")
-            locationStr.text = localMsg.str
+        var curMsg:MessageItem?
+        override func prepareForReuse() {
+                super.prepareForReuse()
         }
         
-        //message bubble
-        if message.isOut {
-            let img = UIImage(named: "white")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
-            msgBackgroundView.image = img
-            miniMapTrailing.constant = 8
-            
-//            avatar.setTitle(Wallet.GenAvatarText(), for: .normal)
-//            avatar.backgroundColor = UIColor.init(hex: Wallet.GenAvatarColor())
-            avatar.type = AvatarButtonType.wallet
-            avatar.avaInfo = nil
-            
-            nickname.text = Wallet.GenAvatarText()
-            
-        } else {
-            let img = UIImage(named: "babycolor")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
-            msgBackgroundView.image = img
-            miniMapLeading.constant = 8
-            
-            avatar.type = AvatarButtonType.contact
-            avatar.avaInfo = AvatarInfo.init(id: from)
-//            let avaName = ContactItem.GetAvatarText(by: from)
-//            avatar.setTitle(ContactItem.GetAvatarText(by: avaName), for: .normal)
-//            let hex = ContactItem.GetAvatarColor(by: from)
-//            avatar.backgroundColor = UIColor.init(hex: hex)
-            let contactData = ContactItem.cache[from]
-            nickname.text = contactData?.nickName ?? ContactItem.GetAvatarText(by: from)
-
+        override func awakeFromNib() {
+                super.awakeFromNib()
         }
         
-        time.text = formatTimeStamp(by: message.timeStamp)
-    }
-
-
+        override func setSelected(_ selected: Bool, animated: Bool) {
+                super.setSelected(selected, animated: animated)
+        }
+        
+        
+        @IBAction func resendFailedMsg(_ sender: Any) {
+                guard let msg = self.curMsg else{
+                        print("------>>>no valid msg in current cell")
+                        return
+                }
+                msg.status = .sending
+                spinner?.startAnimating()
+                retry?.isHidden = true
+                if let err = WebsocketSrv.shared.SendMessage(msg: msg){
+                        print("------>>> retry failed:=>", err)
+                        msg.status = .faild
+                        retry?.isHidden = false
+                        spinner?.stopAnimating()
+                }
+        }
+        func updateMessageCell (by message: MessageItem, name:String, avatar:Data?, isGroup:Bool) {
+                self.curMsg = message
+                let from = message.from
+                
+                msgBackgroundView.layer.cornerRadius = 8
+                msgBackgroundView.clipsToBounds = true
+                
+                if let localMsg = message.payload as? locationMsg {
+                        print("*****LOCATION message.payload\(localMsg.la)。\(localMsg.lo)。\(localMsg.str)")
+                        locationStr.text = localMsg.str
+                }
+                
+                //message bubble
+                if message.isOut {
+                        let img = UIImage(named: "white")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
+                        msgBackgroundView.image = img
+                        miniMapTrailing.constant = 8
+                        
+                        self.avatar.setupSelf()
+                        switch message.status {
+                        case .faild:
+                                spinner?.stopAnimating()
+                                retry?.isHidden = false
+                        case .sending:
+                                spinner?.startAnimating()
+                        default:
+                                spinner?.stopAnimating()
+                        }
+                        nickname.text = ""
+                } else {
+                        let img = UIImage(named: "babycolor")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
+                        msgBackgroundView.image = img
+                        miniMapLeading.constant = 8
+                        
+                        
+                        PopulatePeerCell(nickname:self.nickname,
+                                         avatarBtn: self.avatar,
+                                         from: from, name: name, avatar: avatar, isGroup: isGroup)
+                }
+                
+                time.text = formatMsgTimeStamp(by: message.timeStamp)
+        }
 }

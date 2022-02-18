@@ -1,28 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21C52" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CDAccount" representedClassName="CDAccount" syncable="YES" codeGenerationType="class">
+        <attribute name="addr" optional="YES" attributeType="String"/>
+        <attribute name="avatar" optional="YES" attributeType="Binary"/>
+        <attribute name="balance" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="nonce" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="owner" optional="YES" attributeType="String"/>
+        <attribute name="touch_time" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
     <entity name="CDChatItem" representedClassName="CDChatItem" syncable="YES" codeGenerationType="class">
-        <attribute name="groupId" optional="YES" attributeType="String"/>
+        <attribute name="isGrp" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="lastMsg" optional="YES" attributeType="String"/>
         <attribute name="owner" optional="YES" attributeType="String"/>
-        <attribute name="uid" optional="YES" attributeType="String"/>
+        <attribute name="peerID" optional="YES" attributeType="String"/>
         <attribute name="unreadNo" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="updateTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
+    <entity name="CDConfig" representedClassName="CDConfig" syncable="YES" codeGenerationType="class">
+        <attribute name="endPoint" optional="YES" attributeType="String"/>
+    </entity>
     <entity name="CDContact" representedClassName="CDContact" syncable="YES" codeGenerationType="class">
-        <attribute name="avaColor" optional="YES" attributeType="String"/>
-        <attribute name="avatar" optional="YES" attributeType="Binary"/>
-        <attribute name="nickName" optional="YES" attributeType="String"/>
+        <attribute name="alias" optional="YES" attributeType="String"/>
         <attribute name="owner" optional="YES" attributeType="String"/>
         <attribute name="remark" optional="YES" attributeType="String"/>
         <attribute name="uid" optional="YES" attributeType="String"/>
     </entity>
     <entity name="CDGroup" representedClassName="CDGroup" syncable="YES" codeGenerationType="class">
-        <attribute name="banTalked" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="avatar" optional="YES" attributeType="Binary"/>
         <attribute name="gid" optional="YES" attributeType="String"/>
-        <attribute name="groupName" optional="YES" attributeType="String"/>
+        <attribute name="isDelete" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="leader" optional="YES" attributeType="String"/>
-        <attribute name="memberIds" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer"/>
-        <attribute name="memberNicks" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer"/>
+        <attribute name="members" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="nonce" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="owner" optional="YES" attributeType="String"/>
         <attribute name="unixTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
@@ -41,16 +52,21 @@
     </entity>
     <entity name="CDWallet" representedClassName="CDWallet" syncable="YES" codeGenerationType="class">
         <attribute name="address" optional="YES" attributeType="String"/>
+        <attribute name="avatar" optional="YES" attributeType="Binary"/>
         <attribute name="jsonStr" optional="YES" attributeType="String"/>
+        <attribute name="liceneseExpireTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="nick" optional="YES" attributeType="String"/>
+        <attribute name="nonce" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="useDestroy" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="useFaceID" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </entity>
     <elements>
+        <element name="CDAccount" positionX="-45" positionY="90" width="128" height="134"/>
         <element name="CDChatItem" positionX="-45" positionY="27" width="128" height="119"/>
-        <element name="CDContact" positionX="-36" positionY="18" width="128" height="119"/>
-        <element name="CDGroup" positionX="-45" positionY="72" width="128" height="149"/>
+        <element name="CDConfig" positionX="-36" positionY="99" width="128" height="44"/>
+        <element name="CDContact" positionX="-36" positionY="18" width="128" height="89"/>
+        <element name="CDGroup" positionX="-45" positionY="72" width="128" height="164"/>
         <element name="CDUnread" positionX="-54" positionY="9" width="128" height="194"/>
-        <element name="CDWallet" positionX="-63" positionY="-18" width="128" height="104"/>
+        <element name="CDWallet" positionX="-63" positionY="-18" width="128" height="149"/>
     </elements>
 </model>

@@ -8,109 +8,86 @@
 import UIKit
 
 class ContactAddViewController: UIViewController {
-    
-    @IBOutlet weak var searchAddr: UITextField!
-    
-    var contactItem: ContactItem?
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        searchAddr.delegate = self
-        self.hideKeyboardWhenTappedAround()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-
-    }
-     
-    @IBAction func CancelAdd(_ sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)
-    }
-
-//    @IBAction func ScanQR(_ sender: UIButton) {
-//        self.performSegue(withIdentifier: "ShowQRScanerID", sender: self)
-//    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "SearchNewSegue" {
-            let vc: SearchDetailViewController = segue.destination as! SearchDetailViewController
-            vc.uid = self.searchAddr.text
+        @IBOutlet weak var searchAddr: UITextField!
+        
+        var contactID: String?
+        
+        override func viewDidLoad() {
+                super.viewDidLoad()
+                searchAddr.delegate = self
+                self.hideKeyboardWhenTappedAround()
         }
         
-        if segue.identifier == "SearchExistSegue" {
-            let vc: ContactDetailsViewController = segue.destination as! ContactDetailsViewController
-            vc.itemData = self.contactItem
-            
+        @IBAction func backBarBtn(_ sender: UIBarButtonItem) {
+                self.navigationController?.popViewController(animated: true)
         }
         
-        if segue.identifier == "ShowAddrQRID"{
-             let vc : ScannerViewController = segue.destination as! ScannerViewController
-             vc.delegate = self
+        @IBAction func scanner(_ sender: UIButton) {
+                let vc = instantiateViewController(vcID: "ScannerVC") as! ScannerViewController
+                vc.delegate = self
+                self.present(vc, animated: true, completion: nil)
         }
-    }
-    
+        
+        @IBAction func search(_ sender: UIButton) {
+                guard let addr = searchAddr.text else {
+//                        self.toastMessage(title: "Empty ninja address")
+                        return
+                }
+                guard ContactItem.IsValidContactID(addr) else {
+                        self.toastMessage(title: "Invalid ninja address".locStr)
+                        return
+                }
+                if Wallet.shared.Addr == addr {
+                        self.toastMessage(title: "Invalid operation".locStr)
+                        return
+                }
+                
+                self.contactID = addr
+                processByPeerID()
+        }
+        
+        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+                if segue.identifier == "SearchNewSegue" {
+                        let vc: SearchDetailViewController = segue.destination as! SearchDetailViewController
+                        vc.uid = self.contactID!
+                }
+        }
+        
+        private func processByPeerID(){
+                guard let _ = CombineConntact.cache[self.contactID!] else{
+                        self.performSegue(withIdentifier: "SearchNewSegue", sender: self)
+                        return
+                }
+                let vc = instantiateViewController(vcID: "ContactDetailsVC") as! ContactDetailsViewController
+                vc.peerID = self.contactID!
+                self.navigationController?.pushViewController(vc, animated: true)
+        }
 }
 
 extension ContactAddViewController: ScannerViewControllerDelegate {
-        
         func codeDetected(code: String) {
-                NSLog("\(code)")
-                if ContactItem.IsValidContactID(code) {
-                    if let item = ContactItem.GetContact(code) {
-                        self.contactItem = item
-                        self.performSegue(withIdentifier: "SearchExistSegue", sender: self)
-                    } else {
-                        self.searchAddr.text = code
-                        self.performSegue(withIdentifier: "SearchNewSegue", sender: self)
-                    }
-                } else {
-                    self.toastMessage(title: "invalid ninja address")
-                    return
+                print("------>>> scaned user code=[\(code)]")
+                self.searchAddr.text = code
+                guard ContactItem.IsValidContactID(code) else{
+                        self.toastMessage(title: "Invaild ninja wallet address".locStr)
+                        return
                 }
-
+                self.contactID = code
+                processByPeerID()
         }
 }
 
 extension ContactAddViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        guard let addr = textField.text else {
-            return false
+        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+                guard let addr = textField.text else {
+                        return false
+                }
+                guard ContactItem.IsValidContactID(addr) else{
+                        return false
+                }
+                self.contactID = addr
+                processByPeerID()
+                return true
         }
-        if ContactItem.IsValidContactID(addr) {
-            if let item = ContactItem.GetContact(addr) {
-                self.contactItem = item
-                self.performSegue(withIdentifier: "SearchExistSegue", sender: self)
-            } else {
-                self.performSegue(withIdentifier: "SearchNewSegue", sender: self)
-            }
-            
-            return true
-        }
-
-        return false
-        
-    }
-//    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-//        if text == "\n" {
-//            guard let addr = self.searchAddr.text, addr != "" else {
-//                return false
-//            }
-//
-//            if let item = ContactItem.GetContact(addr) {
-//                self.contactItem = item
-//                self.performSegue(withIdentifier: "SearchExistSegue", sender: self)
-//            } else {
-//                self.performSegue(withIdentifier: "SearchNewSegue", sender: self)
-//            }
-//        }
-//        return true
-//    }
 }

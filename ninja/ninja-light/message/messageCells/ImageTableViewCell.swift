@@ -9,100 +9,84 @@ import UIKit
 
 class ImageTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var msgBackgroundView: UIImageView!
-    @IBOutlet weak var imageMsg: UIImageView!
-    
-    @IBOutlet weak var avatar: AvatarButton!
-    @IBOutlet weak var nickname: UILabel!
-    @IBOutlet weak var time: UILabel!
-    
-    @IBOutlet weak var spinner: UIActivityIndicatorView?
-    
-    @IBOutlet weak var retry: UIButton?
-    
-    var cellMsg: MessageItem?
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        spinner?.stopAnimating()
-        retry?.isHidden = true
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
+        @IBOutlet weak var msgBackgroundView: UIImageView!
+        @IBOutlet weak var imageMsg: UIImageView!
 
-        // Initialization code
-    }
+        @IBOutlet weak var avatar: AvatarButton!
+        @IBOutlet weak var nickname: UILabel!
+        @IBOutlet weak var time: UILabel!
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        // Configure the view for the selected state
-    }
+        @IBOutlet weak var spinner: UIActivityIndicatorView?
+
+        @IBOutlet weak var retry: UIButton?
+
+var cellMsg: MessageItem?
+
+        override func prepareForReuse() {
+                super.prepareForReuse()
+
+                spinner?.stopAnimating()
+                retry?.isHidden = true
+        }
+
+        override func awakeFromNib() {
+                super.awakeFromNib()
+                // Initialization code
+        }
+
+        override func setSelected(_ selected: Bool, animated: Bool) {
+                super.setSelected(selected, animated: animated)
+                // Configure the view for the selected state
+        }
     
-    @IBAction func retry(_ sender: UIButton) {
-        if let msg = cellMsg {
-            let cliMsg = CliMessage.init(to: msg.to!, imgData: msg.payload as! Data, groupId: msg.groupId)
-            
-            WebsocketSrv.shared.SendIMMsg(cliMsg: cliMsg, retry: true) { [self] in
-                self.retry?.isHidden = true
-                self.spinner?.startAnimating()
-            } onCompletion: { success in
-                MessageItem.resetSending(cliMsg: cliMsg, success: success)
-                
-                if success {
-                    msg.status = .sent
+        @IBAction func retry(_ sender: UIButton) {
+                guard let msg = self.cellMsg else{
+                        print("------>>>no valid msg in current cell")
+                        return
                 }
-                
-                self.updateMessageCell(by: msg)
-            }
-        }
-        
-    }
-    
-    func updateMessageCell (by message: MessageItem) {
-        cellMsg = message
-        msgBackgroundView.layer.cornerRadius = 8
-        msgBackgroundView.clipsToBounds = true
-        
-        guard let from = message.from else {
-            return
-        }
-
-        imageMsg.image = UIImage(data: message.payload as! Data)
-        
-        imageMsg.contentMode = .scaleAspectFill
-        imageMsg.clipsToBounds = true
-        
-        ShowImageDetail.show(imageView: imageMsg)
-        
-        if message.isOut {
-            switch message.status {
-            case .faild:
-                spinner?.stopAnimating()
-                retry?.isHidden = false
-            case .sending:
+                msg.status = .sending
                 spinner?.startAnimating()
-            default:
-                spinner?.stopAnimating()
-            }
-
-            avatar.type = AvatarButtonType.wallet
-            avatar.avaInfo = nil
-            
-            nickname.text = Wallet.GenAvatarText()
-
-        } else {
-            
-            avatar.type = AvatarButtonType.contact
-            avatar.avaInfo = AvatarInfo.init(id: from)
-            
-            let contactData = ContactItem.cache[from]
-            nickname.text = contactData?.nickName ?? ContactItem.GetAvatarText(by: from)
-
+                retry?.isHidden = true
+                if let err = WebsocketSrv.shared.SendMessage(msg: msg){
+                        print("------>>> retry failed:=>", err)
+                        msg.status = .faild
+                        retry?.isHidden = false
+                        spinner?.stopAnimating()
+                }
         }
-        
-        time.text = formatTimeStamp(by: message.timeStamp)
-    }
+    
+        func updateMessageCell (by message: MessageItem, name:String, avatar:Data?, isGroup:Bool) {
+                cellMsg = message
+                msgBackgroundView.layer.cornerRadius = 8
+                msgBackgroundView.clipsToBounds = true
+                let from = message.from
+                let img = message.payload as? imgMsg
+                imageMsg.image = UIImage(data: img?.content ?? Data())//TODO::
+                imageMsg.contentMode = .scaleAspectFill
+                imageMsg.clipsToBounds = true
+
+                ShowImageDetail.show(imageView: imageMsg)
+
+                if message.isOut {
+                        switch message.status {
+                        case .faild:
+                                spinner?.stopAnimating()
+                                retry?.isHidden = false
+                        case .sending:
+                                spinner?.startAnimating()
+                        default:
+                                spinner?.stopAnimating()
+                        }
+                        
+                        self.avatar.setupSelf()
+                        nickname.text = ""
+                } else {
+                        PopulatePeerCell(nickname:self.nickname,
+                                         avatarBtn: self.avatar,
+                                         from: from, name: name, avatar: avatar, isGroup: isGroup)
+                }
+
+                time.text = formatMsgTimeStamp(by: message.timeStamp)
+        }
 
 }
