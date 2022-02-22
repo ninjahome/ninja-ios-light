@@ -54,7 +54,7 @@ class ServiceDelegate: NSObject {
                 return ChatLibMaxAvatarSize()
         }
         
-        public static func MakeImgSumMsg(origin:Data, snapShotSize:Int)->(Data?, Data?, String?){
+        public static func MakeDataSumMsg(origin:Data, snapShotSize:Int)->(Data?, Data?, String?){
                 let maxImgSize = ChatLibMaxFileSize()
                 var rawData:Data = origin
                 if origin.count > maxImgSize{
@@ -82,7 +82,7 @@ class ServiceDelegate: NSObject {
                 return (snapShot, rawData, has)
         }
         
-        public static func LoadImgByHash(has:String) -> Data?{
+        public static func LoadDataByHash(has:String) -> Data?{
                 if let d = FileManager.readByHash(has: has){
                         return d
                 }
