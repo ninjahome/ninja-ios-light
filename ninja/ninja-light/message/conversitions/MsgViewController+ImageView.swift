@@ -73,7 +73,7 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                 }
                 
                 let msg = MessageItem.init(to: peerUid,
-                                           data: imgMsg(data: data, has: has, rawData: rawData),
+                                           data: imgMsg(data: data, has: has),
                                            typ: .image,
                                            gid: gid)
                 

@@ -62,5 +62,4 @@ class VideoFileManager {
                         callback(exporter.status, videoFinalPath)
                 }
         }
-
 }

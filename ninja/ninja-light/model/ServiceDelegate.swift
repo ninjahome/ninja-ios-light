@@ -77,7 +77,17 @@ class ServiceDelegate: NSObject {
                         return (nil, nil, nil)
                 }
                 
-                return (snapShot, rawData,has)
+                _ = FileManager.writeByHash(has: has, content: rawData)
+                
+                return (snapShot, rawData, has)
+        }
+        
+        public static func LoadImgByHash(has:String) -> Data?{
+                if let d = FileManager.readByHash(has: has){
+                        return d
+                }
+                var err:NSError?
+                return ChatLibReadBigMsgByHash(has, &err)
         }
         
         public static func CompressImg(origin:Data, targetSize:Int)->Data?{

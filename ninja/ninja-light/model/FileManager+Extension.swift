@@ -41,11 +41,31 @@ extension FileManager {
                 }
         }
         
+        static func writeByHash(has:String, content:Data)-> Bool{
+                let tmpPath = TmpDirectory()
+                let filePath = tmpPath.appendingPathComponent(has)
+                if fileManager.fileExists(atPath: filePath.absoluteString){
+                        return true
+                }
+                
+                return fileManager.createFile(atPath: filePath.path, contents: content, attributes: .none)
+        }
+        
+        static func readByHash(has:String) -> Data?{
+                let tmpPath = TmpDirectory()
+                let filePath = tmpPath.appendingPathComponent(has)
+                if !fileManager.fileExists(atPath: filePath.absoluteString){
+                        return nil
+                }
+                return fileManager.contents(atPath: filePath.path)
+        }
+        
+        
+        
         
         @discardableResult
         static func createFolder(_ folderName :String) -> URL {
                 let folder = TmpDirectory().appendingPathComponent(folderName)
-                //                let folder = CachesDirectory().appendingPathComponent(folderName)
                 let fileManager = FileManager.default
                 if !fileManager.fileExists(atPath: folder.absoluteString) {
                         do {

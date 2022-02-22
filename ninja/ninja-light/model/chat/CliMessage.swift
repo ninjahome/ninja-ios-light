@@ -69,30 +69,26 @@ class txtMsg:NSObject, NSCoding,IMPayLoad{
 
 class imgMsg:NSObject, NSCoding,IMPayLoad{
         var has:String = ""
-        var rawData:Data?
         var content: Data = Data()
         override init() {
                 super.init()
         }
         
-        init(data:Data, has:String = "", rawData:Data? = nil){
+        init(data:Data, has:String = ""){
                 super.init()
                 content = data
                 self.has = has
-                self.rawData = rawData
         }
         
         func encode(with coder: NSCoder) {
                 coder.encode(content, forKey: "content")
                 coder.encode(has, forKey: "has")
-                coder.encode(rawData, forKey: "rawData")
         }
         
         required init?(coder: NSCoder) {
                 super.init()
                 self.content = coder.decodeObject(forKey: "content") as! Data
                 self.has = coder.decodeObject(forKey: "has") as? String ?? ""
-                self.rawData = coder.decodeObject(forKey: "rawData")  as? Data
         }
         
         func wrappedToProto() -> Data? {
