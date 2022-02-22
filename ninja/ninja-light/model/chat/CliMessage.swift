@@ -16,7 +16,8 @@ enum CMT: Int {
         case voice = 3
         case location = 4
         case file = 5
-        case contact = 6
+        case summary = 6
+        case contact = 7
         case unknown = -1
 }
 
@@ -141,6 +142,52 @@ class audioMsg: NSObject, NSCoding, IMPayLoad {
                 }
                 var err:NSError?
                 let data = ChatLibWrapVoiceV2(Int32(duration), content, &err)
+                if let e = err{
+                        print("------>>>wrap audio to proto err:[\(e.localizedDescription)]")
+                        return nil
+                }
+                
+                return data
+        }
+}
+
+class sumMsg: NSObject, NSCoding, IMPayLoad {
+        var content:Data = Data()
+        var has:String = ""
+        var mediaTyp:CMT = .image
+        
+        func encode(with coder: NSCoder) {
+                coder.encode(content, forKey: "content")
+                coder.encode(hash, forKey: "hash")
+        }
+        
+        required init?(coder: NSCoder) {
+                super.init()
+                self.content = coder.decodeObject(forKey: "content") as! Data
+                self.has = coder.decodeObject(forKey: "hash") as! String
+        }
+        
+        override init() {
+                super.init()
+        }
+        
+        init(data:Data, hash:String){
+                super.init()
+                self.content = data
+                self.has = hash
+        }
+        
+        func success(_ h: String, d: Data?) {
+                self.has = h
+                self.content = d ?? Data()
+        }
+        
+        func wrappedToProto() -> Data? {
+                guard content.count > 0 else{
+                        return nil
+                }
+                var err:NSError?
+                let data = ChatLibWrapSummary(self.has,self.mediaTyp, content, &err)
                 if let e = err{
                         print("------>>>wrap audio to proto err:[\(e.localizedDescription)]")
                         return nil
