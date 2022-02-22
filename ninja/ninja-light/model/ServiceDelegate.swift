@@ -54,6 +54,10 @@ class ServiceDelegate: NSObject {
                 return ChatLibMaxAvatarSize()
         }
         
+        public static func MakeImgSumMsg(origin:Data, targetSize:Int)->(Data?, String?){
+                return (nil, nil)
+        }
+        
         public static func CompressImg(origin:Data, targetSize:Int)->Data?{
                 var err:NSError?
                 guard let newData = ChatLibCompressImg(origin, Int32(targetSize), &err) else{

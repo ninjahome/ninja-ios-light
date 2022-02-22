@@ -46,7 +46,7 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                         return
                 }
                 
-                let maxSize = ChatLibMaxFileSize()
+                let maxSize = ChatLibBigMsgThreshold()
                 let curSize = data.count
                 guard curSize > maxSize else{
                         sendImgMsg(data: data)
@@ -55,14 +55,19 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                 
                 self.showIndicator(withTitle: "", and: "压缩......")
                 ServiceDelegate.workQueue.async {
-                        guard let d = ServiceDelegate.CompressImg(origin: data, targetSize:maxSize) else{
+                         let (d, h) = ServiceDelegate.MakeImgSumMsg(origin: data, targetSize:maxSize)
+                        guard let data = d, let has = h else{
                                 self.hideIndicator()
                                 self.toastMessage(title: "Invalid image data".locStr)
                                 return
                         }
                         self.hideIndicator()
-                        self.sendImgMsg(data: d)
+                        self.sendImgSummary(data:data, has:has)
                 }
+        }
+        
+        private func sendImgSummary(data:Data, has:String){
+                
         }
         
         private func sendImgMsg(data:Data){

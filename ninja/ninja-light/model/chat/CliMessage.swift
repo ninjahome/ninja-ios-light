@@ -261,10 +261,11 @@ class sumMsg: NSObject, NSCoding, IMPayLoad {
                 super.init()
         }
         
-        init(data:Data, hash:String){
+        init(data:Data, hash:String,mediaTyp:CMT){
                 super.init()
                 self.content = data
                 self.has = hash
+                self.mediaTyp = mediaTyp
         }
         
         func success(_ h: String, d: Data?) {

@@ -413,6 +413,6 @@ extension MessageItem:ChatLibUnwrapCallbackProtocol{
         }
         func summary(_ has: String?, typ: Int32, d: Data?) {
                 self.typ = .summary
-                self.payload = sumMsg(data:d ?? Data(), hash:has ?? "")
+                self.payload = sumMsg(data:d ?? Data(), hash:has ?? "", mediaTyp: CMT(rawValue: Int(typ)) ?? .image)
         }
 }
