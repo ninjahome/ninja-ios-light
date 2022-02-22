@@ -110,7 +110,7 @@ class MessageItem: NSObject {
                 var result:[MessageItem]?
                 result = try? CDManager.shared.Get(entity: "CDUnread",
                                                    predicate: NSPredicate(format: "owner == %@", owner),
-                                                   sort: [["unixTime" : true]],
+                                                   sort: [["unixTime" : false]],
                                                    limit: MaxItemNoPerID)
                 guard let data = result else{
                         return
