@@ -55,29 +55,25 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                 
                 self.showIndicator(withTitle: "", and: "压缩......")
                 ServiceDelegate.workQueue.async {
-                         let (d, h) = ServiceDelegate.MakeImgSumMsg(origin: data, targetSize:maxSize)
-                        guard let data = d, let has = h else{
+                        let (d, r, h) = ServiceDelegate.MakeImgSumMsg(origin: data, snapShotSize:maxSize)
+                        guard let snapShot = d, let has = h, let rawData = r else{
                                 self.hideIndicator()
                                 self.toastMessage(title: "Invalid image data".locStr)
                                 return
                         }
                         self.hideIndicator()
-                        self.sendImgSummary(data:data, has:has)
+                        self.sendImgMsg(data:snapShot, has:has, rawData: rawData)
                 }
         }
         
-        private func sendImgSummary(data:Data, has:String){
-                
-        }
-        
-        private func sendImgMsg(data:Data){
+        private func sendImgMsg(data:Data,has:String = "", rawData:Data? = nil){
                 var gid:String? = nil
                 if IS_GROUP{
                         gid = self.peerUid
                 }
                 
                 let msg = MessageItem.init(to: peerUid,
-                                           data: imgMsg(data: data),
+                                           data: imgMsg(data: data, has: has, rawData: rawData),
                                            typ: .image,
                                            gid: gid)
                 

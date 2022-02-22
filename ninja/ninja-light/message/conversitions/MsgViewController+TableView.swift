@@ -62,6 +62,7 @@ extension MsgViewController: UITableViewDelegate, UITableViewDataSource {
                         let cell = tableView.dequeueReusableCell(withIdentifier: identifer, for: indexPath) as! FileTableViewCell
                         cell.updateMessageCell(by: msgItem, name:self.peerName, avatar:self.peerAvatarData, isGroup: self.IS_GROUP)
                         return cell
+                        
                 default:
                         return TxtTableViewCell()
                 }

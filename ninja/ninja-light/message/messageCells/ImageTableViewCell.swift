@@ -8,37 +8,37 @@
 import UIKit
 
 class ImageTableViewCell: UITableViewCell {
-
+        
         @IBOutlet weak var msgBackgroundView: UIImageView!
         @IBOutlet weak var imageMsg: UIImageView!
-
+        
         @IBOutlet weak var avatar: AvatarButton!
         @IBOutlet weak var nickname: UILabel!
         @IBOutlet weak var time: UILabel!
-
+        
         @IBOutlet weak var spinner: UIActivityIndicatorView?
-
+        
         @IBOutlet weak var retry: UIButton?
-
-var cellMsg: MessageItem?
-
+        
+        var cellMsg: MessageItem?
+        
         override func prepareForReuse() {
                 super.prepareForReuse()
-
+                
                 spinner?.stopAnimating()
                 retry?.isHidden = true
         }
-
+        
         override func awakeFromNib() {
                 super.awakeFromNib()
                 // Initialization code
         }
-
+        
         override func setSelected(_ selected: Bool, animated: Bool) {
                 super.setSelected(selected, animated: animated)
                 // Configure the view for the selected state
         }
-    
+        
         @IBAction func retry(_ sender: UIButton) {
                 guard let msg = self.cellMsg else{
                         print("------>>>no valid msg in current cell")
@@ -54,7 +54,7 @@ var cellMsg: MessageItem?
                         spinner?.stopAnimating()
                 }
         }
-    
+        
         func updateMessageCell (by message: MessageItem, name:String, avatar:Data?, isGroup:Bool) {
                 cellMsg = message
                 msgBackgroundView.layer.cornerRadius = 8
@@ -64,9 +64,9 @@ var cellMsg: MessageItem?
                 imageMsg.image = UIImage(data: img?.content ?? Data())//TODO::
                 imageMsg.contentMode = .scaleAspectFill
                 imageMsg.clipsToBounds = true
-
+                
                 ShowImageDetail.show(imageView: imageMsg)
-
+                
                 if message.isOut {
                         switch message.status {
                         case .faild:
@@ -85,8 +85,7 @@ var cellMsg: MessageItem?
                                          avatarBtn: self.avatar,
                                          from: from, name: name, avatar: avatar, isGroup: isGroup)
                 }
-
+                
                 time.text = formatMsgTimeStamp(by: message.timeStamp)
         }
-
 }

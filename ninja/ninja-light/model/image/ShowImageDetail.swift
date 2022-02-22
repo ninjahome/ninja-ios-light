@@ -36,9 +36,6 @@ extension ShowImageDetail {
                 guard let image = imageV.image else {
                         return
                 }
-                //    guard let window = UIApplication.shared.delegate?.window else {
-                //        return
-                //    }
 
                 guard let window = getKeyWindow() else {
                         return
@@ -97,8 +94,6 @@ extension ShowImageDetail {
                         return
                 }
                 window.present(alert, animated: true, completion: nil)
-                //TODO::
-                //        backgroundView.present(alert, animated: true, completion: nil)keyWindow
         }
         
         @objc class private func showOriginal(sender: UITapGestureRecognizer) {

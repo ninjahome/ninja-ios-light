@@ -54,8 +54,30 @@ class ServiceDelegate: NSObject {
                 return ChatLibMaxAvatarSize()
         }
         
-        public static func MakeImgSumMsg(origin:Data, targetSize:Int)->(Data?, String?){
-                return (nil, nil)
+        public static func MakeImgSumMsg(origin:Data, snapShotSize:Int)->(Data?, Data?, String?){
+                let maxImgSize = ChatLibMaxFileSize()
+                var rawData:Data = origin
+                if origin.count > maxImgSize{
+                        guard let rd = CompressImg(origin: origin, targetSize: maxImgSize) else{
+                                print("------>>>compress too big imgage failed")
+                                return (nil, nil, nil)
+                        }
+                        rawData = rd
+                }
+                
+                guard let snapShot = CompressImg(origin: rawData, targetSize: snapShotSize) else{
+                        print("------>>>create snapshot failed")
+                        return (nil, nil, nil)
+                }
+                
+                var err:NSError?
+                let has = ChatLibPostBigMsg(rawData, &err)
+                if let e = err{
+                        print("------>>>compress image failed:\(e.localizedDescription )")
+                        return (nil, nil, nil)
+                }
+                
+                return (snapShot, rawData,has)
         }
         
         public static func CompressImg(origin:Data, targetSize:Int)->Data?{

@@ -392,9 +392,9 @@ extension MessageItem:ChatLibUnwrapCallbackProtocol{
                 }
         }
         
-        func img(_ d: Data?) {
+        func img(_ d: Data?, h:String?) {
                 self.typ = .image
-                self.payload = imgMsg(data: d ?? Data())
+                self.payload = imgMsg(data: d ?? Data(), has: h ?? "")
         }
         
         func location(_ n: String?, lo: Double, la: Double) {
