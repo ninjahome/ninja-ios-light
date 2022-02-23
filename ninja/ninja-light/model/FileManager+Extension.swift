@@ -44,7 +44,7 @@ extension FileManager {
         static func writeByHash(has:String, content:Data)-> Bool{
                 let tmpPath = TmpDirectory()
                 let filePath = tmpPath.appendingPathComponent(has)
-                if fileManager.fileExists(atPath: filePath.absoluteString){
+                if fileManager.fileExists(atPath: filePath.path){
                         return true
                 }
                 
@@ -54,7 +54,7 @@ extension FileManager {
         static func readByHash(has:String) -> Data?{
                 let tmpPath = TmpDirectory()
                 let filePath = tmpPath.appendingPathComponent(has)
-                if !fileManager.fileExists(atPath: filePath.absoluteString){
+                if !fileManager.fileExists(atPath: filePath.path){
                         return nil
                 }
                 return fileManager.contents(atPath: filePath.path)
