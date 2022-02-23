@@ -8,6 +8,7 @@
 import UIKit
 import AVFoundation
 import MobileCoreServices
+import PhotosUI
 
 class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         
@@ -75,7 +76,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         
         override func viewDidLoad() {
                 super.viewDidLoad()
-        
+                
                 AudioRecordManager.shared.delegate = self
                 messageTableView.delegate = self
                 messageTableView.dataSource = self
@@ -181,7 +182,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         @IBAction func BackToMsgList(_ sender: UIBarButtonItem) {
-//                self.navigationController?.popViewController(animated: true)
+                //                self.navigationController?.popViewController(animated: true)
                 self.navigationController?.popToRootViewController(animated: true)
         }
         
@@ -260,8 +261,14 @@ extension MsgViewController{
                 
                 self.performSegue(withIdentifier: "ShowMapSeg", sender: self)
         }
+        
         @IBAction func camera(_ sender: UIButton) {
-                if Wallet.shared.isStillVip() {
+                guard Wallet.shared.isStillVip() else {
+                        showVipModalViewController()
+                        return
+                        
+                }
+                
                         if UIImagePickerController.isSourceTypeAvailable(.camera) {
                                 let cameraPicker = UIImagePickerController()
                                 cameraPicker.delegate = self
@@ -273,23 +280,33 @@ extension MsgViewController{
                         } else {
                                 toastMessage(title: "No Camera Permission".locStr)
                         }
-                } else {
-                        showVipModalViewController()
-                }
+              
         }
         
         @IBAction func album(_ sender: UIButton) {
-                if Wallet.shared.isStillVip() {
-                        let vc = UIImagePickerController()
-                        vc.sourceType = .photoLibrary
-                        vc.mediaTypes = ["public.movie", "public.image"]
-                        vc.videoQuality = .typeMedium
-                        vc.delegate = self
-//                        vc.allowsEditing = true
-                        present(vc, animated: true, completion: nil)
-                } else {
+                guard Wallet.shared.isStillVip() else {
                         showVipModalViewController()
+                        return
                 }
+                PHPhotoLibrary.requestAuthorization(for: .readWrite) { [unowned self] (status) in
+                        
+                }
+                let photoLibrary = PHPhotoLibrary.shared()
+                var configuration = PHPickerConfiguration(photoLibrary: photoLibrary)
+                configuration.filter = PHPickerFilter.any(of: [.livePhotos, .videos,.images])
+                configuration.preferredAssetRepresentationMode = .current
+                configuration.selectionLimit = 1
+                let picker = PHPickerViewController(configuration: configuration)
+                picker.delegate = self
+                present(picker, animated: true)
+                //                let vc = UIImagePickerController()
+                //                vc.sourceType = .photoLibrary
+                //                vc.mediaTypes = ["public.movie", "public.image"]
+                //                vc.videoQuality = .typeMedium
+                //                vc.delegate = self
+                ////                        vc.allowsEditing = false
+                //                present(vc, animated: true, completion: nil)
+                
         }
         
         
@@ -422,9 +439,9 @@ extension MsgViewController{
         }
         @objc func currentGroupDismiessed(notification: NSNotification) {
                 guard let pid = notification.object as? String,
-                        peerUid == pid,  IS_GROUP else{
-                        return
-                }
+                      peerUid == pid,  IS_GROUP else{
+                              return
+                      }
                 DispatchQueue.main.async {
                         self.dismiss(animated: true)
                         self.navigationController?.popToRootViewController(animated: true)
@@ -474,21 +491,21 @@ extension MsgViewController{
         
         private func insertNewCell(){
                 DispatchQueue.main.async {
-//                        let startCnt = self.messageTableView.numberOfRows(inSection: 0)
-//                        let endCnt = self.msgCacheArray.count
-//                        if startCnt >= endCnt{
-//                                print("------>>> finish insert rows[\(endCnt)] in table")
-//                                return
-//                        }
-//                        var indes :[IndexPath] = []
-//                        for i in startCnt ... endCnt - 1{
-//                                indes.append(IndexPath.init(row: i, section: 0))
-//                        }
-//                        //                        print("------>>> start rows[\(startCnt)] to end rows[\(endCnt)]")
-//
-//                        self.messageTableView.beginUpdates()
-//                        self.messageTableView.insertRows(at: indes, with: .automatic)
-//                        self.messageTableView.endUpdates()
+                        //                        let startCnt = self.messageTableView.numberOfRows(inSection: 0)
+                        //                        let endCnt = self.msgCacheArray.count
+                        //                        if startCnt >= endCnt{
+                        //                                print("------>>> finish insert rows[\(endCnt)] in table")
+                        //                                return
+                        //                        }
+                        //                        var indes :[IndexPath] = []
+                        //                        for i in startCnt ... endCnt - 1{
+                        //                                indes.append(IndexPath.init(row: i, section: 0))
+                        //                        }
+                        //                        //                        print("------>>> start rows[\(startCnt)] to end rows[\(endCnt)]")
+                        //
+                        //                        self.messageTableView.beginUpdates()
+                        //                        self.messageTableView.insertRows(at: indes, with: .automatic)
+                        //                        self.messageTableView.endUpdates()
                         //indes[indes.count - 1]
                         
                         self.msgCacheArray = MessageItem.SortedArray(pid: self.peerUid)
@@ -585,5 +602,4 @@ extension MsgViewController{
                 
                 self.keyboardIsHide = true
         }
-        
 }

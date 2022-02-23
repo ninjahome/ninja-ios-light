@@ -9,42 +9,38 @@ import Foundation
 import UIKit
 import MobileCoreServices.UTType
 import ChatLib
+import PhotosUI
+
+extension MsgViewController:PHPickerViewControllerDelegate{
+        func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+                picker.dismiss(animated: true)
+                guard !results.isEmpty else{
+                        return
+                }
+                let itemProvider = results[0].itemProvider
+                if itemProvider.hasItemConformingToTypeIdentifier(UTType.image.identifier) {
+                        self.loadImage(provider:itemProvider)
+                }
+                
+                
+                
+        }
+        
+        func loadImage(provider:NSItemProvider){
+                provider.loadDataRepresentation(forTypeIdentifier: UTType.image.identifier) { data, error in
+                        guard let data = data else{
+                                return
+                        }
+                        
+                        self.imageDidSelected(data: data)
+                }
+        }
+}
 
 extension MsgViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         
-        func imagePickerController(_ picker: UIImagePickerController,
-                                   didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-                mutiMsgType.isHidden = true
-                picker.dismiss(animated: true, completion: nil)
-                if let mediaType = info[.mediaType] as? String {
-                        switch mediaType {
-                        case String(kUTTypeImage):
-                                
-                                if let img = info[.originalImage] as? UIImage {
-                                        imageDidSelected(img: img)
-                                }
-                        case String(kUTTypeVideo), String(kUTTypeMovie):
-                                if let url = info[.mediaURL] as? URL {
-                                        videoDidSelected(url: url)
-                                }
-                        default:
-                                break
-                        }
-                }
-        }
-        
-        private func imageDidSelected(img: UIImage) {
-                var imagedata: Data?
-                if img.jpeg != nil {
-                        imagedata = img.jpeg
-                } else {
-                        imagedata = img.png
-                }
-                
-                guard let data = imagedata else{
-                        self.toastMessage(title: "Invalid image data".locStr)
-                        return
-                }
+
+        private func imageDidSelected(data: Data) {
                 
                 let maxSize = ChatLibBigMsgThreshold()
                 let curSize = data.count
@@ -86,6 +82,8 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                         self.toastMessage(title: "Empty video file".locStr)
                         return
                 }
+                let has = ChatLibHashOfMsgData(data)
+                print("------>>>ahs=>", has, url.path)
                 let (thumb, isHorize) = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
                 guard let thumbData = thumb?.jpeg else{
                         self.toastMessage(title: "create thumbnail failed".locStr)
@@ -126,8 +124,9 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                 self.showIndicator(withTitle: "", and: "Compressing".locStr)
                 
                 ServiceDelegate.workQueue.async {
-                        guard let has = ServiceDelegate.MakeVideoSumMsg(rawData: rawData) else{
-                                self.hideIndicator()
+                        let hasOfVideo = ServiceDelegate.MakeVideoSumMsg(rawData: rawData)
+                        self.hideIndicator()
+                        guard let has = hasOfVideo else{
                                 self.toastMessage(title:  "Failed".locStr)
                                 return
                         }
