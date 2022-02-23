@@ -16,17 +16,17 @@ class ServiceDelegate: NSObject {
         public static let networkID = Int8(5)
         
         public static func getAgentStatus() -> AgentStatus {
-
+                
                 let balance = Wallet.shared.getBalance()
-
+                
                 if balance <= 0 {
                         return .initial
                 }
-
+                
                 if balance < 5 {
                         return .almostExpire
                 }
-
+                
                 return .activated
         }
         
@@ -56,35 +56,35 @@ class ServiceDelegate: NSObject {
         }
         
         public static func MakeVedioSumMsg(origin:Data){
-               
+                
         }
         
-        public static func MakeImgSumMsg(origin:Data, snapShotSize:Int)->(Data?, Data?, String?){
+        public static func MakeImgSumMsg(origin:Data, snapShotSize:Int)->(Data?, String?){
                 let maxImgSize = ChatLibMaxFileSize()
                 var rawData:Data = origin
                 if origin.count > maxImgSize{
                         guard let rd = CompressImg(origin: origin, targetSize: maxImgSize) else{
                                 print("------>>>compress too big imgage failed")
-                                return (nil, nil, nil)
+                                return (nil, nil)
                         }
                         rawData = rd
                 }
                 
                 guard let snapShot = CompressImg(origin: rawData, targetSize: snapShotSize) else{
                         print("------>>>create snapshot failed")
-                        return (nil, nil, nil)
+                        return (nil, nil)
                 }
                 
                 var err:NSError?
                 let has = ChatLibPostBigMsg(rawData, &err)
                 if let e = err{
                         print("------>>>compress image failed:\(e.localizedDescription )")
-                        return (nil, nil, nil)
+                        return (nil, nil)
                 }
                 
-                _ = FileManager.writeByHash(has: has, content: rawData)
-                
-                return (snapShot, rawData, has)
+                let writeRet = FileManager.writeByHash(has: has, content: rawData)
+                print("------>>>write hash file result:=>", has, writeRet)
+                return (snapShot, has)
         }
         
         public static func LoadDataByHash(has:String) -> Data?{
@@ -96,7 +96,8 @@ class ServiceDelegate: NSObject {
                         return nil
                 }
                 
-               _ = FileManager.writeByHash(has: has, content: d)
+                let writeRet = FileManager.writeByHash(has: has, content: d)
+                print("------>>>write hash file result:=>", has, writeRet)
                 
                 return d
         }
@@ -135,12 +136,12 @@ extension ServiceDelegate{
                 MessageItem.deleteAll()
                 GroupItem.deleteAll()
         }
-
+        
         
         public static func SyncChainData(data:Data){
                 workQueue.async {
                         if let wallet = Wallet.initByData(data){
-                               let err = Wallet.shared.UpdateWallet(w: wallet)
+                                let err = Wallet.shared.UpdateWallet(w: wallet)
                                 if err != nil{
                                         print("------>>>compress image failed:\(err?.localizedDescription ?? "<->")")
                                 }
@@ -243,7 +244,7 @@ extension ServiceDelegate{
                                 guard let data = imgData else{
                                         continue
                                 }
-                        
+                                
                                 counter += 1
                                 avatarArr.append(data)
                                 if counter >= 9{
