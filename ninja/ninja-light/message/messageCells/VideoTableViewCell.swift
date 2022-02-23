@@ -8,19 +8,19 @@
 import UIKit
 import AVKit
 import AVFoundation
-
+extension NSLayoutConstraint {
+    func constraintWithMultiplier(_ multiplier: CGFloat) -> NSLayoutConstraint {
+        return NSLayoutConstraint(item: self.firstItem!, attribute: self.firstAttribute, relatedBy: self.relation, toItem: self.secondItem, attribute: self.secondAttribute, multiplier: multiplier, constant: self.constant)
+    }
+}
 class VideoTableViewCell: UITableViewCell {
         
         @IBOutlet weak var msgBackgroundView: UIImageView!
-        //        @IBOutlet weak var thumbtailImage: UIImageView!
-        
         @IBOutlet weak var playVideBtn: UIButton!
         @IBOutlet weak var avatar: AvatarButton!
         @IBOutlet weak var nickname: UILabel!
         @IBOutlet weak var time: UILabel!
-        
         @IBOutlet weak var spinner: UIActivityIndicatorView?
-        
         @IBOutlet weak var retry: UIButton?
         
         var cellMsg: MessageItem?
@@ -94,6 +94,9 @@ class VideoTableViewCell: UITableViewCell {
                 let from = message.from
                 if let video = message.payload as? videoMsg{
                         playVideBtn.layer.contents = video.thumbnailImg.cgImage
+                        playVideBtn.layer.contentsGravity = CALayerContentsGravity.resizeAspect;
+                        playVideBtn.layer.transform = CATransform3DMakeRotation(0.0, -90.0 / 180.0 * .pi, 0.0, 1.0)
+                        msgBackgroundView.layer.frame = CGRect(x: 0, y: 0, width: 160, height: 90)
                 }
                 
                 if message.isOut {

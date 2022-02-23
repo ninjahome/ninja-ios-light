@@ -54,7 +54,11 @@ class ServiceDelegate: NSObject {
                 return ChatLibMaxAvatarSize()
         }
         
-        public static func MakeImgSumMsg(origin:Data, snapShotSize:Int, dataTyp:CMT)->(Data?, Data?, String?){
+        public static func MakeVedioSumMsg(origin:Data){
+               
+        }
+        
+        public static func MakeImgSumMsg(origin:Data, snapShotSize:Int)->(Data?, Data?, String?){
                 let maxImgSize = ChatLibMaxFileSize()
                 var rawData:Data = origin
                 if origin.count > maxImgSize{
