@@ -44,8 +44,8 @@ class ServiceDelegate: NSObject {
                         userDefault.set(current, forKey: AppVersionKey)
                 }
                 // networkID 5: company 2: other
-                //default endpoint a3a5c09826a246d0bfbef8084b81df1f
-                ChatLibInitAPP(endPoint, "", WebsocketSrv.shared, networkID)
+        
+                ChatLibInitAPP("", "a3a5c09826a246d0bfbef8084b81df1f", WebsocketSrv.shared, networkID)
         }
         public static func InitPushParam(deviceToken:String) {
                 ChatLibSetPushParam(deviceToken, DevTypeIOS)

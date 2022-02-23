@@ -105,11 +105,15 @@ extension ImageTableViewCell{
         }
    
         @objc private func showBigImage(sender: UITapGestureRecognizer) {
-                        
              
                 guard let window = getKeyWindow() else {
                         return
                 }
+                
+                guard let image  = imageMsg.image else {
+                        return
+                }
+
                 window.endEditing(true)
 
                 originalFrame = CGRect()
@@ -119,8 +123,7 @@ extension ImageTableViewCell{
                 backgroundView.alpha = 0.0
 
                 originalFrame = oldFrame
-                let image  = imageMsg.image!
-                let newImageV = UIImageView(frame: oldFrame)
+                                let newImageV = UIImageView(frame: oldFrame)
                 newImageV.contentMode = .scaleAspectFit
                 newImageV.image = image
                 

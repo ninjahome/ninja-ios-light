@@ -310,7 +310,8 @@ extension MessageItem: ModelObj {
                 case .plainTxt:
                         uObj.message = (self.payload as? txtMsg)?.txt
                 case .image:
-                        uObj.image = (self.payload as? imgMsg)?.content
+//                        uObj.image = (self.payload as? imgMsg)?.content
+                        uObj.media = self.payload as? NSObject
                 case .voice:
                         uObj.media = self.payload as? NSObject
                 case .location:
@@ -350,7 +351,7 @@ extension MessageItem: ModelObj {
                 case .plainTxt:
                         self.payload = txtMsg.init(txt:uObj.message ?? "")
                 case .image:
-                        self.payload = imgMsg.init(data:uObj.image ?? Data())
+                        self.payload = uObj.media as? imgMsg //imgMsg.init(data:uObj.image ?? Data(), has: uObj.ha)
                 case .voice:
                         self.payload = uObj.media as? audioMsg
                 case .location:
