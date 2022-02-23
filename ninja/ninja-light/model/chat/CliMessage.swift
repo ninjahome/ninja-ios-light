@@ -16,7 +16,6 @@ enum CMT: Int {
         case voice = 3
         case location = 4
         case file = 5
-        case summary = 6
         case contact = 7
         case unknown = -1
 }
@@ -243,53 +242,6 @@ class fileMsg: NSObject, NSCoding,IMPayLoad {
         }
 }
 
-
-class sumMsg: NSObject, NSCoding, IMPayLoad {
-        var content:Data = Data()
-        var has:String = ""
-        var mediaTyp:CMT = .image
-        
-        func encode(with coder: NSCoder) {
-                coder.encode(content, forKey: "content")
-                coder.encode(hash, forKey: "hash")
-        }
-        
-        required init?(coder: NSCoder) {
-                super.init()
-                self.content = coder.decodeObject(forKey: "content") as! Data
-                self.has = coder.decodeObject(forKey: "hash") as! String
-        }
-        
-        override init() {
-                super.init()
-        }
-        
-        init(data:Data, hash:String,mediaTyp:CMT){
-                super.init()
-                self.content = data
-                self.has = hash
-                self.mediaTyp = mediaTyp
-        }
-        
-        func success(_ h: String, d: Data?) {
-                self.has = h
-                self.content = d ?? Data()
-        }
-        
-        func wrappedToProto() -> Data? {
-                guard content.count > 0 else{
-                        return nil
-                }
-                var err:NSError?
-                let data = ChatLibWrapSummaryV2(self.has, Int32(self.mediaTyp.rawValue), content, &err)
-                if let e = err{
-                        print("------>>>wrap summary to proto err:[\(e.localizedDescription)]")
-                        return nil
-                }
-                
-                return data
-        }
-}
 class videoMsg:fileMsg{
         public static let defaultImg = UIImage(named: "logo_img")!
         var thumbnailImg: UIImage = defaultImg

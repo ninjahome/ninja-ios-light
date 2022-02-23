@@ -173,16 +173,14 @@ class MessageItem: NSObject {
                         return "[Voice]".locStr
                 case .location:
                         return "[Location]".locStr
-                case .contact:
-                        return "[Contact]".locStr
                 case .image:
                         return "[Image]".locStr
                 case .file:
                         return "[File]".locStr
-                case .summary:
-                        return "[File]".locStr
                 case .unknown:
                         return "Unknown".locStr
+                case .contact:
+                        return "[Contact]".locStr
                 }
         }
         
@@ -410,9 +408,5 @@ extension MessageItem:ChatLibUnwrapCallbackProtocol{
         func voice(_ l: Int32, d: Data?) {
                 self.typ = .voice
                 self.payload = audioMsg(data: d ?? Data(), len: Int(l))
-        }
-        func summary(_ has: String?, typ: Int32, d: Data?) {
-                self.typ = .summary
-                self.payload = sumMsg(data:d ?? Data(), hash:has ?? "", mediaTyp: CMT(rawValue: Int(typ)) ?? .image)
         }
 }
