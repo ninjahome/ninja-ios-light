@@ -27,10 +27,14 @@ class VideoTableViewCell: UITableViewCell {
         
         var cellMsg: MessageItem?
         var isLandScape:Bool = false
+        var scaler:CGFloat = 1.0
         func configure(){
                 if isLandScape{
-                        widthConstraint.constant = 160
-                        heightConstraint.constant = 90
+                        widthConstraint.constant = 160 * scaler
+                        heightConstraint.constant = 90 * scaler
+                }else{
+                        widthConstraint.constant = 90 * scaler
+                        heightConstraint.constant = 160 * scaler
                 }
         }
         override func prepareForReuse() {
@@ -46,8 +50,9 @@ class VideoTableViewCell: UITableViewCell {
                 let longTap = UILongPressGestureRecognizer(target: self,
                                                            action: #selector(VideoTableViewCell.longPress(sender:)))
                 self.addGestureRecognizer(longTap)
-                widthConstraint = msgBackgroundView.widthAnchor.constraint(equalToConstant: 90)
-                heightConstraint = msgBackgroundView.heightAnchor.constraint(equalToConstant: 160)
+                scaler = msgBackgroundView.contentScaleFactor
+                widthConstraint = msgBackgroundView.widthAnchor.constraint(equalToConstant: 90 * scaler)
+                heightConstraint = msgBackgroundView.heightAnchor.constraint(equalToConstant: 160 * scaler)
                 widthConstraint.isActive = true
                 heightConstraint.isActive = true
         }
@@ -109,6 +114,7 @@ class VideoTableViewCell: UITableViewCell {
                         playVideBtn.layer.contents = cgImg
                         playVideBtn.layer.contentsGravity = CALayerContentsGravity.resizeAspect;
                         isLandScape = cgImg.width > cgImg.height
+                        print("------>>>width->height", cgImg.width, cgImg.height)
                 }
                 
                 if message.isOut {
