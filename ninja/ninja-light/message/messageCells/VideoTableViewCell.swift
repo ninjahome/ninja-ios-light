@@ -9,14 +9,11 @@ import UIKit
 import AVKit
 import AVFoundation
 extension NSLayoutConstraint {
-    func constraintWithMultiplier(_ multiplier: CGFloat) -> NSLayoutConstraint {
-        return NSLayoutConstraint(item: self.firstItem!, attribute: self.firstAttribute, relatedBy: self.relation, toItem: self.secondItem, attribute: self.secondAttribute, multiplier: multiplier, constant: self.constant)
-    }
+        func constraintWithMultiplier(_ multiplier: CGFloat) -> NSLayoutConstraint {
+                return NSLayoutConstraint(item: self.firstItem!, attribute: self.firstAttribute, relatedBy: self.relation, toItem: self.secondItem, attribute: self.secondAttribute, multiplier: multiplier, constant: self.constant)
+        }
 }
 class VideoTableViewCell: UITableViewCell {
-        
-        @IBOutlet var widthConstraint: NSLayoutConstraint!
-        @IBOutlet var heightConstraint: NSLayoutConstraint!
         @IBOutlet weak var msgBackgroundView: UIImageView!
         @IBOutlet weak var playVideBtn: UIButton!
         @IBOutlet weak var avatar: AvatarButton!
@@ -25,8 +22,17 @@ class VideoTableViewCell: UITableViewCell {
         @IBOutlet weak var spinner: UIActivityIndicatorView?
         @IBOutlet weak var retry: UIButton?
         
-        var cellMsg: MessageItem?
+        private var widthConstraint: NSLayoutConstraint!
+        private var heightConstraint: NSLayoutConstraint!
         
+        var cellMsg: MessageItem?
+        var isLandScape:Bool = false
+        func configure(){
+                if isLandScape{
+                        widthConstraint.constant = 160
+                        heightConstraint.constant = 90
+                }
+        }
         override func prepareForReuse() {
                 super.prepareForReuse()
                 
@@ -40,14 +46,16 @@ class VideoTableViewCell: UITableViewCell {
                 let longTap = UILongPressGestureRecognizer(target: self,
                                                            action: #selector(VideoTableViewCell.longPress(sender:)))
                 self.addGestureRecognizer(longTap)
+                widthConstraint = msgBackgroundView.widthAnchor.constraint(equalToConstant: 90)
+                heightConstraint = msgBackgroundView.heightAnchor.constraint(equalToConstant: 160)
+                widthConstraint.isActive = true
+                heightConstraint.isActive = true
         }
         
         override func setSelected(_ selected: Bool, animated: Bool) {
                 super.setSelected(selected, animated: animated)
                 // Configure the view for the selected state
         }
-        
-        
         
         @IBAction func retry(_ sender: UIButton) {
                 guard let msg = self.cellMsg else{
@@ -100,8 +108,7 @@ class VideoTableViewCell: UITableViewCell {
                         let cgImg = video.thumbnailImg.cgImage!
                         playVideBtn.layer.contents = cgImg
                         playVideBtn.layer.contentsGravity = CALayerContentsGravity.resizeAspect;
-                        playVideBtn.layer.transform = CATransform3DMakeRotation(0.0, -90.0 / 180.0 * .pi, 0.0, 1.0)
-                        
+                        isLandScape = cgImg.width > cgImg.height
                 }
                 
                 if message.isOut {
@@ -112,7 +119,7 @@ class VideoTableViewCell: UITableViewCell {
                         case .sending:
                                 spinner?.startAnimating()
                         default:
-                                spinner?.stopAnimating() 
+                                spinner?.stopAnimating()
                         }
                         self.avatar.setupSelf()
                         self.nickname.text = ""
@@ -123,11 +130,6 @@ class VideoTableViewCell: UITableViewCell {
                 }
                 
                 time.text = formatMsgTimeStamp(by: message.timeStamp)
-        }
-        func LayoutAdjust(){
-//                widthConstraint.constant = 160
-                msgBackgroundView.frame =  CGRect(x: 0, y: 0, width: 320, height: 180)
-                msgBackgroundView.layoutIfNeeded()
         }
         
         @objc func longPress(sender: UILongPressGestureRecognizer
