@@ -17,6 +17,7 @@ enum CMT: Int {
         case location = 4
         case file = 5
         case contact = 7
+        case videoWithHash = 11
         case unknown = -1
 }
 
@@ -272,8 +273,9 @@ class videoMsg:fileMsg{
                 guard  let url = tmpUrl() else{
                         return
                 }
-                if let img = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url){
-                        self.thumbnailImg = img
+                let (img, _) = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
+                if let d = img{
+                        self.thumbnailImg = d
                 }
         }
         
@@ -298,5 +300,45 @@ class videoMsg:fileMsg{
                         print("------>>> write video file failed", err)
                         return nil
                 }
+        }
+}
+
+
+class videoMsgWithHash: NSObject, NSCoding,IMPayLoad {
+        var thumbData:Data?
+        var has:String?
+        var isHorizon:Bool = false
+        
+        func encode(with coder: NSCoder) {
+                coder.encode(thumbData, forKey: "thumb")
+                coder.encode(has, forKey: "has")
+        }
+        
+        required init?(coder: NSCoder) {
+                super.init()
+                self.thumbData = coder.decodeObject(forKey: "thumb") as? Data
+                self.has = coder.decodeObject(forKey: "has") as? String
+        }
+        
+        override init() {
+                super.init()
+        }
+        
+        init(thumb:Data, has:String, isHorizon:Bool = false){
+                super.init()
+                self.thumbData = thumb
+                self.has = has
+                self.isHorizon = isHorizon
+        }
+        
+        func wrappedToProto() -> Data? {
+                var err:NSError?
+                let data = ChatLibWrapVideoV3(thumbData, has, isHorizon, &err)
+                if let e = err{
+                        print("------>>>wrap video to proto err:[\(e.localizedDescription)]")
+                        return nil
+                }
+                
+                return data
         }
 }

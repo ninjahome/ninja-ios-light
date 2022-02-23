@@ -10,7 +10,7 @@ import Foundation
 extension MsgViewController: UITableViewDelegate, UITableViewDataSource {
         
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//                print("------>>>table view count:\(msgCacheArray.count) ")
+                //                print("------>>>table view count:\(msgCacheArray.count) ")
                 return msgCacheArray.count
         }
         
@@ -19,7 +19,7 @@ extension MsgViewController: UITableViewDelegate, UITableViewDataSource {
                 let msgItem = msgCacheArray[indexPath.row]
                 var identifer = ""
                 indexPathCache[msgItem.timeStamp] = indexPath
-
+                
                 switch msgItem.typ {
                 case .plainTxt:
                         identifer = msgItem.isOut ? "messageCell" : "messageCellL"
@@ -63,7 +63,14 @@ extension MsgViewController: UITableViewDelegate, UITableViewDataSource {
                         let cell = tableView.dequeueReusableCell(withIdentifier: identifer, for: indexPath) as! FileTableViewCell
                         cell.updateMessageCell(by: msgItem, name:self.peerName, avatar:self.peerAvatarData, isGroup: self.IS_GROUP)
                         return cell
+                case .videoWithHash:
                         
+                        identifer = msgItem.isOut ? "videoCell" : "videoCellL"
+                        
+                        let cell = tableView.dequeueReusableCell(withIdentifier: identifer, for: indexPath) as! VideoTableViewCell
+                        cell.updateHashVideoCell(message: msgItem, name:self.peerName, avatar:self.peerAvatarData, isGroup: self.IS_GROUP)
+                        cell.configure()
+                        return cell
                 default:
                         return TxtTableViewCell()
                 }

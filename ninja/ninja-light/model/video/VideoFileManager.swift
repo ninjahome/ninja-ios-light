@@ -12,17 +12,19 @@ import ChatLib
 import Photos
 
 class VideoFileManager {
-        static func thumbnailImageOfVideoInVideoURL(videoURL: URL) -> UIImage? {
+        
+        static func thumbnailImageOfVideoInVideoURL(videoURL: URL) -> (UIImage?, Bool) {
                 let asset = AVURLAsset(url: videoURL as URL, options: nil)
                 
                 let imageGenerator = AVAssetImageGenerator(asset: asset)
                 imageGenerator.appliesPreferredTrackTransform = true
                 guard let cgImage = try? imageGenerator.copyCGImage(at: .zero, actualTime: nil) else {
-                        return nil
+                        return (nil, false)
                 }
+                
 
                 let thumbnail = UIImage(cgImage: cgImage)
-                return thumbnail
+                return (thumbnail, cgImage.width > cgImage.height)
         }
         
         static func getVideoSize(videoURL: URL) -> Int {

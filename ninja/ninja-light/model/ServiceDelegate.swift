@@ -44,7 +44,7 @@ class ServiceDelegate: NSObject {
                         userDefault.set(current, forKey: AppVersionKey)
                 }
                 // networkID 5: company 2: other
-        
+                
                 ChatLibInitAPP(endPoint, "a3a5c09826a246d0bfbef8084b81df1f", WebsocketSrv.shared, networkID)
         }
         public static func InitPushParam(deviceToken:String) {
@@ -55,8 +55,15 @@ class ServiceDelegate: NSObject {
                 return ChatLibMaxAvatarSize()
         }
         
-        public static func MakeVedioSumMsg(origin:Data){
-                
+        public static func MakeVideoSumMsg(rawData:Data)->(String?){
+                var err:NSError?
+                let has = ChatLibPostBigMsg(rawData, &err)
+                if let e = err{
+                        print("------>>>post big vedio failed:\(e.localizedDescription)")
+                        return nil
+                }
+                _ = FileManager.writeByHash(has: has, content: rawData)
+                return has
         }
         
         public static func MakeImgSumMsg(origin:Data, snapShotSize:Int)->(Data?, String?){
@@ -78,12 +85,11 @@ class ServiceDelegate: NSObject {
                 var err:NSError?
                 let has = ChatLibPostBigMsg(rawData, &err)
                 if let e = err{
-                        print("------>>>compress image failed:\(e.localizedDescription )")
+                        print("------>>>post big image failed:\(e.localizedDescription )")
                         return (nil, nil)
                 }
                 
-                let writeRet = FileManager.writeByHash(has: has, content: rawData)
-                print("------>>>write hash file result:=>", has, writeRet)
+                _ = FileManager.writeByHash(has: has, content: rawData)
                 return (snapShot, has)
         }
         
@@ -96,10 +102,21 @@ class ServiceDelegate: NSObject {
                         return nil
                 }
                 
-                let writeRet = FileManager.writeByHash(has: has, content: d)
-                print("------>>>write hash file result:=>", has, writeRet)
-                
+                _ = FileManager.writeByHash(has: has, content: d)
                 return d
+        }
+        
+        public static func getVideoUrlByHash(has:String)->URL?{
+                if let url = FileManager.urlOfHash(has: has){
+                        return url
+                }
+                
+                var err:NSError?
+                guard let d = ChatLibReadBigMsgByHash(has, &err) else{
+                        return nil
+                }
+                
+                return FileManager.writeByHash(has: has, content: d)
         }
         
         public static func CompressImg(origin:Data, targetSize:Int)->Data?{

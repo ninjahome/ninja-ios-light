@@ -37,8 +37,8 @@ extension MsgViewController: UIDocumentPickerDelegate {
                         return
                 }
                 
-                let thumb = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: dirURL)
-                   
+                let (thumb, _) = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: dirURL)
+                
                 let fil = videoMsg.init(name:name, data: videoD, thumb: thumb)
                 
                 var gid:String? = nil

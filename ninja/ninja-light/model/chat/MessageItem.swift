@@ -181,6 +181,8 @@ class MessageItem: NSObject {
                         return "Unknown".locStr
                 case .contact:
                         return "[Contact]".locStr
+                case .videoWithHash:
+                        return "[Voice]".locStr
                 }
         }
         
@@ -380,6 +382,11 @@ extension MessageItem: ModelObj {
 
 
 extension MessageItem:ChatLibUnwrapCallbackProtocol{
+        func video(withHash d: Data?, h: String?, horiz:Bool) {
+                self.typ = .videoWithHash
+                self.payload = videoMsgWithHash(thumb: d ?? Data(), has: h ?? "", isHorizon: horiz)
+        }
+        
         func file(_ n: String?, t: Int32, d: Data?) {
                 self.typ = .file
                 let filTyp = FileTyp.init(rawValue: t)

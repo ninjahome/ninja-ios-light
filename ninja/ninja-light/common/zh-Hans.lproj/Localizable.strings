@@ -89,3 +89,6 @@
 "waiting"="";
 "deleting contact"="正在删除联系人";
 "deleting"="正在删除";
+"create thumbnail failed"="缩略图创建失败";
+"video expired"="视频源已过期";
+"saving"="保存中";

@@ -81,24 +81,27 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
         }
         
         private func videoDidSelected(url: URL) {
-                let name = url.lastPathComponent
+                
                 guard let data = try? Data(contentsOf: url), !data.isEmpty else{
                         self.toastMessage(title: "Empty video file".locStr)
                         return
                 }
+                let (thumb, isHorize) = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
+                guard let thumbData = thumb?.jpeg else{
+                        self.toastMessage(title: "create thumbnail failed".locStr)
+                        return
+                }
+                
                 let maxSize = ChatLibMaxFileSize()
                 let curSize = data.count
                 if curSize < maxSize{
-                        let thumb = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
-                        sendVideoFile(data: data, name: name, thumb: thumb)
+                        sendVideoFile(thumbData: thumbData, rawData: data, isHorize:isHorize)
                         return
                 }
                 
                 self.showIndicator(withTitle: "", and: "Compressing".locStr)
                 ServiceDelegate.workQueue.async {
-                        
                         VideoFileManager.compressVideo(from:curSize, to:maxSize, videoURL: url) {(status, resultUrl) in
-                                
                                 self.hideIndicator()
                                 
                                 switch status{
@@ -109,39 +112,37 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                                         self.toastMessage(title: "Cancelled".locStr)
                                         break
                                 default:
-                                        self.sendVideoFile(url: resultUrl)
+                                        guard let data = try? Data(contentsOf: resultUrl), !data.isEmpty else{
+                                                self.toastMessage(title: "Empty video file".locStr)
+                                                return
+                                        }
+                                        self.sendVideoFile(thumbData: thumbData, rawData: data, isHorize:isHorize)
                                 }
                         }
                 }
         }
-        private func sendVideoFile(data:Data, name:String, thumb:UIImage?){
-                var gid:String? = nil
-                if IS_GROUP{
-                        gid = self.peerUid
-                }
-                let video = videoMsg(name: name, data: data, thumb: thumb)
-                let msg = MessageItem.init(to: peerUid,
-                                           data: video,
-                                           typ: .file,
-                                           gid: gid)
-                
-                sendMessage(msg: msg)
-        }
         
-        private func sendVideoFile(url: URL){
+        private func sendVideoFile(thumbData:Data, rawData:Data, isHorize:Bool){
+                self.showIndicator(withTitle: "", and: "Compressing".locStr)
                 
-                let name = url.lastPathComponent
-                guard let data = try? Data(contentsOf: url), !data.isEmpty else{
-                        self.toastMessage(title: "Empty video file".locStr)
-                        return
+                ServiceDelegate.workQueue.async {
+                        guard let has = ServiceDelegate.MakeVideoSumMsg(rawData: rawData) else{
+                                self.hideIndicator()
+                                self.toastMessage(title:  "Failed".locStr)
+                                return
+                        }
+                        
+                        var gid:String? = nil
+                        if self.IS_GROUP{
+                                gid = self.peerUid
+                        }
+                        let video = videoMsgWithHash(thumb:thumbData, has:has, isHorizon: isHorize)
+                        let msg = MessageItem.init(to: self.peerUid,
+                                                   data: video,
+                                                   typ: .file,
+                                                   gid: gid)
+                        
+                        self.sendMessage(msg: msg)
                 }
-                if data.count > ChatLibMaxFileSize(){
-                        self.toastMessage(title: "File size out of limit".locStr+"[\(data.count)]")
-                        return
-                }
-                
-                let thumb = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
-                
-                sendVideoFile(data:data, name: name, thumb: thumb)
         }
 }

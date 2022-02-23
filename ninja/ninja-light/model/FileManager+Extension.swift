@@ -41,14 +41,26 @@ extension FileManager {
                 }
         }
         
-        static func writeByHash(has:String, content:Data)-> Bool{
+        static func urlOfHash(has:String)->URL?{
+                let filePath = TmpDirectory().appendingPathComponent(has)
+                if fileManager.fileExists(atPath: filePath.path){
+                        return filePath
+                }
+                return nil
+        }
+        
+        static func writeByHash(has:String, content:Data)-> URL?{
                 let tmpPath = TmpDirectory()
                 let filePath = tmpPath.appendingPathComponent(has)
                 if fileManager.fileExists(atPath: filePath.path){
-                        return true
+                        return filePath
                 }
                 
-                return fileManager.createFile(atPath: filePath.path, contents: content, attributes: .none)
+                guard fileManager.createFile(atPath: filePath.path, contents: content, attributes: .none) else{
+                        return nil
+                }
+                
+                return filePath
         }
         
         static func readByHash(has:String) -> Data?{
