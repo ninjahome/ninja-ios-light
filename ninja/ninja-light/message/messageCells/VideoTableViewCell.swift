@@ -15,6 +15,8 @@ extension NSLayoutConstraint {
 }
 class VideoTableViewCell: UITableViewCell {
         
+        @IBOutlet var widthConstraint: NSLayoutConstraint!
+        @IBOutlet var heightConstraint: NSLayoutConstraint!
         @IBOutlet weak var msgBackgroundView: UIImageView!
         @IBOutlet weak var playVideBtn: UIButton!
         @IBOutlet weak var avatar: AvatarButton!
@@ -44,6 +46,8 @@ class VideoTableViewCell: UITableViewCell {
                 super.setSelected(selected, animated: animated)
                 // Configure the view for the selected state
         }
+        
+        
         
         @IBAction func retry(_ sender: UIButton) {
                 guard let msg = self.cellMsg else{
@@ -93,10 +97,11 @@ class VideoTableViewCell: UITableViewCell {
                 
                 let from = message.from
                 if let video = message.payload as? videoMsg{
-                        playVideBtn.layer.contents = video.thumbnailImg.cgImage
+                        let cgImg = video.thumbnailImg.cgImage!
+                        playVideBtn.layer.contents = cgImg
                         playVideBtn.layer.contentsGravity = CALayerContentsGravity.resizeAspect;
                         playVideBtn.layer.transform = CATransform3DMakeRotation(0.0, -90.0 / 180.0 * .pi, 0.0, 1.0)
-                        msgBackgroundView.layer.frame = CGRect(x: 0, y: 0, width: 160, height: 90)
+                        
                 }
                 
                 if message.isOut {
@@ -118,6 +123,11 @@ class VideoTableViewCell: UITableViewCell {
                 }
                 
                 time.text = formatMsgTimeStamp(by: message.timeStamp)
+        }
+        func LayoutAdjust(){
+//                widthConstraint.constant = 160
+                msgBackgroundView.frame =  CGRect(x: 0, y: 0, width: 320, height: 180)
+                msgBackgroundView.layoutIfNeeded()
         }
         
         @objc func longPress(sender: UILongPressGestureRecognizer

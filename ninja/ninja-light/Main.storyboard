@@ -2054,10 +2054,10 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="odA-8n-hw0" customClass="UIImageView">
-                                                    <rect key="frame" x="537.5" y="24.5" width="89.5" height="159.5"/>
+                                                    <rect key="frame" x="537" y="24.5" width="90" height="159.5"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="odn-T9-sU6">
-                                                            <rect key="frame" x="0.0" y="0.0" width="89.5" height="159.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="90" height="159.5"/>
                                                             <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -2071,19 +2071,19 @@
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="160" id="2oO-e6-6Fw"/>
                                                         <constraint firstItem="odn-T9-sU6" firstAttribute="leading" secondItem="odA-8n-hw0" secondAttribute="leading" id="5pu-6O-BTI"/>
-                                                        <constraint firstAttribute="width" secondItem="odA-8n-hw0" secondAttribute="height" multiplier="9:16" id="HXO-Zi-XJG"/>
+                                                        <constraint firstAttribute="height" constant="160" id="CRb-MZ-zug"/>
                                                         <constraint firstItem="odn-T9-sU6" firstAttribute="top" secondItem="odA-8n-hw0" secondAttribute="top" id="MeN-X4-YpK"/>
+                                                        <constraint firstAttribute="width" constant="90" id="Uiw-bN-2TH"/>
                                                         <constraint firstAttribute="trailing" secondItem="odn-T9-sU6" secondAttribute="trailing" id="VcY-km-Vs2"/>
                                                         <constraint firstAttribute="bottom" secondItem="odn-T9-sU6" secondAttribute="bottom" id="aIj-Sc-9fS"/>
                                                     </constraints>
                                                 </view>
                                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="lcu-Qn-Z5m">
-                                                    <rect key="frame" x="509.5" y="94.5" width="20" height="20"/>
+                                                    <rect key="frame" x="509" y="94.5" width="20" height="20"/>
                                                 </activityIndicatorView>
                                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ysp-Hb-QR2">
-                                                    <rect key="frame" x="507.5" y="93.5" width="22" height="22"/>
+                                                    <rect key="frame" x="507" y="93.5" width="22" height="22"/>
                                                     <state key="normal" image="!!"/>
                                                     <connections>
                                                         <action selector="retry:" destination="L0H-Gq-bJd" eventType="touchUpInside" id="uUP-hy-juN"/>
@@ -2111,12 +2111,14 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="avatar" destination="vhX-Z1-6l8" id="9Da-tV-Ccj"/>
+                                            <outlet property="heightConstraint" destination="CRb-MZ-zug" id="1AG-0i-ypL"/>
                                             <outlet property="msgBackgroundView" destination="odA-8n-hw0" id="QRR-IF-ec0"/>
                                             <outlet property="nickname" destination="UDE-yt-mhh" id="7xt-Qm-oRU"/>
                                             <outlet property="playVideBtn" destination="odn-T9-sU6" id="ErC-ij-2aS"/>
                                             <outlet property="retry" destination="Ysp-Hb-QR2" id="HOK-4O-2EZ"/>
                                             <outlet property="spinner" destination="lcu-Qn-Z5m" id="0Xc-OP-Vva"/>
                                             <outlet property="time" destination="sWp-Wu-8Gg" id="smB-wo-imC"/>
+                                            <outlet property="widthConstraint" destination="Uiw-bN-2TH" id="8rs-Hu-UOP"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
