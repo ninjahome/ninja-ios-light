@@ -243,8 +243,7 @@ class fileMsg: NSObject, NSCoding,IMPayLoad {
 }
 
 class videoMsg:fileMsg{
-        public static let defaultImg = UIImage(named: "logo_img")!
-        var thumbnailImg: UIImage = defaultImg
+        var thumbnailImg: UIImage = defaultAvatar
         private var tmpFileURL:URL?
         
         override init() {
@@ -257,13 +256,15 @@ class videoMsg:fileMsg{
         }
         required init?(coder: NSCoder) {
                 super.init(coder: coder)
-                self.thumbnailImg = (coder.decodeObject(forKey: "thumbnailImg") as? UIImage) ?? videoMsg.defaultImg
+                if let img = coder.decodeObject(forKey: "thumbnailImg") as? UIImage{
+                        self.thumbnailImg = img
+                }
                 self.tmpFileURL = coder.decodeObject(forKey: "tmpFileURL") as? URL
         }
         
         init(name:String?, data:Data?, thumb:UIImage?){
                 super.init(name: name, data: data)
-                self.thumbnailImg = thumb ?? videoMsg.defaultImg
+                self.thumbnailImg = thumb ?? defaultAvatar
         }
         
         init(name:String?, data:Data?){
@@ -271,7 +272,9 @@ class videoMsg:fileMsg{
                 guard  let url = tmpUrl() else{
                         return
                 }
-                self.thumbnailImg = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url) ?? videoMsg.defaultImg
+                if let img = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url){
+                        self.thumbnailImg = img
+                }
         }
         
         func tmpUrl()->URL?{
