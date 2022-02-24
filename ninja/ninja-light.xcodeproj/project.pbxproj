@@ -345,13 +345,6 @@
 			path = views;
 			sourceTree = "<group>";
 		};
-		088C3C5826784DD400E5A715 /* image */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = image;
-			sourceTree = "<group>";
-		};
 		08B64A1727A29AB200D0677F /* NotificationServiceExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -487,7 +480,6 @@
 			children = (
 				0822A99D27671F5900A09A66 /* video */,
 				087B57EE26DF108200591F8D /* chat */,
-				088C3C5826784DD400E5A715 /* image */,
 				086701BB26672CDA00A1E951 /* audio */,
 				69F8D101261AA615009D7AF3 /* Wallet.swift */,
 				69F8D106261AA7FE009D7AF3 /* CoreData.swift */,

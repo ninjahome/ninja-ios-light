@@ -21,9 +21,6 @@ extension MsgViewController:PHPickerViewControllerDelegate{
                 if itemProvider.hasItemConformingToTypeIdentifier(UTType.image.identifier) {
                         self.loadImage(provider:itemProvider)
                 }
-                
-                
-                
         }
         
         func loadImage(provider:NSItemProvider){

@@ -266,47 +266,55 @@ extension MsgViewController{
                 guard Wallet.shared.isStillVip() else {
                         showVipModalViewController()
                         return
-                        
                 }
                 
-                        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                                let cameraPicker = UIImagePickerController()
-                                cameraPicker.delegate = self
-                                cameraPicker.allowsEditing = true
-                                cameraPicker.sourceType = .camera
-                                cameraPicker.mediaTypes = ["public.movie", "public.image"]
-                                cameraPicker.videoMaximumDuration = 30
-                                present(cameraPicker, animated: true, completion: nil)
-                        } else {
-                                toastMessage(title: "No Camera Permission".locStr)
-                        }
-              
+                if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                        let cameraPicker = UIImagePickerController()
+                        cameraPicker.delegate = self
+                        cameraPicker.allowsEditing = true
+                        cameraPicker.sourceType = .camera
+                        cameraPicker.mediaTypes = ["public.movie", "public.image"]
+                        cameraPicker.videoMaximumDuration = 30
+                        present(cameraPicker, animated: true, completion: nil)
+                } else {
+                        toastMessage(title: "No Camera Permission".locStr)
+                }
         }
+        private func accessPhoto(){ DispatchQueue.main.async {
+                
+                let photoLibrary = PHPhotoLibrary.shared()
+                var configuration = PHPickerConfiguration(photoLibrary: photoLibrary)
+                configuration.filter = PHPickerFilter.any(of: [.livePhotos, .videos, .images])
+                configuration.preferredAssetRepresentationMode = .current
+                configuration.selectionLimit = 1
+                let picker = PHPickerViewController(configuration: configuration)
+                picker.delegate = self
+                self.present(picker, animated: true)
+        }}
         
         @IBAction func album(_ sender: UIButton) {
                 guard Wallet.shared.isStillVip() else {
                         showVipModalViewController()
                         return
                 }
-                PHPhotoLibrary.requestAuthorization(for: .readWrite) { [unowned self] (status) in
-                        
-                }
-                let photoLibrary = PHPhotoLibrary.shared()
-                var configuration = PHPickerConfiguration(photoLibrary: photoLibrary)
-                configuration.filter = PHPickerFilter.any(of: [.livePhotos, .videos,.images])
-                configuration.preferredAssetRepresentationMode = .current
-                configuration.selectionLimit = 1
-                let picker = PHPickerViewController(configuration: configuration)
-                picker.delegate = self
-                present(picker, animated: true)
-                //                let vc = UIImagePickerController()
-                //                vc.sourceType = .photoLibrary
-                //                vc.mediaTypes = ["public.movie", "public.image"]
-                //                vc.videoQuality = .typeMedium
-                //                vc.delegate = self
-                ////                        vc.allowsEditing = false
-                //                present(vc, animated: true, completion: nil)
                 
+                let status = PHPhotoLibrary.authorizationStatus(for: .readWrite)
+                if status == .denied || status == .restricted{
+                        self.toastMessage(title: "authorize first please".locStr)
+                        return
+                }
+                if status == .authorized{
+                        accessPhoto()
+                        return
+                }
+                
+                PHPhotoLibrary.requestAuthorization(for: .readWrite) { [unowned self] (status) in
+                        if status == .denied {
+                                self.toastMessage(title: "authorize failed".locStr)
+                                return
+                        }
+                        accessPhoto()
+                }
         }
         
         

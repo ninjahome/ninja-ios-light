@@ -92,3 +92,5 @@
 "create thumbnail failed"="缩略图创建失败";
 "video expired"="视频源已过期";
 "saving"="保存中";
+"authorize first please"="请授权访问相册";
+"authorize failed"="授权失败";
