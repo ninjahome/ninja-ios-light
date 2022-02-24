@@ -12,7 +12,7 @@ import ChatLib
 import Photos
 
 class VideoFileManager {
-        
+        private static let trimPrefix = "trim."
         static func thumbnailImageOfVideoInVideoURL(videoURL: URL) -> (UIImage?, Bool) {
                 let asset = AVURLAsset(url: videoURL as URL, options: nil)
                 
@@ -57,7 +57,13 @@ class VideoFileManager {
                 let end = assetDuration/Float64(from) * Float64(to) - 1
                 
                 let endDuration = CMTimeMakeWithSeconds(end, preferredTimescale: 1)
-                let videoFinalPath = FileManager.TmpDirectory().appendingPathComponent(videoURL.lastPathComponent)
+                let videoFinalPath = FileManager.TmpDirectory().appendingPathComponent(trimPrefix + videoURL.lastPathComponent)
+                
+                if FileManager.fileManager.fileExists(atPath: videoFinalPath.path){
+                        callback(.completed, videoFinalPath)
+                        return
+                }
+                
                 let exporter :AVAssetExportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality)!
                 exporter.outputURL = videoFinalPath
                 exporter.outputFileType = AVFileType.mov

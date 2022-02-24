@@ -38,21 +38,34 @@ extension MsgViewController:PHPickerViewControllerDelegate{
         }
         
         func loadVideo(provider:NSItemProvider){
-                provider.loadDataRepresentation(forTypeIdentifier: UTType.movie.identifier) { data, err in
-                        if let e = err{
-                                self.toastMessage(title: e.localizedDescription)
-                                return
-                        }
-                        
-                        guard let data = data, !data.isEmpty else{
-                                self.toastMessage(title: "Empty video file".locStr)
-                                return
-                        }
-                        self.videoDidSelected(data: data)
+//                provider.loadDataRepresentation(forTypeIdentifier: UTType.movie.identifier) { data, err in
+//                        if let e = err{
+//                                self.toastMessage(title: e.localizedDescription)
+//                                return
+//                        }
+//
+//                        guard let data = data, !data.isEmpty else{
+//                                self.toastMessage(title: "Empty video file".locStr)
+//                                return
+//                        }
+//                        self.videoDidSelected(data: data)
 //                        let has = ChatLibHashOfMsgData(data)
 //                        print("------>>>ahs=>", has)
-                }
+//                }
                 
+                provider.loadInPlaceFileRepresentation(forTypeIdentifier: UTType.movie.identifier) {url, inPlace, err in
+                        guard let url = url else{
+                                self.toastMessage(title: "Invalid image data".locStr)
+                                return
+                        }
+                        do{
+                                let data = try Data(contentsOf: url)
+                                self.videoDidSelected(data:data, url:url)
+                        }catch let err{
+                                print("------>>>", err.localizedDescription)
+                                self.toastMessage(title: err.localizedDescription)
+                        }
+                }
         }
 }
 
@@ -95,13 +108,8 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                 sendMessage(msg: msg)
         }
         
-        private func videoDidSelected(data: Data) {
-               
-                let has = ChatLibHashOfMsgData(data)
-                guard let url = FileManager.writeByHash(has: has+".mov", content: data) else{
-                        self.toastMessage(title: "Invalid image data".locStr)
-                        return
-                }
+        private func videoDidSelected(data:Data, url: URL) {
+                
                 let maxSize = ChatLibMaxFileSize()
                 let curSize = data.count
                 if curSize < maxSize{
