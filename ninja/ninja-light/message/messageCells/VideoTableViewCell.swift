@@ -79,14 +79,21 @@ class VideoTableViewCell: UITableViewCell {
                 }
         }
         private func playByHash(has:String){
-                guard let url = VideoFileManager.urlOfHash(has: has) else{
-                        guard let vc = getKeyWindow()?.rootViewController else{
-                                return
-                        }
-                        vc.toastMessage(title: "video expired".locStr)
+                guard let vc = getKeyWindow()?.rootViewController else{
                         return
                 }
-                self.playByUrl(url:url)
+                vc.showIndicator(withTitle: "", and: "loading".locStr)
+                ServiceDelegate.workQueue.async {
+                        let url = ServiceDelegate.LoadVideoByHash(has: has)
+                        vc.hideIndicator()
+                        guard let url = url else{
+                                vc.toastMessage(title: "video expired".locStr)
+                                return
+                        }
+                        DispatchQueue.main.async {
+                                self.playByUrl(url:url)
+                        }
+                }
         }
         
         private func playByUrl(url:URL){

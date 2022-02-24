@@ -55,6 +55,19 @@ class ServiceDelegate: NSObject {
                 return ChatLibMaxAvatarSize()
         }
         
+        public static func LoadVideoByHash(has:String) -> URL?{
+                if let url = VideoFileManager.urlOfHash(has: has){
+                        return url
+                }
+              
+                var err:NSError?
+                guard let d = ChatLibReadBigMsgByHash(has, &err) else{
+                        return nil
+                }
+                
+                return VideoFileManager.writeByHash(has: has, content: d)
+        }
+        
         public static func MakeVideoSumMsg(rawData:Data)->(String?){
                 var err:NSError?
                 let has = ChatLibPostBigMsg(rawData, &err)
