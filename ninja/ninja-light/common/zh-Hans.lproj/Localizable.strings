@@ -94,3 +94,4 @@
 "saving"="保存中";
 "authorize first please"="请授权访问相册";
 "authorize failed"="授权失败";
+"can't load that video"="未找到视频源";

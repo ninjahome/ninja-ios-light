@@ -271,7 +271,7 @@ extension MsgViewController{
                 if UIImagePickerController.isSourceTypeAvailable(.camera) {
                         let cameraPicker = UIImagePickerController()
                         cameraPicker.delegate = self
-                        cameraPicker.allowsEditing = true
+                        cameraPicker.allowsEditing = false
                         cameraPicker.sourceType = .camera
                         cameraPicker.mediaTypes = ["public.movie", "public.image"]
                         cameraPicker.videoMaximumDuration = 30

@@ -17,9 +17,13 @@ extension MsgViewController:PHPickerViewControllerDelegate{
                 guard !results.isEmpty else{
                         return
                 }
+                
+                //TODO:: live photo
                 let itemProvider = results[0].itemProvider
                 if itemProvider.hasItemConformingToTypeIdentifier(UTType.image.identifier) {
                         self.loadImage(provider:itemProvider)
+                }else if itemProvider.hasItemConformingToTypeIdentifier(UTType.movie.identifier){
+                        self.loadVideo(provider:itemProvider)
                 }
         }
         
@@ -31,6 +35,24 @@ extension MsgViewController:PHPickerViewControllerDelegate{
                         
                         self.imageDidSelected(data: data)
                 }
+        }
+        
+        func loadVideo(provider:NSItemProvider){
+                provider.loadDataRepresentation(forTypeIdentifier: UTType.movie.identifier) { data, err in
+                        if let e = err{
+                                self.toastMessage(title: e.localizedDescription)
+                                return
+                        }
+                        
+                        guard let data = data, !data.isEmpty else{
+                                self.toastMessage(title: "Empty video file".locStr)
+                                return
+                        }
+                        self.videoDidSelected(data: data)
+//                        let has = ChatLibHashOfMsgData(data)
+//                        print("------>>>ahs=>", has)
+                }
+                
         }
 }
 
@@ -73,24 +95,17 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                 sendMessage(msg: msg)
         }
         
-        private func videoDidSelected(url: URL) {
-                
-                guard let data = try? Data(contentsOf: url), !data.isEmpty else{
-                        self.toastMessage(title: "Empty video file".locStr)
-                        return
-                }
+        private func videoDidSelected(data: Data) {
+               
                 let has = ChatLibHashOfMsgData(data)
-                print("------>>>ahs=>", has, url.path)
-                let (thumb, isHorize) = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
-                guard let thumbData = thumb?.jpeg else{
-                        self.toastMessage(title: "create thumbnail failed".locStr)
+                guard let url = FileManager.writeByHash(has: has, content: data) else{
+                        self.toastMessage(title: "Invalid image data".locStr)
                         return
                 }
-                
                 let maxSize = ChatLibMaxFileSize()
                 let curSize = data.count
                 if curSize < maxSize{
-                        sendVideoFile(thumbData: thumbData, rawData: data, isHorize:isHorize)
+                        sendVideoFile(rawData: data, url:url)
                         return
                 }
                 
@@ -111,14 +126,20 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                                                 self.toastMessage(title: "Empty video file".locStr)
                                                 return
                                         }
-                                        self.sendVideoFile(thumbData: thumbData, rawData: data, isHorize:isHorize)
+                                        self.sendVideoFile(rawData: data, url:resultUrl)
                                 }
                         }
                 }
         }
         
-        private func sendVideoFile(thumbData:Data, rawData:Data, isHorize:Bool){
+        private func sendVideoFile(rawData:Data, url:URL){
                 self.showIndicator(withTitle: "", and: "Compressing".locStr)
+                let (thumb, isHorize) = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
+                
+                guard let thumbData = thumb?.jpeg else{
+                        self.toastMessage(title: "create thumbnail failed".locStr)
+                        return
+                }
                 
                 ServiceDelegate.workQueue.async {
                         let hasOfVideo = ServiceDelegate.MakeVideoSumMsg(rawData: rawData)
