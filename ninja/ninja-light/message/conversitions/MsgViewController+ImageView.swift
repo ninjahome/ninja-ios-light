@@ -98,7 +98,7 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
         private func videoDidSelected(data: Data) {
                
                 let has = ChatLibHashOfMsgData(data)
-                guard let url = FileManager.writeByHash(has: has, content: data) else{
+                guard let url = FileManager.writeByHash(has: has+".mov", content: data) else{
                         self.toastMessage(title: "Invalid image data".locStr)
                         return
                 }
@@ -134,14 +134,13 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
         
         private func sendVideoFile(rawData:Data, url:URL){
                 self.showIndicator(withTitle: "", and: "Compressing".locStr)
-                let (thumb, isHorize) = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
-                
-                guard let thumbData = thumb?.jpeg else{
-                        self.toastMessage(title: "create thumbnail failed".locStr)
-                        return
-                }
-                
                 ServiceDelegate.workQueue.async {
+                        let (thumb, isHorize) = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
+                        guard let thumbData = thumb?.jpeg else{
+                                self.hideIndicator()
+                                self.toastMessage(title: "create thumbnail failed".locStr)
+                                return
+                        }
                         let hasOfVideo = ServiceDelegate.MakeVideoSumMsg(rawData: rawData)
                         self.hideIndicator()
                         guard let has = hasOfVideo else{

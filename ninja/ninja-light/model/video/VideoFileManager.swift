@@ -18,13 +18,16 @@ class VideoFileManager {
                 
                 let imageGenerator = AVAssetImageGenerator(asset: asset)
                 imageGenerator.appliesPreferredTrackTransform = true
-                guard let cgImage = try? imageGenerator.copyCGImage(at: .zero, actualTime: nil) else {
+                do {
+                        
+                        let cgImage = try imageGenerator.copyCGImage(at: .zero, actualTime: nil)
+                        let thumbnail = UIImage(cgImage: cgImage)
+                        return (thumbnail, cgImage.width > cgImage.height)
+                        
+                } catch let err{
+                        print("------>>>", err.localizedDescription, videoURL.path)
                         return (nil, false)
                 }
-                
-
-                let thumbnail = UIImage(cgImage: cgImage)
-                return (thumbnail, cgImage.width > cgImage.height)
         }
         
         static func getVideoSize(videoURL: URL) -> Int {
@@ -47,7 +50,7 @@ class VideoFileManager {
         }
         
         static func compressVideo(from:Int, to:Int, videoURL: URL, callback:@escaping  ((_ status:AVAssetExportSession.Status, _ url:URL)->())){
-               
+                
                 let asset = AVAsset(url: videoURL)
                 let assetDuration = CMTimeGetSeconds(asset.duration)
                 
