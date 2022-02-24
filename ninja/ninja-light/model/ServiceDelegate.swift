@@ -62,7 +62,7 @@ class ServiceDelegate: NSObject {
                         print("------>>>post big vedio failed:\(e.localizedDescription)")
                         return nil
                 }
-                _ = FileManager.writeByHash(has: has, content: rawData)
+                _ = VideoFileManager.writeByHash(has: has, content: rawData)
                 return has
         }
         

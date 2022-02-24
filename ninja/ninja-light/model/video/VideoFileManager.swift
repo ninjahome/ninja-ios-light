@@ -13,6 +13,8 @@ import Photos
 
 class VideoFileManager {
         private static let trimPrefix = "trim."
+        private static let hashSuffix = "mov"
+        
         static func thumbnailImageOfVideoInVideoURL(videoURL: URL) -> (UIImage?, Bool) {
                 let asset = AVURLAsset(url: videoURL as URL, options: nil)
                 
@@ -72,5 +74,27 @@ class VideoFileManager {
                 exporter.exportAsynchronously {
                         callback(exporter.status, videoFinalPath)
                 }
+        }
+        
+        static func urlOfHash(has:String)->URL?{
+                let filePath = FileManager.TmpDirectory().appendingPathComponent(has).appendingPathExtension(hashSuffix)
+                if FileManager.fileManager.fileExists(atPath: filePath.path){
+                        return filePath
+                }
+                return nil
+        }
+        
+        static func writeByHash(has:String, content:Data)-> URL?{
+                let tmpPath = FileManager.TmpDirectory()
+                let filePath = tmpPath.appendingPathComponent(has).appendingPathExtension(hashSuffix)
+                if FileManager.fileManager.fileExists(atPath: filePath.path){
+                        return filePath
+                }
+                
+                guard FileManager.fileManager.createFile(atPath: filePath.path, contents: content, attributes: .none) else{
+                        return nil
+                }
+                
+                return filePath
         }
 }

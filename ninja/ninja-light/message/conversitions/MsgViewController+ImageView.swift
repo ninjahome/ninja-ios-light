@@ -38,21 +38,7 @@ extension MsgViewController:PHPickerViewControllerDelegate{
         }
         
         func loadVideo(provider:NSItemProvider){
-//                provider.loadDataRepresentation(forTypeIdentifier: UTType.movie.identifier) { data, err in
-//                        if let e = err{
-//                                self.toastMessage(title: e.localizedDescription)
-//                                return
-//                        }
-//
-//                        guard let data = data, !data.isEmpty else{
-//                                self.toastMessage(title: "Empty video file".locStr)
-//                                return
-//                        }
-//                        self.videoDidSelected(data: data)
-//                        let has = ChatLibHashOfMsgData(data)
-//                        print("------>>>ahs=>", has)
-//                }
-                
+
                 provider.loadInPlaceFileRepresentation(forTypeIdentifier: UTType.movie.identifier) {url, inPlace, err in
                         guard let url = url else{
                                 self.toastMessage(title: "Invalid image data".locStr)
