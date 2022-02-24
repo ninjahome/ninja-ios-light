@@ -312,12 +312,14 @@ class videoMsgWithHash: NSObject, NSCoding,IMPayLoad {
         func encode(with coder: NSCoder) {
                 coder.encode(thumbData, forKey: "thumb")
                 coder.encode(has, forKey: "has")
+                coder.encode(isHorizon, forKey: "isHorizon")
         }
         
         required init?(coder: NSCoder) {
                 super.init()
                 self.thumbData = coder.decodeObject(forKey: "thumb") as? Data
                 self.has = coder.decodeObject(forKey: "has") as? String
+                self.isHorizon = coder.decodeBool(forKey: "isHorizon")
         }
         
         override init() {

@@ -129,7 +129,8 @@ class VideoTableViewCell: UITableViewCell {
                 }
                 self.hashOfVedioData = has
                 isHorizon = hv.isHorizon
-                playVideBtn.layer.contents =  UIImage(data: thumb)?.cgImage
+                let thumbImg = UIImage(data: thumb)
+                playVideBtn.layer.contents =  thumbImg?.cgImage
                 playVideBtn.layer.contentsGravity = CALayerContentsGravity.resizeAspect;
                 
                 if message.isOut {
@@ -226,7 +227,8 @@ class VideoTableViewCell: UITableViewCell {
                 self.copyDataBy(url: url)
         }
         
-        private func copyDataBy(url:URL){
+        private func copyDataBy(url:URL){DispatchQueue.main.async {
+                
                 let selectorToCall = #selector(VideoTableViewCell.videoSaved(_:didFinishSavingWithError:context:))
                 let alert = UIAlertController(title: "Choose opertion".locStr, message: nil, preferredStyle: .actionSheet)
                 let action = UIAlertAction(title: "Save to album".locStr, style: .default) { (_) in
@@ -238,7 +240,7 @@ class VideoTableViewCell: UITableViewCell {
                 
                 let window = getKeyWindow()
                 window?.rootViewController?.present(alert, animated: true)
-        }
+        }}
         
         @objc func videoSaved(_ video: String, didFinishSavingWithError error: NSError!, context: UnsafeMutableRawPointer){
                 if let theError = error {

@@ -182,7 +182,7 @@ class MessageItem: NSObject {
                 case .contact:
                         return "[Contact]".locStr
                 case .videoWithHash:
-                        return "[Voice]".locStr
+                        return "[Video]".locStr
                 }
         }
         
@@ -311,14 +311,7 @@ extension MessageItem: ModelObj {
                 switch self.typ {
                 case .plainTxt:
                         uObj.message = (self.payload as? txtMsg)?.txt
-                case .image:
-//                        uObj.image = (self.payload as? imgMsg)?.content
-                        uObj.media = self.payload as? NSObject
-                case .voice:
-                        uObj.media = self.payload as? NSObject
-                case .location:
-                        uObj.media = self.payload as? NSObject
-                case .file:
+                case .image, .voice, .location, .file, .videoWithHash:
                         uObj.media = self.payload as? NSObject
                 default:
                         print("full fill msg: no such type")
@@ -360,8 +353,10 @@ extension MessageItem: ModelObj {
                         self.payload = uObj.media as? locationMsg
                 case .file:
                         self.payload = uObj.media as? fileMsg
+                case .videoWithHash:
+                        self.payload = uObj.media as? videoMsgWithHash
                 default:
-                        print("init by msg obj: no such type")
+                        print("------>>>init by msg obj: no such type")
                 }
                 self.to = uObj.to ?? "<->"//TODO::
                 self.groupId = uObj.groupId

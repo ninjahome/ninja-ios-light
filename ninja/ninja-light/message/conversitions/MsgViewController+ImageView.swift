@@ -155,7 +155,7 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                         let video = videoMsgWithHash(thumb:thumbData, has:has, isHorizon: isHorize)
                         let msg = MessageItem.init(to: self.peerUid,
                                                    data: video,
-                                                   typ: .file,
+                                                   typ: .videoWithHash,
                                                    gid: gid)
                         
                         self.sendMessage(msg: msg)
