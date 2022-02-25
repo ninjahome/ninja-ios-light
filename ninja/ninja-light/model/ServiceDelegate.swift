@@ -59,7 +59,7 @@ class ServiceDelegate: NSObject {
                 if let url = VideoFileManager.urlOfHash(has: has){
                         return url
                 }
-              
+                
                 var err:NSError?
                 guard let d = ChatLibReadBigMsgByHash(has, &err) else{
                         return nil
@@ -79,31 +79,37 @@ class ServiceDelegate: NSObject {
                 return has
         }
         
-        public static func MakeImgSumMsg(origin:Data, snapShotSize:Int)->(Data?, String?){
+        public static func MakeImgSumMsg(origin:Data, snapShotSize:Int)->(Data?, Data?, String?){
                 let maxImgSize = ChatLibMaxFileSize()
                 var rawData:Data = origin
                 if origin.count > maxImgSize{
                         guard let rd = CompressImg(origin: origin, targetSize: maxImgSize) else{
                                 print("------>>>compress too big imgage failed")
-                                return (nil, nil)
+                                return (nil, nil, nil)
                         }
                         rawData = rd
                 }
                 
                 guard let snapShot = CompressImg(origin: rawData, targetSize: snapShotSize) else{
                         print("------>>>create snapshot failed")
-                        return (nil, nil)
+                        return (nil,nil, nil)
                 }
                 
                 var err:NSError?
-                let has = ChatLibPostBigMsg(rawData, &err)
+                let key = rawData[0...11]
+                let cryptData = ChatLibCryptBigDataByPrefix(key, rawData, &err)
+                if err != nil{
+                        return (nil,nil, nil)
+                }
+                
+                let has = ChatLibPostBigMsg(cryptData, &err)
                 if let e = err{
                         print("------>>>post big image failed:\(e.localizedDescription )")
-                        return (nil, nil)
+                        return (nil,nil, nil)
                 }
                 
                 _ = FileManager.writeByHash(has: has, content: rawData)
-                return (snapShot, has)
+                return (snapShot,key, has)
         }
         
         public static func LoadDataByHash(has:String) -> Data?{

@@ -70,25 +70,29 @@ class txtMsg:NSObject, NSCoding,IMPayLoad{
 class imgMsg:NSObject, NSCoding,IMPayLoad{
         var has:String = ""
         var content: Data = Data()
+        var key:Data?
         override init() {
                 super.init()
         }
         
-        init(data:Data, has:String = ""){
+        init(data:Data, has:String = "", key:Data? = nil){
                 super.init()
                 content = data
                 self.has = has
+                self.key = key
         }
         
         func encode(with coder: NSCoder) {
                 coder.encode(content, forKey: "content")
                 coder.encode(has, forKey: "has")
+                coder.encode(key, forKey: "key")
         }
         
         required init?(coder: NSCoder) {
                 super.init()
                 self.content = coder.decodeObject(forKey: "content") as! Data
                 self.has = coder.decodeObject(forKey: "has") as? String ?? ""
+                self.key = coder.decodeObject(forKey: "key") as? Data
         }
         
         func wrappedToProto() -> Data? {
@@ -96,7 +100,7 @@ class imgMsg:NSObject, NSCoding,IMPayLoad{
                         return nil
                 }
                 var err:NSError?
-                let data = ChatLibWrapImgV3(self.content, self.has, &err)
+                let data = ChatLibWrapImgV3(self.content, self.key, self.has, &err)
                 if let e = err{
                         print("------>>>wrap img to proto err:[\(e.localizedDescription)]")
                         return nil

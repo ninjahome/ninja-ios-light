@@ -39,14 +39,14 @@ extension MsgViewController:PHPickerViewControllerDelegate{
         
         func loadVideo(provider:NSItemProvider){
 
-                provider.loadInPlaceFileRepresentation(forTypeIdentifier: UTType.movie.identifier) {url, inPlace, err in
+                provider.loadFileRepresentation(forTypeIdentifier: UTType.movie.identifier) {url, err in
                         guard let url = url else{
                                 self.toastMessage(title: "Invalid image data".locStr)
                                 return
                         }
                         do{
-                                let data = try Data(contentsOf: url)
-                                self.videoDidSelected(data:data, url:url)
+                                let data = try Data(contentsOf: url, options: .alwaysMapped)
+                                self.videoDidSelected(data:data)
                         }catch let err{
                                 print("------>>>", err.localizedDescription)
                                 self.toastMessage(title: err.localizedDescription)
@@ -69,33 +69,37 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                 
                 self.showIndicator(withTitle: "", and: "压缩......")
                 ServiceDelegate.workQueue.async {
-                        let (d, h) = ServiceDelegate.MakeImgSumMsg(origin: data, snapShotSize:maxSize)
-                        guard let snapShot = d, let has = h else{
+                        let (d, k, h) = ServiceDelegate.MakeImgSumMsg(origin: data, snapShotSize:maxSize)
+                        guard let snapShot = d, let has = h, let key = k else{
                                 self.hideIndicator()
                                 self.toastMessage(title: "Invalid image data".locStr)
                                 return
                         }
                         self.hideIndicator()
-                        self.sendImgMsg(data:snapShot, has:has)
+                        self.sendImgMsg(data:snapShot, has:has, key:key)
                 }
         }
         
-        private func sendImgMsg(data:Data,has:String = ""){
+        private func sendImgMsg(data:Data,has:String = "", key:Data? = nil){
                 var gid:String? = nil
                 if IS_GROUP{
                         gid = self.peerUid
                 }
                 
                 let msg = MessageItem.init(to: peerUid,
-                                           data: imgMsg(data: data, has: has),
+                                           data: imgMsg(data: data, has: has, key:key),
                                            typ: .image,
                                            gid: gid)
                 
                 sendMessage(msg: msg)
         }
         
-        private func videoDidSelected(data:Data, url: URL) {
-                
+        private func videoDidSelected(data:Data) {
+                let has = ChatLibHashOfMsgData(data)
+                print("------>>>", has)
+                guard let url = VideoFileManager.writeByHash(has: has, content: data) else{
+                        return
+                }
                 let maxSize = ChatLibMaxFileSize()
                 let curSize = data.count
                 if curSize < maxSize{

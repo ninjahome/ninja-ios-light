@@ -20,8 +20,7 @@ class VideoFileManager {
                 
                 let imageGenerator = AVAssetImageGenerator(asset: asset)
                 imageGenerator.appliesPreferredTrackTransform = true
-                do {
-                        
+                do { 
                         let cgImage = try imageGenerator.copyCGImage(at: .zero, actualTime: nil)
                         let thumbnail = UIImage(cgImage: cgImage)
                         return (thumbnail, cgImage.width > cgImage.height)
