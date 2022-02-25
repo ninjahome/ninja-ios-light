@@ -55,28 +55,46 @@ class ServiceDelegate: NSObject {
                 return ChatLibMaxAvatarSize()
         }
         
-        public static func LoadVideoByHash(has:String) -> URL?{
+        public static func LoadVideoByHash(has:String, key:Data? = nil) -> URL?{
                 if let url = VideoFileManager.urlOfHash(has: has){
                         return url
                 }
                 
                 var err:NSError?
-                guard let d = ChatLibReadBigMsgByHash(has, &err) else{
+                guard var d = ChatLibReadBigMsgByHash(has, &err) else{
                         return nil
+                }
+                
+                if let k = key {
+                        guard let unwarped = ChatLibDecryptBigDataByPrefix(k, d, &err) else{
+                                return nil
+                        }
+                        d = unwarped
                 }
                 
                 return VideoFileManager.writeByHash(has: has, content: d)
         }
         
-        public static func MakeVideoSumMsg(rawData:Data)->(String?){
+        public static func MakeVideoSumMsg(rawData:Data)->(String?, Data?){
+                guard rawData.count > 16 else {
+                        print("------>>> data is too short")
+                        return (nil, nil)
+                }
                 var err:NSError?
-                let has = ChatLibPostBigMsg(rawData, &err)
+                let key = rawData[0...15]
+                let cryptData = ChatLibCryptBigDataByPrefix(key, rawData, &err)
                 if let e = err{
                         print("------>>>post big vedio failed:\(e.localizedDescription)")
-                        return nil
+                        return (nil, nil)
+                }
+                
+                let has = ChatLibPostBigMsg(cryptData, &err)
+                if let e = err{
+                        print("------>>>post big vedio failed:\(e.localizedDescription)")
+                        return (nil, nil)
                 }
                 _ = VideoFileManager.writeByHash(has: has, content: rawData)
-                return has
+                return (has, key)
         }
         
         public static func MakeImgSumMsg(origin:Data, snapShotSize:Int)->(Data?, Data?, String?){
@@ -96,7 +114,7 @@ class ServiceDelegate: NSObject {
                 }
                 
                 var err:NSError?
-                let key = rawData[0...11]
+                let key = rawData[0...15]
                 let cryptData = ChatLibCryptBigDataByPrefix(key, rawData, &err)
                 if err != nil{
                         return (nil,nil, nil)
@@ -112,13 +130,19 @@ class ServiceDelegate: NSObject {
                 return (snapShot,key, has)
         }
         
-        public static func LoadDataByHash(has:String) -> Data?{
+        public static func LoadDataByHash(has:String, key:Data? = nil) -> Data?{
                 if let d = FileManager.readByHash(has: has){
                         return d
                 }
                 var err:NSError?
-                guard let d = ChatLibReadBigMsgByHash(has, &err) else{
+                guard var d = ChatLibReadBigMsgByHash(has, &err) else{
                         return nil
+                }
+                if let k = key {
+                        guard let unwarped = ChatLibDecryptBigDataByPrefix(k, d, &err) else{
+                                return nil
+                        }
+                        d = unwarped
                 }
                 
                 _ = FileManager.writeByHash(has: has, content: d)

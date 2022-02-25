@@ -312,10 +312,12 @@ class videoMsgWithHash: NSObject, NSCoding,IMPayLoad {
         var thumbData:Data?
         var has:String?
         var isHorizon:Bool = false
+        var key:Data? = nil
         
         func encode(with coder: NSCoder) {
                 coder.encode(thumbData, forKey: "thumb")
                 coder.encode(has, forKey: "has")
+                coder.encode(key, forKey: "key")
                 coder.encode(isHorizon, forKey: "isHorizon")
         }
         
@@ -324,17 +326,19 @@ class videoMsgWithHash: NSObject, NSCoding,IMPayLoad {
                 self.thumbData = coder.decodeObject(forKey: "thumb") as? Data
                 self.has = coder.decodeObject(forKey: "has") as? String
                 self.isHorizon = coder.decodeBool(forKey: "isHorizon")
+                self.key = coder.decodeObject(forKey: "key") as? Data
         }
         
         override init() {
                 super.init()
         }
         
-        init(thumb:Data, has:String, isHorizon:Bool = false){
+        init(thumb:Data, has:String, isHorizon:Bool = false, key:Data? = nil){
                 super.init()
                 self.thumbData = thumb
                 self.has = has
                 self.isHorizon = isHorizon
+                self.key = key
         }
         
         func wrappedToProto() -> Data? {

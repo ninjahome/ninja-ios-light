@@ -38,7 +38,7 @@ extension MsgViewController:PHPickerViewControllerDelegate{
         }
         
         func loadVideo(provider:NSItemProvider){
-
+                
                 provider.loadFileRepresentation(forTypeIdentifier: UTType.movie.identifier) {url, err in
                         guard let url = url else{
                                 self.toastMessage(title: "Invalid image data".locStr)
@@ -56,8 +56,6 @@ extension MsgViewController:PHPickerViewControllerDelegate{
 }
 
 extension MsgViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-        
-
         private func imageDidSelected(data: Data) {
                 
                 let maxSize = ChatLibBigMsgThreshold()
@@ -80,7 +78,7 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                 }
         }
         
-        private func sendImgMsg(data:Data,has:String = "", key:Data? = nil){
+        private func sendImgMsg(data:Data, has:String = "", key:Data? = nil){
                 var gid:String? = nil
                 if IS_GROUP{
                         gid = self.peerUid
@@ -139,7 +137,7 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                                 self.toastMessage(title: "create thumbnail failed".locStr)
                                 return
                         }
-                        let hasOfVideo = ServiceDelegate.MakeVideoSumMsg(rawData: rawData)
+                        let (hasOfVideo, key) = ServiceDelegate.MakeVideoSumMsg(rawData: rawData)
                         self.hideIndicator()
                         guard let has = hasOfVideo else{
                                 self.toastMessage(title:  "Failed".locStr)
@@ -150,7 +148,7 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                         if self.IS_GROUP{
                                 gid = self.peerUid
                         }
-                        let video = videoMsgWithHash(thumb:thumbData, has:has, isHorizon: isHorize)
+                        let video = videoMsgWithHash(thumb:thumbData, has:has, isHorizon: isHorize, key: key)
                         let msg = MessageItem.init(to: self.peerUid,
                                                    data: video,
                                                    typ: .videoWithHash,

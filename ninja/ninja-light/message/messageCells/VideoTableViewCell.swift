@@ -28,7 +28,7 @@ class VideoTableViewCell: UITableViewCell {
         var cellMsg: MessageItem?
         var isHorizon:Bool = false
         var scaler:CGFloat = 1.0
-        var hashOfVedioData:String?
+        var videoWithHash:videoMsgWithHash?
         
         func configure(){
                 if isHorizon{
@@ -78,13 +78,14 @@ class VideoTableViewCell: UITableViewCell {
                         spinner?.stopAnimating()
                 }
         }
-        private func playByHash(has:String){
+        private func playByHash(){
                 guard let vc = getKeyWindow()?.rootViewController else{
                         return
                 }
                 vc.showIndicator(withTitle: "", and: "loading".locStr)
                 ServiceDelegate.workQueue.async {
-                        let url = ServiceDelegate.LoadVideoByHash(has: has)
+                        let meta = self.videoWithHash!
+                        let url = ServiceDelegate.LoadVideoByHash(has: meta.has!, key: meta.key)
                         vc.hideIndicator()
                         guard let url = url else{
                                 vc.toastMessage(title: "video expired".locStr)
@@ -113,8 +114,8 @@ class VideoTableViewCell: UITableViewCell {
                         return
                 }
                 
-                if let has = self.hashOfVedioData {
-                        self.playByHash(has: has)
+                if nil != self.videoWithHash {
+                        self.playByHash()
                         return
                 }
                 
@@ -138,10 +139,10 @@ class VideoTableViewCell: UITableViewCell {
                 guard let hv = message.payload as? videoMsgWithHash else{
                         return
                 }
-                guard let thumb = hv.thumbData, let has = hv.has else{
+                self.videoWithHash = hv
+                guard let thumb = hv.thumbData else{
                         return
                 }
-                self.hashOfVedioData = has
                 isHorizon = hv.isHorizon
                 let thumbImg = UIImage(data: thumb)
                 playVideBtn.layer.contents =  thumbImg?.cgImage
@@ -225,7 +226,7 @@ class VideoTableViewCell: UITableViewCell {
         
         @objc func longPress(sender: UILongPressGestureRecognizer
         ) {
-                if let has = self.hashOfVedioData {
+                if let has = self.videoWithHash?.has {
                         self.saveVideoByHash(has: has)
                         return
                 }

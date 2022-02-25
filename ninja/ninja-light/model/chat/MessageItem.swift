@@ -377,9 +377,10 @@ extension MessageItem: ModelObj {
 
 
 extension MessageItem:ChatLibUnwrapCallbackProtocol{
-        func video(withHash d: Data?, h: String?, horiz:Bool) {
+        
+        func video(withHash d: Data?, k: Data?, h: String?, horiz:Bool) {
                 self.typ = .videoWithHash
-                self.payload = videoMsgWithHash(thumb: d ?? Data(), has: h ?? "", isHorizon: horiz)
+                self.payload = videoMsgWithHash(thumb: d ?? Data(), has: h ?? "", isHorizon: horiz, key: k)
         }
         
         func file(_ n: String?, t: Int32, d: Data?) {
@@ -393,9 +394,9 @@ extension MessageItem:ChatLibUnwrapCallbackProtocol{
                 }
         }
         
-        func img(_ d: Data?, h:String?) {
+        func img(_ d: Data?,k: Data?, h:String?) {
                 self.typ = .image
-                self.payload = imgMsg(data: d ?? Data(), has: h ?? "")
+                self.payload = imgMsg(data: d ?? Data(), has: h ?? "", key: k)
         }
         
         func location(_ n: String?, lo: Double, la: Double) {
