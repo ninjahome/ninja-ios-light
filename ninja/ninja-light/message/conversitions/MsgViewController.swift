@@ -286,7 +286,7 @@ extension MsgViewController{
                 var configuration = PHPickerConfiguration(photoLibrary: photoLibrary)
                 configuration.filter = PHPickerFilter.any(of: [.livePhotos, .videos, .images])
                 configuration.preferredAssetRepresentationMode = .current
-                configuration.selectionLimit = 1
+                configuration.selectionLimit = 9
                 let picker = PHPickerViewController(configuration: configuration)
                 picker.delegate = self
                 self.present(picker, animated: true)

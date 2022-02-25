@@ -17,19 +17,18 @@ extension MsgViewController:PHPickerViewControllerDelegate{
                 guard !results.isEmpty else{
                         return
                 }
-                
-                //TODO:: live photo
-                let itemProvider = results[0].itemProvider
-                if itemProvider.hasItemConformingToTypeIdentifier(UTType.image.identifier) {
-                        self.loadImage(provider:itemProvider)
-                }else if itemProvider.hasItemConformingToTypeIdentifier(UTType.movie.identifier){
-                        self.loadVideo(provider:itemProvider)
+                for item in results{
+                        let itemProvider = item.itemProvider
+                        if itemProvider.hasItemConformingToTypeIdentifier(UTType.image.identifier) {
+                                self.loadImage(provider:itemProvider)
+                        }else if itemProvider.hasItemConformingToTypeIdentifier(UTType.movie.identifier){
+                                self.loadVideo(provider:itemProvider)
+                        }
                 }
         }
         
         func loadImage(provider:NSItemProvider){
                 provider.loadFileRepresentation(forTypeIdentifier: UTType.image.identifier) { url, err in
-                        
                         guard let url = url else{
                                 self.toastMessage(title: "Invalid image data".locStr)
                                 return
