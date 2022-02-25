@@ -343,7 +343,7 @@ class videoMsgWithHash: NSObject, NSCoding,IMPayLoad {
         
         func wrappedToProto() -> Data? {
                 var err:NSError?
-                let data = ChatLibWrapVideoV3(thumbData, has, isHorizon, &err)
+                let data = ChatLibWrapVideoV3(thumbData, key, has, isHorizon, &err)
                 if let e = err{
                         print("------>>>wrap video to proto err:[\(e.localizedDescription)]")
                         return nil

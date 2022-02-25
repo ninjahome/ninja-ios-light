@@ -28,12 +28,33 @@ extension MsgViewController:PHPickerViewControllerDelegate{
         }
         
         func loadImage(provider:NSItemProvider){
-                provider.loadDataRepresentation(forTypeIdentifier: UTType.image.identifier) { data, error in
-                        guard let data = data else{
+                provider.loadFileRepresentation(forTypeIdentifier: UTType.image.identifier) { url, err in
+                        
+                        guard let url = url else{
+                                self.toastMessage(title: "Invalid image data".locStr)
                                 return
                         }
                         
-                        self.imageDidSelected(data: data)
+                        do{
+                                var data = try Data(contentsOf: url, options: .alwaysMapped)
+                                let extenName = url.pathExtension
+                                print("------>>>extenName=>", extenName)
+                                
+                                if !ChatLibIsValidImgFmt(url.pathExtension){
+                                        guard let convertData  = UIImage(data: data)?.jpegData(compressionQuality: 1.0) else{
+                                                self.toastMessage(title: "Invalid image data".locStr)
+                                                return
+                                        }
+                                        data = convertData
+                                }
+                                
+                                let has = ChatLibHashOfMsgData(data)
+                                print("------>>>", has)
+                                self.imageDidSelected(data: data)
+                        }catch let err{
+                                print("------>>>", err.localizedDescription)
+                                self.toastMessage(title: err.localizedDescription)
+                        }
                 }
         }
         
@@ -41,7 +62,7 @@ extension MsgViewController:PHPickerViewControllerDelegate{
                 
                 provider.loadFileRepresentation(forTypeIdentifier: UTType.movie.identifier) {url, err in
                         guard let url = url else{
-                                self.toastMessage(title: "Invalid image data".locStr)
+                                self.toastMessage(title: "Invalid video data".locStr)
                                 return
                         }
                         do{
@@ -56,8 +77,8 @@ extension MsgViewController:PHPickerViewControllerDelegate{
 }
 
 extension MsgViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+        
         private func imageDidSelected(data: Data) {
-                
                 let maxSize = ChatLibBigMsgThreshold()
                 let curSize = data.count
                 guard curSize > maxSize else{

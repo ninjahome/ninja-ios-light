@@ -168,8 +168,7 @@ extension ImageTableViewCell{
                 }
         }
 
-        @objc class private func longPress(sender: UILongPressGestureRecognizer
-        ) {
+        @objc private func longPress(sender: UILongPressGestureRecognizer) {
                 guard let backgroundView = sender.view else {
                         return
                 }
