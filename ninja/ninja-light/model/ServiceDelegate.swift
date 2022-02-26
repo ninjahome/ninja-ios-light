@@ -150,7 +150,7 @@ class ServiceDelegate: NSObject {
         }
         
         public static func getVideoUrlByHash(has:String)->URL?{
-                if let url = FileManager.urlOfHash(has: has){
+                if let url = VideoFileManager.urlOfHash(has: has){
                         return url
                 }
                 
@@ -159,7 +159,7 @@ class ServiceDelegate: NSObject {
                         return nil
                 }
                 
-                return FileManager.writeByHash(has: has, content: d)
+                return VideoFileManager.writeByHash(has: has, content: d)
         }
         
         public static func CompressImg(origin:Data, targetSize:Int)->Data?{
