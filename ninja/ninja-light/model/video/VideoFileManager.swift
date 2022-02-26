@@ -15,7 +15,7 @@ class VideoFileManager {
         private static let trimPrefix = "trim."
         private static let hashSuffix = "mov"
         
-        static func thumbnailImageOfVideoInVideoURL(videoURL: URL) -> (UIImage?, Bool) {
+        static func thumbnailImageOfVideoInVideoURL(videoURL: URL) -> (Data?, Bool) {
                 let asset = AVURLAsset(url: videoURL as URL, options: nil)
                 
                 let imageGenerator = AVAssetImageGenerator(asset: asset)
@@ -23,7 +23,14 @@ class VideoFileManager {
                 do { 
                         let cgImage = try imageGenerator.copyCGImage(at: .zero, actualTime: nil)
                         let thumbnail = UIImage(cgImage: cgImage)
-                        return (thumbnail, cgImage.width > cgImage.height)
+                        var thumbData = thumbnail.jpegData(compressionQuality: 1.0)!
+                        if thumbData.count > ChatLibBigMsgThreshold(){
+                                var err:NSError?
+                                if let compressedThumb = ChatLibCompressImg(thumbData, Int32(ChatLibBigMsgThreshold()), &err){
+                                        thumbData = compressedThumb
+                                }
+                        }
+                        return (thumbData, cgImage.width > cgImage.height)
                         
                 } catch let err{
                         print("------>>>", err.localizedDescription, videoURL.path)

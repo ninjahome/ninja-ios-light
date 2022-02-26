@@ -152,7 +152,7 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                 self.showIndicator(withTitle: "", and: "Compressing".locStr)
                 ServiceDelegate.workQueue.async {
                         let (thumb, isHorize) = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
-                        guard let thumbData = thumb?.jpeg else{
+                        guard let thumbData = thumb else{
                                 self.hideIndicator()
                                 self.toastMessage(title: "create thumbnail failed".locStr)
                                 return

@@ -267,9 +267,12 @@ class videoMsg:fileMsg{
                 self.tmpFileURL = coder.decodeObject(forKey: "tmpFileURL") as? URL
         }
         
-        init(name:String?, data:Data?, thumb:UIImage?){
+        init(name:String?, data:Data?, thumb:Data?){
                 super.init(name: name, data: data)
-                self.thumbnailImg = thumb ?? defaultAvatar
+                guard let d = thumb else{
+                        return
+                }
+                self.thumbnailImg = UIImage(data: d) ?? defaultAvatar
         }
         
         init(name:String?, data:Data?){
@@ -279,7 +282,7 @@ class videoMsg:fileMsg{
                 }
                 let (img, _) = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
                 if let d = img{
-                        self.thumbnailImg = d
+                        self.thumbnailImg = UIImage(data: d)!
                 }
         }
         

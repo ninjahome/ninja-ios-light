@@ -967,7 +967,7 @@
                                 <rect key="frame" x="0.0" y="88" width="683" height="2002"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="3w9-mv-dzv">
-                                    <rect key="frame" x="0.0" y="1739.5" width="683" height="0.0"/>
+                                    <rect key="frame" x="0.0" y="1579.5" width="683" height="0.0"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 </view>
@@ -1336,26 +1336,26 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="imageCellL" id="Vgu-3W-kZN" customClass="ImageTableViewCell" customModule="ninja_light" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="298.5" width="683" height="232.5"/>
+                                        <rect key="frame" x="0.0" y="298.5" width="683" height="152.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Vgu-3W-kZN" id="nMZ-di-Hnh">
-                                            <rect key="frame" x="0.0" y="0.0" width="683" height="232.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="683" height="152.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aFN-hZ-tFV" customClass="UIImageView">
-                                                    <rect key="frame" x="56" y="24.5" width="200" height="200"/>
+                                                    <rect key="frame" x="56" y="24.5" width="120" height="120"/>
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Oas-Xp-4MA">
-                                                            <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="200" id="3Sv-CF-xpO"/>
-                                                                <constraint firstAttribute="height" constant="200" id="MUG-xf-ift"/>
+                                                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="120" id="3Sv-CF-xpO"/>
+                                                                <constraint firstAttribute="height" constant="120" id="MUG-xf-ift"/>
                                                             </constraints>
                                                         </imageView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="200" id="FVc-f8-DQh"/>
+                                                        <constraint firstAttribute="width" constant="120" id="FVc-f8-DQh"/>
                                                         <constraint firstItem="Oas-Xp-4MA" firstAttribute="top" secondItem="aFN-hZ-tFV" secondAttribute="top" id="HvH-Ts-jmr"/>
                                                         <constraint firstItem="Oas-Xp-4MA" firstAttribute="leading" secondItem="aFN-hZ-tFV" secondAttribute="leading" id="NLp-ro-y07"/>
                                                         <constraint firstAttribute="trailing" secondItem="Oas-Xp-4MA" secondAttribute="trailing" id="dlS-fL-Tiw"/>
@@ -1419,10 +1419,10 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="imageCell" id="tqe-EI-Z9j" customClass="ImageTableViewCell" customModule="ninja_light" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="531" width="683" height="232.5"/>
+                                        <rect key="frame" x="0.0" y="451" width="683" height="152.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tqe-EI-Z9j" id="Yei-mM-QRr">
-                                            <rect key="frame" x="0.0" y="0.0" width="683" height="232.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="683" height="152.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qZf-pg-bd2" customClass="AvatarButton" customModule="ninja_light" customModuleProvider="target">
@@ -1458,13 +1458,13 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aRC-II-6AJ" customClass="UIImageView">
-                                                    <rect key="frame" x="427" y="24.5" width="200" height="200"/>
+                                                    <rect key="frame" x="507" y="24.5" width="120" height="120"/>
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iGb-ym-e3r">
-                                                            <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="200" id="L4S-jC-mm5"/>
-                                                                <constraint firstAttribute="height" constant="200" id="WMQ-AY-aPn"/>
+                                                                <constraint firstAttribute="width" constant="120" id="L4S-jC-mm5"/>
+                                                                <constraint firstAttribute="height" constant="120" id="WMQ-AY-aPn"/>
                                                             </constraints>
                                                         </imageView>
                                                     </subviews>
@@ -1474,7 +1474,7 @@
                                                         <constraint firstAttribute="bottom" secondItem="iGb-ym-e3r" secondAttribute="bottom" id="8fS-v5-mfM"/>
                                                         <constraint firstAttribute="trailing" secondItem="iGb-ym-e3r" secondAttribute="trailing" id="H7g-sc-Sh5"/>
                                                         <constraint firstItem="iGb-ym-e3r" firstAttribute="leading" secondItem="aRC-II-6AJ" secondAttribute="leading" id="N82-q1-aqu"/>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="osD-04-2Rf"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="osD-04-2Rf"/>
                                                     </constraints>
                                                 </view>
                                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="jCl-8g-uRF">
@@ -1515,7 +1515,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="videoCellL" rowHeight="192" id="Xh9-y0-3cq" userLabel="videoCellL" customClass="VideoTableViewCell" customModule="ninja_light" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="763.5" width="683" height="192"/>
+                                        <rect key="frame" x="0.0" y="603.5" width="683" height="192"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Xh9-y0-3cq" id="9so-zb-c81">
                                             <rect key="frame" x="0.0" y="0.0" width="683" height="192"/>
@@ -1602,7 +1602,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="locationCellL" id="x50-P8-eG4" customClass="LocationTableViewCell" customModule="ninja_light" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="955.5" width="683" height="172.5"/>
+                                        <rect key="frame" x="0.0" y="795.5" width="683" height="172.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="x50-P8-eG4" id="piv-h5-bF7">
                                             <rect key="frame" x="0.0" y="0.0" width="683" height="172.5"/>
@@ -1702,7 +1702,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="locationCell" rowHeight="172" id="UpK-ZG-JPQ" customClass="LocationTableViewCell" customModule="ninja_light" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="1128" width="683" height="172"/>
+                                        <rect key="frame" x="0.0" y="968" width="683" height="172"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="UpK-ZG-JPQ" id="O5V-3H-VaX">
                                             <rect key="frame" x="0.0" y="0.0" width="683" height="172"/>
@@ -1817,7 +1817,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="fileCellL" id="5cl-OU-tkr" customClass="FileTableViewCell" customModule="ninja_light" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="1300" width="683" height="112.5"/>
+                                        <rect key="frame" x="0.0" y="1140" width="683" height="112.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5cl-OU-tkr" id="1vd-ZP-IzP">
                                             <rect key="frame" x="0.0" y="0.0" width="683" height="112.5"/>
@@ -1906,7 +1906,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="fileCell" id="L2F-Fc-ved" customClass="FileTableViewCell" customModule="ninja_light" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="1412.5" width="683" height="112.5"/>
+                                        <rect key="frame" x="0.0" y="1252.5" width="683" height="112.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="L2F-Fc-ved" id="bUT-U8-N08">
                                             <rect key="frame" x="0.0" y="0.0" width="683" height="112.5"/>
@@ -2013,7 +2013,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="videoCell" rowHeight="192" id="L0H-Gq-bJd" userLabel="videoCell" customClass="VideoTableViewCell" customModule="ninja_light" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="1525" width="683" height="192"/>
+                                        <rect key="frame" x="0.0" y="1365" width="683" height="192"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="L0H-Gq-bJd" id="rXG-Hq-nun">
                                             <rect key="frame" x="0.0" y="0.0" width="683" height="192"/>

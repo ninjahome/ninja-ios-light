@@ -32,11 +32,11 @@ class VideoTableViewCell: UITableViewCell {
         
         func configure(){
                 if isHorizon{
-                        widthConstraint.constant = 160 * scaler
-                        heightConstraint.constant = 90 * scaler
+                        widthConstraint.constant = 120 * scaler
+                        heightConstraint.constant = 67.5 * scaler
                 }else{
-                        widthConstraint.constant = 90 * scaler
-                        heightConstraint.constant = 160 * scaler
+                        widthConstraint.constant = 67.5 * scaler
+                        heightConstraint.constant = 120 * scaler
                 }
         }
         override func prepareForReuse() {
@@ -52,8 +52,8 @@ class VideoTableViewCell: UITableViewCell {
                                                            action: #selector(VideoTableViewCell.longPress(sender:)))
                 self.addGestureRecognizer(longTap)
                 scaler = msgBackgroundView.contentScaleFactor
-                widthConstraint = msgBackgroundView.widthAnchor.constraint(equalToConstant: 90 * scaler)
-                heightConstraint = msgBackgroundView.heightAnchor.constraint(equalToConstant: 160 * scaler)
+                widthConstraint = msgBackgroundView.widthAnchor.constraint(equalToConstant: 67.5 * scaler)
+                heightConstraint = msgBackgroundView.heightAnchor.constraint(equalToConstant: 120 * scaler)
                 widthConstraint.isActive = true
                 heightConstraint.isActive = true
         }
