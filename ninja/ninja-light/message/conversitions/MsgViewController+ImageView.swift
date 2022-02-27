@@ -58,19 +58,17 @@ extension MsgViewController:PHPickerViewControllerDelegate{
         }
         
         func loadVideo(provider:NSItemProvider){
-                
-                provider.loadFileRepresentation(forTypeIdentifier: UTType.movie.identifier) {url, err in
+
+                provider.loadInPlaceFileRepresentation(forTypeIdentifier: UTType.movie.identifier) { url, inPlace, err in
                         guard let url = url else{
-                                self.toastMessage(title: "Invalid video data".locStr)
+                                self.toastMessage(title: "Empty video file".locStr)
                                 return
                         }
-                        do{
-                                let data = try Data(contentsOf: url, options: .alwaysMapped)
-                                self.videoDidSelected(data:data)
-                        }catch let err{
-                                print("------>>>", err.localizedDescription)
-                                self.toastMessage(title: err.localizedDescription)
+                        guard let data = try? Data.init(contentsOf: url) else{
+                                self.toastMessage(title: "Empty video file".locStr)
+                                return
                         }
+                        self.videoDidSelected(data: data)
                 }
         }
 }
@@ -114,7 +112,7 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
         
         private func videoDidSelected(data:Data) {
                 let has = ChatLibHashOfMsgData(data)
-                print("------>>>", has)
+                print("------>>>data has :->", has)
                 guard let url = VideoFileManager.writeByHash(has: has, content: data) else{
                         return
                 }
