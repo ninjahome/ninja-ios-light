@@ -155,7 +155,7 @@ extension ImageTableViewCell{
                 }
                 self.showIndicator(parentView:newImageV, withTitle: "", and: "")
                 ServiceDelegate.workQueue.async {
-                        guard let d = ServiceDelegate.LoadDataByHash(has: imgMessage.has, key: imgMessage.key) else{
+                        guard let d = ServiceDelegate.LoadImgByHash(has: imgMessage.has, key: imgMessage.key) else{
                                 DispatchQueue.main.async {
                                         MBProgressHUD.hide(for: newImageV, animated: true)
                                 }

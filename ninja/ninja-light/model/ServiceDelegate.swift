@@ -61,17 +61,9 @@ class ServiceDelegate: NSObject {
                 }
                 
                 var err:NSError?
-                guard var d = ChatLibReadBigMsgByHash(has, &err) else{
+                guard let d = ChatLibReadBigMsgByHash(has, key, &err) else{
                         return nil
                 }
-                
-                if let k = key {
-                        guard let unwarped = ChatLibDecryptBigDataByPrefix(k, d, &err) else{
-                                return nil
-                        }
-                        d = unwarped
-                }
-                
                 return VideoFileManager.writeByHash(has: has, content: d)
         }
         
@@ -130,32 +122,26 @@ class ServiceDelegate: NSObject {
                 return (snapShot,key, has)
         }
         
-        public static func LoadDataByHash(has:String, key:Data? = nil) -> Data?{
+        public static func LoadImgByHash(has:String, key:Data?) -> Data?{
                 if let d = FileManager.readByHash(has: has){
                         return d
                 }
                 var err:NSError?
-                guard var d = ChatLibReadBigMsgByHash(has, &err) else{
+                guard let d = ChatLibReadBigMsgByHash(has, key, &err) else{
                         return nil
-                }
-                if let k = key {
-                        guard let unwarped = ChatLibDecryptBigDataByPrefix(k, d, &err) else{
-                                return nil
-                        }
-                        d = unwarped
                 }
                 
                 _ = FileManager.writeByHash(has: has, content: d)
                 return d
         }
         
-        public static func getVideoUrlByHash(has:String)->URL?{
+        public static func getVideoUrlByHash(has:String, key:Data?)->URL?{
                 if let url = VideoFileManager.urlOfHash(has: has){
                         return url
                 }
                 
                 var err:NSError?
-                guard let d = ChatLibReadBigMsgByHash(has, &err) else{
+                guard let d = ChatLibReadBigMsgByHash(has, key, &err) else{
                         return nil
                 }
                 

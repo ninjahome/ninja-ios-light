@@ -208,13 +208,13 @@ class VideoTableViewCell: UITableViewCell {
                 time.text = formatMsgTimeStamp(by: message.timeStamp)
         }
         
-        private func saveVideoByHash(has:String){
+        private func saveVideoByHash(has:String, key:Data?){
                 guard let vc = getKeyWindow()?.rootViewController else{
                         return
                 }
                 vc.showIndicator(withTitle: "", and: "saving".locStr)
                 ServiceDelegate.workQueue.async {
-                        let urlOfHash = ServiceDelegate.getVideoUrlByHash(has: has)
+                        let urlOfHash = ServiceDelegate.getVideoUrlByHash(has: has, key:key)
                         vc.hideIndicator()
                         guard let url = urlOfHash else{
                                 vc.toastMessage(title: "video expired".locStr, duration: 1)
@@ -227,7 +227,7 @@ class VideoTableViewCell: UITableViewCell {
         @objc func longPress(sender: UILongPressGestureRecognizer
         ) {
                 if let has = self.videoWithHash?.has {
-                        self.saveVideoByHash(has: has)
+                        self.saveVideoByHash(has: has, key: self.videoWithHash?.key)
                         return
                 }
                 
