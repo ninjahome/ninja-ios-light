@@ -21,8 +21,8 @@ extension MsgViewController:PHPickerViewControllerDelegate{
                         let itemProvider = item.itemProvider
                         if itemProvider.hasItemConformingToTypeIdentifier(UTType.image.identifier) {
                                 self.loadImage(provider:itemProvider)
-                        }else if itemProvider.hasItemConformingToTypeIdentifier(UTType.movie.identifier){
-                                self.loadVideo(provider:itemProvider)
+                        }else if itemProvider.hasItemConformingToTypeIdentifier("public.movie"){
+                                self.loadMovie(provider:itemProvider)
                         }
                 }
         }
@@ -57,14 +57,15 @@ extension MsgViewController:PHPickerViewControllerDelegate{
                 }
         }
         
-        func loadVideo(provider:NSItemProvider){
-
-                provider.loadInPlaceFileRepresentation(forTypeIdentifier: UTType.movie.identifier) { url, inPlace, err in
+        func loadMovie(provider:NSItemProvider){
+                
+                provider.loadInPlaceFileRepresentation(forTypeIdentifier: "public.movie") { url, inPlace, err in
                         guard let url = url else{
                                 self.toastMessage(title: "Empty video file".locStr)
                                 return
                         }
-                        guard let data = try? Data.init(contentsOf: url) else{
+                        
+                        guard let data = try? Data.init(contentsOf: url), !data.isEmpty else{
                                 self.toastMessage(title: "Empty video file".locStr)
                                 return
                         }
