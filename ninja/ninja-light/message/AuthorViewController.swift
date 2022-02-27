@@ -95,8 +95,6 @@ class AuthorViewController: UIViewController {
                                 return
                         }
                         
-                        ServiceDelegate.InitService()
-                        
                         DispatchQueue.main.async {
                                 self.hideIndicator()
                                 self.dismiss(animated: true){

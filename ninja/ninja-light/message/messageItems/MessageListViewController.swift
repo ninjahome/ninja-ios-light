@@ -290,10 +290,13 @@ extension MessageListViewController: UITableViewDelegate, UITableViewDataSource 
 extension MessageListViewController:WalletDelegate{
         
         func OpenSuccess() {
-                sortedArray = ChatItem.SortedArra()
-                DispatchQueue.main.async {
-                        self.updateMsgBadge()
-                        self.tableView.reloadData()
+                ServiceDelegate.workQueue.async {
+                        ServiceDelegate.InitService()
+                        self.sortedArray = ChatItem.SortedArra()
+                        DispatchQueue.main.async {
+                                self.updateMsgBadge()
+                                self.tableView.reloadData()
+                        }
                 }
         }
 }

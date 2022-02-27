@@ -59,17 +59,48 @@ extension MsgViewController:PHPickerViewControllerDelegate{
         
         func loadMovie(provider:NSItemProvider){
                 
-                provider.loadInPlaceFileRepresentation(forTypeIdentifier: "public.movie") { url, inPlace, err in
+//                provider.loadInPlaceFileRepresentation(forTypeIdentifier: "public.movie") { url, inPlace, err in
+//                        guard let url = url else{
+//                                self.toastMessage(title: "Empty video file".locStr, duration: 1.0)
+//                                return
+//                        }
+//                        
+//                        do{
+//                                let data = try Data.init(contentsOf: url)
+//                                guard !data.isEmpty else{
+//                                        self.toastMessage(title: "Empty video file".locStr, duration: 1.0)
+//                                        print("------>>>url:",url.path)
+//                                        return
+//                                }
+//                                
+//                                self.videoDidSelected(data: data)
+//                                
+//                        }catch let err{
+//                                self.toastMessage(title: err.localizedDescription, duration: 1.0)
+//                                return
+//                        }
+//                }
+                
+                provider.loadFileRepresentation(forTypeIdentifier: "public.movie") { url, err in
                         guard let url = url else{
-                                self.toastMessage(title: "Empty video file".locStr)
+                                self.toastMessage(title: "Empty video file".locStr, duration: 1.0)
                                 return
                         }
                         
-                        guard let data = try? Data.init(contentsOf: url), !data.isEmpty else{
-                                self.toastMessage(title: "Empty video file".locStr)
+                        do{
+                                let data = try Data.init(contentsOf: url)
+                                guard !data.isEmpty else{
+                                        self.toastMessage(title: "Empty video file".locStr, duration: 1.0)
+                                        print("------>>>url:",url.path)
+                                        return
+                                }
+                                
+                                self.videoDidSelected(data: data)
+                                
+                        }catch let err{
+                                self.toastMessage(title: err.localizedDescription, duration: 1.0)
                                 return
                         }
-                        self.videoDidSelected(data: data)
                 }
         }
 }
