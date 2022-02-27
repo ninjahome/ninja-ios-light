@@ -44,9 +44,10 @@ extension MsgViewController:PHPickerViewControllerDelegate{
         }
         
         func loadImage2(provider:NSItemProvider){
-                provider.loadDataRepresentation(forTypeIdentifier: "") { data, err in
+                provider.loadDataRepresentation(forTypeIdentifier: "public.image") { data, err in
                         guard let data = data else{
                                 self.toastMessage(title: "Invalid image data".locStr)
+                                print("------>>>err:=>", err?.localizedDescription ?? "<->")
                                 return
                         }
                         guard let convertData  = UIImage(data: data)?.jpegData(compressionQuality: 1.0) else{
