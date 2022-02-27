@@ -119,6 +119,7 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                 let maxSize = ChatLibMaxFileSize()
                 let curSize = data.count
                 if curSize < maxSize{
+                        self.showIndicator(withTitle: "", and: "Compressing".locStr)
                         sendVideoFile(rawData: data, url:url)
                         return
                 }
@@ -147,7 +148,6 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
         }
         
         private func sendVideoFile(rawData:Data, url:URL){
-                self.showIndicator(withTitle: "", and: "Compressing".locStr)
                 ServiceDelegate.workQueue.async {
                         let (thumb, isHorize) = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
                         guard let thumbData = thumb else{
