@@ -58,7 +58,7 @@ class CDManager:NSObject{
                 let context = persistentContainer.viewContext
                 
                 if context.hasChanges {
-                        context.perform {
+                        context.performAndWait {
                                 do {
                                         try context.save()
                                 } catch {

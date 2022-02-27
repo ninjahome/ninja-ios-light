@@ -89,7 +89,7 @@ class ServiceDelegate: NSObject {
                 return (has, key)
         }
         
-        public static func MakeImgSumMsg(origin:Data, snapShotSize:Int)->(Data?, Data?, String?){
+        public static func MakeImgSumMsg(origin: Data, snapShotSize:Int)->(Data?, Data?, String?){
                 let maxImgSize = ChatLibMaxFileSize()
                 var rawData:Data = origin
                 if origin.count > maxImgSize{

@@ -19,7 +19,7 @@ extension MsgViewController:PHPickerViewControllerDelegate{
                 }
                 for item in results{
                         let itemProvider = item.itemProvider
-                        if itemProvider.hasItemConformingToTypeIdentifier(UTType.image.identifier) {
+                        if itemProvider.hasItemConformingToTypeIdentifier("public.image") {
                                 self.loadImage(provider:itemProvider)
                         }else if itemProvider.hasItemConformingToTypeIdentifier("public.movie"){
                                 self.loadMovie(provider:itemProvider)
@@ -28,59 +28,53 @@ extension MsgViewController:PHPickerViewControllerDelegate{
         }
         
         func loadImage(provider:NSItemProvider){
-                provider.loadFileRepresentation(forTypeIdentifier: UTType.image.identifier) { url, err in
+                
+                provider.loadInPlaceFileRepresentation(forTypeIdentifier: "public.image") { url, inPlace, err in
                         guard let url = url else{
+                                self.loadImage2(provider: provider)
+                                print("------>>>err:=>", err?.localizedDescription ?? "<->")
+                                return
+                        }
+                        guard let data = try? Data(contentsOf: url), !data.isEmpty else{
+                                self.loadImage2(provider: provider)
+                                return
+                        }
+                        self.imageDidSelected(imgData: data, extenName: url.pathExtension)
+                }
+        }
+        
+        func loadImage2(provider:NSItemProvider){
+                provider.loadDataRepresentation(forTypeIdentifier: "") { data, err in
+                        guard let data = data else{
                                 self.toastMessage(title: "Invalid image data".locStr)
                                 return
                         }
-                        
-                        do{
-                                var data = try Data(contentsOf: url, options: .alwaysMapped)
-                                let extenName = url.pathExtension
-                                print("------>>>extenName=>", extenName)
-                                
-                                if !ChatLibIsValidImgFmt(url.pathExtension){
-                                        guard let convertData  = UIImage(data: data)?.jpegData(compressionQuality: 1.0) else{
-                                                self.toastMessage(title: "Invalid image data".locStr)
-                                                return
-                                        }
-                                        data = convertData
-                                }
-                                
-                                let has = ChatLibHashOfMsgData(data)
-                                print("------>>>", has)
-                                self.imageDidSelected(data: data)
-                        }catch let err{
-                                print("------>>>", err.localizedDescription)
-                                self.toastMessage(title: err.localizedDescription)
+                        guard let convertData  = UIImage(data: data)?.jpegData(compressionQuality: 1.0) else{
+                                self.toastMessage(title: "Invalid image data".locStr)
+                                return
                         }
+                        self.imageDidSelected(imgData: convertData, extenName: "jpeg")
                 }
         }
         
         func loadMovie(provider:NSItemProvider){
                 
-//                provider.loadInPlaceFileRepresentation(forTypeIdentifier: "public.movie") { url, inPlace, err in
-//                        guard let url = url else{
-//                                self.toastMessage(title: "Empty video file".locStr, duration: 1.0)
-//                                return
-//                        }
-//                        
-//                        do{
-//                                let data = try Data.init(contentsOf: url)
-//                                guard !data.isEmpty else{
-//                                        self.toastMessage(title: "Empty video file".locStr, duration: 1.0)
-//                                        print("------>>>url:",url.path)
-//                                        return
-//                                }
-//                                
-//                                self.videoDidSelected(data: data)
-//                                
-//                        }catch let err{
-//                                self.toastMessage(title: err.localizedDescription, duration: 1.0)
-//                                return
-//                        }
-//                }
-                
+                provider.loadInPlaceFileRepresentation(forTypeIdentifier: "public.movie") { url, inPlace, err in
+                        guard let url = url else{
+                                self.loadMovie2(provider: provider)
+                                return
+                        }
+                        guard let data = try? Data.init(contentsOf: url), !data.isEmpty  else{
+                                print("------>>>url:",url.path, err?.localizedDescription ?? "<->")
+                                self.loadMovie2(provider: provider)
+                                return
+                        }
+                        
+                        self.videoDidSelected(data: data)
+                }
+        }
+        
+        func loadMovie2(provider:NSItemProvider){
                 provider.loadFileRepresentation(forTypeIdentifier: "public.movie") { url, err in
                         guard let url = url else{
                                 self.toastMessage(title: "Empty video file".locStr, duration: 1.0)
@@ -107,7 +101,22 @@ extension MsgViewController:PHPickerViewControllerDelegate{
 
 extension MsgViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         
-        private func imageDidSelected(data: Data) {
+        private func imageDidSelected(imgData: Data, extenName:String) {
+                
+                print("------>>>extenName=>", extenName)
+                var data = imgData
+                if !ChatLibIsValidImgFmt(extenName){
+                        guard let convertData  = UIImage(data: data)?.jpegData(compressionQuality: 1.0) else{
+                                self.toastMessage(title: "Invalid image data".locStr)
+                                return
+                        }
+                        data = convertData
+                }
+                
+                let has = ChatLibHashOfMsgData(data)
+                print("------>>>", has)
+                
+                
                 let maxSize = ChatLibBigMsgThreshold()
                 let curSize = data.count
                 guard curSize > maxSize else{
