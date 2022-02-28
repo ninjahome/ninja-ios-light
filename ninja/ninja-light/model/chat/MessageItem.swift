@@ -27,7 +27,8 @@ class MessageItem: NSObject {
         public static let MaxMsgLiftTime = Double(7*86400)
         public static let TimeOutDuration = 1000 * 60 * 2
         public static let NotiKey = "peerUid"
-        public static let MaxItemNoPerID = 1000//TODO::load more on pull down chat window
+        public static let MaxItemNoPerID = 1000
+        public static let ItemNoPerPull = 100
         
         var timeStamp: Int64 = ChatLibNowInMilliSeconds()
         var from: String = ""
@@ -263,6 +264,26 @@ class MessageItem: NSObject {
         public static func prepareMessage() {
                 deleteMsgOneWeek()
                 loadUnread()
+        }
+        
+        public static func loadHistoryByPid(pid:String, timeStamp:Int64)->Bool{
+                var result:[MessageItem]?
+                let owner = Wallet.shared.Addr!
+                result = try? CDManager.shared.Get(entity: "CDUnread",
+                                                   predicate: NSPredicate(format: "owner == %@ AND unixTime <", owner, NSNumber(value: timeStamp)),
+                                                   sort: [["unixTime" : false]],
+                                                   limit: ItemNoPerPull)
+                guard let data = result else{
+                        return false
+                }
+                
+                msgLock.lock()
+                for item in data{
+                        cacheItemWithoutLock(pid: pid, item: item)
+                }
+                msgLock.unlock()
+                
+                return data.count >= ItemNoPerPull
         }
         
         public static func SortedArray(pid:String) -> [MessageItem] {
