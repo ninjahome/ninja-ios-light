@@ -27,7 +27,7 @@ class MessageItem: NSObject {
         public static let MaxMsgLiftTime = Double(7*86400)
         public static let TimeOutDuration = 1000 * 60 * 2
         public static let NotiKey = "peerUid"
-        public static let ItemNoPerPull = 1
+        public static let ItemNoPerPull = 100
         
         var timeStamp: Int64 = ChatLibNowInMilliSeconds()
         var from: String = ""
