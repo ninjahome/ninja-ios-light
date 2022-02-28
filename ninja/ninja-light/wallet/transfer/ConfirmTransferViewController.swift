@@ -47,14 +47,18 @@ class ConfirmTransferViewController: UIViewController {
                 self.showIndicator(withTitle: "", and: "Transfering".locStr)
                 ServiceDelegate.workQueue.async {
                         if let err = ServiceDelegate.transferLicense(to: addr, days: dayInt) {
-                                self.toastMessage(title: "Faild".locStr+"\(err.localizedDescription)")
-                                self.hideIndicator()
+                                DispatchQueue.main.async {
+                                        self.hideIndicator()
+                                        self.toastMessage(title: "Faild".locStr+"\(err.localizedDescription)")
+                                }
                                 return
                         }
                         DispatchQueue.main.async {
                                 self.hideIndicator()
                                 self.navigationController?.popToRootViewController(animated: true)
-                        }}
+                        }
+                        
+                }
                 
         }
         
