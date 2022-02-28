@@ -21,7 +21,7 @@ extension MsgViewController:PHPickerViewControllerDelegate{
                 for (_, itemProvider) in itemProviders.enumerated() {
                         if itemProvider.hasItemConformingToTypeIdentifier("public.image") {
                                 itemProvider.loadDataRepresentation(forTypeIdentifier: ("public.image")) { data, err in
-                                        guard let data = data else{
+                                        guard let data = data, !data.isEmpty else{
                                                 self.toastMessage(title: "Invalid image data".locStr)
                                                 return
                                         }
@@ -33,8 +33,15 @@ extension MsgViewController:PHPickerViewControllerDelegate{
                                                 self.toastMessage(title: "Empty video file".locStr)
                                                 return
                                         }
-                                        guard let data = try? Data.init(contentsOf: url) else{
-                                                self.toastMessage(title: "Empty video file".locStr)
+                                        
+                                        guard let data = try? Data.init(contentsOf: url), !data.isEmpty else{
+                                                itemProvider.loadDataRepresentation(forTypeIdentifier: "public.movie") { data, err in
+                                                        guard let d = data, !d.isEmpty else{
+                                                                self.toastMessage(title: "Empty video file".locStr)
+                                                                return
+                                                        }
+                                                        self.videoDidSelected(data: d)
+                                                }
                                                 return
                                         }
                                         
@@ -44,6 +51,7 @@ extension MsgViewController:PHPickerViewControllerDelegate{
                 }
         }
 }
+
 extension MsgViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         func imagePickerController(_ picker: UIImagePickerController,
                                    didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
