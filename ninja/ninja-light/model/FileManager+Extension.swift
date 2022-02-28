@@ -48,7 +48,6 @@ extension FileManager {
                         let tmpDirectory = try fileManager.contentsOfDirectory(atPath: tmpPath.path)
                         for path in tmpDirectory {
                                 let filePath = tmpPath.appendingPathComponent(path)
-                                print("------>prepare to remove expire file:=>", filePath)
                                 let attrs = try fileManager.attributesOfItem(atPath: filePath.path)
                                 guard let createDate = attrs[.creationDate] as? Date else{
                                         continue
@@ -58,6 +57,7 @@ extension FileManager {
                                 guard ttl < limitTime else{
                                         continue
                                 }
+                                print("------>prepare to remove expire file:=>", filePath)
                                 try fileManager.removeItem(at: filePath)
                         }
                         
