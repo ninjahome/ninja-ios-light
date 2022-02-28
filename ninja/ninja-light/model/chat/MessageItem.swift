@@ -204,11 +204,6 @@ class MessageItem: NSObject {
                                                         object: msgid, userInfo: nil)
                         return
                 }
-                msgLock.lock()
-                defer{
-                        msgLock.unlock()
-                }
-                
                 guard let msg = msgCache[to]?[msgid] else{
                         return
                 }
@@ -235,7 +230,6 @@ class MessageItem: NSObject {
                                                   time: msg.timeStamp,
                                                   unread: unread,
                                                   isGrp: msg.groupId != nil)
-                        CDManager.shared.saveContext()
                         return nil
                 }catch let err{
                         print("------>>> save new message failed:[\(err.localizedDescription)]")
@@ -256,7 +250,7 @@ class MessageItem: NSObject {
                         print("------>>>process received message err:=>",e)
                         return
                 }
-                
+                CDManager.shared.saveContext()
                 NotificationCenter.default.post(name: NotifyMessageAdded,
                                                 object: self, userInfo: [NotiKey: peerUid])
         }
