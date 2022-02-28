@@ -60,11 +60,7 @@ class VideoFileManager {
         static func compressVideo(from:Int, to:Int, videoURL: URL, callback:@escaping  ((_ status:AVAssetExportSession.Status, _ url:URL)->())){
                 
                 let asset = AVAsset(url: videoURL)
-                let assetDuration = CMTimeGetSeconds(asset.duration)
-                
-                let end = assetDuration/Float64(from) * Float64(to) - 1
-                
-                let endDuration = CMTimeMakeWithSeconds(end, preferredTimescale: 1)
+               
                 let videoFinalPath = FileManager.TmpDirectory().appendingPathComponent(trimPrefix + videoURL.lastPathComponent)
                 
                 if FileManager.fileManager.fileExists(atPath: videoFinalPath.path){
@@ -75,7 +71,7 @@ class VideoFileManager {
                 let exporter :AVAssetExportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality)!
                 exporter.outputURL = videoFinalPath
                 exporter.outputFileType = AVFileType.mov
-                exporter.timeRange = CMTimeRangeFromTimeToTime(start: CMTime.zero, end: endDuration)
+                exporter.fileLengthLimit = Int64(to*95/100)
                 
                 exporter.exportAsynchronously {
                         callback(exporter.status, videoFinalPath)

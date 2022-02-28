@@ -154,7 +154,7 @@ extension GroupDetailViewController{
         
         @IBAction func kickMemberViewTap(_ gesture: UITapGestureRecognizer) {
                 if !self.leaderManagerd{
-                        self.toastMessage(title: "Only leader valid")
+                        self.toastMessage(title: "Only leader valid".locStr)
                         return
                 }
                 
@@ -163,7 +163,7 @@ extension GroupDetailViewController{
                         return
                 }
                 guard self.groupData.memberIds.count > 3 else{
-                        self.ShowTips(msg: "not enough member to delete")
+                        self.ShowTips(msg: "not enough member to delete".locStr)
                         return
                 }
                 
@@ -230,7 +230,7 @@ extension GroupDetailViewController{
                 self.ShowYesOrNo(msg: "确认") {
                         return
                 } Yes: {
-                        self.showIndicator(withTitle: "Quit Group".locStr, and: "processing")
+                        self.showIndicator(withTitle: "Quit Group".locStr, and: "processing".locStr)
                         ServiceDelegate.workQueue.async {
                                 
                                 let err = GroupItem.QuitFromGroup(group:self.groupData)

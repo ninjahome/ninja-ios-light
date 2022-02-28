@@ -99,3 +99,8 @@
 "Comporessing Image"="压缩图片...";
 "Comporessing Video"="压缩视频...";
 "loading"="加载中...";
+"creating group"="创建群";
+"updating group"="群信息更新";
+"Only leader valid"="仅群主可操作";
+"not enough member to delete"="群成员过少";
+"processing"="处理中";
