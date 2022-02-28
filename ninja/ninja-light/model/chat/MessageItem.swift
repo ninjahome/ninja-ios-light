@@ -192,6 +192,8 @@ class MessageItem: NSObject {
                         return "[Contact]".locStr
                 case .videoWithHash:
                         return "[Video]".locStr
+                case .redPacket:
+                        return "[Red Packet]".locStr
                 }
         }
         

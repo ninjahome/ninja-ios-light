@@ -16,8 +16,9 @@ enum CMT: Int {
         case voice = 3
         case location = 4
         case file = 5
-        case contact = 7
         case videoWithHash = 11
+        case redPacket = 22
+        case contact = 23
         case unknown = -1
 }
 
@@ -332,10 +333,6 @@ class videoMsgWithHash: NSObject, NSCoding,IMPayLoad {
                 self.key = coder.decodeObject(forKey: "key") as? Data
         }
         
-        override init() {
-                super.init()
-        }
-        
         init(thumb:Data, has:String, isHorizon:Bool = false, key:Data? = nil){
                 super.init()
                 self.thumbData = thumb
@@ -349,6 +346,77 @@ class videoMsgWithHash: NSObject, NSCoding,IMPayLoad {
                 let data = ChatLibWrapVideoV3(thumbData, key, has, isHorizon, &err)
                 if let e = err{
                         print("------>>>wrap video to proto err:[\(e.localizedDescription)]")
+                        return nil
+                }
+                
+                return data
+        }
+}
+
+class contact: NSObject, NSCoding,IMPayLoad {
+        var uid:String=""
+        var recommendor:String?
+        
+        func encode(with coder: NSCoder) {
+                coder.encode(uid, forKey: "uid")
+                coder.encode(recommendor, forKey: "recommendor")
+        }
+        
+        required init?(coder: NSCoder) {
+                super.init()
+                self.uid = coder.decodeObject(forKey: "uid") as? String ?? ""
+                self.recommendor = coder.decodeObject(forKey: "recommendor") as? String
+        }
+        
+        init(uid:String, recommendor:String? = nil){
+                super.init()
+                self.uid = uid
+                self.recommendor = recommendor
+        }
+        
+        func wrappedToProto() -> Data? {
+                var err:NSError?
+                let data = ChatLibContact(self.uid, self.recommendor, &err)
+                if let e = err{
+                        print("------>>>wrap contact to proto err:[\(e.localizedDescription)]")
+                        return nil
+                }
+                
+                return data
+        }
+}
+
+
+class redPacket: NSObject, NSCoding,IMPayLoad {
+        var from:String=""
+        var to:String=""
+        var amount:Int64 = 0
+        
+        func encode(with coder: NSCoder) {
+                coder.encode(from, forKey: "from")
+                coder.encode(to, forKey: "to")
+                coder.encode(amount, forKey: "amount")
+        }
+        
+        required init?(coder: NSCoder) {
+                super.init()
+                self.from = coder.decodeObject(forKey: "from") as? String ?? ""
+                self.to = coder.decodeObject(forKey: "to") as? String ?? ""
+                self.amount = coder.decodeInt64(forKey: "amount")
+        }
+        
+        init(from:String, to:String, amount:Int64){
+                super.init()
+                self.from = from
+                self.to = to
+                self.amount = amount
+        }
+        
+        func wrappedToProto() -> Data? {
+                var err:NSError?
+                let data = ChatLibWrapRedPacket(from, to, amount, &err)
+                if let e = err{
+                        print("------>>>wrap redpacket to proto err:[\(e.localizedDescription)]")
                         return nil
                 }
                 
