@@ -24,6 +24,7 @@ protocol IMPayLoad {
 
 class MessageItem: NSObject {
         
+        public static let MaxMsgLiftTime = Double(7*86400)
         public static let TimeOutDuration = 1000 * 60 * 2
         public static let NotiKey = "peerUid"
         public static let MaxItemNoPerID = 1000//TODO::load more on pull down chat window
@@ -252,10 +253,11 @@ class MessageItem: NSObject {
         
         public static func deleteMsgOneWeek() {
                 let owner = Wallet.shared.Addr!
-                let limitTime = Int64(Date().timeIntervalSince1970) - 7*86400
+                let limitTime = Date().timeIntervalSince1970 - MaxMsgLiftTime
                 try? CDManager.shared.Delete(entity: "CDUnread",
                                              predicate: NSPredicate(format: "owner == %@ AND unixTime < %@",
                                                                     owner, NSNumber(value: limitTime)))
+                FileManager.removeTmpDirectoryExpire()
         }
         
         public static func prepareMessage() {

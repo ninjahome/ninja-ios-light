@@ -40,6 +40,31 @@ extension FileManager {
                         print("------>clean up temporary directory err:=>", err)
                 }
         }
+        static func removeTmpDirectoryExpire(){
+                
+                let ttl = MessageItem.MaxMsgLiftTime
+                let tmpPath = TmpDirectory()
+                do{
+                        let tmpDirectory = try fileManager.contentsOfDirectory(atPath: tmpPath.path)
+                        for path in tmpDirectory {
+                                let filePath = tmpPath.appendingPathComponent(path)
+                                print("------>prepare to remove expire file:=>", filePath)
+                                let attrs = try fileManager.attributesOfItem(atPath: filePath.path)
+                                guard let createDate = attrs[.creationDate] as? Date else{
+                                        continue
+                                }
+                                
+                                let limitTime = (Date().timeIntervalSince1970) - createDate.timeIntervalSince1970
+                                guard ttl < limitTime else{
+                                        continue
+                                }
+                                try fileManager.removeItem(at: filePath)
+                        }
+                        
+                }catch let err{
+                        print("------>clean up temporary directory err:=>", err)
+                }
+        }
         
         static func urlOfHash(has:String)->URL?{
                 let filePath = TmpDirectory().appendingPathComponent(has)
