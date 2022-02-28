@@ -140,12 +140,10 @@ class MessageItem: NSObject {
                         guard let data = result, !data.isEmpty else{
                                 continue
                         }
-                        
-                        msgLock.lock()
                         for msg in data {
                                 messageOfPeer![msg.timeStamp] = msg
                         }
-                        msgLock.unlock()
+                        msgCache.updateValue(messageOfPeer!, forKey: pid)
                 }
         }
         
