@@ -2311,7 +2311,7 @@
                                                             <constraint firstAttribute="height" constant="58" id="WZr-Tj-MA2"/>
                                                             <constraint firstAttribute="width" constant="58" id="bx9-9h-7XK"/>
                                                         </constraints>
-                                                        <state key="normal" image="add_icon"/>
+                                                        <state key="normal" backgroundImage="add_icon"/>
                                                         <connections>
                                                             <action selector="location:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QPd-C0-d6e"/>
                                                         </connections>
@@ -2334,7 +2334,7 @@
                                                             <constraint firstAttribute="height" constant="58" id="Hcr-pO-Wca"/>
                                                             <constraint firstAttribute="width" constant="58" id="Kxx-gH-Km3"/>
                                                         </constraints>
-                                                        <state key="normal" image="Photo_icon-1"/>
+                                                        <state key="normal" backgroundImage="Photo_icon_1"/>
                                                         <connections>
                                                             <action selector="album:" destination="BYZ-38-t0r" eventType="touchUpInside" id="v9u-fO-aHo"/>
                                                         </connections>
@@ -2372,7 +2372,7 @@
                                                             <constraint firstAttribute="height" constant="58" id="zKX-Ho-4k8"/>
                                                             <constraint firstAttribute="width" constant="58" id="zcD-4W-sBA"/>
                                                         </constraints>
-                                                        <state key="normal" image="cem"/>
+                                                        <state key="normal" backgroundImage="cem"/>
                                                         <connections>
                                                             <action selector="camera:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Gjr-o7-fFe"/>
                                                         </connections>
@@ -2411,7 +2411,7 @@
                                                             <constraint firstAttribute="height" constant="58" id="wgw-Ot-EQK"/>
                                                         </constraints>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                        <state key="normal" title="Button" image="file_icon">
+                                                        <state key="normal" backgroundImage="file_icon">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <connections>
@@ -2912,7 +2912,7 @@
                                             <constraint firstAttribute="height" constant="36" id="hTz-7O-FxN"/>
                                         </constraints>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" title=" CopyButton" backgroundImage="copy_icon-1"/>
+                                        <state key="normal" backgroundImage="copy_icon_1"/>
                                         <connections>
                                             <action selector="copyContactAddr:" destination="f4X-jQ-OkL" eventType="touchUpInside" id="H9l-7d-Ohw"/>
                                         </connections>
@@ -3928,39 +3928,37 @@
                                                     <constraint firstAttribute="width" secondItem="F9e-bG-AJ6" secondAttribute="height" multiplier="1:1" id="gm5-rU-ASy"/>
                                                 </constraints>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title=" " image="wqr"/>
+                                                <state key="normal" title=" " image="serviceqr"/>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="官方微信号：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HSb-E1-bQx">
-                                                <rect key="frame" x="130" y="22" width="92" height="18"/>
-                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="官方账号：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HSb-E1-bQx">
+                                                <rect key="frame" x="130" y="22" width="67" height="16"/>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
                                                 <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hd5-3P-Gjn">
-                                                <rect key="frame" x="130" y="56" width="114.5" height="33.5"/>
+                                                <rect key="frame" x="130" y="54" width="114.5" height="33.5"/>
                                                 <string key="text">或扫描左侧二维码
 添加微信好友</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="doudou" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Uc-1D-rQo">
-                                                <rect key="frame" x="228" y="22" width="54" height="18"/>
-                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="NJCuhKoghVjrXpNaGbeQ9uL5WEtU6mR3ijZZfubVcsq1PQ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Uc-1D-rQo">
+                                                <rect key="frame" x="197" y="22" width="189" height="16"/>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
                                                 <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jua-I8-hzq">
-                                                <rect key="frame" x="286" y="20" width="22" height="22"/>
+                                                <rect key="frame" x="390" y="19" width="22" height="22"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="22" id="5yp-nf-Teh"/>
                                                     <constraint firstAttribute="height" constant="22" id="bb8-bA-g6n"/>
                                                 </constraints>
                                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" image="copy_icon-1">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
+                                                <state key="normal" backgroundImage="copy_icon_1"/>
                                                 <connections>
                                                     <action selector="copyId:" destination="GXX-5a-XgS" eventType="touchUpInside" id="lIK-k7-vxh"/>
                                                 </connections>
@@ -3970,12 +3968,13 @@
                                         <constraints>
                                             <constraint firstItem="HSb-E1-bQx" firstAttribute="top" secondItem="uuc-n1-BRz" secondAttribute="top" constant="22" id="299-1q-DRh"/>
                                             <constraint firstItem="hd5-3P-Gjn" firstAttribute="top" secondItem="HSb-E1-bQx" secondAttribute="bottom" constant="16" id="3iO-ot-bo7"/>
-                                            <constraint firstItem="0Uc-1D-rQo" firstAttribute="leading" secondItem="HSb-E1-bQx" secondAttribute="trailing" constant="6" id="3w1-7h-GbW"/>
                                             <constraint firstItem="HSb-E1-bQx" firstAttribute="leading" secondItem="F9e-bG-AJ6" secondAttribute="trailing" constant="4" id="7Mw-kc-Qec"/>
                                             <constraint firstAttribute="bottom" secondItem="F9e-bG-AJ6" secondAttribute="bottom" constant="10" id="AZc-pa-d81"/>
                                             <constraint firstItem="F9e-bG-AJ6" firstAttribute="leading" secondItem="uuc-n1-BRz" secondAttribute="leading" constant="30" id="Dh3-wP-CDN"/>
                                             <constraint firstItem="0Uc-1D-rQo" firstAttribute="centerY" secondItem="HSb-E1-bQx" secondAttribute="centerY" id="QwN-wx-lJd"/>
-                                            <constraint firstItem="jua-I8-hzq" firstAttribute="leading" secondItem="0Uc-1D-rQo" secondAttribute="trailing" constant="4" id="hl6-US-iE3"/>
+                                            <constraint firstItem="jua-I8-hzq" firstAttribute="leading" secondItem="0Uc-1D-rQo" secondAttribute="trailing" constant="4" id="RXZ-Ce-EKh"/>
+                                            <constraint firstItem="0Uc-1D-rQo" firstAttribute="leading" secondItem="HSb-E1-bQx" secondAttribute="trailing" id="ZvF-af-hee"/>
+                                            <constraint firstAttribute="trailing" secondItem="jua-I8-hzq" secondAttribute="trailing" constant="2" id="eRq-SI-Jp1"/>
                                             <constraint firstItem="jua-I8-hzq" firstAttribute="centerY" secondItem="0Uc-1D-rQo" secondAttribute="centerY" id="nwc-iE-6Yj"/>
                                             <constraint firstItem="F9e-bG-AJ6" firstAttribute="top" secondItem="uuc-n1-BRz" secondAttribute="top" constant="10" id="y7j-gl-V4V"/>
                                             <constraint firstItem="hd5-3P-Gjn" firstAttribute="leading" secondItem="F9e-bG-AJ6" secondAttribute="trailing" constant="4" id="ziQ-qi-5hl"/>
@@ -4096,7 +4095,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z6O-HE-hFV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1561" y="2344"/>
+            <point key="canvasLocation" x="1560.8695652173915" y="2343.75"/>
         </scene>
         <!--Destroy View Controller-->
         <scene sceneID="Uta-dq-aTU">
@@ -6119,7 +6118,7 @@
         <image name="1qr" width="24" height="24"/>
         <image name="30day" width="269" height="126"/>
         <image name="&gt;_icon" width="23" height="22"/>
-        <image name="Photo_icon-1" width="58" height="58"/>
+        <image name="Photo_icon_1" width="58" height="58"/>
         <image name="QR_icon" width="22" height="22"/>
         <image name="Reafri_icon" width="20" height="20"/>
         <image name="Reafri_icon-1" width="20" height="20"/>
@@ -6137,7 +6136,7 @@
         <image name="contact_icon" width="24" height="24"/>
         <image name="contact_pick_icon" width="24" height="24"/>
         <image name="copy_icon" width="52" height="52"/>
-        <image name="copy_icon-1" width="22" height="22"/>
+        <image name="copy_icon_1" width="22" height="22"/>
         <image name="crown_img" width="22" height="22"/>
         <image name="diamond_icon" width="18" height="18"/>
         <image name="file_icon" width="58" height="58"/>
@@ -6157,6 +6156,7 @@
         <image name="red" width="6" height="6"/>
         <image name="refresh_icon" width="22" height="22"/>
         <image name="save_icon" width="52" height="52"/>
+        <image name="serviceqr" width="90" height="90"/>
         <image name="share_icon" width="52" height="52"/>
         <image name="trash" catalog="system" width="121" height="128"/>
         <image name="useN_icon" width="20" height="20"/>
@@ -6165,7 +6165,6 @@
         <image name="vedio_icon" width="34.5" height="34.5"/>
         <image name="vip-2" width="229" height="104"/>
         <image name="voice_icon" width="28" height="28"/>
-        <image name="wqr" width="88" height="88"/>
         <image name="x_icon" width="22" height="22"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
