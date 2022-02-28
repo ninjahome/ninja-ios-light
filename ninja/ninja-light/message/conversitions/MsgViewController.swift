@@ -142,9 +142,12 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         @objc func loadMoreMsg(_ sender: Any?) {
-                let msg = msgCacheArray[0]
+                var timeStamp:Int64?
+                if msgCacheArray.count > 0{
+                        timeStamp = msgCacheArray[0].timeStamp
+                }
                 guard let list = MessageItem.loadHistoryByPid(pid: peerUid,
-                                                               timeStamp: msg.timeStamp,
+                                                               timeStamp: timeStamp,
                                                                isGroup: IS_GROUP) else {
                         return
                 }

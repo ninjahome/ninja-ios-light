@@ -27,7 +27,7 @@ class MessageItem: NSObject {
         public static let MaxMsgLiftTime = Double(7*86400)
         public static let TimeOutDuration = 1000 * 60 * 2
         public static let NotiKey = "peerUid"
-        public static let ItemNoPerPull = 100
+        public static let ItemNoPerPull = 1
         
         var timeStamp: Int64 = ChatLibNowInMilliSeconds()
         var from: String = ""
@@ -275,16 +275,22 @@ class MessageItem: NSObject {
                 preLoadMsgAtAppLaunch()
         }
         
-        public static func loadHistoryByPid(pid:String, timeStamp:Int64, isGroup:Bool)-> [MessageItem]? {
+        public static func loadHistoryByPid(pid:String, timeStamp:Int64?, isGroup:Bool)-> [MessageItem]? {
                 var result:[MessageItem]?
                 let owner = Wallet.shared.Addr!
-            
+                var time:Int64
+                if nil == timeStamp{
+                        time = ChatLibNowInMilliSeconds()
+                }else{
+                        time = timeStamp!
+                }
                 var predicate:NSPredicate!
                 if isGroup{
-                        predicate = NSPredicate(format: "owner == %@ AND groupId == %@", owner, pid)
+                        predicate = NSPredicate(format: "owner == %@ AND groupId == %@ AND unixTime < %@",
+                                                owner, pid, NSNumber(value: time))
                 }else{
-                        predicate = NSPredicate(format: "owner == %@ AND (from == %@ OR to == %@)",
-                                                owner, pid, pid)
+                        predicate = NSPredicate(format: "owner == %@ AND (from == %@ OR to == %@ AND unixTime < %@)",
+                                                owner, pid, pid, NSNumber(value: time))
                 }
                 
                 result = try? CDManager.shared.Get(
