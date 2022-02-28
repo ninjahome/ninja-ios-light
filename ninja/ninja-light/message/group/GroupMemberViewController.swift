@@ -128,7 +128,7 @@ class GroupMemberViewController: UIViewController {
         }
         
         fileprivate func AddMember() {
-                self.showIndicator(withTitle: "", and: "updating group")
+                self.showIndicator(withTitle: "", and: "updating group".locStr)
                 
                 ServiceDelegate.workQueue.async {
                        
@@ -136,15 +136,7 @@ class GroupMemberViewController: UIViewController {
                         for i in self.selectedIndexs {
                                 newIds.append(self.validContactArr[i].peerID)
                         }
-                        
-//
-//                        let validMemIDs = CombineConntact.updateSetOfContact(ids: newIds)
-//
-//                        if validMemIDs.count == 0{
-//                                self.toastMessage(title: "some body's membership is outdate")
-//                                return
-//                        }
-//
+
                         if let err = GroupItem.AddMemberToGroup(group: self.groupItem, newIds: newIds) {
                                 self.toastMessage(title: "\(err.localizedDescription ?? "Add member failed".locStr)")
                                 self.hideIndicator()
@@ -158,15 +150,9 @@ class GroupMemberViewController: UIViewController {
         
         fileprivate func CreateGroup(member: [String], groupName: String) {
                 
-                self.showIndicator(withTitle: "", and: "creating group")
+                self.showIndicator(withTitle: "", and: "creating group".locStr)
                 
                 ServiceDelegate.workQueue.async {
-                        
-//                        let validMemIDs = CombineConntact.updateSetOfContact(ids: member)
-//                        if validMemIDs.count < 2{
-//                                self.toastMessage(title: "too less valid friend")
-//                                return
-//                        }
                         
                         do {
                                 self.groupItem = try GroupItem.NewGroup(ids: member,
@@ -298,7 +284,7 @@ extension GroupMemberViewController : CellClickDelegate {
         }
         
         func loadSelectedContact(_ idx:Int){
-                self.showIndicator(withTitle: "", and: "loading")
+                self.showIndicator(withTitle: "", and: "loading".locStr)
                 ServiceDelegate.workQueue.async{
                         defer {
                                 self.hideIndicator()
