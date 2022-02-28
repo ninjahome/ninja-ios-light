@@ -52,8 +52,9 @@ extension FileManager {
                                 guard let createDate = attrs[.creationDate] as? Date else{
                                         continue
                                 }
-                                
-                                let limitTime = (Date().timeIntervalSince1970) - createDate.timeIntervalSince1970
+                                let now = (Date().timeIntervalSince1970)
+                                let create = createDate.timeIntervalSince1970
+                                let limitTime = now - create
                                 guard ttl < limitTime else{
                                         continue
                                 }

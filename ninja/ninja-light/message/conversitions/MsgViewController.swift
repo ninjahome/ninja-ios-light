@@ -49,13 +49,14 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         
         var recordCancelled:Bool = false
         var keyboardIsHide: Bool = true
+        var refreshControl = UIRefreshControl()
         
         var _delegate: UIGestureRecognizerDelegate?
         
         override func viewWillAppear(_ animated: Bool) {
                 super.viewWillAppear(animated)
                 ChatItem.CurrentPID = peerUid
-                
+               
                 if (self.navigationController?.viewControllers.count)! >= 1 {
                         _delegate = self.navigationController?.interactivePopGestureRecognizer?.delegate
                         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
@@ -83,7 +84,8 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 
                 self.msgCacheArray = MessageItem.SortedArray(pid: self.peerUid)
                 populateView()
-                
+                refreshControl.addTarget(self, action: #selector(loadMoreMsg(_:)), for: .valueChanged)
+                messageTableView.addSubview(refreshControl)
                 
                 NotificationCenter.default.addObserver(self,
                                                        selector:#selector(newMsg(notification:)),
@@ -137,6 +139,17 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         
         deinit {
                 NotificationCenter.default.removeObserver(self)
+        }
+        
+        @objc func loadMoreMsg(_ sender: Any?) {
+                let msg = msgCacheArray[0]
+                guard let list = MessageItem.loadHistoryByPid2(pid: peerUid, timeStamp: msg.timeStamp) else {
+                        return
+                }
+                msgCacheArray.insert(contentsOf: list, at: 0)
+                self.refreshControl.endRefreshing()
+                self.messageTableView.reloadData()
+                
         }
         
         private func populateView() {

@@ -257,7 +257,7 @@ class MessageItem: NSObject {
                 let limitTime = Date().timeIntervalSince1970 - MaxMsgLiftTime
                 try? CDManager.shared.Delete(entity: "CDUnread",
                                              predicate: NSPredicate(format: "owner == %@ AND unixTime < %@",
-                                                                    owner, NSNumber(value: limitTime)))
+                                                                    owner, NSNumber(value: limitTime*1000)))
                 FileManager.removeTmpDirectoryExpire()
         }
         
@@ -285,6 +285,22 @@ class MessageItem: NSObject {
                 
                 return data.count >= ItemNoPerPull
         }
+        public static func loadHistoryByPid2(pid:String, timeStamp:Int64)-> [MessageItem]? {
+                var result:[MessageItem]?
+                let owner = Wallet.shared.Addr!
+                result = try? CDManager.shared.Get(
+                        entity: "CDUnread",
+                        predicate: NSPredicate(format: "owner == %@ AND unixTime < %@ AND pid == %@",
+                                               owner,
+                                               NSNumber(value: timeStamp),
+                                               pid),
+                        sort: [["unixTime" : false]],
+                        limit: ItemNoPerPull)
+                
+                return result?.reversed()
+                
+        }
+        
         
         public static func SortedArray(pid:String) -> [MessageItem] {
                 msgLock.lock()

@@ -1522,10 +1522,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ow1-y7-cFU" customClass="UIImageView">
-                                                    <rect key="frame" x="56" y="24.5" width="50" height="159.5"/>
+                                                    <rect key="frame" x="56" y="24.5" width="38.5" height="159.5"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BEg-Rp-bve">
-                                                            <rect key="frame" x="0.0" y="0.0" width="50" height="159.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="38.5" height="159.5"/>
                                                             <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -2052,10 +2052,10 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="odA-8n-hw0" customClass="UIImageView">
-                                                    <rect key="frame" x="577" y="24.5" width="50" height="159.5"/>
+                                                    <rect key="frame" x="588.5" y="24.5" width="38.5" height="159.5"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="odn-T9-sU6">
-                                                            <rect key="frame" x="0.0" y="0.0" width="50" height="159.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="38.5" height="159.5"/>
                                                             <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -2076,10 +2076,10 @@
                                                     </constraints>
                                                 </view>
                                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="lcu-Qn-Z5m">
-                                                    <rect key="frame" x="549" y="94.5" width="20" height="20"/>
+                                                    <rect key="frame" x="560.5" y="94.5" width="20" height="20"/>
                                                 </activityIndicatorView>
                                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ysp-Hb-QR2">
-                                                    <rect key="frame" x="547" y="93.5" width="22" height="22"/>
+                                                    <rect key="frame" x="558.5" y="93.5" width="22" height="22"/>
                                                     <state key="normal" image="!!"/>
                                                     <connections>
                                                         <action selector="retry:" destination="L0H-Gq-bJd" eventType="touchUpInside" id="uUP-hy-juN"/>
@@ -6162,7 +6162,7 @@
         <image name="useN_icon" width="20" height="20"/>
         <image name="user_icon" width="24" height="24"/>
         <image name="user_pick_icon" width="24" height="24"/>
-        <image name="vedio_icon" width="46" height="46"/>
+        <image name="vedio_icon" width="34.5" height="34.5"/>
         <image name="vip-2" width="229" height="104"/>
         <image name="voice_icon" width="28" height="28"/>
         <image name="wqr" width="88" height="88"/>
