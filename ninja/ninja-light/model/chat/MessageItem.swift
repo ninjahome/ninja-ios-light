@@ -416,6 +416,16 @@ extension MessageItem: ModelObj {
 
 
 extension MessageItem:ChatLibUnwrapCallbackProtocol{
+        func contact(_ u: String?, r: String?) {
+                self.typ = .contact
+                self.payload = contactMsg(uid: u ?? "", recommendor: r)
+        }
+        
+        func redPacket(_ f: String?, t: String?, a: Int64) {
+                self.typ = .redPacket
+                self.payload = redPacketMsg(from: f ?? "", to: t ?? "", amount: a)
+        }
+        
         
         func video(withHash d: Data?, k: Data?, h: String?, horiz:Bool) {
                 self.typ = .videoWithHash

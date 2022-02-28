@@ -353,7 +353,7 @@ class videoMsgWithHash: NSObject, NSCoding,IMPayLoad {
         }
 }
 
-class contact: NSObject, NSCoding,IMPayLoad {
+class contactMsg: NSObject, NSCoding,IMPayLoad {
         var uid:String=""
         var recommendor:String?
         
@@ -376,7 +376,7 @@ class contact: NSObject, NSCoding,IMPayLoad {
         
         func wrappedToProto() -> Data? {
                 var err:NSError?
-                let data = ChatLibContact(self.uid, self.recommendor, &err)
+                let data = ChatLibWrapContact(self.uid, self.recommendor, &err)
                 if let e = err{
                         print("------>>>wrap contact to proto err:[\(e.localizedDescription)]")
                         return nil
@@ -387,7 +387,7 @@ class contact: NSObject, NSCoding,IMPayLoad {
 }
 
 
-class redPacket: NSObject, NSCoding,IMPayLoad {
+class redPacketMsg: NSObject, NSCoding,IMPayLoad {
         var from:String=""
         var to:String=""
         var amount:Int64 = 0
