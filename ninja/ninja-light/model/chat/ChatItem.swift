@@ -116,6 +116,14 @@ class ChatItem: NSObject{
                 return sortedArray
         }
         
+        public static func Pids() -> [String:ChatItem] {
+                noLock.lock()
+                defer{
+                        noLock.unlock()
+                }
+                return cache
+        }
+        
         func resetUnread(){
                 guard self.unreadNo != 0 else {
                         return

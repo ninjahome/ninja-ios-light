@@ -13,7 +13,7 @@ class ServiceDelegate: NSObject {
         public static let workQueue = DispatchQueue.init(label: "Serivce Queue", qos: .utility)
         public static let DevTypeIOS = 1
         public static let Debug = true
-        public static let networkID = Int8(1)
+        public static let networkID = Int8(2)
         
         public static func getAgentStatus() -> AgentStatus {
                 
@@ -169,9 +169,8 @@ extension ServiceDelegate{
         public static func InitService() {
                 CombineConntact.ReloadSavedContact()
                 GroupItem.loadCachedFromDB()
+                ChatItem.ReloadChatRoom()
                 MessageItem.prepareMessage()
-                ChatItem.ReloadChatRoom()//TODO:: update chat item by new loaded message item queue
-                
                 dateFormatterGet.timeStyle = .medium
                 WebsocketSrv.shared.Online()
         }

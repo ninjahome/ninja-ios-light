@@ -27,7 +27,6 @@ class MessageItem: NSObject {
         public static let MaxMsgLiftTime = Double(7*86400)
         public static let TimeOutDuration = 1000 * 60 * 2
         public static let NotiKey = "peerUid"
-        public static let MaxItemNoPerID = 1000
         public static let ItemNoPerPull = 100
         
         var timeStamp: Int64 = ChatLibNowInMilliSeconds()
@@ -103,40 +102,50 @@ class MessageItem: NSObject {
                 return msgItem
         }
         
-        
-        //TODO:: pull to load more unread message
-        public static func loadUnread() {
+        public static func preLoadMsgAtAppLaunch() {
                 guard let owner = Wallet.shared.Addr else {
                         return
                 }
-                var result:[MessageItem]?
-                result = try? CDManager.shared.Get(entity: "CDUnread",
-                                                   predicate: NSPredicate(format: "owner == %@", owner),
-                                                   sort: [["unixTime" : false]],
-                                                   limit: MaxItemNoPerID)
-                guard let data = result else{
+                let pids = ChatItem.Pids()
+                guard pids.count > 0 else{
                         return
-                }
-                
-                msgLock.lock()
-                defer{
-                        msgLock.unlock()
                 }
                 msgCache.removeAll()
                 
-                for msg in data {
-                        var peerUid: String
-                        if let groupId = msg.groupId {
-                                peerUid = groupId
-                        } else {
-                                if msg.isOut {
-                                        peerUid = msg.to
-                                } else {
-                                        peerUid = msg.from
-                                }
+                for (pid, item) in pids{
+                        
+                        var result:[MessageItem]?
+                        
+                        var messageOfPeer = msgCache[pid]
+                        if messageOfPeer == nil{
+                                messageOfPeer = MsgCacheMap()
+                                msgCache[pid] = messageOfPeer
+                        }
+                        var predicate:NSPredicate!
+                        if item.isGroup{
+                                predicate = NSPredicate(format: "owner == %@ AND groupId == %@", owner, pid)
+                        }else{
+                                predicate = NSPredicate(format: "owner == %@ AND (from == %@ OR to == %@)",
+                                                        owner, pid, pid)
                         }
                         
-                        cacheItemWithoutLock(pid: peerUid, item: msg)
+                        
+                        result = try? CDManager.shared.Get(
+                                entity: "CDUnread",
+                                predicate:predicate,
+                                sort: [["unixTime" : false]],
+                                limit: ItemNoPerPull)
+                        
+                        
+                        guard let data = result, !data.isEmpty else{
+                                continue
+                        }
+                        
+                        msgLock.lock()
+                        for msg in data {
+                                messageOfPeer![msg.timeStamp] = msg
+                        }
+                        msgLock.unlock()
                 }
         }
         
@@ -263,42 +272,27 @@ class MessageItem: NSObject {
         
         public static func prepareMessage() {
                 deleteMsgOneWeek()
-                loadUnread()
+                preLoadMsgAtAppLaunch()
         }
         
-        public static func loadHistoryByPid(pid:String, timeStamp:Int64)->Bool{
+        public static func loadHistoryByPid(pid:String, timeStamp:Int64, isGroup:Bool)-> [MessageItem]? {
                 var result:[MessageItem]?
                 let owner = Wallet.shared.Addr!
-                result = try? CDManager.shared.Get(entity: "CDUnread",
-                                                   predicate: NSPredicate(format: "owner == %@ AND unixTime <", owner, NSNumber(value: timeStamp)),
-                                                   sort: [["unixTime" : false]],
-                                                   limit: ItemNoPerPull)
-                guard let data = result else{
-                        return false
+            
+                var predicate:NSPredicate!
+                if isGroup{
+                        predicate = NSPredicate(format: "owner == %@ AND groupId == %@", owner, pid)
+                }else{
+                        predicate = NSPredicate(format: "owner == %@ AND (from == %@ OR to == %@)",
+                                                owner, pid, pid)
                 }
                 
-                msgLock.lock()
-                for item in data{
-                        cacheItemWithoutLock(pid: pid, item: item)
-                }
-                msgLock.unlock()
-                
-                return data.count >= ItemNoPerPull
-        }
-        public static func loadHistoryByPid2(pid:String, timeStamp:Int64)-> [MessageItem]? {
-                var result:[MessageItem]?
-                let owner = Wallet.shared.Addr!
                 result = try? CDManager.shared.Get(
                         entity: "CDUnread",
-                        predicate: NSPredicate(format: "owner == %@ AND unixTime < %@ AND pid == %@",
-                                               owner,
-                                               NSNumber(value: timeStamp),
-                                               pid),
+                        predicate: predicate,
                         sort: [["unixTime" : false]],
                         limit: ItemNoPerPull)
-                
                 return result?.reversed()
-                
         }
         
         

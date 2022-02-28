@@ -143,7 +143,9 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         
         @objc func loadMoreMsg(_ sender: Any?) {
                 let msg = msgCacheArray[0]
-                guard let list = MessageItem.loadHistoryByPid2(pid: peerUid, timeStamp: msg.timeStamp) else {
+                guard let list = MessageItem.loadHistoryByPid(pid: peerUid,
+                                                               timeStamp: msg.timeStamp,
+                                                               isGroup: IS_GROUP) else {
                         return
                 }
                 msgCacheArray.insert(contentsOf: list, at: 0)
