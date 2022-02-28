@@ -65,7 +65,7 @@ extension MsgViewController:PHPickerViewControllerDelegate{
         func loadMovie(provider:NSItemProvider){
                 
                 provider.loadInPlaceFileRepresentation(forTypeIdentifier: "public.movie") { url, inPlace, err in
-                         
+                        
                         guard let url = url else{
                                 self.loadMovie2(provider: provider)
                                 return
@@ -174,31 +174,28 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
         }
         
         private func sendVideoFile(rawData:Data, url:URL){
-                
-                ServiceDelegate.workQueue.async {
-                        let (thumb, isHorize) = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
-                        guard let thumbData = thumb else{
-                                self.toastMessage(title: "create thumbnail failed".locStr)
-                                return
-                        }
-                        let (hasOfVideo, key) = ServiceDelegate.MakeVideoSumMsg(rawData: rawData)
-                        
-                        guard let has = hasOfVideo else{
-                                self.toastMessage(title:  "Failed".locStr)
-                                return
-                        }
-                        
-                        var gid:String? = nil
-                        if self.IS_GROUP{
-                                gid = self.peerUid
-                        }
-                        let video = videoMsgWithHash(thumb:thumbData, has:has, isHorizon: isHorize, key: key)
-                        let msg = MessageItem.init(to: self.peerUid,
-                                                   data: video,
-                                                   typ: .videoWithHash,
-                                                   gid: gid)
-                        
-                        self.sendMessage(msg: msg)
+                let (thumb, isHorize) = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
+                guard let thumbData = thumb else{
+                        self.toastMessage(title: "create thumbnail failed".locStr)
+                        return
                 }
+                let (hasOfVideo, key) = ServiceDelegate.MakeVideoSumMsg(rawData: rawData)
+                
+                guard let has = hasOfVideo else{
+                        self.toastMessage(title:  "Failed".locStr)
+                        return
+                }
+                
+                var gid:String? = nil
+                if self.IS_GROUP{
+                        gid = self.peerUid
+                }
+                let video = videoMsgWithHash(thumb:thumbData, has:has, isHorizon: isHorize, key: key)
+                let msg = MessageItem.init(to: self.peerUid,
+                                           data: video,
+                                           typ: .videoWithHash,
+                                           gid: gid)
+                
+                self.sendMessage(msg: msg)
         }
 }
