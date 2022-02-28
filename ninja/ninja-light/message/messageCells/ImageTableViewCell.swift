@@ -181,7 +181,7 @@ extension ImageTableViewCell{
                 let action = UIAlertAction(title: "Save to album".locStr, style: .default) { (_) in
                         UIImageWriteToSavedPhotosAlbum(imgView.image!, nil, nil, nil)
                         //TODO::show tips
-                        keyWindow?.rootViewController?.toastMessage(title: "Save success".locStr)
+                        keyWindow?.rootViewController?.toastMessage(title: "Save success".locStr, duration: 1.0)
                 }
                 let cancel = UIAlertAction(title: "Cancel".locStr, style: .cancel, handler: nil)
                 alert.addAction(action)
