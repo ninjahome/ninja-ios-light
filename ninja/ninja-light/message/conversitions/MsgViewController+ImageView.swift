@@ -20,11 +20,34 @@ extension MsgViewController:PHPickerViewControllerDelegate{
                 let itemProviders = results.map(\.itemProvider)
                 for (_, itemProvider) in itemProviders.enumerated() {
                         if itemProvider.hasItemConformingToTypeIdentifier("public.image") {
-                                itemProvider.loadDataRepresentation(forTypeIdentifier: ("public.image")) { data, err in
-                                        guard let data = data, !data.isEmpty else{
+                                itemProvider.loadInPlaceFileRepresentation(forTypeIdentifier: ("public.image")) {url, inPlace, err in
+                                        
+                                        guard let url = url else{
                                                 self.toastMessage(title: "Invalid image data".locStr)
                                                 return
                                         }
+                                        
+                                        guard var data = try? Data(contentsOf: url), !data.isEmpty else{
+                                                itemProvider.loadDataRepresentation(forTypeIdentifier: "public.image") { data, err in
+                                                        guard let d = data else{
+                                                                self.toastMessage(title: "Invalid image data".locStr)
+                                                                return
+                                                        }
+                                                        self.imageDidSelected(imgData: d)
+                                                }
+                                                
+                                                return
+                                        }
+                                        
+                                        print("------->>>lastPathComponent:=>", url.pathExtension)
+                                        if !ChatLibIsValidImgFmt(url.pathExtension){
+                                                guard let  d = UIImage(data: data)?.jpeg else{
+                                                        self.toastMessage(title: "Invalid image data".locStr)
+                                                        return
+                                                }
+                                                data = d
+                                        }
+                                        
                                         self.imageDidSelected(imgData: data)
                                 }
                         }else if itemProvider.hasItemConformingToTypeIdentifier("public.movie"){
@@ -88,6 +111,7 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
         
         
         private func imageDidSelected(imgData: Data) {
+                
                 print("------>>> image hash:=>", ChatLibHashOfMsgData(imgData))
                 let maxSize = ChatLibBigMsgThreshold()
                 let curSize = imgData.count
