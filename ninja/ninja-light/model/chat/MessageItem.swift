@@ -202,10 +202,6 @@ class MessageItem: NSObject {
                                                         object: msgid, userInfo: nil)
                         return
                 }
-                msgLock.lock()
-                defer{
-                        msgLock.unlock()
-                }
                 
                 guard let msg = msgCache[to]?[msgid] else{
                         return
