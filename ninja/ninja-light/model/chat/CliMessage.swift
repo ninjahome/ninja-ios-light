@@ -16,7 +16,8 @@ enum CMT: Int {
         case voice = 3
         case location = 4
         case file = 5
-        case contact = 6
+        case contact = 7
+        case videoWithHash = 11
         case unknown = -1
 }
 
@@ -67,24 +68,31 @@ class txtMsg:NSObject, NSCoding,IMPayLoad{
 }
 
 class imgMsg:NSObject, NSCoding,IMPayLoad{
-        
+        var has:String = ""
         var content: Data = Data()
+        var key:Data?
         override init() {
                 super.init()
         }
         
-        init(data:Data){
+        init(data:Data, has:String = "", key:Data? = nil){
                 super.init()
                 content = data
+                self.has = has
+                self.key = key
         }
         
         func encode(with coder: NSCoder) {
                 coder.encode(content, forKey: "content")
+                coder.encode(has, forKey: "has")
+                coder.encode(key, forKey: "key")
         }
         
         required init?(coder: NSCoder) {
                 super.init()
                 self.content = coder.decodeObject(forKey: "content") as! Data
+                self.has = coder.decodeObject(forKey: "has") as? String ?? ""
+                self.key = coder.decodeObject(forKey: "key") as? Data
         }
         
         func wrappedToProto() -> Data? {
@@ -92,7 +100,7 @@ class imgMsg:NSObject, NSCoding,IMPayLoad{
                         return nil
                 }
                 var err:NSError?
-                let data = ChatLibWrapImgV2(self.content, &err)
+                let data = ChatLibWrapImgV3(self.content, self.key, self.has, &err)
                 if let e = err{
                         print("------>>>wrap img to proto err:[\(e.localizedDescription)]")
                         return nil
@@ -240,8 +248,7 @@ class fileMsg: NSObject, NSCoding,IMPayLoad {
 }
 
 class videoMsg:fileMsg{
-        public static let defaultImg = UIImage(named: "logo_img")!
-        var thumbnailImg: UIImage = defaultImg
+        var thumbnailImg: UIImage = defaultAvatar
         private var tmpFileURL:URL?
         
         override init() {
@@ -254,13 +261,18 @@ class videoMsg:fileMsg{
         }
         required init?(coder: NSCoder) {
                 super.init(coder: coder)
-                self.thumbnailImg = (coder.decodeObject(forKey: "thumbnailImg") as? UIImage) ?? videoMsg.defaultImg
+                if let img = coder.decodeObject(forKey: "thumbnailImg") as? UIImage{
+                        self.thumbnailImg = img
+                }
                 self.tmpFileURL = coder.decodeObject(forKey: "tmpFileURL") as? URL
         }
         
-        init(name:String?, data:Data?, thumb:UIImage?){
+        init(name:String?, data:Data?, thumb:Data?){
                 super.init(name: name, data: data)
-                self.thumbnailImg = thumb ?? videoMsg.defaultImg
+                guard let d = thumb else{
+                        return
+                }
+                self.thumbnailImg = UIImage(data: d) ?? defaultAvatar
         }
         
         init(name:String?, data:Data?){
@@ -268,7 +280,10 @@ class videoMsg:fileMsg{
                 guard  let url = tmpUrl() else{
                         return
                 }
-                self.thumbnailImg = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url) ?? videoMsg.defaultImg
+                let (img, _) = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
+                if let d = img{
+                        self.thumbnailImg = UIImage(data: d)!
+                }
         }
         
         func tmpUrl()->URL?{
@@ -292,5 +307,51 @@ class videoMsg:fileMsg{
                         print("------>>> write video file failed", err)
                         return nil
                 }
+        }
+}
+
+
+class videoMsgWithHash: NSObject, NSCoding,IMPayLoad {
+        var thumbData:Data?
+        var has:String?
+        var isHorizon:Bool = false
+        var key:Data? = nil
+        
+        func encode(with coder: NSCoder) {
+                coder.encode(thumbData, forKey: "thumb")
+                coder.encode(has, forKey: "has")
+                coder.encode(key, forKey: "key")
+                coder.encode(isHorizon, forKey: "isHorizon")
+        }
+        
+        required init?(coder: NSCoder) {
+                super.init()
+                self.thumbData = coder.decodeObject(forKey: "thumb") as? Data
+                self.has = coder.decodeObject(forKey: "has") as? String
+                self.isHorizon = coder.decodeBool(forKey: "isHorizon")
+                self.key = coder.decodeObject(forKey: "key") as? Data
+        }
+        
+        override init() {
+                super.init()
+        }
+        
+        init(thumb:Data, has:String, isHorizon:Bool = false, key:Data? = nil){
+                super.init()
+                self.thumbData = thumb
+                self.has = has
+                self.isHorizon = isHorizon
+                self.key = key
+        }
+        
+        func wrappedToProto() -> Data? {
+                var err:NSError?
+                let data = ChatLibWrapVideoV3(thumbData, key, has, isHorizon, &err)
+                if let e = err{
+                        print("------>>>wrap video to proto err:[\(e.localizedDescription)]")
+                        return nil
+                }
+                
+                return data
         }
 }

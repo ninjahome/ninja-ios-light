@@ -89,3 +89,13 @@
 "waiting"="";
 "deleting contact"="正在删除联系人";
 "deleting"="正在删除";
+"create thumbnail failed"="缩略图创建失败";
+"video expired"="视频源已过期";
+"saving"="保存中";
+"authorize first please"="请授权访问相册";
+"authorize failed"="授权失败";
+"can't load that video"="未找到视频源";
+"Sending"="发送中";
+"Comporessing Image"="压缩图片...";
+"Comporessing Video"="压缩视频...";
+"loading"="加载中...";

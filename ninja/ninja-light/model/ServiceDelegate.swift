@@ -16,17 +16,17 @@ class ServiceDelegate: NSObject {
         public static let networkID = Int8(2)
         
         public static func getAgentStatus() -> AgentStatus {
-
+                
                 let balance = Wallet.shared.getBalance()
-
+                
                 if balance <= 0 {
                         return .initial
                 }
-
+                
                 if balance < 5 {
                         return .almostExpire
                 }
-
+                
                 return .activated
         }
         
@@ -44,6 +44,7 @@ class ServiceDelegate: NSObject {
                         userDefault.set(current, forKey: AppVersionKey)
                 }
                 // networkID 5: company 2: other
+                
                 ChatLibInitAPP(endPoint, "a3a5c09826a246d0bfbef8084b81df1f", WebsocketSrv.shared, networkID)
         }
         public static func InitPushParam(deviceToken:String) {
@@ -52,6 +53,99 @@ class ServiceDelegate: NSObject {
         
         public static func MaxAvatarSize()->Int{
                 return ChatLibMaxAvatarSize()
+        }
+        
+        public static func LoadVideoByHash(has:String, key:Data? = nil) -> URL?{
+                if let url = VideoFileManager.urlOfHash(has: has){
+                        return url
+                }
+                
+                var err:NSError?
+                guard let d = ChatLibReadBigMsgByHash(has, key, &err) else{
+                        return nil
+                }
+                return VideoFileManager.writeByHash(has: has, content: d)
+        }
+        
+        public static func MakeVideoSumMsg(rawData:Data)->(String?, Data?){
+                guard rawData.count > 16 else {
+                        print("------>>> data is too short")
+                        return (nil, nil)
+                }
+                var err:NSError?
+                let key = rawData[0...15]
+                let cryptData = ChatLibCryptBigDataByPrefix(key, rawData, &err)
+                if let e = err{
+                        print("------>>>post big vedio failed:\(e.localizedDescription)")
+                        return (nil, nil)
+                }
+                
+                let has = ChatLibPostBigMsg(cryptData, &err)
+                if let e = err{
+                        print("------>>>post big vedio failed:\(e.localizedDescription)")
+                        return (nil, nil)
+                }
+                _ = VideoFileManager.writeByHash(has: has, content: rawData)
+                return (has, key)
+        }
+        
+        public static func MakeImgSumMsg(origin: Data, snapShotSize:Int)->(Data?, Data?, String?){
+                let maxImgSize = ChatLibMaxFileSize()
+                var rawData:Data = origin
+                if origin.count > maxImgSize{
+                        guard let rd = CompressImg(origin: origin, targetSize: maxImgSize) else{
+                                print("------>>>compress too big imgage failed")
+                                return (nil, nil, nil)
+                        }
+                        rawData = rd
+                }
+                
+                guard let snapShot = CompressImg(origin: rawData, targetSize: snapShotSize) else{
+                        print("------>>>create snapshot failed")
+                        return (nil,nil, nil)
+                }
+                
+                var err:NSError?
+                let key = rawData[0...15]
+                let cryptData = ChatLibCryptBigDataByPrefix(key, rawData, &err)
+                if err != nil{
+                        return (nil,nil, nil)
+                }
+                
+                let has = ChatLibPostBigMsg(cryptData, &err)
+                if let e = err{
+                        print("------>>>post big image failed:\(e.localizedDescription )")
+                        return (nil,nil, nil)
+                }
+                
+                _ = FileManager.writeByHash(has: has, content: rawData)
+                return (snapShot,key, has)
+        }
+        
+        public static func LoadImgByHash(has:String, key:Data?) -> Data?{
+                if let d = FileManager.readByHash(has: has){
+                        return d
+                }
+                var err:NSError?
+                guard let d = ChatLibReadBigMsgByHash(has, key, &err) else{
+                        return nil
+                }
+                
+                _ = FileManager.writeByHash(has: has, content: d)
+                return d
+        }
+        
+        public static func getVideoUrlByHash(has:String, key:Data?)->URL?{
+                if let url = VideoFileManager.urlOfHash(has: has){
+                        return url
+                }
+                
+                var err:NSError?
+                guard let d = ChatLibReadBigMsgByHash(has, key, &err) else{
+                        return nil
+                }
+                
+                return VideoFileManager.writeByHash(has: has, content: d)
         }
         
         public static func CompressImg(origin:Data, targetSize:Int)->Data?{
@@ -75,9 +169,8 @@ extension ServiceDelegate{
         public static func InitService() {
                 CombineConntact.ReloadSavedContact()
                 GroupItem.loadCachedFromDB()
+                ChatItem.ReloadChatRoom()
                 MessageItem.prepareMessage()
-                ChatItem.ReloadChatRoom()//TODO:: update chat item by new loaded message item queue
-                
                 dateFormatterGet.timeStyle = .medium
                 WebsocketSrv.shared.Online()
         }
@@ -88,12 +181,12 @@ extension ServiceDelegate{
                 MessageItem.deleteAll()
                 GroupItem.deleteAll()
         }
-
+        
         
         public static func SyncChainData(data:Data){
                 workQueue.async {
                         if let wallet = Wallet.initByData(data){
-                               let err = Wallet.shared.UpdateWallet(w: wallet)
+                                let err = Wallet.shared.UpdateWallet(w: wallet)
                                 if err != nil{
                                         print("------>>>compress image failed:\(err?.localizedDescription ?? "<->")")
                                 }
@@ -196,7 +289,7 @@ extension ServiceDelegate{
                                 guard let data = imgData else{
                                         continue
                                 }
-                        
+                                
                                 counter += 1
                                 avatarArr.append(data)
                                 if counter >= 9{

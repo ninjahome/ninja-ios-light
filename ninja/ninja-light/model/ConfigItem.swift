@@ -12,17 +12,18 @@ class ConfigItem: NSObject {
         public static let shared = ConfigItem()
         var obj: CDConfig?
         var endPoint: String?
-        
         public static func initEndPoint(_ endPoint: String) -> ConfigItem {
                 let item = ConfigItem.init()
                 item.endPoint = endPoint
                 return item
         }
-
+        
         public static func loadEndPoint() -> String? {
                 var inst: ConfigItem?
                 do {
-                        inst = try CDManager.shared.GetOne(entity: "CDConfig", predicate: nil)
+                        inst = try CDManager.shared.GetOne(entity: "CDConfig", predicate:
+                                                                NSPredicate(format: "nid == %@",
+                                                                            NSNumber.init(value: ServiceDelegate.networkID)))
                         self.shared.endPoint = inst?.endPoint
                         return self.shared.endPoint
                 } catch let err {
@@ -34,7 +35,9 @@ class ConfigItem: NSObject {
         public static func updateConfig(_ item: ConfigItem) -> NJError? {
                 
                 do {
-                        try CDManager.shared.UpdateOrAddOne(entity: "CDConfig", m: item, predicate: nil)
+                        try CDManager.shared.UpdateOrAddOne(entity: "CDConfig", m: item, predicate:
+                                                                NSPredicate(format: "nid == %@ ",
+                                                                            NSNumber.init(value: ServiceDelegate.networkID)))
                 } catch let err {
                         return NJError.config(err.localizedDescription)
                 }
@@ -48,14 +51,16 @@ extension ConfigItem: ModelObj {
                         throw NJError.coreData("Cast to CDConfig failed")
                 }
                 cObj.endPoint = self.endPoint
+                cObj.nid = Int16(ServiceDelegate.networkID)
                 self.obj = cObj
         }
-
+        
         func initByObj(obj: NSManagedObject) throws {
                 guard let cObj = obj as? CDConfig else {
                         throw NJError.coreData("Cast to CDConfig failed")
                 }
                 self.endPoint = cObj.endPoint
+                print("-------->>", cObj.nid)
                 self.obj = cObj
         }
 }

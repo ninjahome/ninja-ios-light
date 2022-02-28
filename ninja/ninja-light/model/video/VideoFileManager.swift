@@ -12,17 +12,30 @@ import ChatLib
 import Photos
 
 class VideoFileManager {
-        static func thumbnailImageOfVideoInVideoURL(videoURL: URL) -> UIImage? {
+        private static let trimPrefix = "trim."
+        private static let hashSuffix = "mov"
+        
+        static func thumbnailImageOfVideoInVideoURL(videoURL: URL) -> (Data?, Bool) {
                 let asset = AVURLAsset(url: videoURL as URL, options: nil)
                 
                 let imageGenerator = AVAssetImageGenerator(asset: asset)
                 imageGenerator.appliesPreferredTrackTransform = true
-                guard let cgImage = try? imageGenerator.copyCGImage(at: .zero, actualTime: nil) else {
-                        return nil
+                do { 
+                        let cgImage = try imageGenerator.copyCGImage(at: .zero, actualTime: nil)
+                        let thumbnail = UIImage(cgImage: cgImage)
+                        var thumbData = thumbnail.jpegData(compressionQuality: 1.0)!
+                        if thumbData.count > ChatLibBigMsgThreshold(){
+                                var err:NSError?
+                                if let compressedThumb = ChatLibCompressImg(thumbData, Int32(ChatLibBigMsgThreshold()), &err){
+                                        thumbData = compressedThumb
+                                }
+                        }
+                        return (thumbData, cgImage.width > cgImage.height)
+                        
+                } catch let err{
+                        print("------>>>", err.localizedDescription, videoURL.path)
+                        return (nil, false)
                 }
-
-                let thumbnail = UIImage(cgImage: cgImage)
-                return thumbnail
         }
         
         static func getVideoSize(videoURL: URL) -> Int {
@@ -45,14 +58,20 @@ class VideoFileManager {
         }
         
         static func compressVideo(from:Int, to:Int, videoURL: URL, callback:@escaping  ((_ status:AVAssetExportSession.Status, _ url:URL)->())){
-               
+                
                 let asset = AVAsset(url: videoURL)
                 let assetDuration = CMTimeGetSeconds(asset.duration)
                 
                 let end = assetDuration/Float64(from) * Float64(to) - 1
                 
                 let endDuration = CMTimeMakeWithSeconds(end, preferredTimescale: 1)
-                let videoFinalPath = FileManager.TmpDirectory().appendingPathComponent(videoURL.lastPathComponent)
+                let videoFinalPath = FileManager.TmpDirectory().appendingPathComponent(trimPrefix + videoURL.lastPathComponent)
+                
+                if FileManager.fileManager.fileExists(atPath: videoFinalPath.path){
+                        callback(.completed, videoFinalPath)
+                        return
+                }
+                
                 let exporter :AVAssetExportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality)!
                 exporter.outputURL = videoFinalPath
                 exporter.outputFileType = AVFileType.mov
@@ -62,5 +81,26 @@ class VideoFileManager {
                         callback(exporter.status, videoFinalPath)
                 }
         }
-
+        
+        static func urlOfHash(has:String)->URL?{
+                let filePath = FileManager.TmpDirectory().appendingPathComponent(has).appendingPathExtension(hashSuffix)
+                if FileManager.fileManager.fileExists(atPath: filePath.path){
+                        return filePath
+                }
+                return nil
+        }
+        
+        static func writeByHash(has:String, content:Data)-> URL?{
+                let tmpPath = FileManager.TmpDirectory()
+                let filePath = tmpPath.appendingPathComponent(has).appendingPathExtension(hashSuffix)
+                if FileManager.fileManager.fileExists(atPath: filePath.path){
+                        return filePath
+                }
+                
+                guard FileManager.fileManager.createFile(atPath: filePath.path, contents: content, attributes: .none) else{
+                        return nil
+                }
+                
+                return filePath
+        }
 }

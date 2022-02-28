@@ -40,12 +40,68 @@ extension FileManager {
                         print("------>clean up temporary directory err:=>", err)
                 }
         }
+        static func removeTmpDirectoryExpire(){
+                
+                let ttl = MessageItem.MaxMsgLiftTime
+                let tmpPath = TmpDirectory()
+                do{
+                        let tmpDirectory = try fileManager.contentsOfDirectory(atPath: tmpPath.path)
+                        for path in tmpDirectory {
+                                let filePath = tmpPath.appendingPathComponent(path)
+                                let attrs = try fileManager.attributesOfItem(atPath: filePath.path)
+                                guard let createDate = attrs[.creationDate] as? Date else{
+                                        continue
+                                }
+                                let now = (Date().timeIntervalSince1970)
+                                let create = createDate.timeIntervalSince1970
+                                let limitTime = now - create
+                                guard ttl < limitTime else{
+                                        continue
+                                }
+                                print("------>prepare to remove expire file:=>", filePath)
+                                try fileManager.removeItem(at: filePath)
+                        }
+                        
+                }catch let err{
+                        print("------>clean up temporary directory err:=>", err)
+                }
+        }
+        
+        static func urlOfHash(has:String)->URL?{
+                let filePath = TmpDirectory().appendingPathComponent(has)
+                if fileManager.fileExists(atPath: filePath.path){
+                        return filePath
+                }
+                return nil
+        }
+        
+        static func writeByHash(has:String, content:Data)-> URL?{
+                let tmpPath = TmpDirectory()
+                let filePath = tmpPath.appendingPathComponent(has)
+                if fileManager.fileExists(atPath: filePath.path){
+                        return filePath
+                }
+                
+                guard fileManager.createFile(atPath: filePath.path, contents: content, attributes: .none) else{
+                        return nil
+                }
+                
+                return filePath
+        }
+        
+        static func readByHash(has:String) -> Data?{
+                let tmpPath = TmpDirectory()
+                let filePath = tmpPath.appendingPathComponent(has)
+                if !fileManager.fileExists(atPath: filePath.path){
+                        return nil
+                }
+                return fileManager.contents(atPath: filePath.path)
+        }
         
         
         @discardableResult
         static func createFolder(_ folderName :String) -> URL {
                 let folder = TmpDirectory().appendingPathComponent(folderName)
-                //                let folder = CachesDirectory().appendingPathComponent(folderName)
                 let fileManager = FileManager.default
                 if !fileManager.fileExists(atPath: folder.absoluteString) {
                         do {

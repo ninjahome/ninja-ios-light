@@ -79,9 +79,9 @@ class ChatItem: NSObject{
                                 c.updateTime = time
                                 c.LastMsg = msg
                                 c.unreadNo += unreadNo
-                                c.cObj?.unreadNo = Int32(c.unreadNo)
                                 c.cObj?.lastMsg = c.LastMsg
                                 c.cObj?.updateTime = time
+                                c.cObj?.unreadNo = Int32(c.unreadNo)
                         }else{
                                 chat = ChatItem.init(id: pid, time: time, msg: msg, isGrp: isGrp, unread:no)
                                 try CDManager.shared.UpdateOrAddOne(entity: EntityName,
@@ -114,6 +114,14 @@ class ChatItem: NSObject{
                         return a.updateTime > b.updateTime
                 }
                 return sortedArray
+        }
+        
+        public static func Pids() -> [String:ChatItem] {
+                noLock.lock()
+                defer{
+                        noLock.unlock()
+                }
+                return cache
         }
         
         func resetUnread(){
