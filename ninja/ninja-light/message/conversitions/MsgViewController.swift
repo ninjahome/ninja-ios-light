@@ -65,11 +65,11 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         
         override func viewDidAppear(_ animated: Bool) {
                 super.viewDidAppear(animated)
-                self.hideIndicator()
         }
         
         override func viewWillDisappear(_ animated: Bool) {
                 super.viewWillDisappear(animated)
+                getKeyWindow()?.rootViewController?.hideIndicator()
                 self.navigationController?.interactivePopGestureRecognizer?.delegate = _delegate
                 ChatItem.CurrentPID = ""
                 AudioPlayManager.shared.stopPlay()
