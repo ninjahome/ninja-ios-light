@@ -150,6 +150,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 guard let list = MessageItem.loadHistoryByPid(pid: peerUid,
                                                                timeStamp: timeStamp,
                                                                isGroup: IS_GROUP) else {
+                        self.refreshControl.endRefreshing()
                         return
                 }
                 msgCacheArray.insert(contentsOf: list, at: 0)
