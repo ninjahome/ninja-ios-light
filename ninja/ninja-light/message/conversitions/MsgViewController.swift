@@ -162,7 +162,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.setPeerBasic()
                 vipView.layer.contents = UIImage(named: "bgc")?.cgImage
                 senderBar.layer.shadowOpacity = 0.1
-                
                 self.hideKeyboardWhenTappedAround()
                 
                 if Wallet.shared.isStillVip() {
@@ -172,17 +171,36 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                         fileVipImg.isHidden = true
                         vipView.isHidden = true
                 }
+                let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleHideMuti(_:)))
+                messageTableView.addGestureRecognizer(tap)
                 
                 self.scrollToBottom()
         }
         
+        @objc func handleHideMuti(_ sender: UITapGestureRecognizer) {
+                recoverConstrain()
+                self.mutiMsgType.isHidden = true
+                DispatchQueue.main.async {
+                        self.dismissKeyboard()
+                }
+        }
+        
         @IBAction func moreMsgType(_ sender: UIButton) {
-                mutiMsgType.isHidden = false
+                
+                let height = mutiMsgType.bounds.height
+                
+                UIView.animate(withDuration: 0.25) {
+                        self.mutiMsgType.isHidden = false
+                        self.liftConstrain(height: height)
+                        self.scrollToBottom()
+                }
         }
         
         @IBAction func cancelMutiType(_ sender: UIButton) {
                 mutiMsgType.isHidden = true
+                recoverConstrain()
         }
+
         
         @IBAction func EditContactInfo(_ sender: UIBarButtonItem) {
                 if IS_GROUP {
@@ -580,8 +598,7 @@ extension MsgViewController{
                 }
                 
                 let keyboardTopYPosition = keyboardRect.height
-                self.textFieldConstrain.constant = -keyboardTopYPosition
-                self.msgTableConstrain.constant = 0
+                liftConstrain(height: keyboardTopYPosition)
                 
                 UIView.animate(withDuration: duration!) {
                         self.scrollToBottom()
@@ -596,9 +613,7 @@ extension MsgViewController{
                 if duration == nil {
                         duration = 0.25
                 }
-                
-                self.textFieldConstrain.constant = 4
-                self.msgTableConstrain.constant = 0
+                recoverConstrain()
                 
                 UIView.animate(withDuration: duration!) {
                         self.scrollToBottom()
@@ -628,5 +643,15 @@ extension MsgViewController{
                 }
                 
                 self.keyboardIsHide = true
+        }
+        
+        func liftConstrain(height :CGFloat) {
+                self.textFieldConstrain.constant = -height
+                self.msgTableConstrain.constant = 0
+        }
+        
+        func recoverConstrain() {
+                self.textFieldConstrain.constant = 4
+                self.msgTableConstrain.constant = 0
         }
 }
