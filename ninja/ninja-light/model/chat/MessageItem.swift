@@ -192,6 +192,8 @@ class MessageItem: NSObject {
                         return "[Contact]".locStr
                 case .videoWithHash:
                         return "[Video]".locStr
+                case .redPacket:
+                        return "[Red Packet]".locStr
                 }
         }
         
@@ -202,7 +204,6 @@ class MessageItem: NSObject {
                                                         object: msgid, userInfo: nil)
                         return
                 }
-                
                 guard let msg = msgCache[to]?[msgid] else{
                         return
                 }
@@ -229,7 +230,6 @@ class MessageItem: NSObject {
                                                   time: msg.timeStamp,
                                                   unread: unread,
                                                   isGrp: msg.groupId != nil)
-                        CDManager.shared.saveContext()
                         return nil
                 }catch let err{
                         print("------>>> save new message failed:[\(err.localizedDescription)]")
@@ -250,7 +250,7 @@ class MessageItem: NSObject {
                         print("------>>>process received message err:=>",e)
                         return
                 }
-                
+                CDManager.shared.saveContext()
                 NotificationCenter.default.post(name: NotifyMessageAdded,
                                                 object: self, userInfo: [NotiKey: peerUid])
         }
@@ -410,6 +410,16 @@ extension MessageItem: ModelObj {
 
 
 extension MessageItem:ChatLibUnwrapCallbackProtocol{
+        func contact(_ u: String?, r: String?) {
+                self.typ = .contact
+                self.payload = contactMsg(uid: u ?? "", recommendor: r)
+        }
+        
+        func redPacket(_ f: String?, t: String?, a: Int64) {
+                self.typ = .redPacket
+                self.payload = redPacketMsg(from: f ?? "", to: t ?? "", amount: a)
+        }
+        
         
         func video(withHash d: Data?, k: Data?, h: String?, horiz:Bool) {
                 self.typ = .videoWithHash
