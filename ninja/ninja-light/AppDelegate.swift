@@ -121,12 +121,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
                 // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
         }
-        
-        func applicationWillResignActive(_ application: UIApplication) {
-                CDManager.shared.saveContext()
-                WebsocketSrv.shared.Offline()
-        }
-        
+                
         func applicationDidBecomeActive(_ application: UIApplication) {
                 if Wallet.shared.IsActive(){
                         WebsocketSrv.shared.Online()
@@ -141,4 +136,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 UserDefaults(suiteName: "group.com.hop.ninja.light")?.set(1, forKey: "count")
                 UIApplication.shared.applicationIconBadgeNumber = 0
         }
+        
+        func applicationDidEnterBackground(_ application: UIApplication) {
+                CDManager.shared.saveContext()
+                WebsocketSrv.shared.Offline()
+        }
 }
+

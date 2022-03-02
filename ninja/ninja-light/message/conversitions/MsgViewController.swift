@@ -69,6 +69,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         
         override func viewWillDisappear(_ animated: Bool) {
                 super.viewWillDisappear(animated)
+                getKeyWindow()?.rootViewController?.hideIndicator()
                 self.navigationController?.interactivePopGestureRecognizer?.delegate = _delegate
                 ChatItem.CurrentPID = ""
                 AudioPlayManager.shared.stopPlay()
@@ -149,6 +150,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 guard let list = MessageItem.loadHistoryByPid(pid: peerUid,
                                                                timeStamp: timeStamp,
                                                                isGroup: IS_GROUP) else {
+                        self.refreshControl.endRefreshing()
                         return
                 }
                 msgCacheArray.insert(contentsOf: list, at: 0)
@@ -161,7 +163,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.setPeerBasic()
                 vipView.layer.contents = UIImage(named: "bgc")?.cgImage
                 senderBar.layer.shadowOpacity = 0.1
-                
                 self.hideKeyboardWhenTappedAround()
                 
                 if Wallet.shared.isStillVip() {
@@ -171,17 +172,36 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                         fileVipImg.isHidden = true
                         vipView.isHidden = true
                 }
+                let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleHideMuti(_:)))
+                messageTableView.addGestureRecognizer(tap)
                 
                 self.scrollToBottom()
         }
         
+        @objc func handleHideMuti(_ sender: UITapGestureRecognizer) {
+                recoverConstrain()
+                self.mutiMsgType.isHidden = true
+                DispatchQueue.main.async {
+                        self.dismissKeyboard()
+                }
+        }
+        
         @IBAction func moreMsgType(_ sender: UIButton) {
-                mutiMsgType.isHidden = false
+                
+                let height = mutiMsgType.bounds.height
+                
+                UIView.animate(withDuration: 0.25) {
+                        self.mutiMsgType.isHidden = false
+                        self.liftConstrain(height: height)
+                        self.scrollToBottom()
+                }
         }
         
         @IBAction func cancelMutiType(_ sender: UIButton) {
                 mutiMsgType.isHidden = true
+                recoverConstrain()
         }
+
         
         @IBAction func EditContactInfo(_ sender: UIBarButtonItem) {
                 if IS_GROUP {
@@ -550,7 +570,7 @@ extension MsgViewController{
                         self.toastMessage(title: err.localizedDescription)
                         return
                 }
-                ServiceDelegate.workQueue.async {
+                WebsocketSrv.netQueue.async {
                         if let e = MessageItem.processNewMessage(pid: pid, msg: msg, unread: 0){
                                 self.toastMessage(title: e.localizedDescription)
                                 return
@@ -579,8 +599,7 @@ extension MsgViewController{
                 }
                 
                 let keyboardTopYPosition = keyboardRect.height
-                self.textFieldConstrain.constant = -keyboardTopYPosition
-                self.msgTableConstrain.constant = 0
+                liftConstrain(height: keyboardTopYPosition)
                 
                 UIView.animate(withDuration: duration!) {
                         self.scrollToBottom()
@@ -595,9 +614,7 @@ extension MsgViewController{
                 if duration == nil {
                         duration = 0.25
                 }
-                
-                self.textFieldConstrain.constant = 4
-                self.msgTableConstrain.constant = 0
+                recoverConstrain()
                 
                 UIView.animate(withDuration: duration!) {
                         self.scrollToBottom()
@@ -627,5 +644,15 @@ extension MsgViewController{
                 }
                 
                 self.keyboardIsHide = true
+        }
+        
+        func liftConstrain(height :CGFloat) {
+                self.textFieldConstrain.constant = -height
+                self.msgTableConstrain.constant = 0
+        }
+        
+        func recoverConstrain() {
+                self.textFieldConstrain.constant = 4
+                self.msgTableConstrain.constant = 0
         }
 }

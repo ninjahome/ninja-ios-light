@@ -125,7 +125,7 @@ class MessageItem: NSObject {
                         if item.isGroup{
                                 predicate = NSPredicate(format: "owner == %@ AND groupId == %@", owner, pid)
                         }else{
-                                predicate = NSPredicate(format: "owner == %@ AND (from == %@ OR to == %@)",
+                                predicate = NSPredicate(format: "owner == %@ AND (from == %@ OR to == %@) AND groupId == NULL",
                                                         owner, pid, pid)
                         }
                         
@@ -283,7 +283,7 @@ class MessageItem: NSObject {
                         predicate = NSPredicate(format: "owner == %@ AND groupId == %@ AND unixTime < %@",
                                                 owner, pid, NSNumber(value: time))
                 }else{
-                        predicate = NSPredicate(format: "owner == %@ AND (from == %@ OR to == %@ AND unixTime < %@)",
+                        predicate = NSPredicate(format: "owner == %@ AND (from == %@ OR to == %@) AND unixTime < %@ AND groupId == NULL",
                                                 owner, pid, pid, NSNumber(value: time))
                 }
                 

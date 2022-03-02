@@ -12,65 +12,91 @@ import ChatLib
 import PhotosUI
 
 extension MsgViewController:PHPickerViewControllerDelegate{
+        
+        private func pickImg(itemProvider:NSItemProvider, group:DispatchGroup){
+                
+                        itemProvider.loadInPlaceFileRepresentation(forTypeIdentifier: ("public.image")) {url, inPlace, err in
+                                defer{
+                                        group.leave()
+                                }
+                                guard let url = url else{
+                                        self.toastMessage(title: "Invalid image data".locStr)
+                                        return
+                                }
+                                
+                                guard var data = try? Data(contentsOf: url), !data.isEmpty else{
+                                        itemProvider.loadDataRepresentation(forTypeIdentifier: "public.image") { data, err in
+                                                guard let d = data else{
+                                                        self.toastMessage(title: "Invalid image data".locStr)
+                                                        return
+                                                }
+                                                self.imageDidSelected(imgData: d)
+                                        }
+                                        
+                                        return
+                                }
+                                
+                                print("------->>>lastPathComponent:=>", url.pathExtension)
+                                if !ChatLibIsValidImgFmt(url.pathExtension){
+                                        guard let  d = UIImage(data: data)?.jpeg else{
+                                                self.toastMessage(title: "Invalid image data".locStr)
+                                                return
+                                        }
+                                        data = d
+                                }
+                                
+                                self.imageDidSelected(imgData: data)
+                        }
+        }
+        
+        
+        
+        private func pickVideo(itemProvider:NSItemProvider, group:DispatchGroup){
+                itemProvider.loadInPlaceFileRepresentation(forTypeIdentifier: "public.movie") { url, inPlace, err in
+                        defer{
+                                group.leave()
+                        }
+                        guard let url = url else{
+                                self.toastMessage(title: "Empty video file".locStr)
+                                return
+                        }
+                        
+                        guard let data = try? Data.init(contentsOf: url), !data.isEmpty else{
+                                itemProvider.loadDataRepresentation(forTypeIdentifier: "public.movie") { data, err in
+                                        guard let d = data, !d.isEmpty else{
+                                                self.toastMessage(title: "Empty video file".locStr)
+                                                return
+                                        }
+                                        self.videoDidSelected(data: d)
+                                }
+                                return
+                        }
+                        
+                        self.videoDidSelected(data: data)
+                }
+        }
+        
         func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
                 picker.dismiss(animated: true)
                 guard !results.isEmpty else{
                         return
                 }
                 let itemProviders = results.map(\.itemProvider)
-                for (_, itemProvider) in itemProviders.enumerated() {
-                        if itemProvider.hasItemConformingToTypeIdentifier("public.image") {
-                                itemProvider.loadInPlaceFileRepresentation(forTypeIdentifier: ("public.image")) {url, inPlace, err in
-                                        
-                                        guard let url = url else{
-                                                self.toastMessage(title: "Invalid image data".locStr)
-                                                return
-                                        }
-                                        
-                                        guard var data = try? Data(contentsOf: url), !data.isEmpty else{
-                                                itemProvider.loadDataRepresentation(forTypeIdentifier: "public.image") { data, err in
-                                                        guard let d = data else{
-                                                                self.toastMessage(title: "Invalid image data".locStr)
-                                                                return
-                                                        }
-                                                        self.imageDidSelected(imgData: d)
-                                                }
-                                                
-                                                return
-                                        }
-                                        
-                                        print("------->>>lastPathComponent:=>", url.pathExtension)
-                                        if !ChatLibIsValidImgFmt(url.pathExtension){
-                                                guard let  d = UIImage(data: data)?.jpeg else{
-                                                        self.toastMessage(title: "Invalid image data".locStr)
-                                                        return
-                                                }
-                                                data = d
-                                        }
-                                        
-                                        self.imageDidSelected(imgData: data)
-                                }
-                        }else if itemProvider.hasItemConformingToTypeIdentifier("public.movie"){
-                                itemProvider.loadInPlaceFileRepresentation(forTypeIdentifier: "public.movie") { url, inPlace, err in
-                                        guard let url = url else{
-                                                self.toastMessage(title: "Empty video file".locStr)
-                                                return
-                                        }
-                                        
-                                        guard let data = try? Data.init(contentsOf: url), !data.isEmpty else{
-                                                itemProvider.loadDataRepresentation(forTypeIdentifier: "public.movie") { data, err in
-                                                        guard let d = data, !d.isEmpty else{
-                                                                self.toastMessage(title: "Empty video file".locStr)
-                                                                return
-                                                        }
-                                                        self.videoDidSelected(data: d)
-                                                }
-                                                return
-                                        }
-                                        
-                                        self.videoDidSelected(data: data)
+                self.showIndicator(withTitle: "", and: "Sending".locStr)
+                
+                ServiceDelegate.workQueue.async {
+                        let group = DispatchGroup.init()
+                        
+                        for (_, itemProvider) in itemProviders.enumerated() {
+                                group.enter()
+                                if itemProvider.hasItemConformingToTypeIdentifier("public.image") {
+                                        self.pickImg(itemProvider: itemProvider, group:group)
+                                }else if itemProvider.hasItemConformingToTypeIdentifier("public.movie"){
+                                        self.pickVideo(itemProvider: itemProvider, group:group)
                                 }
                         }
+                        group.wait()
+                        self.hideIndicator()
                 }
         }
 }
