@@ -2482,17 +2482,6 @@
                                     <constraint firstAttribute="width" secondItem="v9o-6f-8jL" secondAttribute="height" multiplier="320:180" id="wyD-kn-VKu"/>
                                     <constraint firstItem="tbz-Tz-fKf" firstAttribute="leading" secondItem="v9o-6f-8jL" secondAttribute="leading" constant="44" id="xEA-ff-Tu7"/>
                                 </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <integer key="value" value="36"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
-                                        <real key="value" value="0.10000000000000001"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowRadius">
-                                        <integer key="value" value="4"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
