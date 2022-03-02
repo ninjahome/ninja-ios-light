@@ -146,7 +146,7 @@ class VideoTableViewCell: UITableViewCell {
                 isHorizon = hv.isHorizon
                 let thumbImg = UIImage(data: thumb)
                 playVideBtn.layer.contents =  thumbImg?.cgImage
-                playVideBtn.layer.contentsGravity = CALayerContentsGravity.resizeAspect;
+                playVideBtn.layer.contentsGravity = CALayerContentsGravity.resizeAspectFill;
                 
                 if message.isOut {
                         switch message.status {
