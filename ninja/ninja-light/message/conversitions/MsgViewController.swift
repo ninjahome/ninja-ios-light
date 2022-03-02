@@ -570,7 +570,7 @@ extension MsgViewController{
                         self.toastMessage(title: err.localizedDescription)
                         return
                 }
-                ServiceDelegate.workQueue.async {
+                WebsocketSrv.netQueue.async {
                         if let e = MessageItem.processNewMessage(pid: pid, msg: msg, unread: 0){
                                 self.toastMessage(title: e.localizedDescription)
                                 return

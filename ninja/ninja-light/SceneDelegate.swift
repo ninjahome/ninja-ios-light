@@ -54,10 +54,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
                 
         }
         
-        func sceneWillResignActive(_ scene: UIScene) {
-                CDManager.shared.saveContext()
-        }
-        
         func sceneWillEnterForeground(_ scene: UIScene) {
                 // Called as the scene transitions from the background to the foreground.
                 // Use this method to undo the changes made on entering the background.
