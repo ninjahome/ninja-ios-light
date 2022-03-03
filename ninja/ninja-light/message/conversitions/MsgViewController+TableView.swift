@@ -71,8 +71,14 @@ extension MsgViewController: UITableViewDelegate, UITableViewDataSource {
                         cell.updateHashVideoCell(message: msgItem, name:self.peerName, avatar:self.peerAvatarData, isGroup: self.IS_GROUP)
                         cell.configure()
                         return cell
+                case .contact:
+                        identifer = msgItem.isOut ? "contactCell" : "contactCellL"
+                        let cell = tableView.dequeueReusableCell(withIdentifier: identifer, for: indexPath) as! ContactTableViewCell
+                        cell.updateContactCell(by: msgItem, name: self.peerName, avatar: self.peerAvatarData, isGroup: self.IS_GROUP, viewCtrl: self)
+                        return cell
                 default:
                         return TxtTableViewCell()
                 }
         }
+
 }

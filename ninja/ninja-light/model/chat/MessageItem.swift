@@ -344,7 +344,7 @@ extension MessageItem: ModelObj {
                 switch self.typ {
                 case .plainTxt:
                         uObj.message = (self.payload as? txtMsg)?.txt
-                case .image, .voice, .location, .file, .videoWithHash:
+                case .image, .voice, .location, .file, .videoWithHash, .contact:
                         uObj.media = self.payload as? NSObject
                 default:
                         print("full fill msg: no such type")
@@ -388,13 +388,14 @@ extension MessageItem: ModelObj {
                         self.payload = uObj.media as? fileMsg
                 case .videoWithHash:
                         self.payload = uObj.media as? videoMsgWithHash
+                case .contact:
+                        self.payload = uObj.media as? contactMsg
                 default:
                         print("------>>>init by msg obj: no such type")
                 }
                 self.to = uObj.to ?? "<->"//TODO::
                 self.groupId = uObj.groupId
                 self.uObj = uObj
-                
                 
                 self.timeStamp = uObj.unixTime
                 self.status = sendingStatus(rawValue: uObj.status) ?? .sent
@@ -419,7 +420,6 @@ extension MessageItem:ChatLibUnwrapCallbackProtocol{
                 self.typ = .redPacket
                 self.payload = redPacketMsg(from: f ?? "", to: t ?? "", amount: a)
         }
-        
         
         func video(withHash d: Data?, k: Data?, h: String?, horiz:Bool) {
                 self.typ = .videoWithHash

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08084E5C27CF6B9400F65590 /* MsgViewController+Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08084E5B27CF6B9400F65590 /* MsgViewController+Contact.swift */; };
+		08084E5E27D057BF00F65590 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08084E5D27D057BF00F65590 /* ContactTableViewCell.swift */; };
 		0809CE8227857CF100AF2A95 /* SwiftyJSON.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 694D55C62766F5B60044E580 /* SwiftyJSON.xcframework */; };
 		0809CE8327857CF100AF2A95 /* SwiftyJSON.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 694D55C62766F5B60044E580 /* SwiftyJSON.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0809CE8527857D0600AF2A95 /* MBProgressHUD.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 694D55C52766F5B60044E580 /* MBProgressHUD.xcframework */; };
@@ -19,7 +21,7 @@
 		080A116A275716E900931B8C /* ConfigItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080A1169275716E900931B8C /* ConfigItem.swift */; };
 		0818D88426FD6FC1002BF3B9 /* DestroyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D88326FD6FC1002BF3B9 /* DestroyViewController.swift */; };
 		0818D888270165FA002BF3B9 /* TransferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D887270165FA002BF3B9 /* TransferViewController.swift */; };
-		0818D88B27016613002BF3B9 /* TransferContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D88A27016613002BF3B9 /* TransferContactViewController.swift */; };
+		0818D88B27016613002BF3B9 /* SelectContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D88A27016613002BF3B9 /* SelectContactViewController.swift */; };
 		0818D88E27016638002BF3B9 /* TransferStrangerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D88D27016638002BF3B9 /* TransferStrangerViewController.swift */; };
 		0818D8912701665A002BF3B9 /* ConfirmTransferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D8902701665A002BF3B9 /* ConfirmTransferViewController.swift */; };
 		0818D8942701B334002BF3B9 /* ContactTransferTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D8932701B334002BF3B9 /* ContactTransferTableViewCell.swift */; };
@@ -139,6 +141,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		08084E5B27CF6B9400F65590 /* MsgViewController+Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MsgViewController+Contact.swift"; sourceTree = "<group>"; };
+		08084E5D27D057BF00F65590 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		0809CE872786963300AF2A95 /* BackupGuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupGuideViewController.swift; sourceTree = "<group>"; };
 		0809CE892786C7B800AF2A95 /* VIPAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIPAlertViewController.swift; sourceTree = "<group>"; };
 		0809CE8B2786CE2500AF2A95 /* TryoutAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TryoutAlertViewController.swift; sourceTree = "<group>"; };
@@ -146,7 +150,7 @@
 		080A1169275716E900931B8C /* ConfigItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigItem.swift; sourceTree = "<group>"; };
 		0818D88326FD6FC1002BF3B9 /* DestroyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestroyViewController.swift; sourceTree = "<group>"; };
 		0818D887270165FA002BF3B9 /* TransferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferViewController.swift; sourceTree = "<group>"; };
-		0818D88A27016613002BF3B9 /* TransferContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferContactViewController.swift; sourceTree = "<group>"; };
+		0818D88A27016613002BF3B9 /* SelectContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectContactViewController.swift; sourceTree = "<group>"; };
 		0818D88D27016638002BF3B9 /* TransferStrangerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferStrangerViewController.swift; sourceTree = "<group>"; };
 		0818D8902701665A002BF3B9 /* ConfirmTransferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmTransferViewController.swift; sourceTree = "<group>"; };
 		0818D8932701B334002BF3B9 /* ContactTransferTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTransferTableViewCell.swift; sourceTree = "<group>"; };
@@ -267,7 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				0818D887270165FA002BF3B9 /* TransferViewController.swift */,
-				0818D88A27016613002BF3B9 /* TransferContactViewController.swift */,
+				0818D88A27016613002BF3B9 /* SelectContactViewController.swift */,
 				0818D88D27016638002BF3B9 /* TransferStrangerViewController.swift */,
 				0818D8902701665A002BF3B9 /* ConfirmTransferViewController.swift */,
 				0818D8932701B334002BF3B9 /* ContactTransferTableViewCell.swift */,
@@ -312,6 +316,7 @@
 				08781E8C275F09A60084D80A /* MsgViewController+ImageView.swift */,
 				08781E8A275DCEE30084D80A /* MsgViewController+TableView.swift */,
 				08B649FF27A255E000D0677F /* MsgViewController+FileView.swift */,
+				08084E5B27CF6B9400F65590 /* MsgViewController+Contact.swift */,
 			);
 			path = conversitions;
 			sourceTree = "<group>";
@@ -386,6 +391,7 @@
 				08F0FA9526884C5C00C5C1DF /* LocationTableViewCell.swift */,
 				0860D5C42761FDD000E53FDA /* FileTableViewCell.swift */,
 				08B64A2227A3745700D0677F /* VideoTableViewCell.swift */,
+				08084E5D27D057BF00F65590 /* ContactTableViewCell.swift */,
 			);
 			path = messageCells;
 			sourceTree = "<group>";
@@ -637,7 +643,7 @@
 				69B8C0EF261DA17B00B4E4AC /* CliMessage.swift in Sources */,
 				087B57F826E1E15900591F8D /* AgentViewController.swift in Sources */,
 				0809CE882786963300AF2A95 /* BackupGuideViewController.swift in Sources */,
-				0818D88B27016613002BF3B9 /* TransferContactViewController.swift in Sources */,
+				0818D88B27016613002BF3B9 /* SelectContactViewController.swift in Sources */,
 				69B8C0CD261D2C0900B4E4AC /* MessageListViewController.swift in Sources */,
 				0823F778265201B4000DA4DB /* QRViewController.swift in Sources */,
 				08F0FA9026884C2000C5C1DF /* ImageTableViewCell.swift in Sources */,
@@ -646,9 +652,11 @@
 				08C2C22A278FD1BA0023D773 /* AvatarEditViewController.swift in Sources */,
 				0886B1B3277AFE9400257C15 /* GroupListViewController.swift in Sources */,
 				69B8C0D2261D2D4600B4E4AC /* MesasgeItemTableViewCell.swift in Sources */,
+				08084E5C27CF6B9400F65590 /* MsgViewController+Contact.swift in Sources */,
 				08CCDC6F26A3C3A200B0D7DA /* MapViewController.swift in Sources */,
 				6953EAF82622C12F008EC2F0 /* AuthorViewController.swift in Sources */,
 				087B57F226DF1F1400591F8D /* AgentButton.swift in Sources */,
+				08084E5E27D057BF00F65590 /* ContactTableViewCell.swift in Sources */,
 				0818D8912701665A002BF3B9 /* ConfirmTransferViewController.swift in Sources */,
 				080A116A275716E900931B8C /* ConfigItem.swift in Sources */,
 				0825C21A26CB6B40003E0EF3 /* AvatarCollectionCell.swift in Sources */,

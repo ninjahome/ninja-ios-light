@@ -7,11 +7,16 @@
 
 import UIKit
 
-class TransferContactViewController: UIViewController {
+protocol SelectContactDelegate {
+        func selectedIdStr(addr: String)
+}
+
+class SelectContactViewController: UIViewController {
         
         @IBOutlet weak var tableView: UITableView!
         
-        var selectId:Int?
+//        var selectId:Int?
+        var delegate: SelectContactDelegate?
         var contactArr:[CombineConntact] = []
         override func viewDidLoad() {
                 super.viewDidLoad()
@@ -22,22 +27,20 @@ class TransferContactViewController: UIViewController {
                 contactArr = CombineConntact.CacheArray()
         }
         
-        
         func reload() {
                 DispatchQueue.main.async {
                         self.tableView.reloadData()
                 }
         }
         
-        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-                if segue.identifier == "TransferContactSEG" {
-                        let vc: ConfirmTransferViewController = segue.destination as! ConfirmTransferViewController
-                        if let id = selectId {
-                                vc.transAddress = contactArr[id].peerID
-                        }
-                }
-        }
-        
+//        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//                if segue.identifier == "TransferContactSEG" {
+//                        let vc: ConfirmTransferViewController = segue.destination as! ConfirmTransferViewController
+//                        if let id = selectId {
+//                                vc.transAddress = contactArr[id].peerID
+//                        }
+//                }
+//        }
         
         @IBAction func returnItem(_ sender: UIBarButtonItem) {
                 self.navigationController?.popViewController(animated: true)
@@ -45,7 +48,7 @@ class TransferContactViewController: UIViewController {
         
 }
 
-extension TransferContactViewController: UITableViewDataSource, UITableViewDelegate {
+extension SelectContactViewController: UITableViewDataSource, UITableViewDelegate {
         
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
                 return contactArr.count
@@ -62,7 +65,11 @@ extension TransferContactViewController: UITableViewDataSource, UITableViewDeleg
         }
         
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-                self.selectId = indexPath.row
-                self.performSegue(withIdentifier: "TransferContactSEG", sender: self)
+//                self.selectId = indexPath.row
+//                self.performSegue(withIdentifier: "TransferContactSEG", sender: self)
+                self.dismiss(animated: true) {
+                        self.delegate?.selectedIdStr(addr: self.contactArr[indexPath.row].peerID)
+                }
+                
         }
 }

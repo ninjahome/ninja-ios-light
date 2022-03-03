@@ -77,13 +77,6 @@ class AccountItem: NSObject {
                 return acc
         }
         
-        public static func GetAccount(_ uid: String) -> AccountItem? {//TODO:: remove this usage
-                var obj: AccountItem?
-                obj = try? CDManager.shared.GetOne(entity: "CDAccount",
-                                                   predicate: NSPredicate(format: "addr == %@", uid))
-                return obj
-        }
-        
         public static func UpdateOrAddAccount(_ item: AccountItem) -> NJError? {
                 do {
                         try CDManager.shared.UpdateOrAddOne(entity: "CDAccount",

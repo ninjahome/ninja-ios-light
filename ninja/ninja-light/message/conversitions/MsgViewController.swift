@@ -136,6 +136,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                                                        name: UIResponder.keyboardDidHideNotification,
                                                        object: nil)
                 
+                
         }
         
         deinit {
@@ -287,6 +288,8 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 }
                 
         }
+        
+
 }
 
 extension MsgViewController{
@@ -356,18 +359,24 @@ extension MsgViewController{
         }
         
         
-        @IBAction func file(_ sender: UIButton) {
-                if Wallet.shared.isStillVip() {
-                        let vc = UIDocumentPickerViewController(documentTypes: [kUTTypeMovie as String, kUTTypeImage as String, kUTTypeZipArchive as String, kUTTypePDF as String, kUTTypeText as String], in: .import)
-                        vc.delegate = self
-                        vc.allowsMultipleSelection = false
-                        vc.shouldShowFileExtensions = true
-                        present(vc, animated: true, completion: nil)
-                } else {
-                        showVipModalViewController()
-                }
-        }
+//        @IBAction func file(_ sender: UIButton) {
+//                if Wallet.shared.isStillVip() {
+//                        let vc = UIDocumentPickerViewController(documentTypes: [kUTTypeMovie as String, kUTTypeImage as String, kUTTypeZipArchive as String, kUTTypePDF as String, kUTTypeText as String], in: .import)
+//                        vc.delegate = self
+//                        vc.allowsMultipleSelection = false
+//                        vc.shouldShowFileExtensions = true
+//                        present(vc, animated: true, completion: nil)
+//                } else {
+//                        showVipModalViewController()
+//                }
+//        }
         
+        @IBAction func contact(_ sender: UIButton) {
+                let vc = instantiateViewController(vcID: "TransferContactVC") as! SelectContactViewController
+                vc.delegate = self
+                self.present(vc, animated: true, completion: nil)
+        }
+
         @IBAction func location(_ sender: UIButton) {
                 self.isLocalMsg = false
                 self.performSegue(withIdentifier: "ShowMapSeg", sender: self)
