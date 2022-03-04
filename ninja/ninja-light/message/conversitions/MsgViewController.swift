@@ -56,7 +56,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
         override func viewWillAppear(_ animated: Bool) {
                 super.viewWillAppear(animated)
                 ChatItem.CurrentPID = peerUid
-               
+                
                 if (self.navigationController?.viewControllers.count)! >= 1 {
                         _delegate = self.navigationController?.interactivePopGestureRecognizer?.delegate
                         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
@@ -149,15 +149,14 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                         timeStamp = msgCacheArray[0].timeStamp
                 }
                 guard let list = MessageItem.loadHistoryByPid(pid: peerUid,
-                                                               timeStamp: timeStamp,
-                                                               isGroup: IS_GROUP) else {
+                                                              timeStamp: timeStamp,
+                                                              isGroup: IS_GROUP) else {
                         self.refreshControl.endRefreshing()
                         return
                 }
                 msgCacheArray.insert(contentsOf: list, at: 0)
                 self.refreshControl.endRefreshing()
                 self.messageTableView.reloadData()
-                
         }
         
         private func populateView() {
@@ -175,8 +174,9 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 }
                 let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleHideMuti(_:)))
                 messageTableView.addGestureRecognizer(tap)
-                
-                self.scrollToBottom()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                        self.scrollToBottom()
+                }
         }
         
         @objc func handleHideMuti(_ sender: UITapGestureRecognizer) {
@@ -202,7 +202,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                 mutiMsgType.isHidden = true
                 recoverConstrain()
         }
-
         
         @IBAction func EditContactInfo(_ sender: UIBarButtonItem) {
                 if IS_GROUP {
@@ -252,7 +251,6 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                                 self.initPeerUI(name: name, avatar: avatar)
                                 self.messageTableView.reloadData()
                         }
-                        
                 }
                 initPeerUI(name: name, avatar: avatar)
         }
@@ -286,10 +284,7 @@ class MsgViewController: UIViewController, UIGestureRecognizerDelegate {
                         let vc: GroupDetailViewController = segue.destination as! GroupDetailViewController
                         vc.groupID =  peerUid
                 }
-                
         }
-        
-
 }
 
 extension MsgViewController{
@@ -359,24 +354,24 @@ extension MsgViewController{
         }
         
         
-//        @IBAction func file(_ sender: UIButton) {
-//                if Wallet.shared.isStillVip() {
-//                        let vc = UIDocumentPickerViewController(documentTypes: [kUTTypeMovie as String, kUTTypeImage as String, kUTTypeZipArchive as String, kUTTypePDF as String, kUTTypeText as String], in: .import)
-//                        vc.delegate = self
-//                        vc.allowsMultipleSelection = false
-//                        vc.shouldShowFileExtensions = true
-//                        present(vc, animated: true, completion: nil)
-//                } else {
-//                        showVipModalViewController()
-//                }
-//        }
+        //        @IBAction func file(_ sender: UIButton) {
+        //                if Wallet.shared.isStillVip() {
+        //                        let vc = UIDocumentPickerViewController(documentTypes: [kUTTypeMovie as String, kUTTypeImage as String, kUTTypeZipArchive as String, kUTTypePDF as String, kUTTypeText as String], in: .import)
+        //                        vc.delegate = self
+        //                        vc.allowsMultipleSelection = false
+        //                        vc.shouldShowFileExtensions = true
+        //                        present(vc, animated: true, completion: nil)
+        //                } else {
+        //                        showVipModalViewController()
+        //                }
+        //        }
         
         @IBAction func contact(_ sender: UIButton) {
                 let vc = instantiateViewController(vcID: "TransferContactVC") as! SelectContactViewController
                 vc.delegate = self
                 self.present(vc, animated: true, completion: nil)
         }
-
+        
         @IBAction func location(_ sender: UIButton) {
                 self.isLocalMsg = false
                 self.performSegue(withIdentifier: "ShowMapSeg", sender: self)
@@ -538,8 +533,7 @@ extension MsgViewController{
                 guard rowCount >= 2 else {
                         return
                 }
-                
-                self.view.layoutIfNeeded()
+                self.messageTableView.layoutIfNeeded()
                 let bottomIndexPath = IndexPath.init(row: rowCount - 1, section: 0)
                 self.messageTableView.scrollToRow(at: bottomIndexPath, at: .bottom, animated: animated)
         }
@@ -613,7 +607,6 @@ extension MsgViewController{
                 UIView.animate(withDuration: duration!) {
                         self.scrollToBottom()
                 }
-                
         }
         
         @objc func keyboardWillHide(notification:NSNotification) {
