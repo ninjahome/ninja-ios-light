@@ -27,10 +27,15 @@ class WalletViewController: UITableViewController {
         @IBOutlet weak var vipFlag: UIImageView!
         @IBOutlet weak var vipIcon: UIImageView!
 
+        @IBOutlet weak var readBurnDays: UILabel!
+        
         override func viewWillAppear(_ animated: Bool) {
                 super.viewWillAppear(animated)
 //                balanceStatusView()
                 updateWholeView()
+                if let days = ConfigItem.shared.keepDays {
+                        readBurnDays.text = "\(days)天"
+                }
         }
     
         override func viewDidLoad() {

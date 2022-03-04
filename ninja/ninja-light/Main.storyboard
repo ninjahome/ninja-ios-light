@@ -5122,6 +5122,12 @@
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="&gt;_icon"/>
                                                 </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7天" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AUV-4T-uFn">
+                                                    <rect key="frame" x="344.5" y="16.5" width="22.5" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <color key="textColor" red="0.52549019610000003" green="0.52549019610000003" blue="0.54117647059999996" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="hJE-Vn-eFq" firstAttribute="centerY" secondItem="KUT-i8-CpT" secondAttribute="centerY" id="1h5-EP-LN0"/>
@@ -5130,6 +5136,8 @@
                                                 <constraint firstItem="Bli-wX-yma" firstAttribute="leading" secondItem="prh-Jr-kFX" secondAttribute="trailing" constant="8" id="78z-3h-liA"/>
                                                 <constraint firstItem="prh-Jr-kFX" firstAttribute="centerY" secondItem="KUT-i8-CpT" secondAttribute="centerY" id="BeJ-W3-m1S"/>
                                                 <constraint firstItem="Bli-wX-yma" firstAttribute="centerY" secondItem="KUT-i8-CpT" secondAttribute="centerY" id="L3e-zP-6If"/>
+                                                <constraint firstItem="hJE-Vn-eFq" firstAttribute="leading" secondItem="AUV-4T-uFn" secondAttribute="trailing" constant="8" id="cGu-ye-4OT"/>
+                                                <constraint firstItem="AUV-4T-uFn" firstAttribute="centerY" secondItem="KUT-i8-CpT" secondAttribute="centerY" id="zM1-eA-09v"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -5239,6 +5247,7 @@
                         <outlet property="destroySwitch" destination="VYJ-p5-wji" id="cVt-KI-m7n"/>
                         <outlet property="hasNewSysMsgBtn" destination="RYE-8R-Js6" id="t01-7b-Rsc"/>
                         <outlet property="nickName" destination="Eq2-eS-JG7" id="9Uf-ax-30B"/>
+                        <outlet property="readBurnDays" destination="AUV-4T-uFn" id="tva-BR-V9j"/>
                         <outlet property="vipBackground" destination="GsN-MM-JyL" id="umT-n0-DrQ"/>
                         <outlet property="vipFlag" destination="3O3-4v-5vF" id="ptt-d1-n6P"/>
                         <outlet property="vipIcon" destination="V4B-I3-25A" id="Hyo-2H-BUu"/>
