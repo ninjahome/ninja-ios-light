@@ -32,7 +32,6 @@ extension MsgViewController:PHPickerViewControllerDelegate{
                                         }
                                         self.imageDidSelected(imgData: d, group:group)
                                 }
-                                group.leave()
                                 return
                         }
                         
@@ -68,8 +67,6 @@ extension MsgViewController:PHPickerViewControllerDelegate{
                                         }
                                         self.videoDidSelected(data: d, group: group)
                                 }
-                                
-                                group.leave()
                                 return
                         }
                         
@@ -96,7 +93,7 @@ extension MsgViewController:PHPickerViewControllerDelegate{
                                         self.pickVideo(itemProvider: itemProvider, group:group)
                                 }
                         }
-                        _ = group.wait(timeout: .now() + 15)
+                        _ = group.wait(timeout: .now() + 10)
                         self.hideIndicator()
                 }
         }
@@ -123,7 +120,7 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                                         let group = DispatchGroup.init()
                                         group.enter()
                                         self.imageDidSelected(imgData: imgData, group: group)
-                                        _ = group.wait(timeout: .now() + 15)
+                                        _ = group.wait(timeout: .now() + 10)
                                         self.hideIndicator()
                                 }
                         case String(kUTTypeVideo), String(kUTTypeMovie):
@@ -141,7 +138,7 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                                         let group = DispatchGroup.init()
                                         group.enter()
                                         self.videoDidSelected(data: data, group: group)
-                                        _ = group.wait(timeout: .now() + 15)
+                                        _ = group.wait(timeout: .now() + 10)
                                         self.hideIndicator()
                                 }
                         default:
@@ -186,7 +183,6 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
         }
         
         private func videoDidSelected(data:Data, group:DispatchGroup) {
-                
                 let has = ChatLibHashOfMsgData(data)
                 print("------>>>video data has :->", has)
                 guard let url = VideoFileManager.writeByHash(has: has, content: data) else{
@@ -199,17 +195,16 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                         sendVideoFile(rawData: data, url:url, group: group)
                         return
                 }
+                
                 VideoFileManager.compressVideo(from:curSize, to:maxSize, videoURL: url) {(status, resultUrl) in
                         
                         switch status{
                         case .failed:
                                 self.toastMessage(title: "Failed".locStr)
-                                
                                 group.leave()
                                 return
                         case .cancelled:
                                 self.toastMessage(title: "Cancelled".locStr)
-                                
                                 group.leave()
                                 return
                         default:
