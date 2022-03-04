@@ -12,6 +12,7 @@ class ConfigItem: NSObject {
         public static let shared = ConfigItem()
         var obj: CDConfig?
         var endPoint: String?
+        var keepDays: Int16?
         public static func initEndPoint(_ endPoint: String) -> ConfigItem {
                 let item = ConfigItem.init()
                 item.endPoint = endPoint
@@ -25,6 +26,7 @@ class ConfigItem: NSObject {
                                                                 NSPredicate(format: "nid == %@",
                                                                             NSNumber.init(value: ServiceDelegate.networkID)))
                         self.shared.endPoint = inst?.endPoint
+                        self.shared.keepDays = inst?.keepDays
                         return self.shared.endPoint
                 } catch let err {
                         print(err.localizedDescription)
@@ -43,6 +45,19 @@ class ConfigItem: NSObject {
                 }
                 return nil
         }
+        
+        public static func updateKeepDays(_ days: Int16) -> NJError? {
+                self.shared.keepDays = days
+                do {
+                        try CDManager.shared.UpdateOrAddOne(entity: "CDConfig", m: self.shared, predicate:
+                                                                NSPredicate(format: "nid == %@ ",
+                                                                            NSNumber.init(value: ServiceDelegate.networkID)))
+                } catch let err {
+                        return NJError.config(err.localizedDescription)
+                }
+                return nil
+        }
+
 }
 
 extension ConfigItem: ModelObj {
@@ -52,6 +67,7 @@ extension ConfigItem: ModelObj {
                 }
                 cObj.endPoint = self.endPoint
                 cObj.nid = Int16(ServiceDelegate.networkID)
+                cObj.keepDays = self.keepDays ?? 7
                 self.obj = cObj
         }
         
@@ -60,6 +76,7 @@ extension ConfigItem: ModelObj {
                         throw NJError.coreData("Cast to CDConfig failed")
                 }
                 self.endPoint = cObj.endPoint
+                self.keepDays = cObj.keepDays
                 print("-------->>", cObj.nid)
                 self.obj = cObj
         }

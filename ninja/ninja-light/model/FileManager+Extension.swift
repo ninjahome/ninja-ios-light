@@ -42,7 +42,7 @@ extension FileManager {
         }
         static func removeTmpDirectoryExpire(){
                 
-                let ttl = MessageItem.MaxMsgLiftTime
+                let ttl = MessageItem.MaxMsgLiftTime()
                 let tmpPath = TmpDirectory()
                 do{
                         let tmpDirectory = try fileManager.contentsOfDirectory(atPath: tmpPath.path)

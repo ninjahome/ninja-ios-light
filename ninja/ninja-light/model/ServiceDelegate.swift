@@ -35,7 +35,6 @@ class ServiceDelegate: NSObject {
                 let endPoint = ConfigItem.loadEndPoint() ?? ""
                 let current = getAppVersion()
                 let saved = getSavedAppVersion()
-                
                 if current != saved {
                         print("----[Current Version]---\(current ?? "no current")----[Saved Version]---\(saved ?? "no saved")")
                         
