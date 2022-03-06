@@ -44,19 +44,25 @@ extension AvatarEditViewController: UIImagePickerControllerDelegate & UINavigati
         
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
                 picker.dismiss(animated: true, completion: nil)
-                if let img = info[.editedImage] as? UIImage {
-                        imageDidSelected(img: img)
+                guard let img = info[.editedImage] as? UIImage  else{
+                        self.toastMessage(title: "invalid avatar".locStr)
+                        return
+                }
+                self.avatarImg.image = img
+                self.showIndicator(withTitle: "", and: "uploading avatar".locStr)
+                ServiceDelegate.workQueue.async {
+                        self.imageDidSelected(img: img)
+                        self.hideIndicator()
                 }
         }
         
         private func imageDidSelected(img: UIImage) {
-                self.avatarImg.image = img
                 var imgData = Data(img.jpegData(compressionQuality: 1)!)
                 
                 let imageSize: Int = imgData.count
                 let maxSzie = ServiceDelegate.MaxAvatarSize()
                 if imageSize > (maxSzie){
-                        let compressedData =  ServiceDelegate.CompressImg(origin: imgData, targetSize: maxSzie)
+                        let compressedData =  FileManager.compressImage(data: imgData, to: maxSzie)//.CompressImg(origin: imgData, targetSize: maxSzie)
                         print("maxSzie is[\(maxSzie)] image[\(imageSize)] need to compress to[\(compressedData?.count ?? 0)]")
                         guard let d = compressedData else {
                                 self.toastMessage(title: "Image size out of limit".locStr)

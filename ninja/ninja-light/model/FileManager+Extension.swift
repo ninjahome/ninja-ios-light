@@ -98,6 +98,28 @@ extension FileManager {
                 return fileManager.contents(atPath: filePath.path)
         }
         
+        static func compressImage(data:Data, to size:Int)->Data?{
+                let start = Date().timeIntervalSince1970
+                guard let origImg = UIImage(data: data) else{
+                        return nil
+                }
+                let origCount = data.count
+                guard origCount > size else{
+                        return data
+                }
+                let compressionQuality = CGFloat(size)/CGFloat(origCount)// - 0.05
+                
+                guard let imageData = origImg.jpegData(compressionQuality: compressionQuality)else{
+                    return nil
+                }
+                print("------>>>time interval:=>",
+                      Date().timeIntervalSince1970 - start,
+                      "compressed data:=>",imageData.count,
+                "compress ratio:", compressionQuality)
+                return imageData
+        }
+        
+        
         
         @discardableResult
         static func createFolder(_ folderName :String) -> URL {
