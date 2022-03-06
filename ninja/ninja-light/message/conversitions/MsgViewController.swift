@@ -566,14 +566,14 @@ extension MsgViewController{
         }
         
         func sendMessage(msg:MessageItem){
-                let pid = msg.groupId ?? msg.to
-                
-                if let err = WebsocketSrv.shared.SendMessage(msg: msg){
-                        msg.status = .faild
-                        self.toastMessage(title: err.localizedDescription)
-                        return
-                }
                 WebsocketSrv.netQueue.async {
+                        let pid = msg.groupId ?? msg.to
+                        
+                        if let err = WebsocketSrv.shared.SendMessage(msg: msg){
+                                msg.status = .faild
+                                self.toastMessage(title: err.localizedDescription)
+                                return
+                        }
                         if let e = MessageItem.processNewMessage(pid: pid, msg: msg, unread: 0){
                                 self.toastMessage(title: e.localizedDescription)
                                 return
