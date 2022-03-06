@@ -102,7 +102,7 @@ extension MsgViewController:PHPickerViewControllerDelegate{
 extension MsgViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         func imagePickerController(_ picker: UIImagePickerController,
                                    didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//                mutiMsgType.isHidden = true
+                //                mutiMsgType.isHidden = true
                 picker.dismiss(animated: true, completion: nil)
                 if let mediaType = info[.mediaType] as? String {
                         switch mediaType {
@@ -169,18 +169,19 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
         }
         
         private func sendImgMsg(data:Data, has:String = "", key:Data? = nil){
-                var gid:String? = nil
-                if IS_GROUP{
-                        gid = self.peerUid
-                }
-                
-                let msg = MessageItem.init(to: peerUid,
-                                           data: imgMsg(data: data, has: has, key:key),
-                                           typ: .image,
-                                           gid: gid)
-                
-                sendMessage(msg: msg)
-        }
+                WebsocketSrv.netQueue.async { [self] in
+                        var gid:String? = nil
+                        if self.IS_GROUP{
+                                gid = self.peerUid
+                        }
+                        
+                        let msg = MessageItem.init(to: self.peerUid,
+                                                   data: imgMsg(data: data, has: has, key:key),
+                                                   typ: .image,
+                                                   gid: gid)
+                        
+                        sendMessage(msg: msg)
+                }}
         
         private func videoDidSelected(data:Data, group:DispatchGroup) {
                 let has = ChatLibHashOfMsgData(data)
@@ -236,16 +237,18 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                         return
                 }
                 
-                var gid:String? = nil
-                if self.IS_GROUP{
-                        gid = self.peerUid
+                WebsocketSrv.netQueue.async {
+                        var gid:String? = nil
+                        if self.IS_GROUP{
+                                gid = self.peerUid
+                        }
+                        let video = videoMsgWithHash(thumb:thumbData, has:has, isHorizon: isHorize, key: key)
+                        let msg = MessageItem.init(to: self.peerUid,
+                                                   data: video,
+                                                   typ: .videoWithHash,
+                                                   gid: gid)
+                        
+                        self.sendMessage(msg: msg)
                 }
-                let video = videoMsgWithHash(thumb:thumbData, has:has, isHorizon: isHorize, key: key)
-                let msg = MessageItem.init(to: self.peerUid,
-                                           data: video,
-                                           typ: .videoWithHash,
-                                           gid: gid)
-                
-                self.sendMessage(msg: msg)
         }
 }
