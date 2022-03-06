@@ -52,6 +52,7 @@ class ConfigItem: NSObject {
                         try CDManager.shared.UpdateOrAddOne(entity: "CDConfig", m: self.shared, predicate:
                                                                 NSPredicate(format: "nid == %@ ",
                                                                             NSNumber.init(value: ServiceDelegate.networkID)))
+                        CDManager.shared.saveContext()
                 } catch let err {
                         return NJError.config(err.localizedDescription)
                 }

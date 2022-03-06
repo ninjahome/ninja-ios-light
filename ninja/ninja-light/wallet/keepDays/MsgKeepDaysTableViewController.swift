@@ -39,10 +39,10 @@ class MsgKeepDaysTableViewController: UITableViewController {
                 
                 selectedIndex = indexPath
                 cell.accessoryType = .checkmark
-                print("checkout \(indexPath.row)")
                 let day = keepDaysList[indexPath.row]
                 if let err = ConfigItem.updateKeepDays(day) {
-                        print("update keep days faild: \(err.localizedDescription ?? "")")
+                        self.toastMessage(title: "save failed".locStr)
+                        print("------->>>update keep days faild: \(err.localizedDescription ?? "")")
                 }
         }
 
