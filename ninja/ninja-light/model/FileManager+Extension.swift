@@ -100,24 +100,33 @@ extension FileManager {
         
         static func compressImage(data:Data, to size:Int)->Data?{
                 let start = Date().timeIntervalSince1970
-                guard let origImg = UIImage(data: data) else{
+                guard let origImg = UIImage(data: data)?.rotateImage() else{
                         return nil
                 }
+                
+             
                 let origCount = data.count
                 guard origCount > size else{
                         return data
                 }
-                let compressionQuality = CGFloat(size)/CGFloat(origCount)// - 0.05
                 
-                guard let imageData = origImg.jpegData(compressionQuality: compressionQuality)else{
+                let compressionQuality = CGFloat(size)/CGFloat(origCount)
+                guard let imageData = origImg.jpegData(compressionQuality: compressionQuality) else {
                     return nil
                 }
+                
                 print("------>>>time interval:=>",
                       Date().timeIntervalSince1970 - start,
                       "compressed data:=>",imageData.count,
-                "compress ratio:", compressionQuality)
+                      "compress ratio:", compressionQuality,
+                      "scale", origImg.scale,
+                      "imageOrientation:", origImg.imageOrientation.rawValue)
+                
                 return imageData
         }
+        
+        
+        
         
         
         
