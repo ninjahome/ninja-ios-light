@@ -104,7 +104,6 @@ extension FileManager {
                         return nil
                 }
                 
-             
                 let origCount = data.count
                 guard origCount > size else{
                         return data

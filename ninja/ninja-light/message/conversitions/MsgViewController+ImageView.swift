@@ -22,8 +22,11 @@ extension MsgViewController:PHPickerViewControllerDelegate{
                                 self.toastMessage(title: "Invalid image data".locStr)
                                 return
                         }
-                        
-                        guard var data = try? Data(contentsOf: url), !data.isEmpty else{
+                        guard let image = UIImage(contentsOfFile: url.path)?.rotateImage() else{
+                                self.toastMessage(title: "Invalid image data".locStr)
+                                return
+                        }
+                        guard let data = image.jpeg else{
                                 itemProvider.loadDataRepresentation(forTypeIdentifier: "public.image") { data, err in
                                         guard let d = data else{
                                                 group.leave()
@@ -33,16 +36,6 @@ extension MsgViewController:PHPickerViewControllerDelegate{
                                         self.imageDidSelected(imgData: d, group:group)
                                 }
                                 return
-                        }
-                        
-                        print("------->>>lastPathComponent:=>", url.pathExtension)
-                        if !ChatLibIsValidImgFmt(url.pathExtension){
-                                guard let  d = UIImage(data: data)?.jpeg else{
-                                        group.leave()
-                                        self.toastMessage(title: "Invalid image data".locStr)
-                                        return
-                                }
-                                data = d
                         }
                         
                         self.imageDidSelected(imgData: data, group:group)
@@ -111,7 +104,7 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                                         self.toastMessage(title: "Invalid image data".locStr)
                                         return
                                 }
-                                guard let imgData = img.jpegData(compressionQuality: 1.0) else{
+                                guard let imgData = img.rotateImage()?.jpegData(compressionQuality: 1.0) else{
                                         self.toastMessage(title: "Invalid image data".locStr)
                                         return
                                 }
@@ -152,7 +145,7 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                 defer{
                         group.leave()
                 }
-                print("------>>> image hash:=>", ChatLibHashOfMsgData(imgData))
+//                print("------>>> image hash:=>", ChatLibHashOfMsgData(imgData))
                 let maxSize = ChatLibBigMsgThreshold()
                 let curSize = imgData.count
                 guard curSize > maxSize else{
