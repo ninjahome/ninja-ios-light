@@ -100,10 +100,7 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
                         print("------>>> message result invalid to data")
                         return
                 }
-                
-                ServiceDelegate.workQueue.async {
-                        MessageItem.updateSendResult(msgid: p0, to: to, success: p2)
-                }
+                MessageItem.updateSendResult(msgid: p0, to: to, success: p2)
         }
         
         func nodeIPChanged(_ p0: String?) {
