@@ -22,11 +22,7 @@ extension MsgViewController:PHPickerViewControllerDelegate{
                                 self.toastMessage(title: "Invalid image data".locStr)
                                 return
                         }
-                        guard let image = UIImage(contentsOfFile: url.path)?.rotateImage() else{
-                                self.toastMessage(title: "Invalid image data".locStr)
-                                return
-                        }
-                        guard let data = image.jpeg else{
+                        guard let data = try? Data(contentsOf: url), !data.isEmpty else{
                                 itemProvider.loadDataRepresentation(forTypeIdentifier: "public.image") { data, err in
                                         guard let d = data else{
                                                 group.leave()
@@ -37,7 +33,6 @@ extension MsgViewController:PHPickerViewControllerDelegate{
                                 }
                                 return
                         }
-                        
                         self.imageDidSelected(imgData: data, group:group)
                 }
         }
@@ -145,15 +140,20 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                 defer{
                         group.leave()
                 }
-//                print("------>>> image hash:=>", ChatLibHashOfMsgData(imgData))
-                let maxSize = ChatLibBigMsgThreshold()
-                let curSize = imgData.count
-                guard curSize > maxSize else{
-                        sendImgMsg(data: imgData)
+                
+                guard let data = UIImage(data: imgData)?.rotateImage()?.jpeg else{
+                        self.toastMessage(title: "Invalid image data".locStr)
                         return
                 }
                 
-                let (d, k, h) = ServiceDelegate.MakeImgSumMsg(origin: imgData, snapShotSize:maxSize)
+                let maxSize = ChatLibBigMsgThreshold()
+                let curSize = data.count
+                guard curSize > maxSize else{
+                        sendImgMsg(data: data)
+                        return
+                }
+                
+                let (d, k, h) = ServiceDelegate.MakeImgSumMsg(origin: data, snapShotSize:maxSize)
                 guard let snapShot = d, let has = h, let key = k else{
                         self.toastMessage(title: "Invalid image data".locStr)
                         return
