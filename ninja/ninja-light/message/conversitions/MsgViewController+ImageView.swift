@@ -141,19 +141,19 @@ extension MsgViewController: UIImagePickerControllerDelegate, UINavigationContro
                         group.leave()
                 }
                 
-//                guard let data = UIImage(data: imgData)?.rotateImage()?.jpeg else{
-//                        self.toastMessage(title: "Invalid image data".locStr)
-//                        return
-//                }
-//
+                guard let data = UIImage(data: imgData)?.rotateImage()?.jpeg else{
+                        self.toastMessage(title: "Invalid image data".locStr)
+                        return
+                }
+
                 let maxSize = ChatLibBigMsgThreshold()
-                let curSize = imgData.count
+                let curSize = data.count
                 guard curSize > maxSize else{
                         sendImgMsg(data: imgData)
                         return
                 }
                 
-                let (d, k, h) = ServiceDelegate.MakeImgSumMsg(origin: imgData, snapShotSize:maxSize)
+                let (d, k, h) = ServiceDelegate.MakeImgSumMsg(origin: data, snapShotSize:maxSize)
                 guard let snapShot = d, let has = h, let key = k else{
                         self.toastMessage(title: "Invalid image data".locStr)
                         return
