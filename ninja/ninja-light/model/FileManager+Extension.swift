@@ -100,27 +100,32 @@ extension FileManager {
         
         static func compressImage(data:Data, to size:Int)->Data?{
                 let start = Date().timeIntervalSince1970
-                guard let origImg = UIImage(data: data)?.rotateImage() else{
-                        return nil
+                
+                var imageData = data
+                var origCount = data.count
+                
+                while origCount > size {
+                        
+                        guard let origImg = UIImage(data: imageData)?.rotateImage() else{
+                                return nil
+                        }
+                        
+                        let compressionQuality = CGFloat(size)/CGFloat(origCount)
+                        guard let d = origImg.jpegData(compressionQuality: compressionQuality) else {
+                                return nil
+                        }
+                        
+                        imageData = d
+                        origCount = imageData.count
+                        
+                        print("------>>>time interval:=>",
+                              Date().timeIntervalSince1970 - start,
+                              "compressed data:=>",imageData.count,
+                              "compress ratio:", compressionQuality,
+                              "scale", origImg.scale,
+                              "imageOrientation:", origImg.imageOrientation.rawValue)
+                        
                 }
-                
-                let origCount = data.count
-                guard origCount > size else{
-                        return data
-                }
-                
-                let compressionQuality = CGFloat(size)/CGFloat(origCount)
-                guard let imageData = origImg.jpegData(compressionQuality: compressionQuality) else {
-                    return nil
-                }
-                
-                print("------>>>time interval:=>",
-                      Date().timeIntervalSince1970 - start,
-                      "compressed data:=>",imageData.count,
-                      "compress ratio:", compressionQuality,
-                      "scale", origImg.scale,
-                      "imageOrientation:", origImg.imageOrientation.rawValue)
-                
                 return imageData
         }
         
