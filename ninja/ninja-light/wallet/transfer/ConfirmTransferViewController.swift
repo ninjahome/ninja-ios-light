@@ -55,7 +55,7 @@ class ConfirmTransferViewController: UIViewController {
                         }
                         DispatchQueue.main.async {
                                 self.hideIndicator()
-                                self.navigationController?.popToRootViewController(animated: true)
+                                self.navigationController?.popViewController(animated: true)
                         }
                         
                 }

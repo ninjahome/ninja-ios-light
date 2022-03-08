@@ -24,7 +24,7 @@ protocol IMPayLoad {
 
 class MessageItem: NSObject {
         
-        public static let MaxMsgLiftTime = Double(7*86400)
+//        public static let MaxMsgLiftTime = Double(7*86400)
         public static let TimeOutDuration = 1000 * 60 * 2
         public static let NotiKey = "peerUid"
         public static let ItemNoPerPull = 100
@@ -56,6 +56,13 @@ class MessageItem: NSObject {
                 self.typ = typ
                 self.to = to
                 self.payload = data
+        }
+        
+        public static func MaxMsgLiftTime() -> Double {
+                if let days = ConfigItem.shared.keepDays {
+                        return Double(Int(days)*86400)
+                }
+                return Double(7*86400)
         }
         
         public static func cacheItem(pid:String, item:MessageItem){
@@ -257,7 +264,7 @@ class MessageItem: NSObject {
         
         public static func deleteMsgOneWeek() {
                 let owner = Wallet.shared.Addr!
-                let limitTime = Date().timeIntervalSince1970 - MaxMsgLiftTime
+                let limitTime = Date().timeIntervalSince1970 - MaxMsgLiftTime()
                 try? CDManager.shared.Delete(entity: "CDUnread",
                                              predicate: NSPredicate(format: "owner == %@ AND unixTime < %@",
                                                                     owner, NSNumber(value: limitTime*1000)))
@@ -344,7 +351,7 @@ extension MessageItem: ModelObj {
                 switch self.typ {
                 case .plainTxt:
                         uObj.message = (self.payload as? txtMsg)?.txt
-                case .image, .voice, .location, .file, .videoWithHash:
+                case .image, .voice, .location, .file, .videoWithHash, .contact:
                         uObj.media = self.payload as? NSObject
                 default:
                         print("full fill msg: no such type")
@@ -388,13 +395,14 @@ extension MessageItem: ModelObj {
                         self.payload = uObj.media as? fileMsg
                 case .videoWithHash:
                         self.payload = uObj.media as? videoMsgWithHash
+                case .contact:
+                        self.payload = uObj.media as? contactMsg
                 default:
                         print("------>>>init by msg obj: no such type")
                 }
                 self.to = uObj.to ?? "<->"//TODO::
                 self.groupId = uObj.groupId
                 self.uObj = uObj
-                
                 
                 self.timeStamp = uObj.unixTime
                 self.status = sendingStatus(rawValue: uObj.status) ?? .sent
@@ -419,7 +427,6 @@ extension MessageItem:ChatLibUnwrapCallbackProtocol{
                 self.typ = .redPacket
                 self.payload = redPacketMsg(from: f ?? "", to: t ?? "", amount: a)
         }
-        
         
         func video(withHash d: Data?, k: Data?, h: String?, horiz:Bool) {
                 self.typ = .videoWithHash

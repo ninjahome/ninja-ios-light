@@ -13,7 +13,7 @@ class ServiceDelegate: NSObject {
         public static let workQueue = DispatchQueue.init(label: "Serivce Queue", qos: .utility)
         public static let DevTypeIOS = 1
         public static let Debug = true
-        public static let networkID = Int8(5)
+        public static let networkID = Int8(2)
         
         public static func getAgentStatus() -> AgentStatus {
                 
@@ -35,7 +35,6 @@ class ServiceDelegate: NSObject {
                 let endPoint = ConfigItem.loadEndPoint() ?? ""
                 let current = getAppVersion()
                 let saved = getSavedAppVersion()
-                
                 if current != saved {
                         print("----[Current Version]---\(current ?? "no current")----[Saved Version]---\(saved ?? "no saved")")
                         
@@ -93,14 +92,16 @@ class ServiceDelegate: NSObject {
                 let maxImgSize = ChatLibMaxFileSize()
                 var rawData:Data = origin
                 if origin.count > maxImgSize{
-                        guard let rd = CompressImg(origin: origin, targetSize: maxImgSize) else{
+//                        guard let rd = CompressImg(origin: origin, targetSize: maxImgSize) else{
+                        guard let rd = FileManager.compressImage(data: origin, to: maxImgSize) else{
                                 print("------>>>compress too big imgage failed")
                                 return (nil, nil, nil)
                         }
                         rawData = rd
                 }
                 
-                guard let snapShot = CompressImg(origin: rawData, targetSize: snapShotSize) else{
+                guard let snapShot = FileManager.compressImage(data: rawData, to: snapShotSize) else{
+//                guard let snapShot = CompressImg(origin: rawData, targetSize: snapShotSize) else{
                         print("------>>>create snapshot failed")
                         return (nil,nil, nil)
                 }
@@ -148,14 +149,18 @@ class ServiceDelegate: NSObject {
                 return VideoFileManager.writeByHash(has: has, content: d)
         }
         
-        public static func CompressImg(origin:Data, targetSize:Int)->Data?{
-                var err:NSError?
-                guard let newData = ChatLibCompressImg(origin, Int32(targetSize), &err) else{
-                        print("------>>>compress image failed:\(err?.localizedDescription ?? "<->")")
-                        return nil
-                }
-                return newData
-        }
+//        public static func CompressImg(origin:Data, targetSize:Int)->Data?{
+//                let start = Date().timeIntervalSince1970
+//                var err:NSError?
+//                guard let newData = ChatLibCompressImg(origin, Int32(targetSize), &err) else{
+//                        print("------>>>compress image failed:\(err?.localizedDescription ?? "<->")")
+//                        return nil
+//                }
+//                
+//                print("------>>>time interval:=>", Date().timeIntervalSince1970 - start)
+//                print("------>>>imge size:=>", newData.count)
+//                return newData
+//        }
         
         public static func transferLicense(to addr: String, days: Int) -> NSError? {
                 var err:NSError?

@@ -14,8 +14,8 @@ class SystemMeesageViewController: UIViewController, WKNavigationDelegate {
         
         public static  var newTargetUrl = ""
         
-        private let  defaultUrl = URL(string: "https://sbcproxyer.github.io/dl/app.html")!
-        private let lastTargetUrlKey = "Last_target_url_key"
+        private let  defaultUrl = URL(string: "https://ninjahome.github.io/")!
+        private let lastTargetUrlKey = "Last_target_url_key_v2"
         
         override func viewDidLoad() {
                 super.viewDidLoad()
@@ -44,7 +44,7 @@ class SystemMeesageViewController: UIViewController, WKNavigationDelegate {
         func webView(_ webView: WKWebView,
                      didFinish navigation: WKNavigation!){
                 
-                UserDefaults.standard.set(webView.url?.path, forKey: lastTargetUrlKey)
+                UserDefaults.standard.set(webView.url?.absoluteString, forKey: lastTargetUrlKey)
                 SystemMeesageViewController.newTargetUrl = ""
         }
 }

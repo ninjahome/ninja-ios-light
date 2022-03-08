@@ -104,3 +104,6 @@
 "Only leader valid"="仅群主可操作";
 "not enough member to delete"="群成员过少";
 "processing"="处理中";
+"invalid avatar"="无效头像图片";
+"uploading avatar"="正在上传头像";
+"save failed"="保存配置失败";

@@ -27,7 +27,6 @@ class TransferViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.navigationController?.interactivePopGestureRecognizer?.delegate = _delegate
         }
         
-        
         override func viewDidLoad() {
                 super.viewDidLoad()
                 let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(authorizeByID(_:)))
@@ -46,5 +45,21 @@ class TransferViewController: UIViewController, UIGestureRecognizerDelegate {
         
         @IBAction func authorizeByContact(_ sender: UITapGestureRecognizer) {
                 self.performSegue(withIdentifier: "ShowAuthorByContactViewControllerSEG", sender: nil)
+                
+        }
+        
+        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+                if segue.identifier == "ShowAuthorByContactViewControllerSEG",
+                   let vc = segue.destination as? SelectContactViewController {
+                        vc.delegate = self
+                }
+        }
+}
+
+extension TransferViewController: SelectContactDelegate {
+        func selectedIdStr(addr: String) {
+                let vc = instantiateViewController(vcID: "ConfirmTransferVC") as! ConfirmTransferViewController
+                vc.transAddress = addr
+                self.navigationController?.pushViewController(vc, animated: true)
         }
 }

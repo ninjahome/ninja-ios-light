@@ -42,7 +42,7 @@ extension FileManager {
         }
         static func removeTmpDirectoryExpire(){
                 
-                let ttl = MessageItem.MaxMsgLiftTime
+                let ttl = MessageItem.MaxMsgLiftTime()
                 let tmpPath = TmpDirectory()
                 do{
                         let tmpDirectory = try fileManager.contentsOfDirectory(atPath: tmpPath.path)
@@ -97,6 +97,37 @@ extension FileManager {
                 }
                 return fileManager.contents(atPath: filePath.path)
         }
+        
+        static func compressImage(data:Data, to size:Int)->Data?{
+                let start = Date().timeIntervalSince1970
+                guard let origImg = UIImage(data: data)?.rotateImage() else{
+                        return nil
+                }
+                
+             
+                let origCount = data.count
+                guard origCount > size else{
+                        return data
+                }
+                
+                let compressionQuality = CGFloat(size)/CGFloat(origCount)
+                guard let imageData = origImg.jpegData(compressionQuality: compressionQuality) else {
+                    return nil
+                }
+                
+                print("------>>>time interval:=>",
+                      Date().timeIntervalSince1970 - start,
+                      "compressed data:=>",imageData.count,
+                      "compress ratio:", compressionQuality,
+                      "scale", origImg.scale,
+                      "imageOrientation:", origImg.imageOrientation.rawValue)
+                
+                return imageData
+        }
+        
+        
+        
+        
         
         
         @discardableResult

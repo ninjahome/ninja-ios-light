@@ -31,22 +31,6 @@ func updateBadgeNum() {
         UIApplication.shared.applicationIconBadgeNumber = total
 }
 
-func compressImage(_ origin: Data?) -> Data? {
-        guard let size = origin?.count else {
-                return nil
-        }
-        let limitSize = 4*1024*1024
-        if size > limitSize {
-                var error: NSError?
-                let data = ChatLibCompressImg(origin, Int32(limitSize), &error)
-                if error != nil {
-                        print("---[compress image]---\(error?.localizedDescription ?? "")")
-                }
-                return data
-        }
-        return origin
-}
-
 func mimeTypeIsVideo(_ suffix: String) -> Bool {
         if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension,
                                                            suffix as NSString,
@@ -758,3 +742,15 @@ extension UIButton {
         }
 }
 
+extension UIImage {
+    func rotateImage()-> UIImage?  {
+        if (self.imageOrientation == UIImage.Orientation.up ) {
+            return self
+        }
+        UIGraphicsBeginImageContext(self.size)
+        self.draw(in: CGRect(origin: CGPoint.zero, size: self.size))
+       let copy = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return copy
+    }
+}
