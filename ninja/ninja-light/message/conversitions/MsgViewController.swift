@@ -447,6 +447,9 @@ extension MsgViewController{
                         return
                 }
                 
+                self.mutiMsgType.isHidden = true
+                recoverConstrain()
+                
                 if !isTextType {
                         self.voiceBtn.setImage(UIImage(named: "voice_icon"), for: .normal)
                         self.sender.isHidden = false
