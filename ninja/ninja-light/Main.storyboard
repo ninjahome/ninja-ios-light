@@ -860,14 +860,14 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </label>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tBz-9E-sjT">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tBz-9E-sjT">
                                 <rect key="frame" x="270" y="88" width="124" height="88"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7pi-NO-Gcz">
-                                        <rect key="frame" x="14" y="14" width="86" height="24"/>
+                                        <rect key="frame" x="14" y="14" width="86" height="22"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <state key="normal" title="添加好友" image="nav_addF_icon">
-                                            <color key="titleColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <state key="normal" title="添加好友" image="add_friend_icon">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
                                             <segue destination="vxr-X8-b54" kind="show" id="BFB-Pp-bKe"/>
@@ -884,14 +884,14 @@
                                         <rect key="frame" x="14" y="54" width="86" height="22"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <state key="normal" title="创建群聊" image="group_chat_icon">
-                                            <color key="titleColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
                                             <segue destination="6ck-zt-nba" kind="show" id="fgS-SB-Gkg"/>
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" red="0.14901960784313725" green="0.14509803921568626" blue="0.23529411764705882" alpha="0.89848600475993379" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="5ww-5a-SVK" secondAttribute="bottom" constant="12" id="3Zx-th-CK3"/>
                                     <constraint firstItem="5ww-5a-SVK" firstAttribute="leading" secondItem="tBz-9E-sjT" secondAttribute="leading" constant="14" id="6yV-Ub-HFe"/>
@@ -965,7 +965,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7re-F4-bQF">
-                                <rect key="frame" x="0.0" y="88" width="683" height="2202"/>
+                                <rect key="frame" x="0.0" y="88" width="683" height="2190"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="3w9-mv-dzv">
                                     <rect key="frame" x="0.0" y="1804.5" width="683" height="0.0"/>
@@ -2388,17 +2388,17 @@
                                 </prototypes>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ne3-qi-xmo" userLabel="VIP Bar">
-                                <rect key="frame" x="0.0" y="2290" width="683" height="20"/>
+                                <rect key="frame" x="0.0" y="2278" width="683" height="32"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="VIP用户免费使用" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rdr-A6-5mJ">
-                                        <rect key="frame" x="20" y="3.5" width="86" height="13.5"/>
+                                        <rect key="frame" x="20" y="9.5" width="86" height="13.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="11"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WZw-U2-CuL">
-                                        <rect key="frame" x="609" y="2.5" width="54" height="15"/>
+                                        <rect key="frame" x="609" y="8.5" width="54" height="15"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="15" id="dPO-Pz-7DF"/>
@@ -2429,7 +2429,7 @@
                                 <constraints>
                                     <constraint firstItem="rdr-A6-5mJ" firstAttribute="leading" secondItem="Ne3-qi-xmo" secondAttribute="leading" constant="20" id="1AH-Hw-eBk"/>
                                     <constraint firstAttribute="trailing" secondItem="WZw-U2-CuL" secondAttribute="trailing" constant="20" id="HtP-4x-bte"/>
-                                    <constraint firstAttribute="height" constant="20" id="RNI-ZA-8KX"/>
+                                    <constraint firstAttribute="height" constant="32" id="RNI-ZA-8KX"/>
                                     <constraint firstItem="WZw-U2-CuL" firstAttribute="centerY" secondItem="Ne3-qi-xmo" secondAttribute="centerY" id="kSI-wi-EKb"/>
                                     <constraint firstItem="rdr-A6-5mJ" firstAttribute="centerY" secondItem="Ne3-qi-xmo" secondAttribute="centerY" id="sEp-Nw-YQz"/>
                                 </constraints>
@@ -6466,7 +6466,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="6uQ-pj-Sdx"/>
+        <segue reference="BFB-Pp-bKe"/>
         <segue reference="UFj-KF-hEb"/>
     </inferredMetricsTieBreakers>
     <resources>
@@ -6491,6 +6491,7 @@
         <image name="account_icon" width="20" height="20"/>
         <image name="add" width="56" height="56"/>
         <image name="addPhoto_icon" width="28" height="28"/>
+        <image name="add_friend_icon" width="22" height="22"/>
         <image name="add_icon" width="58" height="58"/>
         <image name="avatarEdit" width="146" height="42"/>
         <image name="back_icon" width="28" height="28"/>
