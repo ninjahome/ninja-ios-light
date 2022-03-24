@@ -16,6 +16,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
         @IBOutlet weak var deleteBtn: UIButton!
         @IBOutlet weak var moreBtn: UIButton!
         @IBOutlet weak var vipFlagImgView: UIImageView!
+        
         @IBOutlet weak var nickTextField: UITextField!
         @IBOutlet weak var memoTextView: UITextView!
         
@@ -143,7 +144,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 self.nickName.text = data.account?.NickName
                 nickTextField.text = data.contact?.alias
                 memoTextView.text = data.contact?.remark
-                backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
+//                backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
                 self.avator.setup(id: self.peerID, avaData: contactData?.account?.Avatar, showDetails: false)
         }
         

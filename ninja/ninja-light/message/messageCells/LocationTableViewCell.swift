@@ -61,9 +61,9 @@ class LocationTableViewCell: UITableViewCell {
                 
                 //message bubble
                 if message.isOut {
-                        let img = UIImage(named: "white")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
-                        msgBackgroundView.image = img
-                        miniMapTrailing.constant = 8
+//                        let img = UIImage(named: "white")?.resizableImage(withCapInsets: UIEdgeInsets(top: 10, left: 12, bottom: 20, right: 12), resizingMode: .stretch)
+//                        msgBackgroundView.image = img
+//                        miniMapTrailing.constant = 8
                         
                         self.avatar.setupSelf()
                         switch message.status {
@@ -77,9 +77,9 @@ class LocationTableViewCell: UITableViewCell {
                         }
                         nickname.text = ""
                 } else {
-                        let img = UIImage(named: "babycolor")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
-                        msgBackgroundView.image = img
-                        miniMapLeading.constant = 8
+//                        let img = UIImage(named: "babycolor")?.resizableImage(withCapInsets: UIEdgeInsets(top: 10, left: 12, bottom: 20, right: 12), resizingMode: .stretch)
+//                        msgBackgroundView.image = img
+//                        miniMapLeading.constant = 8
                         
                         
                         PopulatePeerCell(nickname:self.nickname,

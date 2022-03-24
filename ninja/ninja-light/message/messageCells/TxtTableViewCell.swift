@@ -45,8 +45,8 @@ class TxtTableViewCell: UITableViewCell {
         @IBOutlet weak var retry: UIButton?
         @IBOutlet weak var spinner: UIActivityIndicatorView?
         
-        let inMsgImg = UIImage(named: "white")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
-        let ourImg = UIImage(named: "babycolor")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
+        let inMsgImg = UIImage(named: "white")?.resizableImage(withCapInsets: UIEdgeInsets(top: 10, left: 12, bottom: 20, right: 12), resizingMode: .stretch)
+        let ourImg = UIImage(named: "babycolor")?.resizableImage(withCapInsets: UIEdgeInsets(top: 10, left: 12, bottom: 20, right: 12), resizingMode: .stretch)
         
         var curMsg:MessageItem?
         override func prepareForReuse() {

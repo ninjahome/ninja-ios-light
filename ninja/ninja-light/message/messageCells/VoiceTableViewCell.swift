@@ -77,13 +77,13 @@ class VoiceTableViewCell: UITableViewCell {
                                 spinner?.stopAnimating()
                         }
 
-                        let img = UIImage(named: "white")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
+                        let img = UIImage(named: "white")?.resizableImage(withCapInsets: UIEdgeInsets(top: 10, left: 12, bottom: 20, right: 12), resizingMode: .stretch)
                         msgBackgroundView.image = img
                         self.avatar.setupSelf()
                         self.nickname.text = ""
 
                 } else {
-                        let img = UIImage(named: "babycolor")?.resizableImage(withCapInsets: UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12), resizingMode: .stretch)
+                        let img = UIImage(named: "babycolor")?.resizableImage(withCapInsets: UIEdgeInsets(top: 10, left: 12, bottom: 20, right: 12), resizingMode: .stretch)
                         msgBackgroundView.image = img
                         
                         PopulatePeerCell(nickname:self.nickname,

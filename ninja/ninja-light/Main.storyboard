@@ -966,11 +966,11 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7re-F4-bQF">
                                 <rect key="frame" x="0.0" y="88" width="683" height="2222"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="3w9-mv-dzv">
                                     <rect key="frame" x="0.0" y="1804.5" width="683" height="0.0"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="messageCellL" id="5rW-UB-bsV" customClass="TxtTableViewCell" customModule="immeta" customModuleProvider="target">
@@ -1018,7 +1018,7 @@
                                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="17" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yca-Ng-0TC">
                                                             <rect key="frame" x="14" y="4" width="29" height="17"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                             <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES" shipmentTrackingNumber="YES" flightNumber="YES" lookupSuggestion="YES"/>
@@ -1034,7 +1034,7 @@
                                                     </constraints>
                                                 </view>
                                             </subviews>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="g8H-IS-X6b" firstAttribute="top" secondItem="yGB-dk-rYo" secondAttribute="top" constant="8" id="DEW-VO-7Oy"/>
                                                 <constraint firstItem="N88-Zn-W9y" firstAttribute="leading" secondItem="g8H-IS-X6b" secondAttribute="trailing" constant="14" id="LO2-TZ-NxD"/>
@@ -1049,6 +1049,7 @@
                                                 <constraint firstItem="hef-dp-duc" firstAttribute="width" relation="lessThanOrEqual" secondItem="yGB-dk-rYo" secondAttribute="width" multiplier="0.7" id="zoh-pO-PTR"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.97254901959999995" green="0.97254901959999995" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <outlet property="avatar" destination="g8H-IS-X6b" id="DG5-7s-0f6"/>
                                             <outlet property="msgBackgroundView" destination="hef-dp-duc" id="Yi8-xJ-oVb"/>
@@ -1128,7 +1129,7 @@
                                                     </connections>
                                                 </button>
                                             </subviews>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="qV7-2O-9EB" firstAttribute="centerX" secondItem="z3p-zH-Phu" secondAttribute="centerX" id="1TP-GB-H45"/>
                                                 <constraint firstItem="BTQ-SD-Efx" firstAttribute="centerY" secondItem="SgA-58-V45" secondAttribute="centerY" id="3GJ-CQ-UbF"/>
@@ -1146,6 +1147,7 @@
                                                 <constraint firstItem="VwL-sc-YrW" firstAttribute="width" relation="lessThanOrEqual" secondItem="62F-6g-Y7I" secondAttribute="width" multiplier="0.7" id="yfI-Ea-pBj"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.97254901959999995" green="0.97254901959999995" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <outlet property="avatar" destination="Z4D-Ao-8Wp" id="Wca-d5-vC5"/>
                                             <outlet property="msgBackgroundView" destination="VwL-sc-YrW" id="LSM-nT-Yvd"/>
@@ -1201,7 +1203,7 @@
                                                         <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="760" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y2h-A6-Wd6">
                                                             <rect key="frame" x="0.0" y="1.5" width="80" height="34"/>
                                                             <state key="normal">
-                                                                <color key="titleColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             </state>
                                                         </button>
                                                     </subviews>
@@ -1216,7 +1218,7 @@
                                                     </constraints>
                                                 </view>
                                             </subviews>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="eg7-fJ-lez" firstAttribute="width" relation="lessThanOrEqual" secondItem="Oyy-Gb-BUr" secondAttribute="width" multiplier="0.75" id="5Ky-ZU-eVH"/>
                                                 <constraint firstItem="xKW-7A-jMS" firstAttribute="width" relation="lessThanOrEqual" secondItem="Oyy-Gb-BUr" secondAttribute="width" multiplier="0.4" id="DZR-aQ-6el"/>
@@ -1231,6 +1233,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="eg7-fJ-lez" secondAttribute="bottom" constant="8" id="rIG-TU-b8o"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="avatar" destination="WQC-0h-HzZ" id="sIc-4R-GOI"/>
                                             <outlet property="msgBackgroundView" destination="eg7-fJ-lez" id="5ai-gi-Py5"/>
@@ -1310,7 +1313,7 @@
                                                     </connections>
                                                 </button>
                                             </subviews>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="JZ6-kW-jUo" firstAttribute="centerY" secondItem="qYT-UM-KwI" secondAttribute="centerY" id="05W-th-MRr"/>
                                                 <constraint firstItem="idd-Zy-61p" firstAttribute="top" secondItem="a7X-c3-OxC" secondAttribute="top" constant="8" id="17w-Ba-F76"/>
@@ -1326,6 +1329,7 @@
                                                 <constraint firstItem="idd-Zy-61p" firstAttribute="leading" secondItem="JZ6-kW-jUo" secondAttribute="trailing" constant="14" id="tFi-AK-5dQ"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="avatar" destination="idd-Zy-61p" id="xSD-oR-Kzq"/>
                                             <outlet property="msgBackgroundView" destination="oJU-2F-2qY" id="aiC-vY-qwf"/>
@@ -1396,7 +1400,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="e0j-V9-MES" firstAttribute="leading" secondItem="nMZ-di-Hnh" secondAttribute="leading" constant="16" id="5NM-1f-eOL"/>
                                                 <constraint firstItem="n24-z0-HKk" firstAttribute="top" secondItem="nMZ-di-Hnh" secondAttribute="top" constant="6" id="EU0-u4-cnd"/>
@@ -1411,6 +1415,7 @@
                                                 <constraint firstItem="aFN-hZ-tFV" firstAttribute="top" secondItem="n24-z0-HKk" secondAttribute="bottom" constant="4" id="yQb-Y3-wsN"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="avatar" destination="e0j-V9-MES" id="JfW-QQ-RTL"/>
                                             <outlet property="imageMsg" destination="Oas-Xp-4MA" id="Uq8-VV-RId"/>
@@ -1491,7 +1496,7 @@
                                                     </connections>
                                                 </button>
                                             </subviews>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="qZf-pg-bd2" firstAttribute="top" secondItem="Yei-mM-QRr" secondAttribute="top" constant="8" id="6MU-qU-OBr"/>
                                                 <constraint firstItem="qZf-pg-bd2" firstAttribute="leading" secondItem="aRC-II-6AJ" secondAttribute="trailing" constant="4" id="7D4-1t-nJ7"/>
@@ -1505,6 +1510,7 @@
                                                 <constraint firstItem="HAc-q0-JRz" firstAttribute="leading" secondItem="LbI-Df-ycC" secondAttribute="trailing" constant="8" id="xT2-jp-1rl"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="avatar" destination="qZf-pg-bd2" id="AJd-Jz-BdE"/>
                                             <outlet property="imageMsg" destination="iGb-ym-e3r" id="1VA-SX-NZ0"/>
@@ -1579,7 +1585,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="Ow1-y7-cFU" firstAttribute="width" relation="lessThanOrEqual" secondItem="9so-zb-c81" secondAttribute="width" multiplier="0.5" id="8eF-ON-DBy"/>
                                                 <constraint firstItem="Ow1-y7-cFU" firstAttribute="leading" secondItem="ozE-GR-chh" secondAttribute="trailing" constant="4" id="Dku-ho-cJ1"/>
@@ -1594,6 +1600,7 @@
                                                 <constraint firstItem="Ow1-y7-cFU" firstAttribute="top" secondItem="xmx-vs-df2" secondAttribute="bottom" constant="4" id="z3E-pT-fFm"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="avatar" destination="ozE-GR-chh" id="cBy-Wq-dLc"/>
                                             <outlet property="msgBackgroundView" destination="Ow1-y7-cFU" id="JxR-Xd-szS"/>
@@ -1632,7 +1639,7 @@
                                                             </connections>
                                                         </button>
                                                     </subviews>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstItem="3Lo-Wz-52g" firstAttribute="top" secondItem="6Ke-gO-8re" secondAttribute="top" constant="4" id="Bgy-13-Tyv"/>
                                                         <constraint firstAttribute="trailing" secondItem="3Lo-Wz-52g" secondAttribute="trailing" constant="12" id="E0X-6b-UMJ"/>
@@ -1677,7 +1684,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="9Lf-FZ-R5a" firstAttribute="leading" secondItem="piv-h5-bF7" secondAttribute="leading" constant="16" id="25i-GJ-ek8"/>
                                                 <constraint firstItem="6Ke-gO-8re" firstAttribute="width" relation="lessThanOrEqual" secondItem="piv-h5-bF7" secondAttribute="width" multiplier="0.6" id="68H-sq-l23"/>
@@ -1692,6 +1699,7 @@
                                                 <constraint firstItem="LlG-Fk-sk3" firstAttribute="centerY" secondItem="c5f-dz-UfX" secondAttribute="centerY" id="gGs-Eh-CKS"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="avatar" destination="9Lf-FZ-R5a" id="3c2-ae-shR"/>
                                             <outlet property="locationStr" destination="3Lo-Wz-52g" id="yPq-3u-jmK"/>
@@ -1764,7 +1772,7 @@
                                                             </connections>
                                                         </button>
                                                     </subviews>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstItem="17E-uM-asi" firstAttribute="leading" secondItem="c7O-tC-47W" secondAttribute="leading" constant="12" id="1Fc-f8-Loa"/>
                                                         <constraint firstItem="qV5-cS-9aj" firstAttribute="leading" secondItem="c7O-tC-47W" secondAttribute="leading" id="9yf-LA-yih"/>
@@ -1787,7 +1795,7 @@
                                                     </connections>
                                                 </button>
                                             </subviews>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="U4e-vN-Z1o" firstAttribute="top" secondItem="O5V-3H-VaX" secondAttribute="top" constant="6" id="2Lw-lM-Cko"/>
                                                 <constraint firstAttribute="bottom" secondItem="c7O-tC-47W" secondAttribute="bottom" constant="8" id="7zH-7s-rY8"/>
@@ -1805,6 +1813,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="VJ0-5A-vPA" secondAttribute="trailing" constant="16" id="yKP-T7-m4n"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="avatar" destination="VJ0-5A-vPA" id="uoE-wb-j34"/>
                                             <outlet property="locationStr" destination="17E-uM-asi" id="En2-UX-lYU"/>
@@ -1883,7 +1892,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="ojI-od-aVD" firstAttribute="leading" secondItem="1vd-ZP-IzP" secondAttribute="leading" constant="16" id="Cwc-Ph-Yte"/>
                                                 <constraint firstItem="fti-93-qPw" firstAttribute="top" secondItem="1vd-ZP-IzP" secondAttribute="top" constant="6" id="HnN-yD-sLL"/>
@@ -1898,6 +1907,7 @@
                                                 <constraint firstItem="fti-93-qPw" firstAttribute="width" relation="lessThanOrEqual" secondItem="1vd-ZP-IzP" secondAttribute="width" multiplier="0.4" id="zsB-Dk-7Uv"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="avatar" destination="ojI-od-aVD" id="1GY-2e-0Jf"/>
                                             <outlet property="msgBackgroundView" destination="GCX-sb-xws" id="62a-CD-gHY"/>
@@ -1957,7 +1967,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstItem="uvu-MM-2jW" firstAttribute="top" secondItem="gDL-IK-gJj" secondAttribute="bottom" constant="8" id="4ne-jA-jUE"/>
                                                         <constraint firstItem="UV8-Ud-3ie" firstAttribute="top" secondItem="IC2-dG-jfl" secondAttribute="top" constant="5" id="5PP-nN-AVv"/>
@@ -2009,7 +2019,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="IC2-dG-jfl" firstAttribute="top" secondItem="OhK-LC-o6Y" secondAttribute="bottom" constant="4" id="00b-V4-Npw"/>
                                                 <constraint firstItem="OhK-LC-o6Y" firstAttribute="centerY" secondItem="MGH-jZ-bQe" secondAttribute="centerY" id="3vG-Zr-0UI"/>
@@ -2024,6 +2034,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="IC2-dG-jfl" secondAttribute="bottom" constant="8" id="sYR-ow-kII"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="avatar" destination="Ach-9l-Gos" id="oRM-Vj-aez"/>
                                             <outlet property="contactAddr" destination="oUd-Od-cMO" id="O4W-2g-Wds"/>
@@ -2115,7 +2126,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="92O-h9-FTi"/>
                                                         <constraint firstItem="WZF-ux-Wlr" firstAttribute="leading" secondItem="fI4-cY-PXz" secondAttribute="leading" constant="8" id="A4S-WT-5h1"/>
@@ -2145,7 +2156,7 @@
                                                     <rect key="frame" x="399" y="54.5" width="20" height="20"/>
                                                 </activityIndicatorView>
                                             </subviews>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="PF4-UO-EIY" firstAttribute="leading" secondItem="ESY-Ec-URI" secondAttribute="trailing" constant="14" id="2BN-Th-Tsn"/>
                                                 <constraint firstItem="PF4-UO-EIY" firstAttribute="top" secondItem="aHr-5W-sgr" secondAttribute="top" constant="8" id="F40-e4-SAe"/>
@@ -2163,6 +2174,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="fI4-cY-PXz" secondAttribute="bottom" constant="8" id="yb9-lo-DNc"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="avatar" destination="PF4-UO-EIY" id="jah-fy-H9Y"/>
                                             <outlet property="contactAddr" destination="pxr-YJ-GQy" id="1ZY-g2-JOb"/>
@@ -2254,7 +2266,7 @@
                                                     <rect key="frame" x="399" y="54.5" width="20" height="20"/>
                                                 </activityIndicatorView>
                                             </subviews>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="J2x-e4-Sea" secondAttribute="bottom" constant="8" id="6Bc-js-qZB"/>
                                                 <constraint firstItem="dRo-ov-Q92" firstAttribute="leading" secondItem="9X8-Mz-Jvp" secondAttribute="trailing" constant="8" id="7zm-L8-1g1"/>
@@ -2272,6 +2284,7 @@
                                                 <constraint firstItem="J2x-e4-Sea" firstAttribute="width" relation="lessThanOrEqual" secondItem="bUT-U8-N08" secondAttribute="width" multiplier="0.5" id="uzW-q1-S7B"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="avatar" destination="QZ9-2o-PMC" id="2du-AX-Ukd"/>
                                             <outlet property="msgBackgroundView" destination="J2x-e4-Sea" id="Spr-4h-jGx"/>
@@ -2356,7 +2369,7 @@
                                                     </connections>
                                                 </button>
                                             </subviews>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="odA-8n-hw0" firstAttribute="leading" secondItem="Ysp-Hb-QR2" secondAttribute="trailing" constant="8" id="0ES-4a-Fr2"/>
                                                 <constraint firstItem="UDE-yt-mhh" firstAttribute="centerY" secondItem="sWp-Wu-8Gg" secondAttribute="centerY" id="Bqz-gf-BNk"/>
@@ -2375,6 +2388,7 @@
                                                 <constraint firstItem="odA-8n-hw0" firstAttribute="leading" secondItem="lcu-Qn-Z5m" secondAttribute="trailing" constant="8" id="tFe-Sh-NDE"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="avatar" destination="vhX-Z1-6l8" id="9Da-tV-Ccj"/>
                                             <outlet property="msgBackgroundView" destination="odA-8n-hw0" id="QRR-IF-ec0"/>
@@ -3119,19 +3133,19 @@
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="豆豆" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fmu-oj-ltv">
-                                        <rect key="frame" x="73" y="14" width="45" height="26.5"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="22"/>
+                                        <rect key="frame" x="73" y="18" width="33" height="19.5"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                         <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x000099909….nokjoo" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0XB-yp-pa8">
-                                        <rect key="frame" x="73" y="45.5" width="161.5" height="18"/>
+                                        <rect key="frame" x="73" y="42.5" width="239" height="18"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.52549019610000003" green="0.52549019610000003" blue="0.54117647059999996" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d16-gw-WDC">
-                                        <rect key="frame" x="130" y="16.5" width="22" height="22"/>
+                                        <rect key="frame" x="118" y="17" width="22" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="22" id="FVG-BF-611"/>
                                             <constraint firstAttribute="width" constant="22" id="G4q-ab-Svd"/>
@@ -3144,8 +3158,9 @@
                                         </connections>
                                     </button>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZMb-zn-YJH">
-                                        <rect key="frame" x="320" y="0.0" width="62" height="30"/>
+                                        <rect key="frame" x="304" y="0.0" width="78" height="26"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="contentEdgeInsets" minX="8" minY="4" maxX="8" maxY="4"/>
                                         <state key="normal" title="删除好友">
                                             <color key="titleColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
@@ -3165,7 +3180,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7dY-VZ-Unb">
-                                        <rect key="frame" x="250.5" y="43.5" width="22" height="22"/>
+                                        <rect key="frame" x="328" y="40.5" width="22" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="22" id="WYu-7A-2Oo"/>
                                             <constraint firstAttribute="width" constant="22" id="oER-Mz-q7c"/>
@@ -3179,7 +3194,7 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstItem="fmu-oj-ltv" firstAttribute="top" secondItem="K0R-ek-idf" secondAttribute="top" constant="14" id="6uv-L3-ttT"/>
+                                    <constraint firstItem="fmu-oj-ltv" firstAttribute="top" secondItem="K0R-ek-idf" secondAttribute="top" constant="18" id="6uv-L3-ttT"/>
                                     <constraint firstItem="d16-gw-WDC" firstAttribute="leading" secondItem="fmu-oj-ltv" secondAttribute="trailing" constant="12" id="9Dm-fe-oXY"/>
                                     <constraint firstItem="7dY-VZ-Unb" firstAttribute="centerY" secondItem="0XB-yp-pa8" secondAttribute="centerY" id="AgL-Yd-c0c"/>
                                     <constraint firstItem="0XB-yp-pa8" firstAttribute="top" secondItem="fmu-oj-ltv" secondAttribute="bottom" constant="5" id="GDZ-Gw-bJ7"/>
@@ -3189,6 +3204,7 @@
                                     <constraint firstItem="7dY-VZ-Unb" firstAttribute="leading" secondItem="0XB-yp-pa8" secondAttribute="trailing" constant="16" id="MhB-8Q-hg2"/>
                                     <constraint firstAttribute="height" constant="80" id="Y4Y-8C-u3s"/>
                                     <constraint firstItem="d16-gw-WDC" firstAttribute="centerY" secondItem="fmu-oj-ltv" secondAttribute="centerY" id="YBx-HW-a3a"/>
+                                    <constraint firstAttribute="trailing" secondItem="7dY-VZ-Unb" secondAttribute="trailing" constant="32" id="bib-a2-mvT"/>
                                     <constraint firstItem="0XB-yp-pa8" firstAttribute="leading" secondItem="qhh-eI-X4T" secondAttribute="trailing" constant="9" id="jrl-2M-RO2"/>
                                     <constraint firstAttribute="trailing" secondItem="ZMb-zn-YJH" secondAttribute="trailing" id="nRa-bt-FTD"/>
                                     <constraint firstItem="fmu-oj-ltv" firstAttribute="leading" secondItem="qhh-eI-X4T" secondAttribute="trailing" constant="9" id="v0o-OI-ftM"/>
@@ -3433,8 +3449,8 @@
                                 <rect key="frame" x="16" y="111" width="382" height="80"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vrh-KU-M3P">
-                                        <rect key="frame" x="73" y="17" width="45" height="21.5"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
+                                        <rect key="frame" x="73" y="17" width="40.5" height="19.5"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                         <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -3451,22 +3467,23 @@
                                         </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="47"/>
+                                                <integer key="value" value="24"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="976143e4a465a2f896f549b22ceff83803ed3a6afd99083bf70bc08164c4d4f4a75b22d3e48a049d65850f7e9055adf1" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eWy-sS-Uft">
-                                        <rect key="frame" x="73" y="48.5" width="239" height="17"/>
+                                        <rect key="frame" x="73" y="46.5" width="239" height="17"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" red="0.52549019610000003" green="0.52549019610000003" blue="0.54117647059999996" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZL1-OM-dON">
-                                        <rect key="frame" x="328" y="46" width="22" height="22"/>
+                                        <rect key="frame" x="328" y="44" width="22" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="22" id="TCU-lm-OXt"/>
                                             <constraint firstAttribute="width" constant="22" id="crr-tQ-22u"/>
                                         </constraints>
+                                        <color key="tintColor" red="0.52549019610000003" green="0.52549019610000003" blue="0.54117647059999996" alpha="1" colorSpace="calibratedRGB"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="Button" image="copy_icon_1"/>
                                         <connections>
@@ -3474,11 +3491,12 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0iA-Jx-0Yt">
-                                        <rect key="frame" x="130" y="17" width="22" height="22"/>
+                                        <rect key="frame" x="125.5" y="16" width="22" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="22" id="0j7-IW-j68"/>
                                             <constraint firstAttribute="height" constant="22" id="Ggj-2g-py6"/>
                                         </constraints>
+                                        <color key="tintColor" red="0.52549019610000003" green="0.52549019610000003" blue="0.54117647059999996" alpha="1" colorSpace="calibratedRGB"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="Button" image="QR_icon"/>
                                         <connections>

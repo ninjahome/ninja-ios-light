@@ -13,7 +13,7 @@ class SearchDetailViewController: UIViewController {
         @IBOutlet weak var avatar: AvatarButton!
         @IBOutlet weak var uidText: UILabel!
         @IBOutlet weak var nickName: UILabel!
-//        @IBOutlet weak var vipFlagImgView: UIImageView!
+        @IBOutlet weak var vipFlagImgView: UIImageView!
         @IBOutlet weak var alias: UITextField!
         @IBOutlet weak var remark: UITextView!
         
@@ -50,7 +50,7 @@ class SearchDetailViewController: UIViewController {
                 avatar.setup(id: uid, avaData: accountData?.Avatar, showDetails: false)
                 nickName.text = accountData?.NickName//TODO::
 //                backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
-//                vipFlagImgView.isHidden = Wallet.shared.isStillVip()
+                vipFlagImgView.isHidden = Wallet.shared.isStillVip()
         }
         
         override func viewWillDisappear(_ animated: Bool) {
