@@ -93,7 +93,7 @@ class DeleteMemberController: UIViewController {
                 finishBtn.setTitle("完成(\(number))", for: .normal)
                 
                 if setEnable {
-                        finishBtn.backgroundColor = UIColor(hex: "26253C")
+                        finishBtn.backgroundColor = UIColor(hex: "39BC3B")
                 } else {
                         finishBtn.backgroundColor = UIColor(hex: "A9A9AE")
                 }

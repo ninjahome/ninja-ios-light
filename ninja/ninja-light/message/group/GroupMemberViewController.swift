@@ -177,9 +177,8 @@ class GroupMemberViewController: UIViewController {
         }
         func enableOrDisableCompleteBtn(number: Int) {
                 finishBtn.setTitle("完成(\(number))", for: .normal)
-                
                 if setEnable {
-                        finishBtn.backgroundColor = UIColor(hex: "3B877F")
+                        finishBtn.backgroundColor = UIColor(hex: "39BC3B")
                 } else {
                         finishBtn.backgroundColor = UIColor(hex: "A9A9AE")
                 }

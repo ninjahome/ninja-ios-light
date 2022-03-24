@@ -39,8 +39,18 @@ class BackupGuideViewController: UIViewController {
                 afterWallet()
         }
         
-        @IBAction func skipBackup(_ sender: UIButton) {
-                //                self.performSegue(withIdentifier: "EndBackupSEG", sender: self)
+        @IBAction func copyAddr(_ sender: UIButton) {
+                UIPasteboard.general.string = Wallet.shared.Addr!
+                self.toastMessage(title: "Copy Success".locStr, duration: 1)
+        }
+        
+        @IBAction func skipBackupAcc(_ sender: UIBarButtonItem) {
                 afterWallet()
         }
+        
+        
+        @IBAction func backToPrevious(_ sender: UIBarButtonItem) {
+                self.navigationController?.popViewController(animated: true)
+        }
+        
 }

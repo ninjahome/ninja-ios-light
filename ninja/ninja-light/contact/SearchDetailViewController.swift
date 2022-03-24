@@ -13,7 +13,7 @@ class SearchDetailViewController: UIViewController {
         @IBOutlet weak var avatar: AvatarButton!
         @IBOutlet weak var uidText: UILabel!
         @IBOutlet weak var nickName: UILabel!
-        @IBOutlet weak var vipFlagImgView: UIImageView!
+//        @IBOutlet weak var vipFlagImgView: UIImageView!
         @IBOutlet weak var alias: UITextField!
         @IBOutlet weak var remark: UITextView!
         
@@ -49,8 +49,8 @@ class SearchDetailViewController: UIViewController {
         private func populateView(){
                 avatar.setup(id: uid, avaData: accountData?.Avatar, showDetails: false)
                 nickName.text = accountData?.NickName//TODO::
-                backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
-                vipFlagImgView.isHidden = Wallet.shared.isStillVip()
+//                backContent.layer.contents = UIImage(named: "user_backg_img")?.cgImage
+//                vipFlagImgView.isHidden = Wallet.shared.isStillVip()
         }
         
         override func viewWillDisappear(_ animated: Bool) {
@@ -60,6 +60,15 @@ class SearchDetailViewController: UIViewController {
         
         @IBAction func backBtn(_ sender: UIButton) {
                 self.navigationController?.popViewController(animated: true)
+        }
+        
+        @IBAction func copyAddr(_ sender: UIButton) {
+                UIPasteboard.general.string = uid
+                self.toastMessage(title: "Copy Success".locStr)
+        }
+        
+        @IBAction func showQr(_ sender: UIButton) {
+                ShowQRAlertView(data: uid)
         }
         
         @IBAction func saveToContact(_ sender: Any) {

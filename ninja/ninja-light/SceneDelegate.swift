@@ -68,7 +68,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
                 // to restore the scene back to its current state.
                 
                 // Save changes in the application's managed object context when the application transitions to the background.
-                UserDefaults(suiteName: "group.com.hop.ninja.light")?.set(1, forKey: "count")
+                UserDefaults(suiteName: "group.com.immeta.chat")?.set(1, forKey: "count")
                 UIApplication.shared.applicationIconBadgeNumber = 0
                 WebsocketSrv.shared.Offline()
                 CDManager.shared.saveContext()
