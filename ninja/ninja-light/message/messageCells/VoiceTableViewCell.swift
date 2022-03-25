@@ -97,8 +97,9 @@ class VoiceTableViewCell: UITableViewCell {
         
         func setBtn(isOut: Bool, data: Data, long: Int) {
                 playBtn.backgroundColor = .clear
-                let rawImg = UIImage(named: "voice_00009")!
-                let flipImgH = filpImageH(rawImg)
+                let rawImg = UIImage(named: "voice1_00009")!
+                let rrawImg = UIImage(named: "voice_00009")!
+                let flipImgH = filpImageH(rrawImg)
 
                 playBtn.setTitle("\(long)", for: .normal)
 
@@ -128,7 +129,7 @@ class VoiceTableViewCell: UITableViewCell {
                 let time = TimeInterval(self.long)
                 let imgs = getFilpAnimatedImg()
                 let rimg = UIImage.animatedImage(with: imgs, duration: 2)
-                let img = UIImage.animatedImageNamed("voice_0000", duration: 2)!
+                let img = UIImage.animatedImageNamed("voice1_0000", duration: 2)!
                 if self.isOut! {
                         self.playBtn.setImage(rimg, for: .normal)
                         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+time) {
@@ -139,7 +140,7 @@ class VoiceTableViewCell: UITableViewCell {
                 } else {
                         self.playBtn.setImage(img, for: .normal)
                         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+time) {
-                                let rawImg = UIImage(named: "voice_00009")!
+                                let rawImg = UIImage(named: "voice1_00009")!
                                 self.playBtn.setImage(rawImg, for: .normal)
                         }
                 }
