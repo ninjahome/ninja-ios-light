@@ -24,6 +24,7 @@ class WalletViewController: UITableViewController {
         @IBOutlet weak var appVersion: UILabel!
 
         @IBOutlet weak var nickName: UILabel!
+        
         @IBOutlet weak var vipFlag: UIImageView!
         @IBOutlet weak var vipIcon: UIImageView!
 
@@ -42,7 +43,7 @@ class WalletViewController: UITableViewController {
                 super.viewDidLoad()
                 appVersion.text = getAppVersion()
                 nickName.text = Wallet.shared.nickName
-                backGroundView.layer.contents = UIImage(named: "user_backg_img")?.cgImage
+//                backGroundView.layer.contents = UIImage(named: "user_backg_img")?.cgImage
                 
                 self.refreshControl = UIRefreshControl()
                 refreshControl?.addTarget(self, action: #selector(self.reloadWallet(_:)), for: .valueChanged)
@@ -67,20 +68,6 @@ class WalletViewController: UITableViewController {
         private func balanceStatusView() {
                 let status = ServiceDelegate.getAgentStatus()
                         self.agentBtn.currentStatus = status
-
-//                        switch status {
-//                        case .activated:
-//                                self.agentTime.text = "\(AgentService.shared.expireDate)到期"
-//                                self.vipFlag(show: true)
-//                        case .almostExpire:
-//                                self.agentTime.text = String(format: "%4d 天", AgentService.shared.expireDays)
-//                                self.vipFlag(show: true)
-//                        case .initial:
-//                                self.agentTime.text = "普通用户仅支持文本聊天"
-//                                self.vipFlag(show: false)
-//                        break
-//                        }
-//
         }
         
         private func updateWholeView() {
@@ -96,20 +83,24 @@ class WalletViewController: UITableViewController {
 
                         let status = ServiceDelegate.getAgentStatus()
                         self.agentBtn.currentStatus = status
-                        let balance = Wallet.shared.getBalance()
+//                        let balance = Wallet.shared.getBalance()
+                        let expire = formatTimeStampOnlyDate(by: Wallet.shared.liceneseExpireTime)
                         switch status {
                         case .activated:
-                                self.agentTime.text = String(format: "%.2f", balance)
-                        
-                                self.agentTime.font = UIFont(name: "", size: 20)
-                                self.vipBackground.layer.contents = UIImage(named: "VIP_BGC")?.cgImage
+//                                self.agentTime.text = String(format: "%.2f", balance)
+                                self.agentTime.text = String("有效期至"+expire)
+//                                self.agentTime.font = UIFont(name: "", size: 12)
+                                self.agentTime.textColor = UIColor(hex: "FFE3BB")
+//                                self.vipBackground.layer.contents = UIImage(named: "VIP_BGC")?.cgImage
+                                self.vipBackground.backgroundColor = .black
                                 self.agentBtn.setImage(nil, for: .normal)
                                 self.vipFlag(show: true)
                         case .almostExpire:
-                                self.agentTime.text = String(format: "%.2f", balance)
-                                self.agentTime.font = UIFont(name: "", size: 20)
-                                self.vipBackground.layer.contents = UIImage(named: "VIP_BGC")?.cgImage
-                        
+                                self.agentTime.text = String("有效期至"+expire)
+                                self.agentTime.textColor = UIColor(hex: "FFE3BB")
+//                                self.agentTime.font = UIFont(name: "", size: 12)
+//                                self.vipBackground.layer.contents = UIImage(named: "VIP_BGC")?.cgImage
+                                self.vipBackground.backgroundColor = .black
                                 self.agentBtn.setImage(UIImage(named: "red"), for: .normal)
                                 self.vipFlag(show: true)
                         case .initial:

@@ -208,6 +208,14 @@ public func formatTimeStamp(by timeStamp: Int64) -> String {
         return dateFormatterGet.string(from: time)
 }
 
+public func formatTimeStampOnlyDate(by timeStamp: Int64) -> String {
+        let time = Date.init(timeIntervalSince1970: TimeInterval(timeStamp))
+        dateFormatterGet.dateFormat = "yyyy-MM-dd"
+        
+        return dateFormatterGet.string(from: time)
+}
+
+
 public struct AlertPayload {
         var title:String!
         var placeholderTxt:String?
@@ -743,14 +751,41 @@ extension UIButton {
 }
 
 extension UIImage {
-    func rotateImage()-> UIImage?  {
-        if (self.imageOrientation == UIImage.Orientation.up ) {
-            return self
+        func rotateImage()-> UIImage?  {
+                if (self.imageOrientation == UIImage.Orientation.up ) {
+                        return self
+                }
+                UIGraphicsBeginImageContext(self.size)
+                self.draw(in: CGRect(origin: CGPoint.zero, size: self.size))
+                let copy = UIGraphicsGetImageFromCurrentImageContext()
+                UIGraphicsEndImageContext()
+                return copy
         }
-        UIGraphicsBeginImageContext(self.size)
-        self.draw(in: CGRect(origin: CGPoint.zero, size: self.size))
-       let copy = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return copy
-    }
+}
+
+extension UIView {
+        
+        @IBInspectable var borderColor: UIColor? {
+                get {
+                        return layer.borderColor.map { UIColor(cgColor: $0) }
+                }
+                set {
+                        layer.borderColor = newValue?.cgColor
+                }
+        }
+}
+
+public extension NSDecimalNumber {
+        func toString(_ scale: Int = 2,
+                      roundingMode: RoundingMode = .plain) -> String {
+                let behavior = NSDecimalNumberHandler(
+                        roundingMode: roundingMode,
+                        scale: Int16(scale),
+                        raiseOnExactness: false,
+                        raiseOnOverflow: false,
+                        raiseOnUnderflow: false,
+                        raiseOnDivideByZero: true)
+                let product = multiplying(by: .one, withBehavior: behavior)
+                return product.stringValue
+        }
 }

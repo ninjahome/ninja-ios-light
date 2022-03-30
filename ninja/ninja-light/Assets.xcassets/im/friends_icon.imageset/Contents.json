@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Transfer_icon.png",
+      "filename" : "friends_icon.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Transfer_icon@2x.png",
+      "filename" : "friends_icon@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Transfer_icon@3x.png",
+      "filename" : "friends_icon@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

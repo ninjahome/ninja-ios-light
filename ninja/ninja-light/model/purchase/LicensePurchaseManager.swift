@@ -8,33 +8,169 @@
 import Foundation
 import StoreKit
 
-enum purchaseTyps: String, CaseIterable {
-        case oneMonth = "com.immeta.chat.license.1month"
-        case threeMonths = "com.immeta.chat.license.3month"
-        case halfYear = "com.immeta.chat.license.6month"
-        case oneYear = "com.immeta.chat.license.12month"
+public typealias ProductID = String
+public struct licenseProducts {
+        public static let oneMonth = "com.immeta.chat.license.1month"
+        public static let threeMonths = "com.immeta.chat.license.3month"
+        public static let halfYear = "com.immeta.chat.license.6month"
+        public static let oneYear = "com.immeta.chat.license.12month"
+        
+        public static let store = IAPManager(productIDs: licenseProducts.productIDs)
+        private static let productIDs: Set<ProductID> = [licenseProducts.oneMonth,
+                                                         licenseProducts.threeMonths,
+                                                         licenseProducts.halfYear,
+                                                         licenseProducts.oneYear]
 }
-//
-//class LicensePurchase: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
-//        private var products = [SKProduct]()
-//
-//        private func fetchProducts() {
-//                let request = SKProductsRequest(productIdentifiers: Set(purchaseTyps.allCases.compactMap({ $0.rawValue })))
-//                request.delegate = self
-//
-//                request.start()
-//
-////                SKPaymentQueue.default().add(self)
-//        }
-//
-//        func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-//                ServiceDelegate.workQueue.async {
-//                        print("Count: \(response.products.count)")
-//                        self.products = response.products
-//                }
-//        }
-//
-//        func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-//                <#code#>
-//        }
-//}
+
+public typealias ProductsRequestCompletionHandler = (_ success: Bool, _ products: [SKProduct]?) -> Void
+public typealias ProductPurchaseCompletionHandler = (_ success: Bool, _ productId: ProductID?) -> Void
+
+// MARK: - IAPManager
+public class IAPManager: NSObject  {
+        private let productIDs: Set<ProductID>
+        private var purchasedProductIDs: Set<ProductID>
+        private var productsRequest: SKProductsRequest?
+        private var productsRequestCompletionHandler: ProductsRequestCompletionHandler?
+        private var productPurchaseCompletionHandler: ProductPurchaseCompletionHandler?
+        
+        public init(productIDs: Set<ProductID>) {
+                self.productIDs = productIDs
+                self.purchasedProductIDs = productIDs.filter { productID in
+                        let purchased = UserDefaults.standard.bool(forKey: productID)
+                        if purchased {
+                                print("Previously purchased: \(productID)")
+                        } else {
+                                print("Not purchased: \(productID)")
+                        }
+                        return purchased
+                }
+                super.init()
+                SKPaymentQueue.default().add(self)
+        }
+}
+
+// MARK: - StoreKit API
+extension IAPManager {
+        public func requestProducts(_ completionHandler: @escaping ProductsRequestCompletionHandler) {
+                productsRequest?.cancel()
+                productsRequestCompletionHandler = completionHandler
+                
+                productsRequest = SKProductsRequest(productIdentifiers: productIDs)
+                productsRequest!.delegate = self
+                productsRequest!.start()
+        }
+        
+        public func buyProduct(_ product: SKProduct, _ completionHandler: @escaping ProductPurchaseCompletionHandler) {
+                productPurchaseCompletionHandler = completionHandler
+                print("Buying \(product.productIdentifier)...")
+                let payment = SKPayment(product: product)
+                SKPaymentQueue.default().add(payment)
+        }
+        
+        public func isProductPurchased(_ productID: ProductID) -> Bool {
+                return purchasedProductIDs.contains(productID)
+        }
+        
+        public class func canMakePayments() -> Bool {
+                return SKPaymentQueue.canMakePayments()
+        }
+        
+        public func restorePurchases() {
+                SKPaymentQueue.default().restoreCompletedTransactions()
+        }
+}
+
+// MARK: - SKProductsRequestDelegate
+extension IAPManager: SKProductsRequestDelegate {
+        public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+                print("Loaded list of products...")
+                let products = response.products
+                guard !products.isEmpty else {
+                        print("Product list is empty...!")
+                        print("Did you configure the project and set up the IAP?")
+                        productsRequestCompletionHandler?(false, nil)
+                        return
+                }
+                productsRequestCompletionHandler?(true, products)
+                clearRequestAndHandler()
+                for p in products {
+                        print("Found product: \(p.productIdentifier) \(p.localizedTitle) \(p.price.floatValue)")
+                }
+        }
+        
+        public func request(_ request: SKRequest, didFailWithError error: Error) {
+                print("Failed to load list of products.")
+                print("Error: \(error.localizedDescription)")
+                productsRequestCompletionHandler?(false, nil)
+                clearRequestAndHandler()
+        }
+        
+        private func clearRequestAndHandler() {
+                productsRequest = nil
+                productsRequestCompletionHandler = nil
+        }
+}
+
+// MARK: - SKPaymentTransactionObserver
+extension IAPManager: SKPaymentTransactionObserver {
+        public func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+                for transaction in transactions {
+                        switch (transaction.transactionState) {
+                        case .purchased:
+                                complete(transaction: transaction)
+                                break
+                        case .failed:
+                                fail(transaction: transaction)
+                                break
+                        case .restored:
+                                restore(transaction: transaction)
+                                break
+                        case .deferred:
+                                break
+                        case .purchasing:
+                                break
+                        @unknown default:
+                                break
+                        }
+                }
+        }
+        
+        private func complete(transaction: SKPaymentTransaction) {
+                print("complete...")
+                productPurchaseCompleted(identifier: transaction.payment.productIdentifier)
+                SKPaymentQueue.default().finishTransaction(transaction)
+        }
+        
+        private func restore(transaction: SKPaymentTransaction) {
+                guard let productIdentifier = transaction.original?.payment.productIdentifier else { return }
+                print("restore... \(productIdentifier)")
+                productPurchaseCompleted(identifier: productIdentifier)
+                SKPaymentQueue.default().finishTransaction(transaction)
+        }
+        
+        private func fail(transaction: SKPaymentTransaction) {
+                print("fail...")
+                if let transactionError = transaction.error as NSError?,
+                   let localizedDescription = transaction.error?.localizedDescription,
+                   transactionError.code != SKError.paymentCancelled.rawValue {
+                        print("Transaction Error: \(localizedDescription)")
+                }
+                
+                productPurchaseCompletionHandler?(false, nil)
+                SKPaymentQueue.default().finishTransaction(transaction)
+                clearHandler()
+        }
+        
+        private func productPurchaseCompleted(identifier: ProductID?) {
+                guard let identifier = identifier else { return }
+                
+                purchasedProductIDs.insert(identifier)
+                UserDefaults.standard.set(true, forKey: identifier)
+                productPurchaseCompletionHandler?(true, identifier)
+                clearHandler()
+        }
+        
+        private func clearHandler() {
+                productPurchaseCompletionHandler = nil
+        }
+}

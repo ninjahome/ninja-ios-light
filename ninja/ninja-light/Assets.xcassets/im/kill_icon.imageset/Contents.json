@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Readdi_icon.png",
+      "filename" : "kill_icon.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Readdi_icon@2x.png",
+      "filename" : "kill_icon@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Readdi_icon@3x.png",
+      "filename" : "kill_icon@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

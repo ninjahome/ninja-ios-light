@@ -18,7 +18,7 @@ extension AgentStatus {
                 case .initial, .almostExpire:
                         return UIColor.init(hex: "000000")
                 case .activated:
-                        return UIColor.init(hex: "FFFFFF")
+                        return UIColor.init(hex: "FFD477")
                 }
         }
         
@@ -27,7 +27,7 @@ extension AgentStatus {
                 case .initial, .almostExpire:
                     return UIColor.init(hex: "FFFFFF")
                 case .activated:
-                    return UIColor.init(hex: "000000")
+                    return UIColor.init(hex: "#000000")
                 }
         }
     

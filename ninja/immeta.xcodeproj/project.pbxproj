@@ -57,6 +57,7 @@
 		0886B1B127730A1B00257C15 /* BigInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0886B1B027730A1B00257C15 /* BigInt.swift */; };
 		0886B1B3277AFE9400257C15 /* GroupListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0886B1B2277AFE9400257C15 /* GroupListViewController.swift */; };
 		0886B1B5277B044100257C15 /* GroupItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0886B1B4277B044100257C15 /* GroupItemTableViewCell.swift */; };
+		08A479C227F1A9C3003A0DCD /* LicenseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A479C127F1A9C3003A0DCD /* LicenseCollectionViewCell.swift */; };
 		08B64A0027A255E100D0677F /* MsgViewController+FileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B649FF27A255E000D0677F /* MsgViewController+FileView.swift */; };
 		08B64A1927A29AB200D0677F /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B64A1827A29AB200D0677F /* NotificationService.swift */; };
 		08B64A1D27A29AB200D0677F /* NotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 08B64A1627A29AB200D0677F /* NotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -191,6 +192,7 @@
 		0886B1B027730A1B00257C15 /* BigInt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigInt.swift; sourceTree = "<group>"; };
 		0886B1B2277AFE9400257C15 /* GroupListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupListViewController.swift; sourceTree = "<group>"; };
 		0886B1B4277B044100257C15 /* GroupItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupItemTableViewCell.swift; sourceTree = "<group>"; };
+		08A479C127F1A9C3003A0DCD /* LicenseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseCollectionViewCell.swift; sourceTree = "<group>"; };
 		08B649FF27A255E000D0677F /* MsgViewController+FileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MsgViewController+FileView.swift"; sourceTree = "<group>"; };
 		08B64A1627A29AB200D0677F /* NotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		08B64A1827A29AB200D0677F /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -375,6 +377,15 @@
 			path = views;
 			sourceTree = "<group>";
 		};
+		08A479C027F1A995003A0DCD /* agent */ = {
+			isa = PBXGroup;
+			children = (
+				087B57F726E1E15900591F8D /* AgentViewController.swift */,
+				08A479C127F1A9C3003A0DCD /* LicenseCollectionViewCell.swift */,
+			);
+			path = agent;
+			sourceTree = "<group>";
+		};
 		08B64A1727A29AB200D0677F /* NotificationServiceExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -490,6 +501,7 @@
 		6969ECD9261344BD008CB0B2 /* wallet */ = {
 			isa = PBXGroup;
 			children = (
+				08A479C027F1A995003A0DCD /* agent */,
 				085F4B4A27D1B52900E6A711 /* keepDays */,
 				0818D88627006597002BF3B9 /* transfer */,
 				6969ECDA261344CA008CB0B2 /* WalletViewController.swift */,
@@ -500,7 +512,6 @@
 				2B66DB4327AE1FF100FBE8B6 /* SystemMeesageViewController.swift */,
 				0823F77C26520B24000DA4DB /* NickEditViewController.swift */,
 				087BD8122658AF430009459C /* ManageViewController.swift */,
-				087B57F726E1E15900591F8D /* AgentViewController.swift */,
 				0818D88326FD6FC1002BF3B9 /* DestroyViewController.swift */,
 				0809CE8F2787DBCC00AF2A95 /* GuideViewController.swift */,
 			);
@@ -715,6 +726,7 @@
 				2B01182227A5508B00C88116 /* CombineConntact.swift in Sources */,
 				08B74A6726B3B90D00D6F0F8 /* GroupMemberViewController.swift in Sources */,
 				0818D88426FD6FC1002BF3B9 /* DestroyViewController.swift in Sources */,
+				08A479C227F1A9C3003A0DCD /* LicenseCollectionViewCell.swift in Sources */,
 				08781E93275F0A120084D80A /* MsgViewController+AudioView.swift in Sources */,
 				08B64A2327A3745700D0677F /* VideoTableViewCell.swift in Sources */,
 				6969ECD526134450008CB0B2 /* MsgViewController.swift in Sources */,
@@ -783,7 +795,7 @@
 				CODE_SIGN_ENTITLEMENTS = NotificationServiceExtension/NotificationServiceExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2XYK8RBB6M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NotificationServiceExtension/Info.plist;
@@ -795,7 +807,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.2;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.immeta.chat.extension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = dev_imeta_extension;
@@ -811,9 +823,9 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_ENTITLEMENTS = NotificationServiceExtension/NotificationServiceExtension.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Yushian (Beijing) Technology Co., Ltd. (2XYK8RBB6M)";
+				CODE_SIGN_IDENTITY = "Apple Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2XYK8RBB6M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NotificationServiceExtension/Info.plist;
@@ -825,10 +837,10 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.2;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.immeta.chat.extension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = release_imeta_extension;
+				PROVISIONING_PROFILE_SPECIFIER = release_immeta_extension;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -963,7 +975,7 @@
 				CODE_SIGN_ENTITLEMENTS = "ninja-light/ninja-light.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2XYK8RBB6M;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -980,7 +992,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/bin",
 				);
-				MARKETING_VERSION = 3.2;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.immeta.chat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = dev_imeta;
@@ -998,7 +1010,7 @@
 				CODE_SIGN_ENTITLEMENTS = "ninja-light/ninja-light.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2XYK8RBB6M;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1015,10 +1027,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/bin",
 				);
-				MARKETING_VERSION = 3.2;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.immeta.chat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = release_imeta;
+				PROVISIONING_PROFILE_SPECIFIER = release_immeta;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
