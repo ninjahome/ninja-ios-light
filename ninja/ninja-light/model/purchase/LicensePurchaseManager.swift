@@ -10,16 +10,32 @@ import StoreKit
 
 public typealias ProductID = String
 public struct licenseProducts {
-        public static let oneMonth = "com.immeta.chat.license.1month"
-        public static let threeMonths = "com.immeta.chat.license.3month"
-        public static let halfYear = "com.immeta.chat.license.6month"
-        public static let oneYear = "com.immeta.chat.license.12month"
+        public static let oneMonth = "com.immeta.chat.license.30day"
+        public static let threeMonths = "com.immeta.chat.license.90day"
+        public static let halfYear = "com.immeta.chat.license.180day"
+        public static let oneYear = "com.immeta.chat.license.360day"
         
         public static let store = IAPManager(productIDs: licenseProducts.productIDs)
         private static let productIDs: Set<ProductID> = [licenseProducts.oneMonth,
                                                          licenseProducts.threeMonths,
                                                          licenseProducts.halfYear,
                                                          licenseProducts.oneYear]
+        
+        public static func getLicenseDays(by id: String) -> Int {
+                if id == licenseProducts.oneMonth {
+                        return 30
+                }
+                if id == licenseProducts.threeMonths {
+                        return 90
+                }
+                if id == licenseProducts.halfYear {
+                        return 180
+                }
+                if id == licenseProducts.oneYear {
+                        return 360
+                }
+                return 0
+        }
 }
 
 public typealias ProductsRequestCompletionHandler = (_ success: Bool, _ products: [SKProduct]?) -> Void
@@ -63,7 +79,8 @@ extension IAPManager {
         public func buyProduct(_ product: SKProduct, _ completionHandler: @escaping ProductPurchaseCompletionHandler) {
                 productPurchaseCompletionHandler = completionHandler
                 print("Buying \(product.productIdentifier)...")
-                let payment = SKPayment(product: product)
+                let payment = SKMutablePayment(product: product)
+                payment.applicationUsername = Wallet.shared.Addr
                 SKPaymentQueue.default().add(payment)
         }
         
@@ -137,15 +154,21 @@ extension IAPManager: SKPaymentTransactionObserver {
         
         private func complete(transaction: SKPaymentTransaction) {
                 print("complete...")
-                productPurchaseCompleted(identifier: transaction.payment.productIdentifier)
+                let identifier = transaction.payment.productIdentifier
+                Wallet.shared.AddLicense(by: licenseProducts.getLicenseDays(by: identifier))
+                
+                productPurchaseCompleted(identifier: identifier)
+        
                 SKPaymentQueue.default().finishTransaction(transaction)
         }
         
         private func restore(transaction: SKPaymentTransaction) {
-                guard let productIdentifier = transaction.original?.payment.productIdentifier else { return }
-                print("restore... \(productIdentifier)")
-                productPurchaseCompleted(identifier: productIdentifier)
-                SKPaymentQueue.default().finishTransaction(transaction)
+//                guard let payment = transaction.original?.payment else { return }
+//
+//                let productIdentifier = payment.productIdentifier
+//                print("restore... \(productIdentifier):::\(payment)")
+//                productPurchaseCompleted(identifier: productIdentifier)
+//                SKPaymentQueue.default().finishTransaction(transaction)
         }
         
         private func fail(transaction: SKPaymentTransaction) {

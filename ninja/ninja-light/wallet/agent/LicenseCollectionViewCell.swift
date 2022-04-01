@@ -6,18 +6,22 @@
 //
 
 import UIKit
+import StoreKit
 
 class LicenseCollectionViewCell: UICollectionViewCell {
         @IBOutlet weak var licenseTime: UILabel!
         @IBOutlet weak var licensePrice: UILabel!
+        @IBOutlet weak var currencyLable: UILabel!
         
         override func prepareForReuse() {
                 licenseTime.text = "time"
                 licensePrice.text = "price"
+                currencyLable.text = ""
         }
         
-        func initCell(time: String, price: String) {
-                licensePrice.text = price
-                licenseTime.text = time
+        func initCell(product: SKProduct) {
+                licensePrice.text = product.price.toString()
+                licenseTime.text = product.localizedTitle
+                currencyLable.text = product.priceLocale.currencySymbol
         }
 }

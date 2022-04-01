@@ -69,7 +69,7 @@ class Wallet: NSObject {
                 return Int64(Date().timeIntervalSince1970) < self.liceneseExpireTime
         }
         
-        public func getBalance()->Double{
+        public func getBalance()-> Double {
 
                 let expireDays = ChatLibConvertBalance(Int(self.liceneseExpireTime))
                 if expireDays <= 0{
@@ -256,6 +256,11 @@ class Wallet: NSObject {
                         return NJError.wallet(err.localizedDescription)
                 }
                 return nil
+        }
+        
+        func AddLicense(by days: Int) {
+                let new = self.liceneseExpireTime + Int64(days*86400)
+                _ = UpdateLicense(by: new)
         }
         
         func UpdateLicense(by new: Int64) -> NJError? {

@@ -83,12 +83,11 @@ class WalletViewController: UITableViewController {
 
                         let status = ServiceDelegate.getAgentStatus()
                         self.agentBtn.currentStatus = status
-//                        let balance = Wallet.shared.getBalance()
-                        let expire = formatTimeStampOnlyDate(by: Wallet.shared.liceneseExpireTime)
+                        let balance = Wallet.shared.getBalance()
+//                        let expire = formatTimeStampOnlyDate(by: Wallet.shared.liceneseExpireTime)
                         switch status {
                         case .activated:
-//                                self.agentTime.text = String(format: "%.2f", balance)
-                                self.agentTime.text = String("有效期至"+expire)
+                                self.agentTime.text = String(format: "%.2f", balance)
 //                                self.agentTime.font = UIFont(name: "", size: 12)
                                 self.agentTime.textColor = UIColor(hex: "FFE3BB")
 //                                self.vipBackground.layer.contents = UIImage(named: "VIP_BGC")?.cgImage
@@ -96,7 +95,7 @@ class WalletViewController: UITableViewController {
                                 self.agentBtn.setImage(nil, for: .normal)
                                 self.vipFlag(show: true)
                         case .almostExpire:
-                                self.agentTime.text = String("有效期至"+expire)
+                                self.agentTime.text = String(format: "%.2f", balance)
                                 self.agentTime.textColor = UIColor(hex: "FFE3BB")
 //                                self.agentTime.font = UIFont(name: "", size: 12)
 //                                self.vipBackground.layer.contents = UIImage(named: "VIP_BGC")?.cgImage
@@ -105,7 +104,8 @@ class WalletViewController: UITableViewController {
                                 self.vipFlag(show: true)
                         case .initial:
                                 self.agentTime.text = "普通用户仅支持文本聊天"
-                                self.vipBackground.layer.contents = UIImage(named: "nor_bgc")?.cgImage
+//                                self.vipBackground.layer.contents = UIImage(named: "nor_bgc")?.cgImage
+                                self.vipBackground.backgroundColor = .lightGray
                                 self.agentBtn.setImage(nil, for: .normal)
                                 self.vipFlag(show: false)
                             break
