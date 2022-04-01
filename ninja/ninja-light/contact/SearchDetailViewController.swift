@@ -62,6 +62,11 @@ class SearchDetailViewController: UIViewController {
                 self.navigationController?.popViewController(animated: true)
         }
         
+        @IBAction func copyContactAddr(_ sender: UIButton) {
+                UIPasteboard.general.string = self.uid
+                self.toastMessage(title: "Copy Success".locStr)
+        }
+        
         @IBAction func saveToContact(_ sender: Any) {
                 
                 if !Wallet.shared.isStillVip(){
