@@ -17,7 +17,7 @@ let NotifyMsgSumChanged = NSNotification.Name(rawValue:"messsage_sum_changed")
 let NotifyWebsocketOffline = NSNotification.Name(rawValue:"websocket_status_offline")
 let NotifyWebsocketOnline = NSNotification.Name(rawValue:"websocket_status_online")
 let NotifyOnlineError = NSNotification.Name(rawValue: "websocket_online_error")
-
+let NotifyLicenseChanged = NSNotification.Name(rawValue: "wallet_license_changed")
 let NotifyGroupChanged = NSNotification.Name(rawValue: "group_meta_changed")
 let NotifyGroupNameOrAvatarChanged = NSNotification.Name(rawValue: "group_avatar_changed")
 let NotifyGroupMemberChanged = NSNotification.Name(rawValue: "group_member_changed")

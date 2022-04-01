@@ -48,7 +48,10 @@ class WalletViewController: UITableViewController {
                 self.refreshControl = UIRefreshControl()
                 refreshControl?.addTarget(self, action: #selector(self.reloadWallet(_:)), for: .valueChanged)
                 self.view.addSubview(refreshControl!)
-                
+                NotificationCenter.default.addObserver(self,
+                                                       selector:#selector(licenseUpdate(notification:)),
+                                                       name: NotifyLicenseChanged,
+                                                       object: nil)
                 DispatchQueue.global().async {
                         Wallet.shared.getLatestWallt()
                         self.updateWholeView()
@@ -56,12 +59,16 @@ class WalletViewController: UITableViewController {
                 
         }
         
+        @objc func licenseUpdate(notification: NSNotification) {
+                self.updateWholeView()
+        }
+        
         @objc func reloadWallet(_ sender: Any?) {
-                DispatchQueue.global().async {
+//                DispatchQueue.global().async {
                         Wallet.shared.getWalletFromETH()
 //                        Wallet.shared.getLatestWallt()
                         self.updateWholeView()
-                }
+//                }
                 self.refreshControl?.endRefreshing()
         }
         

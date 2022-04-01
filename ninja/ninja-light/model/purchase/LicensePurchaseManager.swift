@@ -79,6 +79,7 @@ extension IAPManager {
         public func buyProduct(_ product: SKProduct, _ completionHandler: @escaping ProductPurchaseCompletionHandler) {
                 productPurchaseCompletionHandler = completionHandler
                 print("Buying \(product.productIdentifier)...")
+                
                 let payment = SKMutablePayment(product: product)
                 payment.applicationUsername = Wallet.shared.Addr
                 SKPaymentQueue.default().add(payment)
@@ -158,7 +159,7 @@ extension IAPManager: SKPaymentTransactionObserver {
                 Wallet.shared.AddLicense(by: licenseProducts.getLicenseDays(by: identifier))
                 
                 productPurchaseCompleted(identifier: identifier)
-        
+                NotificationCenter.default.post(name: NotifyLicenseChanged, object: nil)
                 SKPaymentQueue.default().finishTransaction(transaction)
         }
         
