@@ -71,7 +71,7 @@ class Wallet: NSObject {
         
         public func getBalance()-> Double {
 
-                let expireDays = ChatLibConvertBalance(Int(self.liceneseExpireTime))
+                let expireDays = ChatLibConvertBalance(Int64(self.liceneseExpireTime))
                 if expireDays <= 0{
                         return 0.0
                 }
