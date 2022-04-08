@@ -59,7 +59,7 @@ class AuthorViewController: UIViewController {
         
         @IBAction func Auth(_ sender: Any) {
                 guard let pwd = password.text else {
-                        tips.text = "please input your password"
+                        tips.text = "input password please".locStr
                         return
                 }
                 
