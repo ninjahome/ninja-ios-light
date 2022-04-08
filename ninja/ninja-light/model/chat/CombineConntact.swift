@@ -99,7 +99,7 @@ class CombineConntact: NSObject{
                 guard let balance = self.account?.Balance, balance > 0 else{
                         return false
                 }
-                let validBalance = ChatLibConvertBalance(Int(balance))
+                let validBalance = ChatLibConvertBalance(Int64(balance))
                 return validBalance > 0.01
         }
         
