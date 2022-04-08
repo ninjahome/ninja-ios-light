@@ -34,7 +34,7 @@ public typealias ConfigOptionsCompletion = (_ options: LockOptions) -> Void
 ///
 /// - Parameter config: ConfigOptionsCompletion
 public func config(_ config: ConfigOptionsCompletion) {
-    config(globalOptions)
+        config(globalOptions)
 }
 
 // MARK: - Save get remove password
@@ -44,19 +44,19 @@ public func config(_ config: ConfigOptionsCompletion) {
 /// - Parameters:
 ///   - password: String
 public func save(password: String) {
-    LockManager.default.save(string: password, with: PASSWORD_KEY + globalOptions.keySuffix)
+        LockManager.default.save(string: password, with: PASSWORD_KEY + globalOptions.keySuffix)
 }
 
 /// Remove Password
 public func removePassword() {
-    LockManager.default.removeItem(with: PASSWORD_KEY + globalOptions.keySuffix)
+        LockManager.default.removeItem(with: PASSWORD_KEY + globalOptions.keySuffix)
 }
 
 /// Get Password
 ///
 /// - Returns: String Optional
 public func getPassword() -> String? {
-    return LockManager.default.getStringItem(with: PASSWORD_KEY + globalOptions.keySuffix)
+        return LockManager.default.getStringItem(with: PASSWORD_KEY + globalOptions.keySuffix)
 }
 
 // MARK: - Control gesture open close
@@ -65,17 +65,17 @@ public func getPassword() -> String? {
 ///
 /// - Returns: Bool Optional
 public func hasOpenGesture() -> Bool? {
-    return LockManager.default.getBoolItem(with: CONTROL_KEY + globalOptions.keySuffix)
+        return LockManager.default.getBoolItem(with: CONTROL_KEY + globalOptions.keySuffix)
 }
 
 /// Open gesture password
 public func openGesture() {
-    LockManager.default.save(bool: true, with: CONTROL_KEY + globalOptions.keySuffix)
+        LockManager.default.save(bool: true, with: CONTROL_KEY + globalOptions.keySuffix)
 }
 
 /// Close gesture password
 public func closeGesture() {
-    LockManager.default.save(bool: false, with: CONTROL_KEY + globalOptions.keySuffix)
+        LockManager.default.save(bool: false, with: CONTROL_KEY + globalOptions.keySuffix)
 }
 
 // MARK: - Control show selected-track or not
@@ -84,43 +84,43 @@ public func closeGesture() {
 ///
 /// - Returns: Bool Optional
 public func hasOpenTrack() -> Bool? {
-    return LockManager.default.getBoolItem(with: CONTROL_TRACK_KEY + globalOptions.keySuffix)
+        return LockManager.default.getBoolItem(with: CONTROL_TRACK_KEY + globalOptions.keySuffix)
 }
 
 /// Show points selected
 public func openTrack() {
-    LockManager.default.save(bool: true, with: CONTROL_TRACK_KEY + globalOptions.keySuffix)
+        LockManager.default.save(bool: true, with: CONTROL_TRACK_KEY + globalOptions.keySuffix)
 }
 
 /// Hide points selected
 public func closeTrack() {
-    LockManager.default.save(bool: false, with: CONTROL_TRACK_KEY + globalOptions.keySuffix)
+        LockManager.default.save(bool: false, with: CONTROL_TRACK_KEY + globalOptions.keySuffix)
 }
 
 // MARK: - Max error num
 
 /// Increase error num
 public func increaseErrorNum() {
-    var num = 0
-    let key = ERROR_NUM_KEY + globalOptions.keySuffix
-    if let hasNum = getErrorNum(), hasNum < globalOptions.maxErrorNum {
-        num = hasNum + 1
-    } else {
-        num = globalOptions.maxErrorNum
-    }
-    LockManager.default.save(string: String(num), with: key)
+        var num = 0
+        let key = ERROR_NUM_KEY + globalOptions.keySuffix
+        if let hasNum = getErrorNum(), hasNum < globalOptions.maxErrorNum {
+                num = hasNum + 1
+        } else {
+                num = globalOptions.maxErrorNum
+        }
+        LockManager.default.save(string: String(num), with: key)
 }
 
 /// Get error num
 ///
 /// - Returns: Int Optional
 public func getErrorNum() -> Int? {
-    let key = ERROR_NUM_KEY + globalOptions.keySuffix
-    return Int(LockManager.default.getStringItem(with: key) ?? "0")
+        let key = ERROR_NUM_KEY + globalOptions.keySuffix
+        return Int(LockManager.default.getStringItem(with: key) ?? "0")
 }
 
 /// Remove error record
 public func removeErrorNum() {
-    let key = ERROR_NUM_KEY + globalOptions.keySuffix
-    LockManager.default.removeItem(with: key)
+        let key = ERROR_NUM_KEY + globalOptions.keySuffix
+        LockManager.default.removeItem(with: key)
 }

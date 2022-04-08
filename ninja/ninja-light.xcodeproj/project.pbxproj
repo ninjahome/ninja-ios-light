@@ -36,6 +36,16 @@
 		0825C21A26CB6B40003E0EF3 /* AvatarCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0825C21926CB6B40003E0EF3 /* AvatarCollectionCell.swift */; };
 		0825C21D26CF5887003E0EF3 /* DeleteMemberController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0825C21C26CF5887003E0EF3 /* DeleteMemberController.swift */; };
 		082CF17C263A9C6D0009450E /* TxtTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082CF17B263A9C6D0009450E /* TxtTableViewCell.swift */; };
+		084248E227FD4D820059545E /* GestureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084248E127FD4D820059545E /* GestureViewController.swift */; };
+		084248F027FD6DBF0059545E /* GPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084248E427FD6DBE0059545E /* GPassword.swift */; };
+		084248F127FD6DBF0059545E /* EventDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084248E627FD6DBE0059545E /* EventDelegate.swift */; };
+		084248F227FD6DBF0059545E /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084248E727FD6DBE0059545E /* Box.swift */; };
+		084248F327FD6DBF0059545E /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084248E827FD6DBE0059545E /* Point.swift */; };
+		084248F427FD6DBF0059545E /* LockOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084248E927FD6DBE0059545E /* LockOptions.swift */; };
+		084248F527FD6DBF0059545E /* LockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084248EA27FD6DBE0059545E /* LockManager.swift */; };
+		084248F627FD6DBF0059545E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084248EC27FD6DBE0059545E /* Extensions.swift */; };
+		084248F727FD6DBF0059545E /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084248EE27FD6DBE0059545E /* Storage.swift */; };
+		084248F827FD6DBF0059545E /* KeychainSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084248EF27FD6DBE0059545E /* KeychainSwift.swift */; };
 		085F4B4927D1A30900E6A711 /* MsgKeepDaysTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085F4B4827D1A30900E6A711 /* MsgKeepDaysTableViewController.swift */; };
 		085F4B4C27D1B54A00E6A711 /* KeepDaysTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085F4B4B27D1B54A00E6A711 /* KeepDaysTableViewCell.swift */; };
 		0860D5C52761FDD000E53FDA /* FileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0860D5C42761FDD000E53FDA /* FileTableViewCell.swift */; };
@@ -167,6 +177,16 @@
 		0825C21926CB6B40003E0EF3 /* AvatarCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarCollectionCell.swift; sourceTree = "<group>"; };
 		0825C21C26CF5887003E0EF3 /* DeleteMemberController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteMemberController.swift; sourceTree = "<group>"; };
 		082CF17B263A9C6D0009450E /* TxtTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxtTableViewCell.swift; sourceTree = "<group>"; };
+		084248E127FD4D820059545E /* GestureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureViewController.swift; sourceTree = "<group>"; };
+		084248E427FD6DBE0059545E /* GPassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPassword.swift; sourceTree = "<group>"; };
+		084248E627FD6DBE0059545E /* EventDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDelegate.swift; sourceTree = "<group>"; };
+		084248E727FD6DBE0059545E /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
+		084248E827FD6DBE0059545E /* Point.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
+		084248E927FD6DBE0059545E /* LockOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockOptions.swift; sourceTree = "<group>"; };
+		084248EA27FD6DBE0059545E /* LockManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockManager.swift; sourceTree = "<group>"; };
+		084248EC27FD6DBE0059545E /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		084248EE27FD6DBE0059545E /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		084248EF27FD6DBE0059545E /* KeychainSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainSwift.swift; sourceTree = "<group>"; };
 		085F4B4827D1A30900E6A711 /* MsgKeepDaysTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MsgKeepDaysTableViewController.swift; sourceTree = "<group>"; };
 		085F4B4B27D1B54A00E6A711 /* KeepDaysTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepDaysTableViewCell.swift; sourceTree = "<group>"; };
 		0860D5C42761FDD000E53FDA /* FileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTableViewCell.swift; sourceTree = "<group>"; };
@@ -300,6 +320,79 @@
 			path = keychain;
 			sourceTree = "<group>";
 		};
+		084248DE27FD4CFA0059545E /* account */ = {
+			isa = PBXGroup;
+			children = (
+				087BD8122658AF430009459C /* ManageViewController.swift */,
+				69F8D0FD261AA544009D7AF3 /* NewWalletViewController.swift */,
+				0818D88326FD6FC1002BF3B9 /* DestroyViewController.swift */,
+				08C2C229278FD1B90023D773 /* AvatarEditViewController.swift */,
+				0823F77C26520B24000DA4DB /* NickEditViewController.swift */,
+				0823F777265201B4000DA4DB /* QRViewController.swift */,
+				087B57F726E1E15900591F8D /* AgentViewController.swift */,
+			);
+			path = account;
+			sourceTree = "<group>";
+		};
+		084248DF27FD4D0F0059545E /* function */ = {
+			isa = PBXGroup;
+			children = (
+				0809CE8F2787DBCC00AF2A95 /* GuideViewController.swift */,
+				2B66DB4327AE1FF100FBE8B6 /* SystemMeesageViewController.swift */,
+				0809CE872786963300AF2A95 /* BackupGuideViewController.swift */,
+			);
+			path = function;
+			sourceTree = "<group>";
+		};
+		084248E027FD4D590059545E /* author */ = {
+			isa = PBXGroup;
+			children = (
+				6953EAF72622C12F008EC2F0 /* AuthorViewController.swift */,
+				084248E127FD4D820059545E /* GestureViewController.swift */,
+			);
+			path = author;
+			sourceTree = "<group>";
+		};
+		084248E327FD6DBE0059545E /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				084248E427FD6DBE0059545E /* GPassword.swift */,
+				084248E527FD6DBE0059545E /* Core */,
+				084248EB27FD6DBE0059545E /* Extension */,
+				084248ED27FD6DBE0059545E /* Store */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		084248E527FD6DBE0059545E /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				084248E627FD6DBE0059545E /* EventDelegate.swift */,
+				084248E727FD6DBE0059545E /* Box.swift */,
+				084248E827FD6DBE0059545E /* Point.swift */,
+				084248E927FD6DBE0059545E /* LockOptions.swift */,
+				084248EA27FD6DBE0059545E /* LockManager.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		084248EB27FD6DBE0059545E /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				084248EC27FD6DBE0059545E /* Extensions.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		084248ED27FD6DBE0059545E /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				084248EE27FD6DBE0059545E /* Storage.swift */,
+				084248EF27FD6DBE0059545E /* KeychainSwift.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
 		085F4B4A27D1B52900E6A711 /* keepDays */ = {
 			isa = PBXGroup;
 			children = (
@@ -413,6 +506,7 @@
 			isa = PBXGroup;
 			children = (
 				69B8C0B2261C627E00B4E4AC /* Cartfile */,
+				084248E327FD6DBE0059545E /* Source */,
 				6969ECBA26134294008CB0B2 /* ninja-light */,
 				08B64A1727A29AB200D0677F /* NotificationServiceExtension */,
 				6969ECB926134294008CB0B2 /* Products */,
@@ -456,7 +550,6 @@
 				08B74A6926B3B9C800D6F0F8 /* group */,
 				08B74A6226B2547400D6F0F8 /* messageItems */,
 				08F0FA8B2688388000C5C1DF /* messageCells */,
-				6953EAF72622C12F008EC2F0 /* AuthorViewController.swift */,
 			);
 			path = message;
 			sourceTree = "<group>";
@@ -478,19 +571,12 @@
 		6969ECD9261344BD008CB0B2 /* wallet */ = {
 			isa = PBXGroup;
 			children = (
+				084248E027FD4D590059545E /* author */,
+				084248DF27FD4D0F0059545E /* function */,
+				084248DE27FD4CFA0059545E /* account */,
 				085F4B4A27D1B52900E6A711 /* keepDays */,
 				0818D88627006597002BF3B9 /* transfer */,
 				6969ECDA261344CA008CB0B2 /* WalletViewController.swift */,
-				69F8D0FD261AA544009D7AF3 /* NewWalletViewController.swift */,
-				0809CE872786963300AF2A95 /* BackupGuideViewController.swift */,
-				08C2C229278FD1B90023D773 /* AvatarEditViewController.swift */,
-				0823F777265201B4000DA4DB /* QRViewController.swift */,
-				2B66DB4327AE1FF100FBE8B6 /* SystemMeesageViewController.swift */,
-				0823F77C26520B24000DA4DB /* NickEditViewController.swift */,
-				087BD8122658AF430009459C /* ManageViewController.swift */,
-				087B57F726E1E15900591F8D /* AgentViewController.swift */,
-				0818D88326FD6FC1002BF3B9 /* DestroyViewController.swift */,
-				0809CE8F2787DBCC00AF2A95 /* GuideViewController.swift */,
 			);
 			path = wallet;
 			sourceTree = "<group>";
@@ -660,6 +746,8 @@
 				0818D88B27016613002BF3B9 /* SelectContactViewController.swift in Sources */,
 				69B8C0CD261D2C0900B4E4AC /* MessageListViewController.swift in Sources */,
 				0823F778265201B4000DA4DB /* QRViewController.swift in Sources */,
+				084248F227FD6DBF0059545E /* Box.swift in Sources */,
+				084248F027FD6DBF0059545E /* GPassword.swift in Sources */,
 				08F0FA9026884C2000C5C1DF /* ImageTableViewCell.swift in Sources */,
 				0886B1AF2772BEC500257C15 /* AccountItem.swift in Sources */,
 				085F4B4C27D1B54A00E6A711 /* KeepDaysTableViewCell.swift in Sources */,
@@ -668,7 +756,9 @@
 				0886B1B3277AFE9400257C15 /* GroupListViewController.swift in Sources */,
 				69B8C0D2261D2D4600B4E4AC /* MesasgeItemTableViewCell.swift in Sources */,
 				08084E5C27CF6B9400F65590 /* MsgViewController+Contact.swift in Sources */,
+				084248F627FD6DBF0059545E /* Extensions.swift in Sources */,
 				08CCDC6F26A3C3A200B0D7DA /* MapViewController.swift in Sources */,
+				084248F527FD6DBF0059545E /* LockManager.swift in Sources */,
 				6953EAF82622C12F008EC2F0 /* AuthorViewController.swift in Sources */,
 				087B57F226DF1F1400591F8D /* AgentButton.swift in Sources */,
 				08084E5E27D057BF00F65590 /* ContactTableViewCell.swift in Sources */,
@@ -683,24 +773,28 @@
 				0860D5C727634F7900E53FDA /* FileManager+Extension.swift in Sources */,
 				69B8C0DC261D334100B4E4AC /* ChatItem.swift in Sources */,
 				0818D8942701B334002BF3B9 /* ContactTransferTableViewCell.swift in Sources */,
+				084248F427FD6DBF0059545E /* LockOptions.swift in Sources */,
 				0823F78326565152000DA4DB /* KeychainWrapper.swift in Sources */,
 				69B8C0EA261D9FB100B4E4AC /* QRCodeShowViewController.swift in Sources */,
 				08EAAE272697496700210271 /* SearchDetailViewController.swift in Sources */,
 				08B74A5F26AFF31B00D6F0F8 /* LocationUtils.swift in Sources */,
 				085F4B4927D1A30900E6A711 /* MsgKeepDaysTableViewController.swift in Sources */,
 				69B8C0F6261DBEED00B4E4AC /* ScannerViewController.swift in Sources */,
+				084248F727FD6DBF0059545E /* Storage.swift in Sources */,
 				6969ECC026134294008CB0B2 /* ContactViewController.swift in Sources */,
 				082CF17C263A9C6D0009450E /* TxtTableViewCell.swift in Sources */,
 				0825C21726CB6B23003E0EF3 /* AddCollectionCell.swift in Sources */,
 				6969ECBC26134294008CB0B2 /* AppDelegate.swift in Sources */,
 				08EAAE24269735AC00210271 /* ContactAddViewController.swift in Sources */,
 				0823F78A26565186000DA4DB /* KeychainItemAccessibility.swift in Sources */,
+				084248F827FD6DBF0059545E /* KeychainSwift.swift in Sources */,
 				2BAB8A7027AEC327001D92DC /* InvalidGrpMemberTableViewCell.swift in Sources */,
 				0818D888270165FA002BF3B9 /* TransferViewController.swift in Sources */,
 				08781E8D275F09A60084D80A /* MsgViewController+ImageView.swift in Sources */,
 				2B01182227A5508B00C88116 /* CombineConntact.swift in Sources */,
 				08B74A6726B3B90D00D6F0F8 /* GroupMemberViewController.swift in Sources */,
 				0818D88426FD6FC1002BF3B9 /* DestroyViewController.swift in Sources */,
+				084248F127FD6DBF0059545E /* EventDelegate.swift in Sources */,
 				08781E93275F0A120084D80A /* MsgViewController+AudioView.swift in Sources */,
 				08B64A2327A3745700D0677F /* VideoTableViewCell.swift in Sources */,
 				6969ECD526134450008CB0B2 /* MsgViewController.swift in Sources */,
@@ -725,6 +819,7 @@
 				0860D5C52761FDD000E53FDA /* FileTableViewCell.swift in Sources */,
 				0825C21126BF9638003E0EF3 /* GroupItem.swift in Sources */,
 				69B8C0E1261D334900B4E4AC /* MessageItem.swift in Sources */,
+				084248E227FD4D820059545E /* GestureViewController.swift in Sources */,
 				6969ECBE26134294008CB0B2 /* SceneDelegate.swift in Sources */,
 				0823F77D26520B24000DA4DB /* NickEditViewController.swift in Sources */,
 				0879444826E6FFC70077DEDC /* AvatarButton.swift in Sources */,
@@ -733,6 +828,7 @@
 				08781E91275F09F50084D80A /* MsgViewController+TextView.swift in Sources */,
 				2B66DB4427AE1FF100FBE8B6 /* SystemMeesageViewController.swift in Sources */,
 				08B64A0027A255E100D0677F /* MsgViewController+FileView.swift in Sources */,
+				084248F327FD6DBF0059545E /* Point.swift in Sources */,
 				087BD8132658AF430009459C /* ManageViewController.swift in Sources */,
 				7CEFD463261E93FA0002B0B9 /* ContactDetailsViewController.swift in Sources */,
 				6969ECDB261344CA008CB0B2 /* WalletViewController.swift in Sources */,

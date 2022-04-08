@@ -40,8 +40,8 @@ public class LockOptions {
     /// Box background color
     public var boxBackgroundColor: UIColor = .white
 
-    /// Connect line color
-    public var connectLineColor: UIColor = UIColor(gpRGB: 0x6EBF60)
+    /// Connect line color 26253C
+    public var connectLineColor: UIColor = UIColor(gpRGB: 0x26253C)
 
     /// Connect line width
     public var connectLineWidth: CGFloat = 4.0
@@ -53,7 +53,7 @@ public class LockOptions {
     public var pointLineWidth: CGFloat = 1.0
 
     /// Point inner circle selected color
-    public var innerSelectedColor: UIColor = UIColor(gpRGB: 0x8ABF82)
+    public var innerSelectedColor: UIColor = UIColor(gpRGB: 0x26253C)
 
     /// Point inner circle normal color
     public var innerNormalColor: UIColor = UIColor(gpRGB: 0xE2E3F2)
@@ -74,10 +74,10 @@ public class LockOptions {
     public var isOuterStroke: Bool = true
 
     /// Point inner circle draw stroke color
-    public var innerStrokeColor: UIColor = UIColor(gpRGB: 0x8ABF82)
+    public var innerStrokeColor: UIColor = UIColor(gpRGB: 0x26253C)
 
     /// Point outer circle draw stroke color
-    public var outerStrokeColor: UIColor = UIColor(gpRGB: 0x8ABF82)
+    public var outerStrokeColor: UIColor = UIColor(gpRGB: 0x26253C)
 
     /// Space between points
     public var pointSpace: CGFloat = 30.0
@@ -86,7 +86,7 @@ public class LockOptions {
     public var isDrawTriangle: Bool = false
 
     /// Triangle background color
-    public var triangleColor: UIColor = UIColor(gpRGB: 0x8ABF82)
+    public var triangleColor: UIColor = UIColor(gpRGB: 0x26253C)
 
     /// Triangle width
     public var triangleWidth: CGFloat = 10

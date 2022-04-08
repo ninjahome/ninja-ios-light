@@ -36,14 +36,25 @@ class AuthorViewController: UIViewController {
                         self.isModalInPresentation = true
                 }
                 
-                if Wallet.shared.useFaceID {
-                        biometryUsage { (success) in
-                                if success, let pwd = DeriveAesKey() {
-                                        self.unlock(auth: pwd)
-                                } else {
-                                        return
-                                }
-                        }
+//                if Wallet.shared.useFaceID {
+//                        biometryUsage { (success) in
+//                                if success, let pwd = DeriveAesKey() {
+//                                        self.unlock(auth: pwd)
+//                                } else {
+//                                        return
+//                                }
+//                        }
+//                }
+                
+        }
+        
+        override func viewWillAppear(_ animated: Bool) {
+                if Wallet.shared.useGesture {
+                        let vc = GestureViewController()
+                        vc.type = .verify
+                        vc.modalPresentationStyle = .overFullScreen
+                        vc.delegate = self
+                        self.present(vc, animated: true, completion: nil)
                 }
         }
         
@@ -103,4 +114,12 @@ class AuthorViewController: UIViewController {
                 }
         }
         
+}
+
+extension AuthorViewController: GestureVerified {
+        func verified(success: Bool) {
+                if success, let pwd = DeriveAesKey() {
+                        self.unlock(auth: pwd)
+                }
+        }
 }
