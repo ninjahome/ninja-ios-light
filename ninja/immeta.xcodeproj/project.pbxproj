@@ -93,7 +93,7 @@
 		6969ECBC26134294008CB0B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969ECBB26134294008CB0B2 /* AppDelegate.swift */; };
 		6969ECBE26134294008CB0B2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969ECBD26134294008CB0B2 /* SceneDelegate.swift */; };
 		6969ECC026134294008CB0B2 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969ECBF26134294008CB0B2 /* ContactViewController.swift */; };
-		6969ECC626134294008CB0B2 /* ninja.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6969ECC426134294008CB0B2 /* ninja.xcdatamodeld */; };
+		6969ECC626134294008CB0B2 /* immeta.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6969ECC426134294008CB0B2 /* immeta.xcdatamodeld */; };
 		6969ECC826134295008CB0B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6969ECC726134295008CB0B2 /* Assets.xcassets */; };
 		6969ECD526134450008CB0B2 /* MsgViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969ECD426134450008CB0B2 /* MsgViewController.swift */; };
 		6969ECDB261344CA008CB0B2 /* WalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969ECDA261344CA008CB0B2 /* WalletViewController.swift */; };
@@ -207,7 +207,7 @@
 		087B57F126DF1F1400591F8D /* AgentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentButton.swift; sourceTree = "<group>"; };
 		087B57F726E1E15900591F8D /* AgentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentViewController.swift; sourceTree = "<group>"; };
 		087BD8122658AF430009459C /* ManageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageViewController.swift; sourceTree = "<group>"; };
-		087BD817265B4ACE0009459C /* ninja-light.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ninja-light.entitlements"; sourceTree = "<group>"; };
+		087BD817265B4ACE0009459C /* immeta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = immeta.entitlements; sourceTree = "<group>"; };
 		0886B1AE2772BEC500257C15 /* AccountItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountItem.swift; sourceTree = "<group>"; };
 		0886B1B027730A1B00257C15 /* BigInt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigInt.swift; sourceTree = "<group>"; };
 		0886B1B2277AFE9400257C15 /* GroupListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupListViewController.swift; sourceTree = "<group>"; };
@@ -325,7 +325,7 @@
 			path = keychain;
 			sourceTree = "<group>";
 		};
-		0842490F28000E660059545E /* Source */ = {
+		0842490F28000E660059545E /* guesture */ = {
 			isa = PBXGroup;
 			children = (
 				0842491028000E660059545E /* GPassword.swift */,
@@ -333,7 +333,7 @@
 				0842491728000E660059545E /* Extension */,
 				0842491928000E670059545E /* Store */,
 			);
-			path = Source;
+			path = guesture;
 			sourceTree = "<group>";
 		};
 		0842491128000E660059545E /* Core */ = {
@@ -521,8 +521,8 @@
 			isa = PBXGroup;
 			children = (
 				69B8C0B2261C627E00B4E4AC /* Cartfile */,
-				0842490F28000E660059545E /* Source */,
-				6969ECBA26134294008CB0B2 /* ninja-light */,
+				0842490F28000E660059545E /* guesture */,
+				6969ECBA26134294008CB0B2 /* immeta */,
 				08B64A1727A29AB200D0677F /* NotificationServiceExtension */,
 				6969ECB926134294008CB0B2 /* Products */,
 				69F8D10F261B3626009D7AF3 /* Frameworks */,
@@ -538,10 +538,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		6969ECBA26134294008CB0B2 /* ninja-light */ = {
+		6969ECBA26134294008CB0B2 /* immeta */ = {
 			isa = PBXGroup;
 			children = (
-				087BD817265B4ACE0009459C /* ninja-light.entitlements */,
+				087BD817265B4ACE0009459C /* immeta.entitlements */,
 				69F8D10A261AEA27009D7AF3 /* common */,
 				69F8D100261AA603009D7AF3 /* model */,
 				6969ECD9261344BD008CB0B2 /* wallet */,
@@ -553,9 +553,9 @@
 				6969ECC726134295008CB0B2 /* Assets.xcassets */,
 				08EAAE132695977300210271 /* LaunchScreen.storyboard */,
 				6969ECCC26134295008CB0B2 /* Info.plist */,
-				6969ECC426134294008CB0B2 /* ninja.xcdatamodeld */,
+				6969ECC426134294008CB0B2 /* immeta.xcdatamodeld */,
 			);
-			path = "ninja-light";
+			path = immeta;
 			sourceTree = "<group>";
 		};
 		6969ECD32613443A008CB0B2 /* message */ = {
@@ -821,7 +821,7 @@
 				0822A99C27671F4800A09A66 /* VideoFileManager.swift in Sources */,
 				0818D88E27016638002BF3B9 /* TransferStrangerViewController.swift in Sources */,
 				69B8C0D7261D2ED100B4E4AC /* PasswordViewController.swift in Sources */,
-				6969ECC626134294008CB0B2 /* ninja.xcdatamodeld in Sources */,
+				6969ECC626134294008CB0B2 /* immeta.xcdatamodeld in Sources */,
 				0809CE8C2786CE2500AF2A95 /* TryoutAlertViewController.swift in Sources */,
 				08F0FA9626884C5C00C5C1DF /* LocationTableViewCell.swift in Sources */,
 				0842492428000E670059545E /* KeychainSwift.swift in Sources */,
@@ -1060,7 +1060,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "ninja-light/ninja-light.entitlements";
+				CODE_SIGN_ENTITLEMENTS = immeta/immeta.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 2;
@@ -1070,7 +1070,7 @@
 					"$(PROJECT_DIR)/bin",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/ninja-light/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/immeta/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1095,7 +1095,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "ninja-light/ninja-light.entitlements";
+				CODE_SIGN_ENTITLEMENTS = immeta/immeta.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 2;
@@ -1105,7 +1105,7 @@
 					"$(PROJECT_DIR)/bin",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/ninja-light/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/immeta/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1157,13 +1157,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		6969ECC426134294008CB0B2 /* ninja.xcdatamodeld */ = {
+		6969ECC426134294008CB0B2 /* immeta.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				6969ECC526134294008CB0B2 /* ninja.xcdatamodel */,
 			);
 			currentVersion = 6969ECC526134294008CB0B2 /* ninja.xcdatamodel */;
-			path = ninja.xcdatamodeld;
+			path = immeta.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
