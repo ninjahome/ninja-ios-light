@@ -1,6 +1,6 @@
 //
 //  LocationTableViewCell.swift
-//  ninja-light
+//  immeta
 //
 //  Created by 郭晓芙 on 2021/6/27.
 //

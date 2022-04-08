@@ -1,6 +1,6 @@
 //
 //  NickEditViewController.swift
-//  ninja-light
+//  immeta
 //
 //  Created by akatuki on 2021/5/17.
 //
