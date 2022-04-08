@@ -47,6 +47,16 @@ class AuthorViewController: UIViewController {
                 }
         }
         
+        override func viewWillAppear(_ animated: Bool) {
+                if Wallet.shared.useGesture {
+                        let vc = GestureViewController()
+                        vc.type = .verify
+                        vc.modalPresentationStyle = .overFullScreen
+                        vc.delegate = self
+                        self.present(vc, animated: true, completion: nil)
+                }
+        }
+        
         @IBAction func Auth(_ sender: Any) {
                 guard let pwd = password.text else {
                         tips.text = "please input your password"
@@ -104,4 +114,12 @@ class AuthorViewController: UIViewController {
                 }
         }
         
+}
+
+extension AuthorViewController: GestureVerified {
+        func verified(success: Bool) {
+                if success, let pwd = DeriveAesKey() {
+                        self.unlock(auth: pwd)
+                }
+        }
 }

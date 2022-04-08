@@ -107,3 +107,11 @@
 "invalid avatar"="无效头像图片";
 "uploading avatar"="正在上传头像";
 "save failed"="保存配置失败";
+
+"Please input gesture password"="请输入手势密码";
+"Please input again to confirm"="请再次输入确认密码";
+"Password different, please re-set"="密码不相同";
+"Error password"="密码错误";
+"Please input origin password"="请输入原密码";
+"Gesture too short"="手势密码太短";
+"Forget gesture?"="忘记手势密码？";

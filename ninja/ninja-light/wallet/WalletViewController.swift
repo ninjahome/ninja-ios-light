@@ -13,7 +13,7 @@ class WalletViewController: UITableViewController {
         @IBOutlet weak var vipBackground: UIView!
 //        @IBOutlet weak var faceIDSwitch: UISwitch!
         @IBOutlet weak var destroySwitch: UISwitch!
-
+        @IBOutlet weak var gestureSwitch: UISwitch!
         @IBOutlet weak var avatar: AvatarButton!
         @IBOutlet weak var backGroundView: UIView!
 
@@ -83,6 +83,7 @@ class WalletViewController: UITableViewController {
                         self.address.text = Wallet.shared.Addr
 //                        self.faceIDSwitch.isOn = Wallet.shared.useFaceID
                         self.destroySwitch.isOn = Wallet.shared.useDestroy
+                        self.gestureSwitch.isOn = Wallet.shared.useGesture
                         self.nickName.text = Wallet.shared.nickName
                         self.avatar.setupSelf()
                         
@@ -112,7 +113,7 @@ class WalletViewController: UITableViewController {
                         case .initial:
                                 self.agentTime.text = "普通用户仅支持文本聊天"
 //                                self.vipBackground.layer.contents = UIImage(named: "nor_bgc")?.cgImage
-                                self.vipBackground.backgroundColor = .lightGray
+                                self.vipBackground.backgroundColor = UIColor(hex: "EFF1F2")
                                 self.agentBtn.setImage(nil, for: .normal)
                                 self.vipFlag(show: false)
                             break
@@ -159,6 +160,31 @@ class WalletViewController: UITableViewController {
                 } else {
                         if let err = Wallet.shared.UpdateUseDestroy(by: false) {
                                 destroySwitch.isOn = true
+                                self.toastMessage(title: "Faild".locStr+"\(err.localizedDescription ?? "")")
+                        }
+                }
+        }
+        
+        @IBAction func setGesture(_ sender: UISwitch) {
+                if sender.isOn {
+                        self.showPwdInput(title: "请输入解锁密码", placeHolder: "请输入密码", securityShow: true) { (password, isOK) in
+                                guard let pwd = password, isOK else {
+                                        return
+                                }
+                                
+                                if !Wallet.shared.openGesture(auth: pwd) {
+                                        return
+                                }
+                                
+                                let vc = GestureViewController()
+                                vc.type = .set
+                                self.navigationController?.pushViewController(vc, animated: true)
+
+                        }
+                        
+                } else {
+                        if let err = Wallet.shared.UpdateUseGesture(by: false) {
+                                sender.isOn = true
                                 self.toastMessage(title: "Faild".locStr+"\(err.localizedDescription ?? "")")
                         }
                 }
