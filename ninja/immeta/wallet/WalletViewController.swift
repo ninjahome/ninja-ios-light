@@ -35,7 +35,7 @@ class WalletViewController: UITableViewController {
 //                balanceStatusView()
                 updateWholeView()
                 if let days = ConfigItem.shared.keepDays {
-                        readBurnDays.text = "\(days)天"
+                        readBurnDays.text = "\(days)\("Days".locStr)"
                 }
         }
     
@@ -111,7 +111,7 @@ class WalletViewController: UITableViewController {
                                 self.agentBtn.setImage(UIImage(named: "red"), for: .normal)
                                 self.vipFlag(show: true)
                         case .initial:
-                                self.agentTime.text = "普通用户仅支持文本聊天"
+                                self.agentTime.text = "Plain text only for free user".locStr
 //                                self.vipBackground.layer.contents = UIImage(named: "nor_bgc")?.cgImage
                                 self.vipBackground.backgroundColor = UIColor(hex: "EFF1F2")
                                 self.agentBtn.setImage(nil, for: .normal)
@@ -131,7 +131,7 @@ class WalletViewController: UITableViewController {
 //                if sender.isOn {
 //                        biometryUsage { (usageRes) in
 //                                if usageRes {
-//                                        self.showPwdInput(title: "请输入解锁密码", placeHolder: "请输入密码", securityShow: true) { (password, isOK) in
+//                                        self.showPwdInput(title: "password", placeHolder: "password", securityShow: true) { (password, isOK) in
 //                                                guard let pwd = password, isOK else{
 //                                                        return
 //                                                }
@@ -167,7 +167,7 @@ class WalletViewController: UITableViewController {
         
         @IBAction func setGesture(_ sender: UISwitch) {
                 if sender.isOn {
-                        self.showPwdInput(title: "请输入解锁密码", placeHolder: "请输入密码", securityShow: true) { (password, isOK) in
+                        self.showPwdInput(title: "input password please".locStr, placeHolder: "password".locStr, securityShow: true) { (password, isOK) in
                                 guard let pwd = password, isOK else {
                                         return
                                 }
@@ -191,7 +191,7 @@ class WalletViewController: UITableViewController {
         }
     
         @IBAction func clearChatHistory(_ sender: UIButton) {
-                let alertActionController = UIAlertController.init(title: "", message: "将删除所有个人和群的聊天记录", preferredStyle: .actionSheet)
+                let alertActionController = UIAlertController.init(title: "", message: "message will be deleted".locStr, preferredStyle: .actionSheet)
                 alertActionController.modalPresentationStyle = .popover
 
                 let deleteAction = UIAlertAction(title: "delete messages".locStr, style: .destructive) { action in

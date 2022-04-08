@@ -204,13 +204,13 @@ class MessageListViewController: UIViewController{
                         self.tableTopConstraint.constant = 0
                         self.errorTips.isHidden = true
                         self.errorTips.text = ""
-                        self.title = "消息"
+                        self.title = "Message".locStr
                 }
         }
         
         private func showConnectingTips() {
                 DispatchQueue.main.async {
-                        self.title = "连接中..."
+                        self.title = "Connecting...".locStr
                 }
         }
         
@@ -218,7 +218,7 @@ class MessageListViewController: UIViewController{
                 DispatchQueue.main.async {
                         self.tableTopConstraint.constant = 30
                         self.errorTips.isHidden = false
-                        self.errorTips.text = "网络断开"
+                        self.errorTips.text = "Disconnected".locStr
                 }
         }
         

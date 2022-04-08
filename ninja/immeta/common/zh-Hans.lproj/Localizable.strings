@@ -115,3 +115,11 @@
 "Please input origin password"="请输入原密码";
 "Gesture too short"="手势密码太短";
 "Forget gesture?"="忘记手势密码？";
+"Plain text only for free user"="普通用户仅支持文本聊天";
+"Days"="天";
+"input password please"="请输入解锁密码";
+"password"="密码";
+"message will be deleted"="将删除所有个人和群的聊天记录";
+"Message"="消息";
+"Connecting..."="连接中...";
+"Disconnected"="网络断开";
