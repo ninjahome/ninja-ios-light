@@ -1,6 +1,6 @@
 //
 //  SceneDelegate.swift
-//  ninja
+//  immeta
 //
 //  Created by wesley on 2021/3/30.
 //
@@ -25,12 +25,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
                 guard let winScene = (scene as? UIWindowScene) else { return }
                 window = UIWindow(windowScene: winScene)
                 if Wallet.shared.loaded {
-                        window?.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
+                        window?.rootViewController = instantiateViewController(vcID: "HomeTabVC")
                 } else {
                         if isFirstUser() {
-                                window?.rootViewController = instantiateViewController(vcID: "NinjaGuideVC")
+                                window?.rootViewController = instantiateViewController(vcID: "GuideVC")
                         } else {
-                                window?.rootViewController = instantiateViewController(vcID: "NinjaNewWalletVC")
+                                window?.rootViewController = instantiateViewController(vcID: "NewWalletVC")
                         }
                         
                 }

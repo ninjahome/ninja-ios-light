@@ -82,7 +82,7 @@ class ContactItem:NSObject{
         public static func UpdateContact(_ contact:ContactItem) -> NJError? {
                 let owner = Wallet.shared.Addr!
                 if !(IsValidContactID(contact.uid)) {
-                        return NJError.contact("invalid ninja address")
+                        return NJError.contact("invalid immeta address")
                 }
                 do {
                         try CDManager.shared.UpdateOrAddOne(entity: "CDContact",

@@ -11,7 +11,7 @@ class QRViewController: UIViewController {
 
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var qrImg: UIImageView!
-    @IBOutlet weak var ninjaAddr: UILabel!
+    @IBOutlet weak var immetaAddr: UILabel!
     var qr:UIImage?
     
     override func viewDidLoad() {
@@ -20,7 +20,7 @@ class QRViewController: UIViewController {
         self.view.layer.contents = UIImage(named: "bg-img")?.cgImage
         
         let addr = Wallet.shared.Addr!
-        ninjaAddr.text = "Ninja Address: \(addr)"
+        immetaAddr.text = "Immeta Address: \(addr)"
         
         qrImg.image = getQRCode()
         

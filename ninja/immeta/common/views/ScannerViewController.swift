@@ -139,13 +139,8 @@ extension ScannerViewController: AVCaptureMetadataOutputObjectsDelegate, UIImage
                 }
                 
                 self.dismiss(animated: true) {
-//                        if codeStr != "" {
-                                self.delegate?.codeDetected(code: codeStr)
-//                        } else {
-//                                self.toastMessage(title: "invaild ninja qr code")
-//                        }
+                        self.delegate?.codeDetected(code: codeStr)
                 }
-//                self.navigationController?.popViewController(animated: true)
         }
     
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

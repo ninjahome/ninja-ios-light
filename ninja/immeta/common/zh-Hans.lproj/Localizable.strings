@@ -1,6 +1,6 @@
 /* 
   Localizable.strings
-  ninja-light
+ immeta
 
   Created by 郭晓芙 on 2022/2/11.
   
@@ -25,7 +25,7 @@
 "Password can't be empty"="密码不能为空";
 "Two passwords are not same"="两次输入密码不相同";
 "Creating"="创建中";
-"Invaild ninja wallet address"="无效的地址";
+"Invaild immeta wallet address"="无效的地址";
 "Invalid Account, please reboot"="账号无效，请重新注册";
 "Image size out of limit"="图片超过限制大小";
 "File size out of limit"="文件超过限制大小";

@@ -14,7 +14,7 @@ class SystemMeesageViewController: UIViewController, WKNavigationDelegate {
         
         public static  var newTargetUrl = ""
         
-        private let  defaultUrl = URL(string: "https://ninjahome.github.io/")!
+        private let  defaultUrl = URL(string: "https://www.immeta.chat")!
         private let lastTargetUrlKey = "Last_target_url_key_v2"
         
         override func viewDidLoad() {

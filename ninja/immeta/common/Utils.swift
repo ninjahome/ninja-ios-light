@@ -79,7 +79,7 @@ extension URL {
 
 public func isFirstUser() -> Bool {
         let userDefault = UserDefaults.standard
-        if let firstUser = userDefault.string(forKey: "ninja") {
+        if let firstUser = userDefault.string(forKey: "immeta") {
                 print("---[First Uset]---\(firstUser)")
                 return false
         }
@@ -88,7 +88,7 @@ public func isFirstUser() -> Bool {
 
 public func setFirstUser() {
         let userDefault = UserDefaults.standard
-        userDefault.set("old", forKey: "ninja")
+        userDefault.set("old", forKey: "immeta")
 }
 
 public func afterWallet() { DispatchQueue.main.async {
@@ -98,10 +98,10 @@ public func afterWallet() { DispatchQueue.main.async {
                         return
                 }
 //                let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
-                delegate.window?.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
+                delegate.window?.rootViewController = instantiateViewController(vcID: "HomeTabVC")
         } else {
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                appDelegate.window?.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
+                appDelegate.window?.rootViewController = instantiateViewController(vcID: "HomeTabVC")
                 appDelegate.window?.makeKeyAndVisible()
         }
 }
