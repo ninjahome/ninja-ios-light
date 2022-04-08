@@ -17,6 +17,7 @@ class Wallet: NSObject {
         var nickName: String?
         var useFaceID = false
         var useDestroy = false
+        var useGesture = false
         var liceneseExpireTime: Int64 = 0
         var avatarData: Data?
         var touchTime: Int64?
@@ -112,6 +113,7 @@ class Wallet: NSObject {
                 self.nickName = a.nickName
                 self.useFaceID = a.useFaceID
                 self.useDestroy = a.useDestroy
+                self.useGesture = a.useGesture
                 self.liceneseExpireTime = a.liceneseExpireTime
                 self.avatarData = a.avatarData
         }
@@ -139,6 +141,7 @@ class Wallet: NSObject {
                 self.loaded = true
                 self.useFaceID = false
                 self.useDestroy = false
+                self.useGesture = false
                 self.nickName = ""
                 self.liceneseExpireTime = 0
                 
@@ -171,6 +174,7 @@ class Wallet: NSObject {
                 self.loaded = true
                 self.useFaceID = false
                 self.useDestroy = false
+                self.useGesture = false
                 self.nickName = ""
                 self.nonce = 0
                 
@@ -246,6 +250,18 @@ class Wallet: NSObject {
                 return nil
         }
         
+        func UpdateUseGesture(by use: Bool) -> NJError? {
+                self.useGesture = use
+                do {
+                        try CDManager.shared.UpdateOrAddOne(entity: "CDWallet",
+                                                            m: self,
+                                                            predicate: NSPredicate(format: "address == %@ AND jsonStr == %@", self.Addr!, self.wJson!))
+                } catch let err {
+                        return NJError.wallet(err.localizedDescription)
+                }
+                return nil
+        }
+        
         func UpdateUseFaceID(by use: Bool) -> NJError? {
                 self.useFaceID = use
                 do {
@@ -261,6 +277,17 @@ class Wallet: NSObject {
         func AddLicense(by days: Int) {
                 let new = self.liceneseExpireTime + Int64(days*86400)
                 _ = UpdateLicense(by: new)
+        }
+        
+        func openGesture(auth: String) -> Bool {
+                guard let _ = Active(auth) else {
+                        SetAesKey(auth: auth)
+                        //                        if UpdateUseGesture(by: true) != nil {
+                        //                                return false
+                        //                        }
+                        return true
+                }
+                return false
         }
         
         func UpdateLicense(by new: Int64) -> NJError? {
@@ -342,6 +369,7 @@ extension Wallet: ModelObj {
                 wObj.nick = self.nickName
                 wObj.useFaceID = self.useFaceID
                 wObj.useDestroy = self.useDestroy
+                wObj.useGesture = self.useGesture
                 wObj.liceneseExpireTime = self.liceneseExpireTime
                 wObj.avatar = self.avatarData
                 wObj.nonce = self.nonce ?? 0
@@ -358,6 +386,7 @@ extension Wallet: ModelObj {
                 self.nickName = wObj.nick
                 self.useFaceID = wObj.useFaceID
                 self.useDestroy = wObj.useDestroy
+                self.useGesture = wObj.useGesture
                 self.liceneseExpireTime = wObj.liceneseExpireTime
                 self.avatarData = wObj.avatar
                 self.nonce = wObj.nonce
