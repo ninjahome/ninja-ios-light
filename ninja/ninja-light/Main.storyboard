@@ -5654,21 +5654,6 @@
             </objects>
             <point key="canvasLocation" x="877" y="-2321"/>
         </scene>
-        <!--Gesture View Controller-->
-        <scene sceneID="FYi-9w-G5w">
-            <objects>
-                <viewController modalPresentationStyle="fullScreen" hidesBottomBarWhenPushed="YES" id="EdN-Mj-BRn" customClass="GestureViewController" customModule="ninja_light" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="D0A-VN-hIU">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="jbV-5r-wvJ"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ps0-f0-0Cn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2329" y="-1642"/>
-        </scene>
         <!--Author View Controller-->
         <scene sceneID="U0E-jo-MXh">
             <objects>

@@ -138,7 +138,7 @@ open class KeychainSwift {
                   withAccess access: KeychainSwiftAccessOptions? = nil) -> Bool {
         
         let bytes: [UInt8] = value ? [1] : [0]
-        let data = Data(bytes: bytes)
+        let data = Data(bytes)
         
         return set(data, forKey: key, withAccess: access)
     }
@@ -183,7 +183,7 @@ open class KeychainSwift {
         var query: [String: Any] = [
             KeychainSwiftConstants.klass       : kSecClassGenericPassword,
             KeychainSwiftConstants.attrAccount : prefixedKey,
-            KeychainSwiftConstants.returnData  : kCFBooleanTrue,
+            KeychainSwiftConstants.returnData  : kCFBooleanTrue ?? true,
             KeychainSwiftConstants.matchLimit  : kSecMatchLimitOne
         ]
         
@@ -429,13 +429,13 @@ public enum KeychainSwiftAccessOptions {
             return toString(kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly)
             
         case .accessibleAlways:
-            return toString(kSecAttrAccessibleAlways)
+            return toString(kSecAttrAccessibleAfterFirstUnlock)
             
         case .accessibleWhenPasscodeSetThisDeviceOnly:
             return toString(kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly)
             
         case .accessibleAlwaysThisDeviceOnly:
-            return toString(kSecAttrAccessibleAlwaysThisDeviceOnly)
+            return toString(kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly)
         }
     }
     

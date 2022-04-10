@@ -25,7 +25,7 @@
 //  THE SOFTWARE.
 
 /// Protocol for handle touched-Points and deal with points
-public protocol GPasswordEventDelegate: class {
+public protocol GPasswordEventDelegate: AnyObject {
     
     /// Use to notice the gesture point, and consist of password
     ///

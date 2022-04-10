@@ -36,20 +36,21 @@ class AuthorViewController: UIViewController {
                         self.isModalInPresentation = true
                 }
                 
-//                if Wallet.shared.useFaceID {
-//                        biometryUsage { (success) in
-//                                if success, let pwd = DeriveAesKey() {
-//                                        self.unlock(auth: pwd)
-//                                } else {
-//                                        return
-//                                }
-//                        }
-//                }
+                //                if Wallet.shared.useFaceID {
+                //                        biometryUsage { (success) in
+                //                                if success, let pwd = DeriveAesKey() {
+                //                                        self.unlock(auth: pwd)
+                //                                } else {
+                //                                        return
+                //                                }
+                //                        }
+                //                }
                 
         }
         
         override func viewWillAppear(_ animated: Bool) {
                 if Wallet.shared.useGesture {
+                        self.view.isHidden = true
                         let vc = GestureViewController()
                         vc.type = .verify
                         vc.modalPresentationStyle = .overFullScreen
@@ -72,7 +73,7 @@ class AuthorViewController: UIViewController {
                 
                 unlock(auth: pwd)
         }
-
+        
         func destroy(auth: String) {
                 self.showIndicator(withTitle: "", and: "Opening".locStr)
                 
@@ -117,9 +118,24 @@ class AuthorViewController: UIViewController {
 }
 
 extension AuthorViewController: GestureVerified {
-        func verified(success: Bool) {
-                if success, let pwd = DeriveAesKey() {
-                        self.unlock(auth: pwd)
+        func verified() ->Bool{
+                guard let pwd = DeriveAesKey() else{
+                        return false
                 }
+                if let err = Wallet.shared.Active(pwd){
+                        print("------>", err.localizedDescription)
+                        return false
+                }
+                
+                DispatchQueue.main.async {
+                        self.dismiss(animated: false){
+                                self.delegate?.OpenSuccess()
+                        }
+                }
+                return true
+        }
+        
+        func forgetGuest(){
+                self.view.isHidden = false
         }
 }
