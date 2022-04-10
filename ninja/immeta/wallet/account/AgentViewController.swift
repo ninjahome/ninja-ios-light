@@ -65,7 +65,7 @@ class AgentViewController: UIViewController {
         func buyBtnContent() {
                 if products.count > 0 {
                         let pdt = products[selectedId]
-                        let text = String((pdt.priceLocale.currencySymbol ?? "")+pdt.price.toString()+"立即激活")
+                        let text = String((pdt.priceLocale.currencySymbol ?? "")+pdt.price.toString() + " " + "Buy Now".locStr)
                         buyBtn.setTitle(text, for: .normal)
                 }
         }
