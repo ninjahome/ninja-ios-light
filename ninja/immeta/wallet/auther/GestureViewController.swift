@@ -8,7 +8,8 @@
 import UIKit
 
 protocol GestureVerified {
-        func verified(success: Bool)
+        func verified()->Bool
+        func forgetGuest()
 }
 
 enum GType {
@@ -91,7 +92,7 @@ class GestureViewController: UIViewController {
         }
         
         @objc func tapForgetGesture(button: UIButton) {
-                self.delegate?.verified(success: false)
+                self.delegate?.forgetGuest()
                 self.dismiss(animated: true)
         }
         
@@ -126,9 +127,12 @@ extension GestureViewController: GPasswordEventDelegate {
                         if type == .verify {
                                 let savePassword = getPassword() ?? ""
                                 if password == savePassword {
-                                        self.delegate?.verified(success: true)
-//                                        navigationController?.popViewController(animated: true)
-                                        self.dismiss(animated: true)
+                                        let result = self.delegate?.verified() ?? false
+                                        if result{
+                                                self.dismiss(animated: false)
+                                        }else{
+                                                warnLabel.showWarn(with: "Error password".locStr)
+                                        }
                                 } else {
                                         warnLabel.showWarn(with: "Error password".locStr)
                                 }
