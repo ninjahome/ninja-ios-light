@@ -3681,7 +3681,7 @@
             </objects>
             <point key="canvasLocation" x="4279.7101449275369" y="797.54464285714278"/>
         </scene>
-        <!--好友授权-->
+        <!--Authorize Friend-->
         <scene sceneID="gEF-Va-fKX">
             <objects>
                 <viewController hidesBottomBarWhenPushed="YES" id="qpz-HY-9It" customClass="TransferViewController" customModule="immeta" customModuleProvider="target" sceneMemberID="viewController">
@@ -3692,14 +3692,14 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WyQ-l0-EfU">
                                 <rect key="frame" x="15" y="103" width="384" height="72"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="未保存好友" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MZv-qa-68S">
-                                        <rect key="frame" x="8" y="9" width="62" height="15"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="stranger" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MZv-qa-68S">
+                                        <rect key="frame" x="8" y="9" width="48" height="15"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.52549019610000003" green="0.52549019610000003" blue="0.54117647059999996" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="输入好友ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xC8-6u-7GM">
-                                        <rect key="frame" x="8" y="36" width="77" height="18"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="friend ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xC8-6u-7GM">
+                                        <rect key="frame" x="8" y="36" width="60.5" height="18"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                         <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -3725,11 +3725,13 @@
                                 </accessibility>
                                 <constraints>
                                     <constraint firstItem="4VH-bf-bM4" firstAttribute="top" secondItem="WyQ-l0-EfU" secondAttribute="top" id="1s0-iu-Bf6"/>
+                                    <constraint firstItem="4VH-bf-bM4" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="xC8-6u-7GM" secondAttribute="trailing" constant="8" symbolic="YES" id="AeD-rC-i41"/>
                                     <constraint firstAttribute="trailing" secondItem="4VH-bf-bM4" secondAttribute="trailing" id="CM5-DD-mp9"/>
                                     <constraint firstAttribute="bottom" secondItem="4VH-bf-bM4" secondAttribute="bottom" id="DwW-nu-41o"/>
                                     <constraint firstItem="MZv-qa-68S" firstAttribute="leading" secondItem="WyQ-l0-EfU" secondAttribute="leading" constant="8" id="bA7-83-Xqo"/>
                                     <constraint firstItem="MZv-qa-68S" firstAttribute="top" secondItem="WyQ-l0-EfU" secondAttribute="top" constant="9" id="ckR-YN-nM1"/>
                                     <constraint firstItem="xC8-6u-7GM" firstAttribute="leading" secondItem="WyQ-l0-EfU" secondAttribute="leading" constant="8" id="vBc-0F-p3k"/>
+                                    <constraint firstItem="4VH-bf-bM4" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="MZv-qa-68S" secondAttribute="trailing" constant="8" symbolic="YES" id="xIG-6w-grP"/>
                                     <constraint firstItem="xC8-6u-7GM" firstAttribute="top" secondItem="MZv-qa-68S" secondAttribute="bottom" constant="12" id="xy4-aC-D3h"/>
                                     <constraint firstAttribute="height" constant="72" id="yAh-LY-7Pa"/>
                                 </constraints>
@@ -3742,14 +3744,14 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7dF-zN-mmk">
                                 <rect key="frame" x="15" y="187" width="384" height="72"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="已保存好友" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q01-MJ-iqb">
-                                        <rect key="frame" x="8" y="9" width="62" height="15"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="friend" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q01-MJ-iqb">
+                                        <rect key="frame" x="8" y="9" width="33.5" height="15"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.52549019610000003" green="0.52549019610000003" blue="0.54117647059999996" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="从通讯录选择好友" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gKQ-zc-QZs">
-                                        <rect key="frame" x="8" y="36" width="122.5" height="18"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="from contact" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gKQ-zc-QZs">
+                                        <rect key="frame" x="8" y="36" width="90.5" height="18"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                         <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -3774,10 +3776,12 @@
                                     <constraint firstItem="gKQ-zc-QZs" firstAttribute="top" secondItem="q01-MJ-iqb" secondAttribute="bottom" constant="12" id="4l4-UK-f3u"/>
                                     <constraint firstAttribute="height" constant="72" id="AYz-yD-oRE"/>
                                     <constraint firstItem="gKQ-zc-QZs" firstAttribute="leading" secondItem="7dF-zN-mmk" secondAttribute="leading" constant="8" id="MV0-4E-p88"/>
+                                    <constraint firstItem="bfU-t9-nMc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gKQ-zc-QZs" secondAttribute="trailing" constant="8" symbolic="YES" id="RxD-BP-fMJ"/>
                                     <constraint firstItem="bfU-t9-nMc" firstAttribute="top" secondItem="7dF-zN-mmk" secondAttribute="top" id="Sat-z1-dXO"/>
                                     <constraint firstItem="q01-MJ-iqb" firstAttribute="top" secondItem="7dF-zN-mmk" secondAttribute="top" constant="9" id="Z5K-Tn-WIM"/>
                                     <constraint firstAttribute="trailing" secondItem="bfU-t9-nMc" secondAttribute="trailing" id="ai6-l3-4wE"/>
                                     <constraint firstAttribute="bottom" secondItem="bfU-t9-nMc" secondAttribute="bottom" id="lQs-QC-6LA"/>
+                                    <constraint firstItem="bfU-t9-nMc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="q01-MJ-iqb" secondAttribute="trailing" constant="8" symbolic="YES" id="v6F-Yz-Ao9"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -3797,7 +3801,7 @@
                             <constraint firstItem="7dF-zN-mmk" firstAttribute="leading" secondItem="fIj-Xc-unv" secondAttribute="leading" constant="15" id="zhE-uM-ghP"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="好友授权" id="T3m-Kv-PL3">
+                    <navigationItem key="navigationItem" title="Authorize Friend" id="T3m-Kv-PL3">
                         <barButtonItem key="leftBarButtonItem" title="Item" image="nav_back_icon" id="YKF-jw-R6t">
                             <connections>
                                 <action selector="returnItem:" destination="qpz-HY-9It" id="sfO-jt-t9y"/>
@@ -4176,7 +4180,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pkG-8F-8Qu">
-                                                            <rect key="frame" x="17" y="81" width="11" height="20"/>
+                                                            <rect key="frame" x="17" y="81" width="8" height="20"/>
                                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                             <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -4198,12 +4202,13 @@
                                                     <constraints>
                                                         <constraint firstAttribute="bottom" secondItem="zPk-ey-kx9" secondAttribute="bottom" constant="30" id="Iad-zN-hPw"/>
                                                         <constraint firstItem="tav-Lg-MCK" firstAttribute="leading" secondItem="ZIj-3d-rCR" secondAttribute="trailing" constant="8" symbolic="YES" id="Ki1-sb-Kyw"/>
+                                                        <constraint firstItem="pkG-8F-8Qu" firstAttribute="leading" secondItem="uXk-Ya-QB8" secondAttribute="leading" constant="17" id="M52-vU-EzI"/>
                                                         <constraint firstItem="tav-Lg-MCK" firstAttribute="top" secondItem="uXk-Ya-QB8" secondAttribute="top" constant="27" id="McC-SB-fbh"/>
                                                         <constraint firstItem="pkG-8F-8Qu" firstAttribute="bottom" secondItem="zPk-ey-kx9" secondAttribute="bottom" id="V4N-kD-3l9"/>
                                                         <constraint firstItem="tav-Lg-MCK" firstAttribute="centerX" secondItem="uXk-Ya-QB8" secondAttribute="centerX" multiplier="1.1" id="hBT-aK-kHN"/>
                                                         <constraint firstItem="zPk-ey-kx9" firstAttribute="centerX" secondItem="uXk-Ya-QB8" secondAttribute="centerX" multiplier="1.1" id="iSp-8c-UVk"/>
                                                         <constraint firstItem="tav-Lg-MCK" firstAttribute="centerY" secondItem="ZIj-3d-rCR" secondAttribute="centerY" id="r0I-jX-5i8"/>
-                                                        <constraint firstItem="zPk-ey-kx9" firstAttribute="leading" secondItem="pkG-8F-8Qu" secondAttribute="trailing" constant="5" id="zbc-bq-Hoi"/>
+                                                        <constraint firstItem="zPk-ey-kx9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="pkG-8F-8Qu" secondAttribute="trailing" constant="8" symbolic="YES" id="zbc-bq-Hoi"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -4232,8 +4237,8 @@
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="crown_img" translatesAutoresizingMaskIntoConstraints="NO" id="IfD-JX-F2T">
                                                 <rect key="frame" x="30" y="19" width="22" height="22"/>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="成为会员" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pqB-QM-wpt">
-                                                <rect key="frame" x="56" y="18" width="82" height="24"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Buy License" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pqB-QM-wpt">
+                                                <rect key="frame" x="56" y="18" width="109" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                                                 <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -4244,6 +4249,7 @@
                                             <constraint firstItem="IfD-JX-F2T" firstAttribute="centerY" secondItem="BT6-U1-PvD" secondAttribute="centerY" id="12l-cy-CwI"/>
                                             <constraint firstItem="pqB-QM-wpt" firstAttribute="leading" secondItem="IfD-JX-F2T" secondAttribute="trailing" constant="4" id="H5F-pl-JHc"/>
                                             <constraint firstItem="IfD-JX-F2T" firstAttribute="leading" secondItem="BT6-U1-PvD" secondAttribute="leading" constant="30" id="Hcw-QU-AYi"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="pqB-QM-wpt" secondAttribute="trailing" constant="20" symbolic="YES" id="aqk-zs-GkR"/>
                                             <constraint firstItem="pqB-QM-wpt" firstAttribute="centerY" secondItem="BT6-U1-PvD" secondAttribute="centerY" id="bFm-CU-Sb7"/>
                                             <constraint firstAttribute="height" constant="60" id="dtQ-VI-bsM"/>
                                         </constraints>
@@ -4261,7 +4267,7 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" title="立即激活">
+                                        <state key="normal" title="Buy Now">
                                             <color key="titleColor" red="1" green="0.83137254900000002" blue="0.46666666670000001" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <userDefinedRuntimeAttributes>
@@ -4882,11 +4888,11 @@
                                                             <color key="backgroundColor" red="0.93333333333333335" green="0.40392156862745099" blue="0.29803921568627451" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="32" id="0Hj-Tp-Cr4"/>
-                                                                <constraint firstAttribute="width" constant="64" id="pRb-e1-4fE"/>
+                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="64" id="pRb-e1-4fE"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <inset key="imageEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                            <state key="normal" title="激活" image="red">
+                                                            <state key="normal" title="Active" image="red">
                                                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                             </state>
                                                             <userDefinedRuntimeAttributes>
@@ -4956,8 +4962,8 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="useN_icon" translatesAutoresizingMaskIntoConstraints="NO" id="bny-10-iR2">
                                                     <rect key="frame" x="20" y="15" width="20" height="20"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="昵称" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RdF-nR-ShM">
-                                                    <rect key="frame" x="48" y="15.5" width="33" height="19.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nick Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RdF-nR-ShM">
+                                                    <rect key="frame" x="48" y="15.5" width="81" height="19.5"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                     <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -4972,6 +4978,7 @@
                                                 <constraint firstItem="Haf-uB-ziQ" firstAttribute="centerY" secondItem="2oW-oo-fGx" secondAttribute="centerY" id="6s4-yt-neg"/>
                                                 <constraint firstAttribute="trailing" secondItem="Haf-uB-ziQ" secondAttribute="trailing" constant="16" id="9vc-lS-E9d"/>
                                                 <constraint firstItem="bny-10-iR2" firstAttribute="centerY" secondItem="2oW-oo-fGx" secondAttribute="centerY" id="Aqi-Qh-eDZ"/>
+                                                <constraint firstItem="Haf-uB-ziQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="RdF-nR-ShM" secondAttribute="trailing" constant="8" symbolic="YES" id="C1h-wi-gqb"/>
                                                 <constraint firstItem="RdF-nR-ShM" firstAttribute="centerY" secondItem="2oW-oo-fGx" secondAttribute="centerY" id="HfI-kR-Q4R"/>
                                                 <constraint firstItem="RdF-nR-ShM" firstAttribute="leading" secondItem="bny-10-iR2" secondAttribute="trailing" constant="8" id="Ldp-8c-Lie"/>
                                                 <constraint firstItem="bny-10-iR2" firstAttribute="leading" secondItem="2oW-oo-fGx" secondAttribute="leading" constant="20" symbolic="YES" id="RPw-LV-hZk"/>
@@ -4992,8 +4999,8 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="account_icon" translatesAutoresizingMaskIntoConstraints="NO" id="dKT-J9-9fU">
                                                     <rect key="frame" x="20" y="15" width="20" height="20"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="管理账号" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iTC-f3-DAw">
-                                                    <rect key="frame" x="48" y="15.5" width="65.5" height="19.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Account Operation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iTC-f3-DAw">
+                                                    <rect key="frame" x="48" y="15.5" width="139.5" height="19.5"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                     <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -5029,8 +5036,8 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kill_icon" translatesAutoresizingMaskIntoConstraints="NO" id="O6u-YO-Ffa">
                                                     <rect key="frame" x="20" y="14" width="22" height="22"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="自毁模式" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WJJ-OZ-leT">
-                                                    <rect key="frame" x="50" y="15.5" width="65.5" height="19.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Destroy Mode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WJJ-OZ-leT">
+                                                    <rect key="frame" x="50" y="15.5" width="104" height="19.5"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                     <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -5065,8 +5072,8 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gesture_icon" translatesAutoresizingMaskIntoConstraints="NO" id="3AO-Xk-fB6">
                                                     <rect key="frame" x="20" y="15" width="20" height="20"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="设置手势密码" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nGJ-mj-dAs">
-                                                    <rect key="frame" x="48" y="15.5" width="98" height="19.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Guesture Pin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nGJ-mj-dAs">
+                                                    <rect key="frame" x="48" y="15.5" width="95.5" height="19.5"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                     <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -5084,6 +5091,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="wSH-HU-rQX" secondAttribute="trailing" constant="22" id="5K8-Wc-DlD"/>
                                                 <constraint firstItem="wSH-HU-rQX" firstAttribute="centerY" secondItem="aHc-u8-wuf" secondAttribute="centerY" id="6qa-Il-nwy"/>
                                                 <constraint firstItem="3AO-Xk-fB6" firstAttribute="centerY" secondItem="aHc-u8-wuf" secondAttribute="centerY" id="FyF-go-v1A"/>
+                                                <constraint firstItem="wSH-HU-rQX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="nGJ-mj-dAs" secondAttribute="trailing" constant="8" symbolic="YES" id="eNw-99-JNX"/>
                                                 <constraint firstItem="3AO-Xk-fB6" firstAttribute="leading" secondItem="aHc-u8-wuf" secondAttribute="leading" constant="20" symbolic="YES" id="gRD-5Z-MZY"/>
                                                 <constraint firstItem="nGJ-mj-dAs" firstAttribute="centerY" secondItem="aHc-u8-wuf" secondAttribute="centerY" id="iEN-IS-YDZ"/>
                                                 <constraint firstItem="nGJ-mj-dAs" firstAttribute="leading" secondItem="3AO-Xk-fB6" secondAttribute="trailing" constant="8" id="oPk-AO-LjD"/>
@@ -5100,8 +5108,8 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="friends_icon" translatesAutoresizingMaskIntoConstraints="NO" id="veZ-2c-XqR">
                                                     <rect key="frame" x="20" y="14" width="22" height="22"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="授权好友" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zes-OV-sJS">
-                                                    <rect key="frame" x="50" y="15.5" width="65.5" height="19.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Authorize Friend" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zes-OV-sJS">
+                                                    <rect key="frame" x="50" y="15.5" width="122.5" height="19.5"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                     <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -5136,8 +5144,8 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Readdi_icon" translatesAutoresizingMaskIntoConstraints="NO" id="prh-Jr-kFX">
                                                     <rect key="frame" x="20" y="15" width="20" height="20"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="阅后即焚" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bli-wX-yma">
-                                                    <rect key="frame" x="48" y="15.5" width="65.5" height="19.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Burn Message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bli-wX-yma">
+                                                    <rect key="frame" x="48" y="15.5" width="106" height="19.5"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                     <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -5147,8 +5155,8 @@
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="&gt;_icon"/>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7天" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AUV-4T-uFn">
-                                                    <rect key="frame" x="344.5" y="16.5" width="22.5" height="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7 Days" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AUV-4T-uFn">
+                                                    <rect key="frame" x="323.5" y="16.5" width="43.5" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" red="0.52549019610000003" green="0.52549019610000003" blue="0.54117647059999996" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -5180,8 +5188,8 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Reafri_icon" translatesAutoresizingMaskIntoConstraints="NO" id="6kM-FT-ZHB">
                                                     <rect key="frame" x="20" y="15" width="20" height="20"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="系统通知" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YLQ-iO-kep">
-                                                    <rect key="frame" x="48" y="15.5" width="65.5" height="19.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="System Notification" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YLQ-iO-kep">
+                                                    <rect key="frame" x="48" y="15.5" width="146" height="19.5"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                     <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -5217,7 +5225,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="55"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                    <state key="normal" title="清空聊天记录">
+                                                    <state key="normal" title="Clea Stored Message">
                                                         <color key="titleColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
                                                     <connections>
@@ -5240,8 +5248,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="版本号 15.2.02" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iEJ-h9-Kul">
-                                                    <rect key="frame" x="166.5" y="23" width="81" height="14.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version 15.2.02" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iEJ-h9-Kul">
+                                                    <rect key="frame" x="164" y="23" width="86.5" height="14.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.52549019610000003" green="0.52549019610000003" blue="0.54117647059999996" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -5286,7 +5294,7 @@
             </objects>
             <point key="canvasLocation" x="198.55072463768118" y="2315.625"/>
         </scene>
-        <!--管理账号-->
+        <!--Account Operation-->
         <scene sceneID="OSr-eZ-cwe">
             <objects>
                 <viewController hidesBottomBarWhenPushed="YES" id="XmC-gT-XUb" customClass="ManageViewController" customModule="immeta" customModuleProvider="target" sceneMemberID="viewController">
@@ -5297,8 +5305,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EIl-yz-1L9">
                                 <rect key="frame" x="0.0" y="140" width="414" height="52"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="导入账号二维码" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oiB-Ka-nlX">
-                                        <rect key="frame" x="20" y="15.5" width="121.5" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Import QR Account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oiB-Ka-nlX">
+                                        <rect key="frame" x="20" y="15.5" width="145.5" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -5332,8 +5340,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rkc-mm-e9L">
                                 <rect key="frame" x="0.0" y="192" width="414" height="52"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="导出账号二维码" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kbq-0U-zns">
-                                        <rect key="frame" x="20" y="15.5" width="121.5" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Export QR Account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kbq-0U-zns">
+                                        <rect key="frame" x="20" y="15.5" width="145" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -5368,8 +5376,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pib-Fp-cuw">
                                 <rect key="frame" x="0.0" y="88" width="414" height="52"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="新建账号" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DDf-81-qwU">
-                                        <rect key="frame" x="20" y="15.5" width="69.5" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DDf-81-qwU">
+                                        <rect key="frame" x="20" y="15.5" width="102" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -5413,7 +5421,7 @@
                             <constraint firstItem="Pib-Fp-cuw" firstAttribute="top" secondItem="60E-Pm-6U0" secondAttribute="top" id="wTS-69-Jl9"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="管理账号" id="GHy-1y-g1y"/>
+                    <navigationItem key="navigationItem" title="Account Operation" id="GHy-1y-g1y"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hKd-ek-SfO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
