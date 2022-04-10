@@ -4890,7 +4890,6 @@
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
-                                                                <action selector="activeVIP:" destination="Fdr-PL-VAX" eventType="touchUpInside" id="Cyi-9G-aeS"/>
                                                                 <segue destination="GXX-5a-XgS" kind="presentation" id="1X6-K0-qMP"/>
                                                             </connections>
                                                         </button>

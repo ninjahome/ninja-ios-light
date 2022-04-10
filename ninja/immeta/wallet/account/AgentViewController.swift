@@ -13,7 +13,6 @@ class AgentViewController: UIViewController {
         var products: [SKProduct] = []
         var selectedId: Int = 0
         @IBOutlet weak var collectionView: UICollectionView!
-//        @IBOutlet weak var serviceId: UILabel!
         @IBOutlet weak var buyBtn: UIButton!
         
         override func viewDidLoad() {
@@ -48,13 +47,6 @@ class AgentViewController: UIViewController {
                 self.navigationController?.popViewController(animated: true)
         }
 
-//        @IBAction func copyId(_ sender: UIButton) {
-//                if let text = serviceId.text {
-//                        UIPasteboard.general.string = text
-//                        self.toastMessage(title: "Copy Success".locStr)
-//                }
-//        }
-        
         @IBAction func buyLicense(_ sender: UIButton) {
                 buyProduct(by: selectedId)
         }
