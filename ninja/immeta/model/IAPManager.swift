@@ -43,23 +43,13 @@ public typealias ProductPurchaseCompletionHandler = (_ success: Bool, _ productI
 
 // MARK: - IAPManager
 public class IAPManager: NSObject  {
-        private let productIDs: Set<ProductID>
-        private var purchasedProductIDs: Set<ProductID>
+        private let productIdentifiers: Set<ProductID>
         private var productsRequest: SKProductsRequest?
         private var productsRequestCompletionHandler: ProductsRequestCompletionHandler?
         private var productPurchaseCompletionHandler: ProductPurchaseCompletionHandler?
         
         public init(productIDs: Set<ProductID>) {
-                self.productIDs = productIDs
-                self.purchasedProductIDs = productIDs.filter { productID in
-                        let purchased = UserDefaults.standard.bool(forKey: productID)
-                        if purchased {
-                                print("Previously purchased: \(productID)")
-                        } else {
-                                print("Not purchased: \(productID)")
-                        }
-                        return purchased
-                }
+                self.productIdentifiers = productIDs
                 super.init()
                 SKPaymentQueue.default().add(self)
         }
@@ -71,7 +61,7 @@ extension IAPManager {
                 productsRequest?.cancel()
                 productsRequestCompletionHandler = completionHandler
                 
-                productsRequest = SKProductsRequest(productIdentifiers: productIDs)
+                productsRequest = SKProductsRequest(productIdentifiers: productIdentifiers)
                 productsRequest!.delegate = self
                 productsRequest!.start()
         }
@@ -83,10 +73,6 @@ extension IAPManager {
                 let payment = SKMutablePayment(product: product)
                 payment.applicationUsername = Wallet.shared.Addr
                 SKPaymentQueue.default().add(payment)
-        }
-        
-        public func isProductPurchased(_ productID: ProductID) -> Bool {
-                return purchasedProductIDs.contains(productID)
         }
         
         public class func canMakePayments() -> Bool {
@@ -187,9 +173,6 @@ extension IAPManager: SKPaymentTransactionObserver {
         
         private func productPurchaseCompleted(identifier: ProductID?) {
                 guard let identifier = identifier else { return }
-                
-                purchasedProductIDs.insert(identifier)
-                UserDefaults.standard.set(true, forKey: identifier)
                 productPurchaseCompletionHandler?(true, identifier)
                 clearHandler()
         }

@@ -50,7 +50,7 @@
 		085F4B4C27D1B54A00E6A711 /* KeepDaysTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085F4B4B27D1B54A00E6A711 /* KeepDaysTableViewCell.swift */; };
 		0860D5C52761FDD000E53FDA /* FileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0860D5C42761FDD000E53FDA /* FileTableViewCell.swift */; };
 		0860D5C727634F7900E53FDA /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0860D5C627634F7900E53FDA /* FileManager+Extension.swift */; };
-		0865672327EC4B7F001F521C /* LicensePurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0865672227EC4B7F001F521C /* LicensePurchaseManager.swift */; };
+		0865672327EC4B7F001F521C /* IAPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0865672227EC4B7F001F521C /* IAPManager.swift */; };
 		086701B32665C6D900A1E951 /* AudioRecordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086701B22665C6D900A1E951 /* AudioRecordManager.swift */; };
 		086701B926672CAE00A1E951 /* AudioPlayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086701B826672CAE00A1E951 /* AudioPlayManager.swift */; };
 		086701BD2667329200A1E951 /* AudioDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086701BC2667329200A1E951 /* AudioDelegate.swift */; };
@@ -193,7 +193,7 @@
 		085F4B4B27D1B54A00E6A711 /* KeepDaysTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepDaysTableViewCell.swift; sourceTree = "<group>"; };
 		0860D5C42761FDD000E53FDA /* FileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTableViewCell.swift; sourceTree = "<group>"; };
 		0860D5C627634F7900E53FDA /* FileManager+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
-		0865672227EC4B7F001F521C /* LicensePurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicensePurchaseManager.swift; sourceTree = "<group>"; };
+		0865672227EC4B7F001F521C /* IAPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
 		086701B22665C6D900A1E951 /* AudioRecordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecordManager.swift; sourceTree = "<group>"; };
 		086701B826672CAE00A1E951 /* AudioPlayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayManager.swift; sourceTree = "<group>"; };
 		086701BC2667329200A1E951 /* AudioDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioDelegate.swift; sourceTree = "<group>"; };
@@ -581,7 +581,7 @@
 		69F8D100261AA603009D7AF3 /* model */ = {
 			isa = PBXGroup;
 			children = (
-				0865672227EC4B7F001F521C /* LicensePurchaseManager.swift */,
+				0865672227EC4B7F001F521C /* IAPManager.swift */,
 				0822A99B27671F4800A09A66 /* VideoFileManager.swift */,
 				087B57EE26DF108200591F8D /* chat */,
 				086701BB26672CDA00A1E951 /* audio */,
@@ -753,7 +753,7 @@
 				085F4B4C27D1B54A00E6A711 /* KeepDaysTableViewCell.swift in Sources */,
 				69B8C0BC261C683100B4E4AC /* NJError.swift in Sources */,
 				08C2C22A278FD1BA0023D773 /* AvatarEditViewController.swift in Sources */,
-				0865672327EC4B7F001F521C /* LicensePurchaseManager.swift in Sources */,
+				0865672327EC4B7F001F521C /* IAPManager.swift in Sources */,
 				0886B1B3277AFE9400257C15 /* GroupListViewController.swift in Sources */,
 				69B8C0D2261D2D4600B4E4AC /* MesasgeItemTableViewCell.swift in Sources */,
 				08084E5C27CF6B9400F65590 /* MsgViewController+Contact.swift in Sources */,
