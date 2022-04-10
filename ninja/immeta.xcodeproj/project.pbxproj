@@ -79,7 +79,6 @@
 		08CCDC6F26A3C3A200B0D7DA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CCDC6E26A3C3A200B0D7DA /* MapViewController.swift */; };
 		08CFB6D427B6302F007590A7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08CFB6D627B6302F007590A7 /* Localizable.strings */; };
 		08EAAD3F2695847900210271 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08EAAD3E2695847900210271 /* SystemConfiguration.framework */; };
-		08EAAE112695973B00210271 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08EAAE102695973B00210271 /* Main.storyboard */; };
 		08EAAE142695977300210271 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08EAAE132695977300210271 /* LaunchScreen.storyboard */; };
 		08EAAE24269735AC00210271 /* ContactAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EAAE23269735AC00210271 /* ContactAddViewController.swift */; };
 		08EAAE272697496700210271 /* SearchDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EAAE262697496700210271 /* SearchDetailViewController.swift */; };
@@ -89,6 +88,7 @@
 		2B01182227A5508B00C88116 /* CombineConntact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01182127A5508B00C88116 /* CombineConntact.swift */; };
 		2B66DB4427AE1FF100FBE8B6 /* SystemMeesageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66DB4327AE1FF100FBE8B6 /* SystemMeesageViewController.swift */; };
 		2BAB8A7027AEC327001D92DC /* InvalidGrpMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAB8A6F27AEC327001D92DC /* InvalidGrpMemberTableViewCell.swift */; };
+		691D557C2802C48C00C8ACE0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 691D557E2802C48C00C8ACE0 /* Main.storyboard */; };
 		6953EAF82622C12F008EC2F0 /* AuthorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6953EAF72622C12F008EC2F0 /* AuthorViewController.swift */; };
 		6969ECBC26134294008CB0B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969ECBB26134294008CB0B2 /* AppDelegate.swift */; };
 		6969ECBE26134294008CB0B2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969ECBD26134294008CB0B2 /* SceneDelegate.swift */; };
@@ -225,7 +225,6 @@
 		08CFB6D527B6302F007590A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		08CFB6D727B63032007590A7 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		08EAAD3E2695847900210271 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		08EAAE102695973B00210271 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		08EAAE132695977300210271 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		08EAAE23269735AC00210271 /* ContactAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactAddViewController.swift; sourceTree = "<group>"; };
 		08EAAE262697496700210271 /* SearchDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDetailViewController.swift; sourceTree = "<group>"; };
@@ -235,6 +234,8 @@
 		2B01182127A5508B00C88116 /* CombineConntact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineConntact.swift; sourceTree = "<group>"; };
 		2B66DB4327AE1FF100FBE8B6 /* SystemMeesageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMeesageViewController.swift; sourceTree = "<group>"; };
 		2BAB8A6F27AEC327001D92DC /* InvalidGrpMemberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvalidGrpMemberTableViewCell.swift; sourceTree = "<group>"; };
+		691D557D2802C48C00C8ACE0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		691D55802802C4D800C8ACE0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		694D55C52766F5B60044E580 /* MBProgressHUD.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MBProgressHUD.xcframework; path = Carthage/Build/MBProgressHUD.xcframework; sourceTree = "<group>"; };
 		694D55C62766F5B60044E580 /* SwiftyJSON.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = SwiftyJSON.xcframework; path = Carthage/Build/SwiftyJSON.xcframework; sourceTree = "<group>"; };
 		6953EAF72622C12F008EC2F0 /* AuthorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorViewController.swift; sourceTree = "<group>"; };
@@ -531,7 +532,7 @@
 				6969ECD32613443A008CB0B2 /* message */,
 				6969ECBB26134294008CB0B2 /* AppDelegate.swift */,
 				6969ECBD26134294008CB0B2 /* SceneDelegate.swift */,
-				08EAAE102695973B00210271 /* Main.storyboard */,
+				691D557E2802C48C00C8ACE0 /* Main.storyboard */,
 				6969ECC726134295008CB0B2 /* Assets.xcassets */,
 				08EAAE132695977300210271 /* LaunchScreen.storyboard */,
 				6969ECCC26134295008CB0B2 /* Info.plist */,
@@ -716,7 +717,7 @@
 				08EAAE142695977300210271 /* LaunchScreen.storyboard in Resources */,
 				08CFB6D427B6302F007590A7 /* Localizable.strings in Resources */,
 				6969ECC826134295008CB0B2 /* Assets.xcassets in Resources */,
-				08EAAE112695973B00210271 /* Main.storyboard in Resources */,
+				691D557C2802C48C00C8ACE0 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -853,6 +854,15 @@
 				08CFB6D727B63032007590A7 /* zh-Hans */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		691D557E2802C48C00C8ACE0 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				691D557D2802C48C00C8ACE0 /* Base */,
+				691D55802802C4D800C8ACE0 /* zh-Hans */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

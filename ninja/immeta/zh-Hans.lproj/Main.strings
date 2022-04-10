@@ -1,0 +1,585 @@
+
+/* Class = "UILabel"; text = "0x000099909….nokjoo"; ObjectID = "0XB-yp-pa8"; */
+"0XB-yp-pa8.text" = "0x000099909….nokjoo";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "0iA-Jx-0Yt"; */
+"0iA-Jx-0Yt.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "1HH-Yb-awq"; */
+"1HH-Yb-awq.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "1YP-3u-iWH"; */
+"1YP-3u-iWH.text" = "Label";
+
+/* Class = "UILabel"; text = "已有账号，"; ObjectID = "2PF-NI-NZK"; */
+"2PF-NI-NZK.text" = "已有账号，";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "2bi-gQ-feH"; */
+"2bi-gQ-feH.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "复制"; ObjectID = "2rV-nf-kDP"; */
+"2rV-nf-kDP.normalTitle" = "复制";
+
+/* Class = "UIButton"; normalTitle = "发送"; ObjectID = "32I-ST-kz3"; */
+"32I-ST-kz3.normalTitle" = "发送";
+
+/* Class = "UIButton"; normalTitle = "全部授权"; ObjectID = "3LI-Be-szn"; */
+"3LI-Be-szn.normalTitle" = "全部授权";
+
+/* Class = "UIButton"; accessibilityLabel = "ByUid"; ObjectID = "4VH-bf-bM4"; */
+"4VH-bf-bM4.accessibilityLabel" = "ByUid";
+
+/* Class = "UITabBarItem"; title = "消息"; ObjectID = "5hH-pk-Hw9"; */
+"5hH-pk-Hw9.title" = "消息";
+
+/* Class = "UILabel"; text = "授权账号："; ObjectID = "5i6-Hu-id5"; */
+"5i6-Hu-id5.text" = "授权账号：";
+
+/* Class = "UIButton"; normalTitle = "创建群聊"; ObjectID = "5ww-5a-SVK"; */
+"5ww-5a-SVK.normalTitle" = "创建群聊";
+
+/* Class = "UINavigationItem"; title = "消息"; ObjectID = "6bS-lR-cZO"; */
+"6bS-lR-cZO.title" = "消息";
+
+/* Class = "UILabel"; text = "个人名片"; ObjectID = "7Cq-bz-g3N"; */
+"7Cq-bz-g3N.text" = "个人名片";
+
+/* Class = "UILabel"; text = "删除群成员"; ObjectID = "7DS-xf-U7a"; */
+"7DS-xf-U7a.text" = "删除群成员";
+
+/* Class = "UIView"; accessibilityLabel = "ByContact"; ObjectID = "7dF-zN-mmk"; */
+"7dF-zN-mmk.accessibilityLabel" = "ByContact";
+
+/* Class = "UILabel"; text = "个人名片"; ObjectID = "7ou-5G-Kz4"; */
+"7ou-5G-Kz4.text" = "个人名片";
+
+/* Class = "UIButton"; normalTitle = "添加好友"; ObjectID = "7pi-NO-Gcz"; */
+"7pi-NO-Gcz.normalTitle" = "添加好友";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "7yf-Ma-FVZ"; */
+"7yf-Ma-FVZ.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "保存备注"; ObjectID = "7zI-0t-mpk"; */
+"7zI-0t-mpk.normalTitle" = "保存备注";
+
+/* Class = "UILabel"; text = "非会员用户无法进群"; ObjectID = "8bg-l9-3cJ"; */
+"8bg-l9-3cJ.text" = "非会员用户无法进群";
+
+/* Class = "UILabel"; text = "12:09"; ObjectID = "9X8-Mz-Jvp"; */
+"9X8-Mz-Jvp.text" = "12:09";
+
+/* Class = "UIButton"; normalTitle = "发消息"; ObjectID = "9Xh-Iv-CEb"; */
+"9Xh-Iv-CEb.normalTitle" = "发消息";
+
+/* Class = "UILabel"; text = "30天免费试用权限"; ObjectID = "9nI-9w-y24"; */
+"9nI-9w-y24.text" = "30天免费试用权限";
+
+/* Class = "UILabel"; text = "7天"; ObjectID = "AUV-4T-uFn"; */
+"AUV-4T-uFn.text" = "7天";
+
+/* Class = "UIButton"; normalTitle = "退出群聊"; ObjectID = "At7-ob-eIK"; */
+"At7-ob-eIK.normalTitle" = "退出群聊";
+
+/* Class = "UILabel"; text = "12:09"; ObjectID = "B3Y-hc-D6f"; */
+"B3Y-hc-D6f.text" = "12:09";
+
+/* Class = "UIButton"; normalTitle = " "; ObjectID = "BEg-Rp-bve"; */
+"BEg-Rp-bve.normalTitle" = " ";
+
+/* Class = "UILabel"; text = "豆豆"; ObjectID = "BTQ-SD-Efx"; */
+"BTQ-SD-Efx.text" = "豆豆";
+
+/* Class = "UILabel"; text = "复制"; ObjectID = "BYM-Tz-83Z"; */
+"BYM-Tz-83Z.text" = "复制";
+
+/* Class = "UILabel"; text = "阅后即焚"; ObjectID = "Bli-wX-yma"; */
+"Bli-wX-yma.text" = "阅后即焚";
+
+/* Class = "UILabel"; text = "描述"; ObjectID = "C7U-bc-8yY"; */
+"C7U-bc-8yY.text" = "描述";
+
+/* Class = "UILabel"; text = "位置"; ObjectID = "C7b-Qp-TSl"; */
+"C7b-Qp-TSl.text" = "位置";
+
+/* Class = "UILabel"; text = "新建账号"; ObjectID = "DDf-81-qwU"; */
+"DDf-81-qwU.text" = "新建账号";
+
+/* Class = "UIButton"; normalTitle = "保存到通讯录"; ObjectID = "ERb-SC-y41"; */
+"ERb-SC-y41.normalTitle" = "保存到通讯录";
+
+/* Class = "UILabel"; text = "豆豆"; ObjectID = "ESY-Ec-URI"; */
+"ESY-Ec-URI.text" = "豆豆";
+
+/* Class = "UINavigationItem"; title = "管理账号"; ObjectID = "GHy-1y-g1y"; */
+"GHy-1y-g1y.title" = "管理账号";
+
+/* Class = "UILabel"; text = "注册账号"; ObjectID = "GvK-Xx-NZs"; */
+"GvK-Xx-NZs.text" = "注册账号";
+
+/* Class = "UILabel"; text = "豆豆"; ObjectID = "HAc-q0-JRz"; */
+"HAc-q0-JRz.text" = "豆豆";
+
+/* Class = "UIButton"; normalTitle = "确定"; ObjectID = "HcN-hp-vgX"; */
+"HcN-hp-vgX.normalTitle" = "确定";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "IC6-A5-i63"; */
+"IC6-A5-i63.text" = "Label";
+
+/* Class = "UITextField"; placeholder = "请输入与登录密码不同的密码"; ObjectID = "IHu-Iq-SEP"; */
+"IHu-Iq-SEP.placeholder" = "请输入与登录密码不同的密码";
+
+/* Class = "UITextField"; placeholder = " 输入密码"; ObjectID = "IVn-1W-1TG"; */
+"IVn-1W-1TG.placeholder" = " 输入密码";
+
+/* Class = "UILabel"; text = "豆豆"; ObjectID = "JZ6-kW-jUo"; */
+"JZ6-kW-jUo.text" = "豆豆";
+
+/* Class = "UILabel"; text = "图库"; ObjectID = "Jcf-u6-hxO"; */
+"Jcf-u6-hxO.text" = "图库";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "JtE-My-AxK"; */
+"JtE-My-AxK.text" = "Label";
+
+/* Class = "UILabel"; text = "剩余激活天数1000天，"; ObjectID = "KVQ-oz-ZPB"; */
+"KVQ-oz-ZPB.text" = "剩余激活天数1000天，";
+
+/* Class = "UILabel"; text = "导出账号二维码"; ObjectID = "Kbq-0U-zns"; */
+"Kbq-0U-zns.text" = "导出账号二维码";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "KcC-sd-9yE"; */
+"KcC-sd-9yE.normalTitle" = "Button";
+
+/* Class = "UITextField"; placeholder = "  输入密码"; ObjectID = "LGY-iF-UeL"; */
+"LGY-iF-UeL.placeholder" = "  输入密码";
+
+/* Class = "UILabel"; text = "12:09"; ObjectID = "LbI-Df-ycC"; */
+"LbI-Df-ycC.text" = "12:09";
+
+/* Class = "UILabel"; text = "豆豆"; ObjectID = "LlG-Fk-sk3"; */
+"LlG-Fk-sk3.text" = "豆豆";
+
+/* Class = "UILabel"; text = "12:09"; ObjectID = "MGH-jZ-bQe"; */
+"MGH-jZ-bQe.text" = "12:09";
+
+/* Class = "UILabel"; text = "未保存好友"; ObjectID = "MZv-qa-68S"; */
+"MZv-qa-68S.text" = "未保存好友";
+
+/* Class = "UILabel"; text = "豆豆"; ObjectID = "N88-Zn-W9y"; */
+"N88-Zn-W9y.text" = "豆豆";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "NoP-Fr-Ufc"; */
+"NoP-Fr-Ufc.text" = "0";
+
+/* Class = "UIBarButtonItem"; title = "跳过"; ObjectID = "O7K-VJ-DmY"; */
+"O7K-VJ-DmY.title" = "跳过";
+
+/* Class = "UINavigationItem"; title = "删除群成员"; ObjectID = "OBB-b6-YE7"; */
+"OBB-b6-YE7.title" = "删除群成员";
+
+/* Class = "UILabel"; text = "豆豆"; ObjectID = "OhK-LC-o6Y"; */
+"OhK-LC-o6Y.text" = "豆豆";
+
+/* Class = "UILabel"; text = "恭喜您获得"; ObjectID = "PFS-qf-HDS"; */
+"PFS-qf-HDS.text" = "恭喜您获得";
+
+/* Class = "UINavigationItem"; title = "通讯录"; ObjectID = "PVV-Tz-yqZ"; */
+"PVV-Tz-yqZ.title" = "通讯录";
+
+/* Class = "UIButton"; normalTitle = "激活"; ObjectID = "PXB-S6-3dc"; */
+"PXB-S6-3dc.normalTitle" = "激活";
+
+/* Class = "UIBarButtonItem"; title = "Item"; ObjectID = "Ph8-ch-cLa"; */
+"Ph8-ch-cLa.title" = "Item";
+
+/* Class = "UILabel"; text = "普通用户仅支持文本聊天"; ObjectID = "QaW-Sr-YLA"; */
+"QaW-Sr-YLA.text" = "普通用户仅支持文本聊天";
+
+/* Class = "UILabel"; text = "昵称"; ObjectID = "RdF-nR-ShM"; */
+"RdF-nR-ShM.text" = "昵称";
+
+/* Class = "UILabel"; text = "解锁账号"; ObjectID = "S4L-Yk-LDI"; */
+"S4L-Yk-LDI.text" = "解锁账号";
+
+/* Class = "UILabel"; text = "12:09"; ObjectID = "SgA-58-V45"; */
+"SgA-58-V45.text" = "12:09";
+
+/* Class = "UINavigationItem"; title = "好友授权"; ObjectID = "T3m-Kv-PL3"; */
+"T3m-Kv-PL3.title" = "好友授权";
+
+/* Class = "UIButton"; normalTitle = "确定"; ObjectID = "T44-UA-bB3"; */
+"T44-UA-bB3.normalTitle" = "确定";
+
+/* Class = "UINavigationItem"; title = "阅后即焚"; ObjectID = "T7y-KW-4x0"; */
+"T7y-KW-4x0.title" = "阅后即焚";
+
+/* Class = "UILabel"; text = "豆豆"; ObjectID = "U4e-vN-Z1o"; */
+"U4e-vN-Z1o.text" = "豆豆";
+
+/* Class = "UILabel"; text = "豆豆"; ObjectID = "UDE-yt-mhh"; */
+"UDE-yt-mhh.text" = "豆豆";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "UV8-Ud-3ie"; */
+"UV8-Ud-3ie.text" = "Label";
+
+/* Class = "UILabel"; text = "12:09"; ObjectID = "UgO-4b-bJg"; */
+"UgO-4b-bJg.text" = "12:09";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "V27-BV-SKh"; */
+"V27-BV-SKh.text" = "Label";
+
+/* Class = "UINavigationItem"; title = "编辑信息"; ObjectID = "VFN-CG-raS"; */
+"VFN-CG-raS.title" = "编辑信息";
+
+/* Class = "UILabel"; text = "自毁模式"; ObjectID = "WJJ-OZ-leT"; */
+"WJJ-OZ-leT.text" = "自毁模式";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "WZw-U2-CuL"; */
+"WZw-U2-CuL.normalTitle" = "Button";
+
+/* Class = "UIView"; accessibilityLabel = "ByIDView"; ObjectID = "WyQ-l0-EfU"; */
+"WyQ-l0-EfU.accessibilityLabel" = "ByIDView";
+
+/* Class = "UIButton"; normalTitle = "导入二维码"; ObjectID = "X4Q-M9-KBk"; */
+"X4Q-M9-KBk.normalTitle" = "导入二维码";
+
+/* Class = "UILabel"; text = "群聊"; ObjectID = "Xiq-OR-MS2"; */
+"Xiq-OR-MS2.text" = "群聊";
+
+/* Class = "UIButton"; normalTitle = "确定"; ObjectID = "Y3N-kD-sdc"; */
+"Y3N-kD-sdc.normalTitle" = "确定";
+
+/* Class = "UIBarButtonItem"; title = "Item"; ObjectID = "YKF-jw-R6t"; */
+"YKF-jw-R6t.title" = "Item";
+
+/* Class = "UILabel"; text = "系统通知"; ObjectID = "YLQ-iO-kep"; */
+"YLQ-iO-kep.text" = "系统通知";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "YQJ-y5-XtP"; */
+"YQJ-y5-XtP.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "YZ9-PQ-p0Z"; */
+"YZ9-PQ-p0Z.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "立即激活"; ObjectID = "Z1e-nN-Cgc"; */
+"Z1e-nN-Cgc.normalTitle" = "立即激活";
+
+/* Class = "UIView"; accessibilityLabel = "DeleteMemberView"; ObjectID = "Z38-wh-fvP"; */
+"Z38-wh-fvP.accessibilityLabel" = "DeleteMemberView";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "ZL1-OM-dON"; */
+"ZL1-OM-dON.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "删除好友"; ObjectID = "ZMb-zn-YJH"; */
+"ZMb-zn-YJH.normalTitle" = "删除好友";
+
+/* Class = "UIBarButtonItem"; title = "Item"; ObjectID = "Zqr-be-pUf"; */
+"Zqr-be-pUf.title" = "Item";
+
+/* Class = "UINavigationItem"; title = "我的ID"; ObjectID = "aBU-4d-Kmm"; */
+"aBU-4d-Kmm.title" = "我的ID";
+
+/* Class = "UILabel"; text = "会员日起至："; ObjectID = "aEd-9O-gdX"; */
+"aEd-9O-gdX.text" = "会员日起至：";
+
+/* Class = "UILabel"; text = "12:09"; ObjectID = "avg-ld-9Ab"; */
+"avg-ld-9Ab.text" = "12:09";
+
+/* Class = "UILabel"; text = "12:09"; ObjectID = "c5f-dz-UfX"; */
+"c5f-dz-UfX.text" = "12:09";
+
+/* Class = "UILabel"; text = "⚠️\n自毁模式开启并使用后，现有账号将被替换\n建议您保存现有二维码到相册，以免账号丢失"; ObjectID = "cFm-Vh-STz"; */
+"cFm-Vh-STz.text" = "⚠️\n自毁模式开启并使用后，现有账号将被替换\n建议您保存现有二维码到相册，以免账号丢失";
+
+/* Class = "UIButton"; normalTitle = "QRButton"; ObjectID = "d16-gw-WDC"; */
+"d16-gw-WDC.normalTitle" = "QRButton";
+
+/* Class = "UILabel"; text = "豆豆"; ObjectID = "dRo-ov-Q92"; */
+"dRo-ov-Q92.text" = "豆豆";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "ddN-Am-vQU"; */
+"ddN-Am-vQU.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "dfI-hX-wBU"; */
+"dfI-hX-wBU.text" = "Label";
+
+/* Class = "UILabel"; text = "设置自毁密码"; ObjectID = "eF4-q2-Hol"; */
+"eF4-q2-Hol.text" = "设置自毁密码";
+
+/* Class = "UILabel"; text = "976143e4a465a2f896f549b22ceff83803ed3a6afd99083bf70bc08164c4d4f4a75b22d3e48a049d65850f7e9055adf1"; ObjectID = "eWy-sS-Uft"; */
+"eWy-sS-Uft.text" = "976143e4a465a2f896f549b22ceff83803ed3a6afd99083bf70bc08164c4d4f4a75b22d3e48a049d65850f7e9055adf1";
+
+/* Class = "UINavigationItem"; title = "输入授权账号 "; ObjectID = "eXz-vZ-rLo"; */
+"eXz-vZ-rLo.title" = "输入授权账号 ";
+
+/* Class = "UILabel"; text = "Immeta:a656a1a460f39b9c147ac5ac92c4829182c142e5f59b12b9f918feb30e5d07129a908ed2c1f22ab6b06649d49b740560"; ObjectID = "efj-rF-dxw"; */
+"efj-rF-dxw.text" = "Immeta:a656a1a460f39b9c147ac5ac92c4829182c142e5f59b12b9f918feb30e5d07129a908ed2c1f22ab6b06649d49b740560";
+
+/* Class = "UIButton"; normalTitle = "确定"; ObjectID = "evn-J2-Mxq"; */
+"evn-J2-Mxq.normalTitle" = "确定";
+
+/* Class = "UIButton"; normalTitle = "发消息"; ObjectID = "f84-hn-ivR"; */
+"f84-hn-ivR.normalTitle" = "发消息";
+
+/* Class = "UILabel"; text = "豆豆"; ObjectID = "fmu-oj-ltv"; */
+"fmu-oj-ltv.text" = "豆豆";
+
+/* Class = "UILabel"; text = "备注"; ObjectID = "fr0-GV-yno"; */
+"fr0-GV-yno.text" = "备注";
+
+/* Class = "UILabel"; text = "豆豆"; ObjectID = "fti-93-qPw"; */
+"fti-93-qPw.text" = "豆豆";
+
+/* Class = "UILabel"; text = "从通讯录选择好友"; ObjectID = "gKQ-zc-QZs"; */
+"gKQ-zc-QZs.text" = "从通讯录选择好友";
+
+/* Class = "UIButton"; normalTitle = "立即领取"; ObjectID = "gl1-85-n2J"; */
+"gl1-85-n2J.normalTitle" = "立即领取";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "guj-7p-IMj"; */
+"guj-7p-IMj.normalTitle" = "Cancel";
+
+/* Class = "UIButton"; normalTitle = " "; ObjectID = "hLC-M6-w2h"; */
+"hLC-M6-w2h.normalTitle" = " ";
+
+/* Class = "UILabel"; text = "天"; ObjectID = "hPu-ZS-SdM"; */
+"hPu-ZS-SdM.text" = "天";
+
+/* Class = "UITabBarItem"; title = "通讯录"; ObjectID = "hXe-6p-t0F"; */
+"hXe-6p-t0F.title" = "通讯录";
+
+/* Class = "UIBarButtonItem"; title = "Item"; ObjectID = "hcM-Bx-miw"; */
+"hcM-Bx-miw.title" = "Item";
+
+/* Class = "UILabel"; text = "群聊名称"; ObjectID = "hdi-pP-J1V"; */
+"hdi-pP-J1V.text" = "群聊名称";
+
+/* Class = "UITextField"; placeholder = "设置备注信息"; ObjectID = "hfa-5h-p6g"; */
+"hfa-5h-p6g.placeholder" = "设置备注信息";
+
+/* Class = "UILabel"; text = "上滑取消"; ObjectID = "hsK-3I-AOn"; */
+"hsK-3I-AOn.text" = "上滑取消";
+
+/* Class = "UIButton"; normalTitle = "清空聊天记录"; ObjectID = "hul-E3-z4Q"; */
+"hul-E3-z4Q.normalTitle" = "清空聊天记录";
+
+/* Class = "UILabel"; text = "12:09"; ObjectID = "hzY-UM-RSP"; */
+"hzY-UM-RSP.text" = "12:09";
+
+/* Class = "UIButton"; normalTitle = "保存"; ObjectID = "i62-VC-fEq"; */
+"i62-VC-fEq.normalTitle" = "保存";
+
+/* Class = "UILabel"; text = "版本号 15.2.02"; ObjectID = "iEJ-h9-Kul"; */
+"iEJ-h9-Kul.text" = "版本号 15.2.02";
+
+/* Class = "UILabel"; text = "管理账号"; ObjectID = "iTC-f3-DAw"; */
+"iTC-f3-DAw.text" = "管理账号";
+
+/* Class = "UILabel"; text = "拍摄"; ObjectID = "imP-6e-L1a"; */
+"imP-6e-L1a.text" = "拍摄";
+
+/* Class = "UILabel"; text = "群ID"; ObjectID = "img-RW-zq7"; */
+"img-RW-zq7.text" = "群ID";
+
+/* Class = "UINavigationItem"; title = "选择好友"; ObjectID = "iqe-h4-HCM"; */
+"iqe-h4-HCM.title" = "选择好友";
+
+/* Class = "UINavigationItem"; title = "扫描二维码"; ObjectID = "isb-33-tVl"; */
+"isb-33-tVl.title" = "扫描二维码";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "ixf-tX-2Oo"; */
+"ixf-tX-2Oo.text" = "Label";
+
+/* Class = "UINavigationItem"; title = "我的"; ObjectID = "jSM-cB-QvN"; */
+"jSM-cB-QvN.title" = "我的";
+
+/* Class = "UILabel"; text = "7"; ObjectID = "kAV-du-J8O"; */
+"kAV-du-J8O.text" = "7";
+
+/* Class = "UINavigationItem"; title = "创建群聊"; ObjectID = "llL-g9-DXt"; */
+"llL-g9-DXt.title" = "创建群聊";
+
+/* Class = "UIButton"; normalTitle = "确定"; ObjectID = "lws-69-BrK"; */
+"lws-69-BrK.normalTitle" = "确定";
+
+/* Class = "UIButton"; normalTitle = "确定"; ObjectID = "m2b-kS-djM"; */
+"m2b-kS-djM.normalTitle" = "确定";
+
+/* Class = "UILabel"; text = "分享"; ObjectID = "mrj-tv-i9E"; */
+"mrj-tv-i9E.text" = "分享";
+
+/* Class = "UILabel"; text = "豆豆"; ObjectID = "n24-z0-HKk"; */
+"n24-z0-HKk.text" = "豆豆";
+
+/* Class = "UILabel"; text = "设置手势密码"; ObjectID = "nGJ-mj-dAs"; */
+"nGJ-mj-dAs.text" = "设置手势密码";
+
+/* Class = "UIButton"; normalTitle = "更换头像"; ObjectID = "ngV-dR-S67"; */
+"ngV-dR-S67.normalTitle" = "更换头像";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "oUd-Od-cMO"; */
+"oUd-Od-cMO.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = " "; ObjectID = "odn-T9-sU6"; */
+"odn-T9-sU6.normalTitle" = " ";
+
+/* Class = "UIButton"; normalTitle = "完成"; ObjectID = "oeM-W4-rLS"; */
+"oeM-W4-rLS.normalTitle" = "完成";
+
+/* Class = "UILabel"; text = "导入账号二维码"; ObjectID = "oiB-Ka-nlX"; */
+"oiB-Ka-nlX.text" = "导入账号二维码";
+
+/* Class = "UILabel"; text = "输入授权天数"; ObjectID = "pI6-Mf-Wsb"; */
+"pI6-Mf-Wsb.text" = "输入授权天数";
+
+/* Class = "UILabel"; text = "$"; ObjectID = "pkG-8F-8Qu"; */
+"pkG-8F-8Qu.text" = "$";
+
+/* Class = "UILabel"; text = "成为会员"; ObjectID = "pqB-QM-wpt"; */
+"pqB-QM-wpt.text" = "成为会员";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "pxr-YJ-GQy"; */
+"pxr-YJ-GQy.text" = "Label";
+
+/* Class = "UILabel"; text = "已保存好友"; ObjectID = "q01-MJ-iqb"; */
+"q01-MJ-iqb.text" = "已保存好友";
+
+/* Class = "UILabel"; text = "12:09"; ObjectID = "qYT-UM-KwI"; */
+"qYT-UM-KwI.text" = "12:09";
+
+/* Class = "UITextField"; placeholder = "再次输入密码"; ObjectID = "qc1-rX-XXO"; */
+"qc1-rX-XXO.placeholder" = "再次输入密码";
+
+/* Class = "UIBarButtonItem"; title = " "; ObjectID = "qgI-dH-Lwn"; */
+"qgI-dH-Lwn.title" = " ";
+
+/* Class = "UINavigationItem"; title = "授权好友"; ObjectID = "qur-vH-Krd"; */
+"qur-vH-Krd.title" = "授权好友";
+
+/* Class = "UIButton"; normalTitle = "按住说话"; ObjectID = "qyV-3Y-1Op"; */
+"qyV-3Y-1Op.normalTitle" = "按住说话";
+
+/* Class = "UIButton"; normalTitle = " "; ObjectID = "r3Z-8r-XyC"; */
+"r3Z-8r-XyC.normalTitle" = " ";
+
+/* Class = "UIButton"; normalTitle = "完成"; ObjectID = "rA4-Xd-suW"; */
+"rA4-Xd-suW.normalTitle" = "完成";
+
+/* Class = "UIButton"; normalTitle = "保存"; ObjectID = "rMQ-zt-fhI"; */
+"rMQ-zt-fhI.normalTitle" = "保存";
+
+/* Class = "UILabel"; text = "VIP用户免费使用"; ObjectID = "rdr-A6-5mJ"; */
+"rdr-A6-5mJ.text" = "VIP用户免费使用";
+
+/* Class = "UITextField"; placeholder = "  再次输入密码"; ObjectID = "rlg-8h-idd"; */
+"rlg-8h-idd.placeholder" = "  再次输入密码";
+
+/* Class = "UITabBarItem"; title = "我的"; ObjectID = "rwf-JU-YKo"; */
+"rwf-JU-YKo.title" = "我的";
+
+/* Class = "UILabel"; text = "12:09"; ObjectID = "sWp-Wu-8Gg"; */
+"sWp-Wu-8Gg.text" = "12:09";
+
+/* Class = "UITextField"; placeholder = "search ID"; ObjectID = "svs-sT-IEp"; */
+"svs-sT-IEp.placeholder" = "search ID";
+
+/* Class = "UIButton"; normalTitle = "OK"; ObjectID = "t5F-AF-9qE"; */
+"t5F-AF-9qE.normalTitle" = "OK";
+
+/* Class = "UIButton"; normalTitle = "搜索"; ObjectID = "tG1-4j-A66"; */
+"tG1-4j-A66.normalTitle" = "搜索";
+
+/* Class = "UILabel"; text = "群ID"; ObjectID = "tLQ-14-NEw"; */
+"tLQ-14-NEw.text" = "群ID";
+
+/* Class = "UIBarButtonItem"; title = "Item"; ObjectID = "tNX-MO-M7V"; */
+"tNX-MO-M7V.title" = "Item";
+
+/* Class = "UILabel"; text = "保存"; ObjectID = "tQg-HT-7dL"; */
+"tQg-HT-7dL.text" = "保存";
+
+/* Class = "UILabel"; text = "12:09"; ObjectID = "tY6-fF-T7R"; */
+"tY6-fF-T7R.text" = "12:09";
+
+/* Class = "UILabel"; text = "30"; ObjectID = "tav-Lg-MCK"; */
+"tav-Lg-MCK.text" = "30";
+
+/* Class = "UIButton"; normalTitle = "取消"; ObjectID = "tbz-Tz-fKf"; */
+"tbz-Tz-fKf.normalTitle" = "取消";
+
+/* Class = "UILabel"; text = "12:09"; ObjectID = "txk-fd-6dn"; */
+"txk-fd-6dn.text" = "12:09";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "u2g-Py-sDA"; */
+"u2g-Py-sDA.text" = "Label";
+
+/* Class = "UINavigationItem"; title = "群聊"; ObjectID = "u8w-AL-kWF"; */
+"u8w-AL-kWF.title" = "群聊";
+
+/* Class = "UILabel"; text = "群聊名称"; ObjectID = "ucn-1n-a4o"; */
+"ucn-1n-a4o.text" = "群聊名称";
+
+/* Class = "UITextField"; placeholder = "Nick Name"; ObjectID = "uvD-EF-dXG"; */
+"uvD-EF-dXG.placeholder" = "Nick Name";
+
+/* Class = "UILabel"; text = "个人名片"; ObjectID = "uvu-MM-2jW"; */
+"uvu-MM-2jW.text" = "个人名片";
+
+/* Class = "UIView"; accessibilityLabel = "DeleteMemberView"; ObjectID = "uzu-ty-Chx"; */
+"uzu-ty-Chx.accessibilityLabel" = "DeleteMemberView";
+
+/* Class = "UILabel"; text = "2020-10-10"; ObjectID = "vMh-pa-8Cq"; */
+"vMh-pa-8Cq.text" = "2020-10-10";
+
+/* Class = "UILabel"; text = "oxfbbbbllljjjoxfbbbbllljjjoxfbbbbllljjjoxfbbbbllljjj"; ObjectID = "vcm-ol-Wil"; */
+"vcm-ol-Wil.text" = "oxfbbbbllljjjoxfbbbbllljjjoxfbbbbllljjjoxfbbbbllljjj";
+
+/* Class = "UINavigationItem"; title = "NickName"; ObjectID = "vfJ-LT-acQ"; */
+"vfJ-LT-acQ.title" = "NickName";
+
+/* Class = "UITextView"; text = "本app使用区块链加密技术，密码一旦丢失，将不可找回。建议您备份二维码，备份成功后会将账号二维码保存到手机相册。"; ObjectID = "vpL-HV-5SS"; */
+"vpL-HV-5SS.text" = "本app使用区块链加密技术，密码一旦丢失，将不可找回。建议您备份二维码，备份成功后会将账号二维码保存到手机相册。";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "vrh-KU-M3P"; */
+"vrh-KU-M3P.text" = "Label";
+
+/* Class = "UILabel"; text = "描述"; ObjectID = "wBQ-vz-03c"; */
+"wBQ-vz-03c.text" = "描述";
+
+/* Class = "UILabel"; text = "备注"; ObjectID = "wC4-os-Ibr"; */
+"wC4-os-Ibr.text" = "备注";
+
+/* Class = "UIButton"; normalTitle = " "; ObjectID = "wDR-of-VDH"; */
+"wDR-of-VDH.normalTitle" = " ";
+
+/* Class = "UITextField"; placeholder = "设置备注信息"; ObjectID = "wLn-C9-QOr"; */
+"wLn-C9-QOr.placeholder" = "设置备注信息";
+
+/* Class = "UILabel"; text = "输入好友ID"; ObjectID = "xC8-6u-7GM"; */
+"xC8-6u-7GM.text" = "输入好友ID";
+
+/* Class = "UILabel"; text = "豆豆"; ObjectID = "xKW-7A-jMS"; */
+"xKW-7A-jMS.text" = "豆豆";
+
+/* Class = "UILabel"; text = "豆豆"; ObjectID = "xmx-vs-df2"; */
+"xmx-vs-df2.text" = "豆豆";
+
+/* Class = "UIView"; accessibilityLabel = "DeleteMemberView"; ObjectID = "y2h-8y-sDk"; */
+"y2h-8y-sDk.accessibilityLabel" = "DeleteMemberView";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "y8b-cR-ugV"; */
+"y8b-cR-ugV.text" = "Label";
+
+/* Class = "UILabel"; text = "1"; ObjectID = "yGk-yF-ohi"; */
+"yGk-yF-ohi.text" = "1";
+
+/* Class = "UILabel"; text = "12:09"; ObjectID = "yTg-e1-cHa"; */
+"yTg-e1-cHa.text" = "12:09";
+
+/* Class = "UILabel"; text = "9.99"; ObjectID = "zPk-ey-kx9"; */
+"zPk-ey-kx9.text" = "9.99";
+
+/* Class = "UILabel"; text = "授权好友"; ObjectID = "zes-OV-sJS"; */
+"zes-OV-sJS.text" = "授权好友";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "zrz-3G-5xv"; */
+"zrz-3G-5xv.text" = "Label";
