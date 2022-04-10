@@ -307,14 +307,6 @@
 			path = transfer;
 			sourceTree = "<group>";
 		};
-		0822A99D27671F5900A09A66 /* video */ = {
-			isa = PBXGroup;
-			children = (
-				0822A99B27671F4800A09A66 /* VideoFileManager.swift */,
-			);
-			path = video;
-			sourceTree = "<group>";
-		};
 		0823F78126565137000DA4DB /* keychain */ = {
 			isa = PBXGroup;
 			children = (
@@ -396,14 +388,6 @@
 				085F4B4B27D1B54A00E6A711 /* KeepDaysTableViewCell.swift */,
 			);
 			path = keepDays;
-			sourceTree = "<group>";
-		};
-		0865672127EC3C3F001F521C /* purchase */ = {
-			isa = PBXGroup;
-			children = (
-				0865672227EC4B7F001F521C /* LicensePurchaseManager.swift */,
-			);
-			path = purchase;
 			sourceTree = "<group>";
 		};
 		086701BB26672CDA00A1E951 /* audio */ = {
@@ -597,8 +581,8 @@
 		69F8D100261AA603009D7AF3 /* model */ = {
 			isa = PBXGroup;
 			children = (
-				0865672127EC3C3F001F521C /* purchase */,
-				0822A99D27671F5900A09A66 /* video */,
+				0865672227EC4B7F001F521C /* LicensePurchaseManager.swift */,
+				0822A99B27671F4800A09A66 /* VideoFileManager.swift */,
 				087B57EE26DF108200591F8D /* chat */,
 				086701BB26672CDA00A1E951 /* audio */,
 				69F8D101261AA615009D7AF3 /* Wallet.swift */,
