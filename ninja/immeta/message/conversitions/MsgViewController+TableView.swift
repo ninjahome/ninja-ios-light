@@ -2,7 +2,7 @@
 //  MsgViewController+TableView.swift
 //  immeta
 //
-//  Created by 郭晓芙 on 2021/12/6.
+//  Created by ribencong on 2021/12/6.
 //
 import UIKit
 import Foundation

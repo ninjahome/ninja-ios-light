@@ -2,7 +2,7 @@
 //  ManageViewController.swift
 //  immeta
 //
-//  Created by 郭晓芙 on 2021/5/22.
+//  Created by ribencong on 2021/5/22.
 //
 
 import UIKit

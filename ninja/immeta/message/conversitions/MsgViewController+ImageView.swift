@@ -2,7 +2,7 @@
 //  MsgViewController+ImageView.swift
 //  immeta
 //
-//  Created by 郭晓芙 on 2021/12/7.
+//  Created by ribencong on 2021/12/7.
 //
 
 import Foundation

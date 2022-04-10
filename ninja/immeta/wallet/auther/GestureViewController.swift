@@ -2,7 +2,7 @@
 //  GestureViewController.swift
 //  immeta
 //
-//  Created by 郭晓芙 on 2022/4/6.
+//  Created by ribencong on 2022/4/6.
 //
 
 import UIKit

@@ -2,7 +2,7 @@
 //  DeleteMemberController.swift
 //  immeta
 //
-//  Created by 郭晓芙 on 2021/8/20.
+//  Created by ribencong on 2021/8/20.
 //
 
 import UIKit

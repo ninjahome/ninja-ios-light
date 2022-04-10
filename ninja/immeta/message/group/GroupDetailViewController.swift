@@ -2,7 +2,7 @@
 //  GroupDetailViewController.swift
 //  immeta
 //
-//  Created by 郭晓芙 on 2021/8/17.
+//  Created by ribencong on 2021/8/17.
 //
 
 import UIKit

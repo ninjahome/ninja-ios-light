@@ -2,7 +2,7 @@
 //  CreateCroupMemberTableViewCell.swift
 //  immeta
 //
-//  Created by 郭晓芙 on 2021/8/1.
+//  Created by ribencong on 2021/8/1.
 //
 
 import UIKit

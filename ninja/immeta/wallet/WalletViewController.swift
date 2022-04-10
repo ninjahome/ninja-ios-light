@@ -120,12 +120,7 @@ class WalletViewController: UITableViewController {
                         }
                 }
         }
-        
-        @IBAction func activeVIP(_ sender: UIButton) {
-//                DispatchQueue.global().async {
-//                        Wallet.shared.getWalletFromETH()
-//                }
-        }
+
         
 //        @IBAction func setUseFaceID(_ sender: UISwitch) {
 //                if sender.isOn {

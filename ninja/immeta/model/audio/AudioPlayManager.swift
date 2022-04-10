@@ -2,7 +2,7 @@
 //  AudioPlayManager.swift
 //  immeta
 //
-//  Created by 郭晓芙 on 2021/6/2.
+//  Created by ribencong on 2021/6/2.
 //
 
 import Foundation

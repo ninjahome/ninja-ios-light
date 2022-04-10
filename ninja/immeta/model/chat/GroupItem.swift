@@ -2,7 +2,7 @@
 //  GroupItem.swift
 //  immeta
 //
-//  Created by 郭晓芙 on 2021/8/8.
+//  Created by ribencong on 2021/8/8.
 //
 
 import Foundation

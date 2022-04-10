@@ -2,7 +2,7 @@
 //  SearchDetailViewController.swift
 //  immeta
 //
-//  Created by 郭晓芙 on 2021/7/8.
+//  Created by ribencong on 2021/7/8.
 //
 
 import UIKit

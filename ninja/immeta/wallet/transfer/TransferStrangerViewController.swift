@@ -2,7 +2,7 @@
 //  TransferStrangerViewController.swift
 //  immeta
 //
-//  Created by 郭晓芙 on 2021/9/27.
+//  Created by ribencong on 2021/9/27.
 //
 
 import UIKit

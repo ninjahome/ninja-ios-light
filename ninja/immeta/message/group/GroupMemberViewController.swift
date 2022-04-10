@@ -2,7 +2,7 @@
 //  CreateGroupViewController.swift
 //  immeta
 //
-//  Created by 郭晓芙 on 2021/7/30.
+//  Created by ribencong on 2021/7/30.
 //
 
 import UIKit

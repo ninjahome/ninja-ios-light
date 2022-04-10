@@ -2,7 +2,7 @@
 //  GroupListViewController.swift
 //  immeta
 //
-//  Created by 郭晓芙 on 2021/12/28.
+//  Created by ribencong on 2021/12/28.
 //
 
 import UIKit

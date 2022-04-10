@@ -2,7 +2,7 @@
 //  VideoFileManager.swift
 //  immeta
 //
-//  Created by 郭晓芙 on 2021/12/13.
+//  Created by ribencong on 2021/12/13.
 //
 
 import Foundation

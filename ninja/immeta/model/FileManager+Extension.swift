@@ -2,7 +2,7 @@
 //  FileManager+Extension.swift
 //  immeta
 //
-//  Created by 郭晓芙 on 2021/12/10.
+//  Created by ribencong on 2021/12/10.
 //
 
 import Foundation

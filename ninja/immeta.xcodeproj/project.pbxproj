@@ -194,7 +194,6 @@
 		0860D5C42761FDD000E53FDA /* FileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTableViewCell.swift; sourceTree = "<group>"; };
 		0860D5C627634F7900E53FDA /* FileManager+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
 		0865672227EC4B7F001F521C /* LicensePurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicensePurchaseManager.swift; sourceTree = "<group>"; };
-		0865672427ED95AE001F521C /* LicenseConfiguration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = LicenseConfiguration.storekit; sourceTree = "<group>"; };
 		086701B22665C6D900A1E951 /* AudioRecordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecordManager.swift; sourceTree = "<group>"; };
 		086701B826672CAE00A1E951 /* AudioPlayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayManager.swift; sourceTree = "<group>"; };
 		086701BC2667329200A1E951 /* AudioDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioDelegate.swift; sourceTree = "<group>"; };
@@ -403,7 +402,6 @@
 			isa = PBXGroup;
 			children = (
 				0865672227EC4B7F001F521C /* LicensePurchaseManager.swift */,
-				0865672427ED95AE001F521C /* LicenseConfiguration.storekit */,
 			);
 			path = purchase;
 			sourceTree = "<group>";

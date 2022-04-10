@@ -2,7 +2,7 @@
 //  DestroyViewController.swift
 //  immeta
 //
-//  Created by 郭晓芙 on 2021/9/24.
+//  Created by ribencong on 2021/9/24.
 //
 
 import UIKit

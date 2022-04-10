@@ -2,7 +2,7 @@
 //  ImageTableViewCell.swift
 //  immeta
 //
-//  Created by 郭晓芙 on 2021/6/27.
+//  Created by ribencong on 2021/6/27.
 //
 
 import UIKit

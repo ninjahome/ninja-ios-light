@@ -2,7 +2,7 @@
 //  AvatarButton.swift
 //  immeta
 //
-//  Created by 郭晓芙 on 2021/9/7.
+//  Created by ribencong on 2021/9/7.
 //
 
 import UIKit
