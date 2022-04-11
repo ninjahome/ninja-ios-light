@@ -24,7 +24,6 @@ class AgentViewController: UIViewController {
                 layout.scrollDirection = .horizontal
                 layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 5)
                 collectionView.collectionViewLayout = layout
-                buyBtnContent()
         }
         
         override func viewWillAppear(_ animated: Bool) {
@@ -48,17 +47,13 @@ class AgentViewController: UIViewController {
         }
 
         @IBAction func buyLicense(_ sender: UIButton) {
-                buyProduct(by: selectedId)
-        }
-        
-        func buyProduct(by id: Int) {
-                licenseProducts.store.buyProduct(products[id]) { [weak self] success, productId in
+                licenseProducts.store.buyProduct(products[selectedId]) { [weak self] success, productId in
                         guard let self = self else { return }
                         guard success else {
                                 return
                         }
                         
-                        self.toastMessage(title: "Buy success!")
+                        self.toastMessage(title: "Buy success!".locStr)
                 }
         }
         

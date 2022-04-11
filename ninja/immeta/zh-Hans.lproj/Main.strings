@@ -336,7 +336,7 @@
 "gl1-85-n2J.normalTitle" = "立即领取";
 
 /* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "guj-7p-IMj"; */
-"guj-7p-IMj.normalTitle" = "Cancel";
+"guj-7p-IMj.normalTitle" = "取消";
 
 /* Class = "UIButton"; normalTitle = " "; ObjectID = "hLC-M6-w2h"; */
 "hLC-M6-w2h.normalTitle" = " ";
@@ -483,7 +483,7 @@
 "svs-sT-IEp.placeholder" = "search ID";
 
 /* Class = "UIButton"; normalTitle = "OK"; ObjectID = "t5F-AF-9qE"; */
-"t5F-AF-9qE.normalTitle" = "OK";
+"t5F-AF-9qE.normalTitle" = "确定";
 
 /* Class = "UIButton"; normalTitle = "搜索"; ObjectID = "tG1-4j-A66"; */
 "tG1-4j-A66.normalTitle" = "搜索";
