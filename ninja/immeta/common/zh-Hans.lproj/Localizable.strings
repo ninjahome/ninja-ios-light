@@ -132,3 +132,5 @@
 "Account balance is:"="剩余激活天数:";
 "group_leader"="group_leader_zh";
 "Buy success!"="购买成功";
+"load products failed"="加载商品失败";
+"loading products"="加载商品";

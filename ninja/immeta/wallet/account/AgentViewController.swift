@@ -15,6 +15,10 @@ class AgentViewController: UIViewController {
         @IBOutlet weak var collectionView: UICollectionView!
         @IBOutlet weak var buyBtn: UIButton!
         
+        //TODO::
+//        licenseProducts.store.restorePurchases()
+        
+        
         override func viewDidLoad() {
                 super.viewDidLoad()
                 hideKeyboardWhenTappedAround()
@@ -27,17 +31,30 @@ class AgentViewController: UIViewController {
         }
         
         override func viewWillAppear(_ animated: Bool) {
-                licenseProducts.store.restorePurchases()
-                licenseProducts.store.requestProducts { [weak self] success, res in
-                        guard let self = self else { return }
-                        guard success else { return }
-                        let sortedRes = res?.sorted(by: { a, b in
+                
+                self.showIndicator(withTitle: "", and: "loading products".locStr)
+                
+                licenseProducts.store.requestProducts { success, res in
+                        defer{
+                                self.hideIndicator()
+                        }
+                        
+                        guard success else {
+                                self.toastMessage(title: "load products failed".locStr)
+                                return
+                        }
+                        
+                        guard let sortedRes = res?.sorted(by: { a, b in
                                 return a.price.decimalValue < b.price.decimalValue
-                        })
-                        self.products = sortedRes ?? []
+                        }) else{
+                                self.toastMessage(title: "load products failed".locStr)
+                                return
+                        }
+                        
+                        self.products = sortedRes
                         DispatchQueue.main.async {
                                 self.collectionView.reloadData()
-                                self.buyBtnContent()
+                                self.setupBuyBtn()
                         }
                 }
         }
@@ -57,12 +74,16 @@ class AgentViewController: UIViewController {
                 }
         }
         
-        func buyBtnContent() {
-                if products.count > 0 {
-                        let pdt = products[selectedId]
-                        let text = String((pdt.priceLocale.currencySymbol ?? "")+pdt.price.toString() + " " + "Buy Now".locStr)
-                        buyBtn.setTitle(text, for: .normal)
+        func setupBuyBtn() {
+                guard products.count > 0  else{
+                        return
+                        
                 }
+                
+                let pdt = products[selectedId]
+                let text = String((pdt.priceLocale.currencySymbol ?? "")+pdt.price.toString() + " " + "Buy Now".locStr)
+                buyBtn.setTitle(text, for: .normal)
+                
         }
 }
 
@@ -96,6 +117,6 @@ extension AgentViewController: UICollectionViewDelegateFlowLayout, UICollectionV
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
                 self.selectedId = indexPath.row
                 self.collectionView.reloadData()
-                buyBtnContent()
+                setupBuyBtn()
         }
 }
