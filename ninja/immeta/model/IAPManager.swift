@@ -38,7 +38,7 @@ public struct licenseProducts {
         }
 }
 
-public typealias ProductsRequestCompletionHandler = (_ success: Bool, _ products: [SKProduct]?) -> Void
+public typealias ProductsRequestCompletionHandler = (_ products: [SKProduct]?) -> Void
 public typealias ProductPurchaseCompletionHandler = (_ success: Bool, _ productId: ProductID?) -> Void
 
 // MARK: - IAPManager
@@ -86,26 +86,16 @@ extension IAPManager {
 
 // MARK: - SKProductsRequestDelegate
 extension IAPManager: SKProductsRequestDelegate {
+        
         public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-                print("Loaded list of products...")
-                let products = response.products
-                guard !products.isEmpty else {
-                        print("Product list is empty...!")
-                        print("Did you configure the project and set up the IAP?")
-                        productsRequestCompletionHandler?(false, nil)
-                        return
-                }
-                productsRequestCompletionHandler?(true, products)
+                print("------>SKProductsRequestDelegate callback: \(response.products.count)")
+                productsRequestCompletionHandler?(response.products)
                 clearRequestAndHandler()
-                for p in products {
-                        print("Found product: \(p.productIdentifier) \(p.localizedTitle) \(p.price.floatValue)")
-                }
         }
         
         public func request(_ request: SKRequest, didFailWithError error: Error) {
-                print("Failed to load list of products.")
-                print("Error: \(error.localizedDescription)")
-                productsRequestCompletionHandler?(false, nil)
+                print("------>SKProductsRequestDelegate Error: \(error.localizedDescription)")
+                productsRequestCompletionHandler?([])
                 clearRequestAndHandler()
         }
         

@@ -34,22 +34,19 @@ class AgentViewController: UIViewController {
                 
                 self.showIndicator(withTitle: "", and: "loading products".locStr)
                 
-                licenseProducts.store.requestProducts { success, res in
+                licenseProducts.store.requestProducts { res in
                         defer{
                                 self.hideIndicator()
                         }
                         
-                        guard success else {
+                        guard let products = res, products.count > 0 else {
                                 self.toastMessage(title: "load products failed".locStr)
                                 return
                         }
                         
-                        guard let sortedRes = res?.sorted(by: { a, b in
+                        let sortedRes = products.sorted(by: { a, b in
                                 return a.price.decimalValue < b.price.decimalValue
-                        }) else{
-                                self.toastMessage(title: "load products failed".locStr)
-                                return
-                        }
+                        })
                         
                         self.products = sortedRes
                         DispatchQueue.main.async {
