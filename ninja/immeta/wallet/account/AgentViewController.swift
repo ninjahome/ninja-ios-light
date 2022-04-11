@@ -65,20 +65,28 @@ class AgentViewController: UIViewController {
         }
 
         @IBAction func buyLicense(_ sender: UIButton) {
-                licenseProducts.store.buyProduct(products[selectedId]) { [weak self] success, productId in
-                        guard let self = self else { return }
-                        guard success else {
+                
+                licenseProducts.store.buyProduct(products[selectedId]) { tx, error in
+                        
+                        if let err = error {
+                                self.toastMessage(title: err.localizedDescription)
                                 return
                         }
                         
-                        self.toastMessage(title: "Buy success!".locStr)
+                        guard let transaction = tx else{
+                                self.toastMessage(title: "Buy failed".locStr)
+                                return
+                        }
+                        let payment = transaction.payment
+                        print("------>>> txid[\(transaction.transactionIdentifier ?? "")]")
+                        print("------>>> pid=\(payment.productIdentifier)")
+                        print("------>>>  name=[\(payment.applicationUsername ?? "")]")
                 }
         }
         
         func setupBuyBtn() {
                 guard products.count > 0  else{
                         return
-                        
                 }
                 
                 let pdt = products[selectedId]

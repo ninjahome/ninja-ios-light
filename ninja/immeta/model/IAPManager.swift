@@ -20,26 +20,10 @@ public struct licenseProducts {
                                                          licenseProducts.threeMonths,
                                                          licenseProducts.halfYear,
                                                          licenseProducts.oneYear]
-        
-        public static func getLicenseDays(by id: String) -> Int {
-                if id == licenseProducts.oneMonth {
-                        return 30
-                }
-                if id == licenseProducts.threeMonths {
-                        return 90
-                }
-                if id == licenseProducts.halfYear {
-                        return 180
-                }
-                if id == licenseProducts.oneYear {
-                        return 360
-                }
-                return 0
-        }
 }
 
 public typealias ProductsRequestCompletionHandler = (_ products: [SKProduct]?) -> Void
-public typealias ProductPurchaseCompletionHandler = (_ success: Bool, _ productId: ProductID?) -> Void
+public typealias ProductPurchaseCompletionHandler = (_ transaction: SKPaymentTransaction?, _ err:NSError?) -> Void
 
 // MARK: - IAPManager
 public class IAPManager: NSObject  {
@@ -67,8 +51,9 @@ extension IAPManager {
         }
         
         public func buyProduct(_ product: SKProduct, _ completionHandler: @escaping ProductPurchaseCompletionHandler) {
+                print("------>>>Buying... \(product.productIdentifier)")
+                
                 productPurchaseCompletionHandler = completionHandler
-                print("------>>>Buying \(product.productIdentifier)...")
                 
                 let payment = SKMutablePayment(product: product)
                 payment.applicationUsername = Wallet.shared.Addr
@@ -107,7 +92,9 @@ extension IAPManager: SKProductsRequestDelegate {
 
 // MARK: - SKPaymentTransactionObserver
 extension IAPManager: SKPaymentTransactionObserver {
+        
         public func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+                
                 for transaction in transactions {
                         switch (transaction.transactionState) {
                         case .purchased:
@@ -131,38 +118,29 @@ extension IAPManager: SKPaymentTransactionObserver {
         
         private func complete(transaction: SKPaymentTransaction) {
                 let identifier = transaction.payment.productIdentifier
-                Wallet.shared.AddLicense(by: licenseProducts.getLicenseDays(by: identifier))
                 
-                productPurchaseCompleted(identifier: identifier)
-                NotificationCenter.default.post(name: NotifyLicenseChanged, object: nil)
+                print("------>>>complete... \(identifier)")
+                productPurchaseCompletionHandler?(transaction, nil)
+                clearHandler()
                 SKPaymentQueue.default().finishTransaction(transaction)
         }
         
         private func restore(transaction: SKPaymentTransaction) {
-//                guard let payment = transaction.original?.payment else { return }
-//
-//                let productIdentifier = payment.productIdentifier
-//                print("restore... \(productIdentifier):::\(payment)")
-//                productPurchaseCompleted(identifier: productIdentifier)
-//                SKPaymentQueue.default().finishTransaction(transaction)
+                guard let productIdentifier = transaction.original?.payment.productIdentifier else { return }
+                
+                print("------>>>restore... \(productIdentifier)")
+                SKPaymentQueue.default().finishTransaction(transaction)
         }
         
         private func fail(transaction: SKPaymentTransaction) {
-                if let transactionError = transaction.error as NSError?,
-                   let localizedDescription = transaction.error?.localizedDescription,
-                   transactionError.code != SKError.paymentCancelled.rawValue {
-                        print("------>>>Transaction Error: \(localizedDescription)")
+                guard let transactionError = transaction.error as NSError?,
+                   transactionError.code != SKError.paymentCancelled.rawValue  else{
+                        return
                 }
-                
-                productPurchaseCompletionHandler?(false, nil)
+                print("------>>>fail... \(transactionError.localizedDescription)")
+                productPurchaseCompletionHandler?(nil, transactionError)
+                clearHandler()
                 SKPaymentQueue.default().finishTransaction(transaction)
-                clearHandler()
-        }
-        
-        private func productPurchaseCompleted(identifier: ProductID?) {
-                guard let identifier = identifier else { return }
-                productPurchaseCompletionHandler?(true, identifier)
-                clearHandler()
         }
         
         private func clearHandler() {

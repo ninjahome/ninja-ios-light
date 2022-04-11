@@ -274,10 +274,6 @@ class Wallet: NSObject {
                 return nil
         }
         
-        func AddLicense(by days: Int) {
-                let new = self.liceneseExpireTime + Int64(days*86400)
-                _ = UpdateLicense(by: new)
-        }
         
         func openGesture(auth: String) -> Bool {
                 guard let _ = Active(auth) else {
