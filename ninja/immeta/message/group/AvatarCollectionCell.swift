@@ -14,6 +14,7 @@ class AvatarCollectionCell: UICollectionViewCell {
         
         func initApperance(id: String,isLeader:Bool = false) {
                 groupLeaderImg.isHidden = !isLeader
+                groupLeaderImg.image = UIImage(named: "group_leader".locStr)
                 if id == Wallet.shared.Addr{
                         MemberIcon.setupSelf()
                         nickName.text = Wallet.shared.nickName
