@@ -4196,15 +4196,15 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tav-Lg-MCK">
-                                                            <rect key="frame" x="54" y="27" width="18.5" height="17"/>
-                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
-                                                            <color key="textColor" red="0.52549019610000003" green="0.52549019610000003" blue="0.54117647059999996" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                            <rect key="frame" x="50.5" y="27" width="25.5" height="24"/>
+                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                                            <color key="textColor" red="0.13847044110000001" green="0.1435205638" blue="0.14352121949999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pkG-8F-8Qu">
-                                                            <rect key="frame" x="12" y="81" width="16.5" height="20"/>
-                                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
-                                                            <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <rect key="frame" x="12" y="79.5" width="22.5" height="21.5"/>
+                                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
+                                                            <color key="textColor" systemColor="systemGreenColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9.99" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zPk-ey-kx9">
@@ -4213,15 +4213,16 @@
                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="54" id="wZI-BM-5WR"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="25"/>
-                                                            <nil key="textColor"/>
+                                                            <color key="textColor" systemColor="systemGreenColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="diamond_icon" translatesAutoresizingMaskIntoConstraints="NO" id="ZIj-3d-rCR">
-                                                            <rect key="frame" x="28" y="26.5" width="18" height="18"/>
+                                                            <rect key="frame" x="20.5" y="28" width="22" height="22"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="18" id="Cga-WF-BSd"/>
-                                                                <constraint firstAttribute="height" constant="18" id="n17-vW-ose"/>
+                                                                <constraint firstAttribute="width" constant="22" id="Cga-WF-BSd"/>
+                                                                <constraint firstAttribute="height" constant="22" id="n17-vW-ose"/>
                                                             </constraints>
+                                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
                                                         </imageView>
                                                     </subviews>
                                                     <constraints>
@@ -4234,7 +4235,7 @@
                                                         <constraint firstItem="tav-Lg-MCK" firstAttribute="centerX" secondItem="uXk-Ya-QB8" secondAttribute="centerX" multiplier="1.1" id="hBT-aK-kHN"/>
                                                         <constraint firstItem="zPk-ey-kx9" firstAttribute="centerX" secondItem="uXk-Ya-QB8" secondAttribute="centerX" multiplier="1.1" id="iSp-8c-UVk"/>
                                                         <constraint firstItem="tav-Lg-MCK" firstAttribute="centerY" secondItem="ZIj-3d-rCR" secondAttribute="centerY" id="r0I-jX-5i8"/>
-                                                        <constraint firstItem="zPk-ey-kx9" firstAttribute="leading" secondItem="pkG-8F-8Qu" secondAttribute="trailing" constant="8" id="zbc-bq-Hoi"/>
+                                                        <constraint firstItem="zPk-ey-kx9" firstAttribute="leading" secondItem="pkG-8F-8Qu" secondAttribute="trailing" constant="2" id="zbc-bq-Hoi"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -6633,6 +6634,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemOrangeColor">
             <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

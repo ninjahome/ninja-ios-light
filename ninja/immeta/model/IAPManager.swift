@@ -140,7 +140,6 @@ extension IAPManager: SKPaymentTransactionObserver {
         }
         
         private func complete(transaction: SKPaymentTransaction) {
-                print("complete...")
                 let identifier = transaction.payment.productIdentifier
                 Wallet.shared.AddLicense(by: licenseProducts.getLicenseDays(by: identifier))
                 
@@ -159,11 +158,10 @@ extension IAPManager: SKPaymentTransactionObserver {
         }
         
         private func fail(transaction: SKPaymentTransaction) {
-                print("fail...")
                 if let transactionError = transaction.error as NSError?,
                    let localizedDescription = transaction.error?.localizedDescription,
                    transactionError.code != SKError.paymentCancelled.rawValue {
-                        print("Transaction Error: \(localizedDescription)")
+                        print("------>>>Transaction Error: \(localizedDescription)")
                 }
                 
                 productPurchaseCompletionHandler?(false, nil)

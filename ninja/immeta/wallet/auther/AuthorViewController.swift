@@ -118,21 +118,11 @@ class AuthorViewController: UIViewController {
 }
 
 extension AuthorViewController: GestureVerified {
-        func verified() ->Bool{
-                guard let pwd = DeriveAesKey() else{
-                        return false
+        
+        func verified(){
+                self.dismiss(animated: false){
+                        self.delegate?.OpenSuccess()
                 }
-                if let err = Wallet.shared.Active(pwd){
-                        print("------>", err.localizedDescription)
-                        return false
-                }
-                
-                DispatchQueue.main.async {
-                        self.dismiss(animated: false){
-                                self.delegate?.OpenSuccess()
-                        }
-                }
-                return true
         }
         
         func forgetGuest(){

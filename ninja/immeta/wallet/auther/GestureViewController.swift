@@ -8,36 +8,36 @@
 import UIKit
 
 protocol GestureVerified {
-        func verified()->Bool
+        func verified()
         func forgetGuest()
 }
 
 enum GType {
-    case set
-    case verify
-    case modify
+        case set
+        case verify
+        case modify
 }
 
 class WarnLabel: UILabel {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        textAlignment = .center
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    func showNormal(with message: String) {
-        text = message
-        textColor = UIColor.black
-    }
-
-    func showWarn(with message: String) {
-        text = message
-        textColor = UIColor(gpRGB: 0xC94349)
-        layer.gp_shake()
-    }
+        override init(frame: CGRect) {
+                super.init(frame: frame)
+                textAlignment = .center
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+                fatalError("init(coder:) has not been implemented")
+        }
+        
+        func showNormal(with message: String) {
+                text = message
+                textColor = UIColor.black
+        }
+        
+        func showWarn(with message: String) {
+                text = message
+                textColor = UIColor(gpRGB: 0xC94349)
+                layer.gp_shake()
+        }
 }
 
 class GestureViewController: UIViewController {
@@ -120,25 +120,44 @@ extension GestureViewController: GPasswordEventDelegate {
         }
         
         func touchesEnded() {
-                if password.count > 0 {
-                        if type == .set {
-                                setPassword()
+                guard password.count > 0 else{
+                        return
+                }
+                defer{
+                        password = ""
+                }
+                if type == .set {
+                        setPassword()
+                        return
+                }
+                guard type == .verify else {
+                        return
+                }
+                
+                let savePassword = getPassword() ?? ""
+                guard password == savePassword  else{
+                        warnLabel.showWarn(with: "Error password".locStr)
+                        return
+                }
+                guard let pwd = DeriveAesKey() else{
+                        warnLabel.showWarn(with: "Error password".locStr)
+                        return
+                }
+                
+                self.showIndicator(withTitle: "", and: "Opening".locStr)
+                ServiceDelegate.workQueue.async {
+                        if let err = Wallet.shared.Active(pwd){
+                                self.hideIndicator()
+                                self.toastMessage(title:err.localizedDescription)
+                                return
                         }
-                        if type == .verify {
-                                let savePassword = getPassword() ?? ""
-                                if password == savePassword {
-                                        let result = self.delegate?.verified() ?? false
-                                        if result{
-                                                self.dismiss(animated: false)
-                                        }else{
-                                                warnLabel.showWarn(with: "Error password".locStr)
-                                        }
-                                } else {
-                                        warnLabel.showWarn(with: "Error password".locStr)
-                                }
+                        
+                        DispatchQueue.main.async {
+                                self.hideIndicator()
+                                self.dismiss(animated: false)
+                                self.delegate?.verified()
                         }
                 }
-                password = ""
         }
 }
 
