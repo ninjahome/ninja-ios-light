@@ -4198,13 +4198,13 @@
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tav-Lg-MCK">
                                                             <rect key="frame" x="50.5" y="27" width="25.5" height="24"/>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                            <color key="textColor" red="0.13847044110000001" green="0.1435205638" blue="0.14352121949999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <color key="textColor" red="0.83921568627450982" green="0.60784313725490191" blue="0.26666666666666666" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pkG-8F-8Qu">
                                                             <rect key="frame" x="12" y="79.5" width="22.5" height="21.5"/>
                                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
-                                                            <color key="textColor" systemColor="systemGreenColor"/>
+                                                            <color key="textColor" red="0.13847044110000001" green="0.1435205638" blue="0.14352121949999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9.99" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zPk-ey-kx9">
@@ -4213,7 +4213,7 @@
                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="54" id="wZI-BM-5WR"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="25"/>
-                                                            <color key="textColor" systemColor="systemGreenColor"/>
+                                                            <color key="textColor" red="0.13847044110000001" green="0.1435205638" blue="0.14352121949999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="diamond_icon" translatesAutoresizingMaskIntoConstraints="NO" id="ZIj-3d-rCR">
@@ -4270,15 +4270,30 @@
                                                 <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qws-zp-D8Y">
+                                                <rect key="frame" x="356" y="8" width="50" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="G2y-V9-sYv"/>
+                                                    <constraint firstAttribute="height" constant="44" id="JuJ-Rh-7sd"/>
+                                                </constraints>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" image="x_icon" title=" "/>
+                                                <connections>
+                                                    <action selector="CloseStoreView:" destination="GXX-5a-XgS" eventType="touchUpInside" id="a4k-E8-uNU"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstItem="IfD-JX-F2T" firstAttribute="centerY" secondItem="BT6-U1-PvD" secondAttribute="centerY" id="12l-cy-CwI"/>
                                             <constraint firstItem="pqB-QM-wpt" firstAttribute="leading" secondItem="IfD-JX-F2T" secondAttribute="trailing" constant="4" id="H5F-pl-JHc"/>
                                             <constraint firstItem="IfD-JX-F2T" firstAttribute="leading" secondItem="BT6-U1-PvD" secondAttribute="leading" constant="30" id="Hcw-QU-AYi"/>
+                                            <constraint firstItem="qws-zp-D8Y" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="pqB-QM-wpt" secondAttribute="trailing" constant="8" symbolic="YES" id="UHW-vm-Uy6"/>
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="pqB-QM-wpt" secondAttribute="trailing" constant="20" symbolic="YES" id="aqk-zs-GkR"/>
                                             <constraint firstItem="pqB-QM-wpt" firstAttribute="centerY" secondItem="BT6-U1-PvD" secondAttribute="centerY" id="bFm-CU-Sb7"/>
                                             <constraint firstAttribute="height" constant="60" id="dtQ-VI-bsM"/>
+                                            <constraint firstAttribute="trailing" secondItem="qws-zp-D8Y" secondAttribute="trailing" constant="8" id="e3Y-sL-yMs"/>
+                                            <constraint firstItem="qws-zp-D8Y" firstAttribute="top" secondItem="BT6-U1-PvD" secondAttribute="top" constant="8" id="rIg-nd-l9l"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -6634,9 +6649,6 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGreenColor">
-            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemOrangeColor">
             <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

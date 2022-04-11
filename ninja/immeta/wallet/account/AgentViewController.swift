@@ -59,6 +59,10 @@ class AgentViewController: UIViewController {
                 }
         }
     
+        @IBAction func CloseStoreView(_ sender: UIButton) {
+                self.dismiss(animated: true)
+        }
+        
         @IBAction func backBarBtn(_ sender: UIBarButtonItem) {
                 self.navigationController?.popViewController(animated: true)
         }
