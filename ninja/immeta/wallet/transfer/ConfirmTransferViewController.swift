@@ -20,7 +20,7 @@ class ConfirmTransferViewController: UIViewController {
                 super.viewDidLoad()
                 transferAddr.text = transAddress
                 let expireDays = Wallet.shared.getBalance()
-                expire.text = String(format: "剩余激活天数 %.2f 天", expireDays)
+                expire.text = "Account balance is:".locStr + String(format:" %.2f", expireDays)
                 self.hideKeyboardWhenTappedAround()
         }
         

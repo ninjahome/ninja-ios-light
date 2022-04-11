@@ -3817,7 +3817,7 @@
             </objects>
             <point key="canvasLocation" x="2023" y="3078"/>
         </scene>
-        <!--输入授权账号 -->
+        <!--ID to be authorized-->
         <scene sceneID="noK-Qx-YCv">
             <objects>
                 <viewController hidesBottomBarWhenPushed="YES" id="7BO-FS-49a" customClass="TransferStrangerViewController" customModule="immeta" customModuleProvider="target" sceneMemberID="viewController">
@@ -3874,11 +3874,11 @@
                                 <rect key="frame" x="128" y="729" width="158" height="48"/>
                                 <color key="backgroundColor" red="0.22352941179999999" green="0.73725490199999999" blue="0.23137254900000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="158" id="D2R-0L-w6C"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="158" id="D2R-0L-w6C"/>
                                     <constraint firstAttribute="height" constant="48" id="VMy-qx-u2T"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
-                                <state key="normal" title="确定">
+                                <state key="normal" title="OK">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
@@ -3901,7 +3901,7 @@
                             <constraint firstItem="HJ6-NM-meY" firstAttribute="bottom" secondItem="T44-UA-bB3" secondAttribute="bottom" constant="85" id="QVb-fM-Buy"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="输入授权账号 " id="eXz-vZ-rLo">
+                    <navigationItem key="navigationItem" title="ID to be authorized" id="eXz-vZ-rLo">
                         <barButtonItem key="leftBarButtonItem" image="nav_back_icon" id="VRK-Bp-7wv">
                             <connections>
                                 <action selector="returnItem:" destination="7BO-FS-49a" id="MDf-HL-ASX"/>
@@ -3917,7 +3917,7 @@
             </objects>
             <point key="canvasLocation" x="1129" y="4179"/>
         </scene>
-        <!--授权好友-->
+        <!--Authorization-->
         <scene sceneID="c9t-zW-2y9">
             <objects>
                 <viewController storyboardIdentifier="ConfirmTransferVC" hidesBottomBarWhenPushed="YES" id="AIL-xA-GkN" customClass="ConfirmTransferViewController" customModule="immeta" customModuleProvider="target" sceneMemberID="viewController">
@@ -3925,8 +3925,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="授权账号：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5i6-Hu-id5">
-                                <rect key="frame" x="15" y="108" width="72" height="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="peer ID：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5i6-Hu-id5">
+                                <rect key="frame" x="15" y="108" width="61" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.52549019610000003" green="0.52549019610000003" blue="0.54117647059999996" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -3943,8 +3943,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bav-sN-u4r">
                                 <rect key="frame" x="0.0" y="217" width="414" height="679"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="输入授权天数" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pI6-Mf-Wsb">
-                                        <rect key="frame" x="23" y="36" width="110.5" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Days to be authorized" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pI6-Mf-Wsb">
+                                        <rect key="frame" x="23" y="36" width="179.5" height="21"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                                         <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -3966,16 +3966,16 @@
                                             <constraint firstAttribute="height" constant="1" id="Tn1-5Z-7Ee"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="剩余激活天数1000天，" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KVQ-oz-ZPB">
-                                        <rect key="frame" x="184" y="142" width="147" height="17"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="account balance，" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KVQ-oz-ZPB">
+                                        <rect key="frame" x="199" y="142" width="121" height="17"/>
                                         <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
                                         <color key="textColor" red="0.52549019610000003" green="0.52549019610000003" blue="0.54117647059999996" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3LI-Be-szn">
-                                        <rect key="frame" x="333" y="136" width="58" height="29"/>
+                                        <rect key="frame" x="322" y="136" width="69" height="29"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <state key="normal" title="全部授权">
+                                        <state key="normal" title="all balance">
                                             <color key="titleColor" red="0.23137254900000001" green="0.52941176469999995" blue="0.49803921569999998" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
@@ -3986,11 +3986,11 @@
                                         <rect key="frame" x="128" y="546" width="158" height="48"/>
                                         <color key="backgroundColor" red="0.22352941179999999" green="0.73725490199999999" blue="0.23137254900000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="158" id="CMV-b8-uHp"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="158" id="CMV-b8-uHp"/>
                                             <constraint firstAttribute="height" constant="48" id="n2e-gM-75J"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
-                                        <state key="normal" title="确定">
+                                        <state key="normal" title="OK">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <userDefinedRuntimeAttributes>
@@ -4010,6 +4010,7 @@
                                     <constraint firstItem="tew-GR-iz6" firstAttribute="top" secondItem="pI6-Mf-Wsb" secondAttribute="bottom" constant="20" id="Ado-ri-3lN"/>
                                     <constraint firstItem="m2b-kS-djM" firstAttribute="centerX" secondItem="bav-sN-u4r" secondAttribute="centerX" id="ApG-mJ-4hy"/>
                                     <constraint firstItem="pI6-Mf-Wsb" firstAttribute="leading" secondItem="bav-sN-u4r" secondAttribute="leading" constant="23" id="BBe-iU-nKS"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="pI6-Mf-Wsb" secondAttribute="trailing" constant="20" symbolic="YES" id="BEB-u9-oKO"/>
                                     <constraint firstItem="pI6-Mf-Wsb" firstAttribute="top" secondItem="bav-sN-u4r" secondAttribute="top" constant="36" id="E2C-Ea-ZZ4"/>
                                     <constraint firstAttribute="bottom" secondItem="m2b-kS-djM" secondAttribute="bottom" constant="85" id="Etc-i8-El2"/>
                                     <constraint firstAttribute="trailing" secondItem="Ltu-Ts-T3a" secondAttribute="trailing" constant="23" id="Yo0-Qw-Bi3"/>
@@ -4017,6 +4018,7 @@
                                     <constraint firstItem="Ltu-Ts-T3a" firstAttribute="leading" secondItem="bav-sN-u4r" secondAttribute="leading" constant="23" id="gzv-Vi-pwf"/>
                                     <constraint firstItem="Ltu-Ts-T3a" firstAttribute="top" secondItem="tew-GR-iz6" secondAttribute="bottom" constant="2" id="jCp-BZ-Tfs"/>
                                     <constraint firstItem="3LI-Be-szn" firstAttribute="top" secondItem="Ltu-Ts-T3a" secondAttribute="bottom" constant="8" id="kET-Mj-5oQ"/>
+                                    <constraint firstItem="KVQ-oz-ZPB" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="bav-sN-u4r" secondAttribute="leading" constant="20" symbolic="YES" id="nd1-LF-Ewz"/>
                                     <constraint firstAttribute="trailing" secondItem="3LI-Be-szn" secondAttribute="trailing" constant="23" id="pFZ-kr-fQP"/>
                                     <constraint firstAttribute="trailing" secondItem="tew-GR-iz6" secondAttribute="trailing" constant="23" id="yn8-hp-2HH"/>
                                 </constraints>
@@ -4036,12 +4038,13 @@
                             <constraint firstItem="5i6-Hu-id5" firstAttribute="leading" secondItem="zhf-wH-fmt" secondAttribute="leading" constant="15" id="DTG-PC-KeT"/>
                             <constraint firstItem="5i6-Hu-id5" firstAttribute="top" secondItem="zhf-wH-fmt" secondAttribute="top" constant="20" id="JRb-oe-U7h"/>
                             <constraint firstItem="bav-sN-u4r" firstAttribute="top" secondItem="g3Q-uV-duS" secondAttribute="bottom" constant="20" id="UHh-3B-GkW"/>
+                            <constraint firstItem="zhf-wH-fmt" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="5i6-Hu-id5" secondAttribute="trailing" symbolic="YES" id="Zqb-Tv-yNp"/>
                             <constraint firstItem="g3Q-uV-duS" firstAttribute="leading" secondItem="zhf-wH-fmt" secondAttribute="leading" constant="15" id="kwd-WW-znh"/>
                             <constraint firstItem="bav-sN-u4r" firstAttribute="leading" secondItem="zhf-wH-fmt" secondAttribute="leading" id="sOi-bi-bQ1"/>
                             <constraint firstItem="zhf-wH-fmt" firstAttribute="trailing" secondItem="g3Q-uV-duS" secondAttribute="trailing" constant="15" id="xjm-jE-vhk"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="授权好友" id="qur-vH-Krd">
+                    <navigationItem key="navigationItem" title="Authorization" id="qur-vH-Krd">
                         <barButtonItem key="leftBarButtonItem" image="nav_back_icon" id="x7I-iU-zPV">
                             <connections>
                                 <action selector="returnItem:" destination="AIL-xA-GkN" id="tEC-7F-qM6"/>
@@ -4280,14 +4283,22 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hbf-ep-XYp">
-                                        <rect key="frame" x="278" y="298" width="104" height="28.5"/>
+                                        <rect key="frame" x="303" y="298" width="79" height="28.5"/>
                                         <color key="tintColor" red="0.57647058823529407" green="0.57647058823529407" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal">
                                             <attributedString key="attributedTitle">
-                                                <fragment content="查看会员特权&gt;&gt;">
+                                                <fragment content="VIP rights ">
+                                                    <attributes>
+                                                        <font key="NSFont" size="14" name=".PingFangSC-Regular"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                        <integer key="NSUnderline" value="1"/>
+                                                    </attributes>
+                                                </fragment>
+                                                <fragment content="&gt;&gt;">
                                                     <attributes>
                                                         <font key="NSFont" metaFont="system" size="14"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         <integer key="NSUnderline" value="1"/>
                                                     </attributes>
                                                 </fragment>
@@ -4770,7 +4781,7 @@
             </objects>
             <point key="canvasLocation" x="-1439" y="4179"/>
         </scene>
-        <!--我的-->
+        <!--Account-->
         <scene sceneID="znx-qo-3Zi">
             <objects>
                 <tableViewController id="Fdr-PL-VAX" customClass="WalletViewController" customModule="immeta" customModuleProvider="target" sceneMemberID="viewController">
@@ -5271,7 +5282,7 @@
                             <outlet property="delegate" destination="Fdr-PL-VAX" id="bUn-eR-Yw2"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="我的" id="jSM-cB-QvN"/>
+                    <navigationItem key="navigationItem" title="Account" id="jSM-cB-QvN"/>
                     <connections>
                         <outlet property="address" destination="y8b-cR-ugV" id="F7h-lq-dzP"/>
                         <outlet property="agentBtn" destination="PXB-S6-3dc" id="Wz9-rA-0g6"/>
@@ -5867,11 +5878,11 @@
             </objects>
             <point key="canvasLocation" x="-1004" y="1184"/>
         </scene>
-        <!--我的-->
+        <!--Account-->
         <scene sceneID="Y8B-uS-dJh">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="42j-GZ-Ir9" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="我的" image="user_icon1" selectedImage="user_pick_icon1" id="rwf-JU-YKo"/>
+                    <tabBarItem key="tabBarItem" title="Account" image="user_icon1" selectedImage="user_pick_icon1" id="rwf-JU-YKo"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="svg-Mk-Tzh">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -6569,7 +6580,7 @@
         <image name="Readdi_icon" width="20" height="20"/>
         <image name="Reafri_icon" width="20" height="20"/>
         <image name="VIP" width="22" height="14"/>
-        <image name="VIP_tag" width="62" height="20"/>
+        <image name="VIP_tag" width="42" height="20"/>
         <image name="account" width="30" height="28"/>
         <image name="account_icon" width="20" height="20"/>
         <image name="add" width="56" height="56"/>

@@ -34,11 +34,11 @@ extension AgentStatus {
         var handleText: [String] {
                 switch self {
                 case .initial:
-                        return ["激活", "未激活"]
+                        return ["Active".locStr, "Inactive".locStr]
                 case .activated:
-                        return ["续费", "账号已激活"]
+                        return ["Renew".locStr, "In Use".locStr]
                 case .almostExpire:
-                        return ["续费", "激活失效还剩"]
+                        return ["Renew".locStr, "License remains".locStr]
                 }
         }
     

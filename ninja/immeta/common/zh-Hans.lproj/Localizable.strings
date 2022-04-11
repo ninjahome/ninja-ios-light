@@ -124,3 +124,9 @@
 "Connecting..."="连接中...";
 "Disconnected"="网络断开";
 "Buy Now"="立即购买";
+"Active"="激活";
+"Renew"="续费";
+"Inactive"="未激活";
+"In Use"="账号已激活";
+"License remains"="激活失效还剩";
+"Account balance is:"="剩余激活天数:";
