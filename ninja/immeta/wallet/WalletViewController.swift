@@ -35,7 +35,7 @@ class WalletViewController: UITableViewController {
 //                balanceStatusView()
                 updateWholeView()
                 if let days = ConfigItem.shared.keepDays {
-                        readBurnDays.text = "\(days)\("Days".locStr)"
+                        readBurnDays.text = "\(days) \("Days".locStr)"
                 }
         }
     
