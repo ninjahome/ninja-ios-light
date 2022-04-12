@@ -23,7 +23,7 @@ public struct licenseProducts {
 }
 
 public typealias ProductsRequestCompletionHandler = (_ products: [SKProduct]?) -> Void
-public typealias ProductPurchaseCompletionHandler = (_ transaction: SKPaymentTransaction?, _ err:NSError?) -> Void
+public typealias ProductPurchaseCompletionHandler = (_ transaction: SKPaymentTransaction?, _ err:NSError?) -> NSError?
 
 // MARK: - IAPManager
 public class IAPManager: NSObject  {
@@ -136,14 +136,18 @@ extension IAPManager: SKPaymentTransactionObserver {
                 let identifier = transaction.payment.productIdentifier
                 
                 print("------>>>complete... \(identifier)")
-                productPurchaseCompletionHandler?(transaction, nil)
-                clearHandler()
+                defer {
+                        clearHandler()
+                }
+                if let err = productPurchaseCompletionHandler?(transaction, nil){
+                        print("------>>> process complete transaction err:=>", err.localizedDescription)
+                        return
+                }
                 SKPaymentQueue.default().finishTransaction(transaction)
         }
         
         private func restore(transaction: SKPaymentTransaction) {
-                guard let productIdentifier = transaction.original?.payment.productIdentifier else { return }
-                
+                let productIdentifier = transaction.payment.productIdentifier
                 print("------>>>restore... \(productIdentifier)")
                 SKPaymentQueue.default().finishTransaction(transaction)
         }
@@ -154,7 +158,7 @@ extension IAPManager: SKPaymentTransactionObserver {
                         return
                 }
                 print("------>>>fail... \(transactionError.localizedDescription)")
-                productPurchaseCompletionHandler?(nil, transactionError)
+                _ = productPurchaseCompletionHandler?(nil, transactionError)
                 clearHandler()
                 SKPaymentQueue.default().finishTransaction(transaction)
         }

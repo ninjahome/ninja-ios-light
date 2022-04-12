@@ -78,7 +78,7 @@ extension ConfigItem: ModelObj {
                 }
                 self.endPoint = cObj.endPoint
                 self.keepDays = cObj.keepDays
-                print("-------->>", cObj.nid)
+                print("-------->>network id:", cObj.nid)
                 self.obj = cObj
         }
 }

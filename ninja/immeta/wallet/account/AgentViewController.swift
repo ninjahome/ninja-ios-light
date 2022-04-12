@@ -7,6 +7,7 @@
 
 import UIKit
 import StoreKit
+import ChatLib
 
 class AgentViewController: UIViewController {
     
@@ -17,12 +18,15 @@ class AgentViewController: UIViewController {
         
         override func viewDidLoad() {
                 super.viewDidLoad()
+                
                 hideKeyboardWhenTappedAround()
                 collectionView.delegate = self
                 collectionView.dataSource = self
+                
                 let layout = UICollectionViewFlowLayout()
                 layout.scrollDirection = .horizontal
                 layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 5)
+                
                 collectionView.collectionViewLayout = layout
         }
         
@@ -66,20 +70,35 @@ class AgentViewController: UIViewController {
                         
                         if let err = error {
                                 self.toastMessage(title: err.localizedDescription)
-                                return
+                                return err
                         }
                         
-                        guard let transaction = tx else{
+                        guard let transaction = tx,
+                                let txid = transaction.transactionIdentifier else{
                                 self.toastMessage(title: "Buy failed".locStr)
-                                return
+                                return NJError.account("iap buy empty tx") as NSError
                         }
                         
                         let payment = transaction.payment
+                        guard let userAddress = payment.applicationUsername else{
+                                return NJError.account("iap empty blockchain address in payment") as NSError
+                        }
                         
-                        print("------>>> txid=[\(transaction.transactionIdentifier ?? "")]")
-                        print("------>>> pid=[\(payment.productIdentifier)]")
-                        print("------>>> name=[\(payment.applicationUsername ?? "")]")
+                        return self.writeToBlockChain(payment.productIdentifier, txid, userAddress)
                 }
+        }
+        
+        private func writeToBlockChain(_ productID:String,_ txid:String, _ address:String) ->NSError?{
+                var err:NSError? = nil
+                self.showIndicator(withTitle: "", and: "Writing BlockChain".locStr)
+                ServiceDelegate.workQueue.async {
+//                        let amount =
+                        ChatLibTransferForIap(address, txid, 10, &err)
+                        DispatchQueue.main.async {
+                                self.dismiss(animated: true)
+                        }
+                }
+                return err
         }
         
         func setupBuyBtn() {

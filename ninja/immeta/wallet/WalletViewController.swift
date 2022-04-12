@@ -56,7 +56,7 @@ class WalletViewController: UITableViewController {
                         Wallet.shared.getLatestWallt()
                         self.updateWholeView()
                 }
-                
+                //TODO::SetupBlockChainParam("UamowiJGVwOQFRj+vPrCPomVTCRu+wxyQGaEPDSQXIs=")
         }
         
         @objc func licenseUpdate(notification: NSNotification) {
