@@ -8,6 +8,7 @@
 import UIKit
 import UserNotifications
 import ChatLib
+import StoreKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -103,7 +104,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-                
+                SKPaymentQueue.default().add(licenseProducts.store)
                 ServiceDelegate.InitAPP()
                 self.getPushNotifications()
                 return true
@@ -129,6 +130,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         func applicationWillTerminate(_ application: UIApplication) {
+                SKPaymentQueue.default().remove(licenseProducts.store)
                 CDManager.shared.saveContext()
         }
         

@@ -15,10 +15,6 @@ class AgentViewController: UIViewController {
         @IBOutlet weak var collectionView: UICollectionView!
         @IBOutlet weak var buyBtn: UIButton!
         
-        //TODO::
-//        licenseProducts.store.restorePurchases()
-        
-        
         override func viewDidLoad() {
                 super.viewDidLoad()
                 hideKeyboardWhenTappedAround()
@@ -66,7 +62,7 @@ class AgentViewController: UIViewController {
 
         @IBAction func buyLicense(_ sender: UIButton) {
                 
-                licenseProducts.store.buyProduct(products[selectedId]) { tx, error in
+                licenseProducts.store.buyProduct(products[selectedId]) {tx, error in
                         
                         if let err = error {
                                 self.toastMessage(title: err.localizedDescription)
@@ -77,10 +73,12 @@ class AgentViewController: UIViewController {
                                 self.toastMessage(title: "Buy failed".locStr)
                                 return
                         }
+                        
                         let payment = transaction.payment
-                        print("------>>> txid[\(transaction.transactionIdentifier ?? "")]")
-                        print("------>>> pid=\(payment.productIdentifier)")
-                        print("------>>>  name=[\(payment.applicationUsername ?? "")]")
+                        
+                        print("------>>> txid=[\(transaction.transactionIdentifier ?? "")]")
+                        print("------>>> pid=[\(payment.productIdentifier)]")
+                        print("------>>> name=[\(payment.applicationUsername ?? "")]")
                 }
         }
         

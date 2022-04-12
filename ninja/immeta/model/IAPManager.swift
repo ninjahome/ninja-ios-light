@@ -35,7 +35,7 @@ public class IAPManager: NSObject  {
         public init(productIDs: Set<ProductID>) {
                 self.productIdentifiers = productIDs
                 super.init()
-                SKPaymentQueue.default().add(self)
+                restorePurchases()
         }
 }
 
@@ -66,6 +66,22 @@ extension IAPManager {
         
         public func restorePurchases() {
                 SKPaymentQueue.default().restoreCompletedTransactions()
+        }
+        
+        public func fetchreceiptData(){
+                if let appStoreReceiptURL = Bundle.main.appStoreReceiptURL,
+                    FileManager.default.fileExists(atPath: appStoreReceiptURL.path) {
+
+                    do {
+                        let receiptData = try Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped)
+                        print(receiptData)
+
+                        let receiptString = receiptData.base64EncodedString(options: [])
+
+                            print("------>>>receiptString=>", receiptString)
+                    }
+                    catch { print("------>>>Couldn't read receipt data with error: " + error.localizedDescription) }
+                }
         }
 }
 
