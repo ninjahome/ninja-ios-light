@@ -12,7 +12,7 @@ import UIKit
 class ServiceDelegate: NSObject {
         public static let workQueue = DispatchQueue.init(label: "Serivce Queue", qos: .utility)
         public static let DevTypeIOS = 1
-        public static let networkID = Int8(1)
+        public static let networkID = Int8(2)
         public static let infuraToken = "1afa19415f5c48dda9b056820160dbf0"
         public static func getAgentStatus() -> AgentStatus {
                 

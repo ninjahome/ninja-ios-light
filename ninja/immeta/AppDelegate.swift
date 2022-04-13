@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
                 
                 let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-                print("token \(token)")
+                print("------>>>token \(token)")
                 ServiceDelegate.InitPushParam(deviceToken: token)
                 
                 if Wallet.shared.Addr == nil {
@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-                print("failed to register remote noti\(error.localizedDescription)")
+                print("------>>>failed to register remote noti\(error.localizedDescription)")
                 ServiceDelegate.InitPushParam(deviceToken: "")
         }
         
@@ -94,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                                         UIApplication.shared.registerForRemoteNotifications()
                                 }
                         case .denied:
-                                print("Permission denied.")
+                                print("------>>>Permission denied.")
                                 // The user has not given permission. Maybe you can display a message remembering why permission is required.
                         default:
                                 ServiceDelegate.InitPushParam(deviceToken: "")
