@@ -20,6 +20,14 @@ public struct licenseProducts {
                                                          licenseProducts.threeMonths,
                                                          licenseProducts.halfYear,
                                                          licenseProducts.oneYear]
+        public static func daysForProduct(pid:String)->Int{
+                switch pid{
+                case oneMonth:
+                        return 30
+                default:
+                        return 0
+                }
+        }
 }
 
 public typealias ProductsRequestCompletionHandler = (_ products: [SKProduct]?) -> Void

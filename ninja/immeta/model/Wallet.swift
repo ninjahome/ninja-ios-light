@@ -154,8 +154,14 @@ class Wallet: NSObject {
         }
         
         func Active(_ password: String) -> Error? {
+                
                 var error:NSError? = nil
                 ChatLibActiveWallet(self.wJson, password, &error)
+                if error != nil{
+                        return error
+                }
+                ChatLibSetupBlockChainParam("UamowiJGVwOQFRj+vPrCPomVTCRu+wxyQGaEPDSQXIs=", &error)
+                
                 return error
         }
         

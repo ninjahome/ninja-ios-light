@@ -92,8 +92,15 @@ class AgentViewController: UIViewController {
                 var err:NSError? = nil
                 self.showIndicator(withTitle: "", and: "Writing BlockChain".locStr)
                 ServiceDelegate.workQueue.async {
-//                        let amount =
-                        ChatLibTransferForIap(address, txid, 10, &err)
+                        defer{
+                                self.hideIndicator()
+                        }
+                        let amount = licenseProducts.daysForProduct(pid:productID)
+                        let txStr = ChatLibTransferForIap(address, txid, amount, Wallet.shared.nonce!, &err)
+                        if err != nil{
+                                return
+                        }
+                        print("------>blockchain transaction:=>", txStr)
                         DispatchQueue.main.async {
                                 self.dismiss(animated: true)
                         }
