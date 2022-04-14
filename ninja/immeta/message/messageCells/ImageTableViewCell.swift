@@ -12,7 +12,7 @@ class ImageTableViewCell: UITableViewCell {
         
         private let showBigDuration = 0.6
         private let showOriginalDuration = 0.6
-
+        
         
         @IBOutlet weak var msgBackgroundView: UIImageView!
         @IBOutlet weak var imageMsg: UIImageView!
@@ -71,7 +71,7 @@ class ImageTableViewCell: UITableViewCell {
                 imageMsg.clipsToBounds = true
                 
                 self.show(imageView: imageMsg)
-  
+                
                 if message.isOut {
                         switch message.status {
                         case .faild:
@@ -96,16 +96,16 @@ class ImageTableViewCell: UITableViewCell {
 }
 
 extension ImageTableViewCell{
-
+        
         func show(imageView: UIImageView) {
                 imageView.isUserInteractionEnabled = true
-
+                
                 let tap = UITapGestureRecognizer(target: self, action: #selector(showBigImage))
                 imageView.addGestureRecognizer(tap)
         }
-   
+        
         @objc private func showBigImage(sender: UITapGestureRecognizer) {
-             
+                
                 guard let window = getKeyWindow() else {
                         return
                 }
@@ -113,17 +113,17 @@ extension ImageTableViewCell{
                 guard let image  = imageMsg.image else {
                         return
                 }
-
+                
                 window.endEditing(true)
-
+                
                 originalFrame = CGRect()
                 let oldFrame = imageMsg.convert(imageMsg.bounds, from: window)
                 let backgroundView = UIView(frame: UIScreen.main.bounds)
                 backgroundView.backgroundColor = UIColor.black
                 backgroundView.alpha = 0.0
-
+                
                 originalFrame = oldFrame
-                                let newImageV = UIImageView(frame: oldFrame)
+                let newImageV = UIImageView(frame: oldFrame)
                 newImageV.contentMode = .scaleAspectFit
                 newImageV.image = image
                 
@@ -131,7 +131,7 @@ extension ImageTableViewCell{
                 backgroundView.addSubview(newImageV)
                 window.addSubview(backgroundView)
                 
-
+                
                 UIView.animate(withDuration: showBigDuration) {
                         let width = UIScreen.main.bounds.size.width
                         let height = image.size.height * width / image.size.width
@@ -141,7 +141,7 @@ extension ImageTableViewCell{
                 }
                 let tap2 = UITapGestureRecognizer(target: self, action: #selector(ImageTableViewCell.showOriginal(sender:)))
                 backgroundView.addGestureRecognizer(tap2)
-
+                
                 let longTap = UILongPressGestureRecognizer(target: self, action:    #selector(ImageTableViewCell.longPress(sender:)))
                 backgroundView.addGestureRecognizer(longTap)
                 
@@ -167,7 +167,7 @@ extension ImageTableViewCell{
                         }
                 }
         }
-
+        
         @objc private func longPress(sender: UILongPressGestureRecognizer) {
                 guard let backgroundView = sender.view else {
                         return
@@ -186,7 +186,7 @@ extension ImageTableViewCell{
                 let cancel = UIAlertAction(title: "Cancel".locStr, style: .cancel, handler: nil)
                 alert.addAction(action)
                 alert.addAction(cancel)
-
+                
                 guard let window = keyWindow?.rootViewController else {
                         return
                 }
@@ -197,11 +197,11 @@ extension ImageTableViewCell{
                 guard let backgroundView = sender.view else {
                         return
                 }
-
+                
                 guard let imageV = backgroundView.subviews.first else {
                         return
                 }
-
+                
                 UIView.animate(withDuration: showOriginalDuration, animations: {
                         imageV.frame = self.originalFrame
                         backgroundView.alpha = 0.0
