@@ -68,7 +68,9 @@ class txtMsg:NSObject, NSCoding,IMPayLoad{
         }
 }
 
-class imgMsg:NSObject, NSCoding,IMPayLoad{
+class imgMsg:NSObject, NSSecureCoding,IMPayLoad{
+        static var supportsSecureCoding: Bool = true
+        
         var has:String = ""
         var content: Data = Data()
         var key:Data?
@@ -91,9 +93,12 @@ class imgMsg:NSObject, NSCoding,IMPayLoad{
         
         required init?(coder: NSCoder) {
                 super.init()
-                self.content = coder.decodeObject(forKey: "content") as! Data
-                self.has = coder.decodeObject(forKey: "has") as? String ?? ""
-                self.key = coder.decodeObject(forKey: "key") as? Data
+                self.content = coder.decodeObject(of: NSData.self, forKey: "content")! as Data
+                self.has = coder.decodeObject(of: NSString.self, forKey: "has") as? String ?? ""
+                self.key = coder.decodeObject(of: NSData.self, forKey: "key") as? Data
+//                self.content = coder.decodeObject(forKey: "content") as! Data
+//                self.has = coder.decodeObject(forKey: "has") as? String ?? ""
+//                self.key = coder.decodeObject(forKey: "key") as? Data
         }
         
         func wrappedToProto() -> Data? {
@@ -112,7 +117,8 @@ class imgMsg:NSObject, NSCoding,IMPayLoad{
 }
 
 
-class audioMsg: NSObject, NSCoding, IMPayLoad {
+class audioMsg: NSObject, NSSecureCoding, IMPayLoad {
+        static var supportsSecureCoding: Bool = true
         
         var content: Data = Data()
         var duration: Int = 0
@@ -124,7 +130,7 @@ class audioMsg: NSObject, NSCoding, IMPayLoad {
         
         required init?(coder: NSCoder) {
                 super.init()
-                self.content = coder.decodeObject(forKey: "content") as! Data
+                self.content = coder.decodeObject(of: NSData.self, forKey: "content")! as Data
                 self.duration = coder.decodeInteger(forKey: "duration")
         }
         
@@ -159,7 +165,8 @@ class audioMsg: NSObject, NSCoding, IMPayLoad {
         }
 }
 
-class locationMsg: NSObject, NSCoding,IMPayLoad {
+class locationMsg: NSObject, NSSecureCoding,IMPayLoad {
+        static var supportsSecureCoding: Bool = true
         
         var lo: Float = 0
         var la: Float = 0
@@ -175,7 +182,7 @@ class locationMsg: NSObject, NSCoding,IMPayLoad {
                 super.init()
                 self.la = coder.decodeFloat(forKey: "la")
                 self.lo = coder.decodeFloat(forKey: "lo")
-                self.str = coder.decodeObject(forKey: "str") as! String
+                self.str = coder.decodeObject(of: NSString.self, forKey: "str")! as String
         }
         
         override init() {
@@ -202,8 +209,9 @@ class locationMsg: NSObject, NSCoding,IMPayLoad {
 }
 
 
-class fileMsg: NSObject, NSCoding,IMPayLoad {
+class fileMsg: NSObject, NSSecureCoding,IMPayLoad {
         
+        static var supportsSecureCoding: Bool = true
         var content: Data = Data()
         var name: String = ""
         var typ: FileTyp = .video
@@ -217,8 +225,8 @@ class fileMsg: NSObject, NSCoding,IMPayLoad {
         required init?(coder: NSCoder) {
                 super.init()
                 self.typ = FileTyp(rawValue: coder.decodeInt32(forKey:  "typ")) ?? .video
-                self.name = coder.decodeObject(forKey: "name") as? String ?? ""
-                self.content = coder.decodeObject(forKey: "content") as? Data ?? Data()
+                self.name = coder.decodeObject(of: NSString.self, forKey: "name") as? String ?? ""
+                self.content = coder.decodeObject(of: NSData.self, forKey: "content") as? Data ?? Data()
         }
         
         override init() {
@@ -262,10 +270,10 @@ class videoMsg:fileMsg{
         }
         required init?(coder: NSCoder) {
                 super.init(coder: coder)
-                if let img = coder.decodeObject(forKey: "thumbnailImg") as? UIImage{
+                if let img = coder.decodeObject(of:UIImage.self, forKey: "thumbnailImg"){
                         self.thumbnailImg = img
                 }
-                self.tmpFileURL = coder.decodeObject(forKey: "tmpFileURL") as? URL
+                self.tmpFileURL = coder.decodeObject(of:NSURL.self, forKey: "tmpFileURL") as? URL
         }
         
         init(name:String?, data:Data?, thumb:Data?){
@@ -312,7 +320,9 @@ class videoMsg:fileMsg{
 }
 
 
-class videoMsgWithHash: NSObject, NSCoding,IMPayLoad {
+class videoMsgWithHash: NSObject, NSSecureCoding,IMPayLoad {
+        static var supportsSecureCoding: Bool = true
+        
         var thumbData:Data?
         var has:String?
         var isHorizon:Bool = false
@@ -327,10 +337,10 @@ class videoMsgWithHash: NSObject, NSCoding,IMPayLoad {
         
         required init?(coder: NSCoder) {
                 super.init()
-                self.thumbData = coder.decodeObject(forKey: "thumb") as? Data
-                self.has = coder.decodeObject(forKey: "has") as? String
+                self.thumbData = coder.decodeObject(of: NSData.self, forKey: "thumb") as? Data
+                self.has = coder.decodeObject(of: NSString.self, forKey: "has") as? String
                 self.isHorizon = coder.decodeBool(forKey: "isHorizon")
-                self.key = coder.decodeObject(forKey: "key") as? Data
+                self.key = coder.decodeObject(of: NSData.self, forKey: "key") as? Data
         }
         
         init(thumb:Data, has:String, isHorizon:Bool = false, key:Data? = nil){
@@ -353,7 +363,8 @@ class videoMsgWithHash: NSObject, NSCoding,IMPayLoad {
         }
 }
 
-class contactMsg: NSObject, NSCoding,IMPayLoad {
+class contactMsg: NSObject, NSSecureCoding,IMPayLoad {
+        static var supportsSecureCoding: Bool = true
         var uid:String=""
         var recommendor:String?
         
@@ -364,8 +375,8 @@ class contactMsg: NSObject, NSCoding,IMPayLoad {
         
         required init?(coder: NSCoder) {
                 super.init()
-                self.uid = coder.decodeObject(forKey: "uid") as? String ?? ""
-                self.recommendor = coder.decodeObject(forKey: "recommendor") as? String
+                self.uid = coder.decodeObject(of: NSString.self, forKey: "uid") as? String ?? ""
+                self.recommendor = coder.decodeObject(of: NSString.self, forKey: "recommendor") as? String
         }
         
         init(uid:String, recommendor:String? = nil){
@@ -387,7 +398,10 @@ class contactMsg: NSObject, NSCoding,IMPayLoad {
 }
 
 
-class redPacketMsg: NSObject, NSCoding,IMPayLoad {
+class redPacketMsg: NSObject, NSSecureCoding,IMPayLoad {
+        
+        static var supportsSecureCoding: Bool = true
+        
         var from:String=""
         var to:String=""
         var amount:Int64 = 0
@@ -400,8 +414,8 @@ class redPacketMsg: NSObject, NSCoding,IMPayLoad {
         
         required init?(coder: NSCoder) {
                 super.init()
-                self.from = coder.decodeObject(forKey: "from") as? String ?? ""
-                self.to = coder.decodeObject(forKey: "to") as? String ?? ""
+                self.from = coder.decodeObject(of: NSString.self, forKey: "from") as? String ?? ""
+                self.to = coder.decodeObject(of: NSString.self, forKey: "to") as? String ?? ""
                 self.amount = coder.decodeInt64(forKey: "amount")
         }
         
