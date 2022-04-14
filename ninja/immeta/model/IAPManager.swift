@@ -25,6 +25,12 @@ public struct licenseProducts {
                 switch pid{
                 case oneMonth:
                         return 30
+                case threeMonths:
+                        return 90
+                case halfYear:
+                        return 180
+                case oneYear:
+                        return 360
                 default:
                         return 0
                 }
