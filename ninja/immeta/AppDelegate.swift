@@ -104,6 +104,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+                var error :NSError?
+                ChatLibSetupBlockChainParam("UamowiJGVwOQFRj+vPrCPomVTCRu+wxyQGaEPDSQXIs=", &error)
+                if let err = error{
+                        print("------>>> fatal error:", err.localizedDescription)
+                }
                 SKPaymentQueue.default().add(licenseProducts.store)
                 ServiceDelegate.InitAPP()
                 self.getPushNotifications()

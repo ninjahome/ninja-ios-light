@@ -66,46 +66,18 @@ class AgentViewController: UIViewController {
 
         @IBAction func buyLicense(_ sender: UIButton) {
                 
-                licenseProducts.store.buyProduct(products[selectedId]) {tx, error in
+                licenseProducts.store.buyProduct(products[selectedId]) {error in
                         
                         if let err = error {
                                 self.toastMessage(title: err.localizedDescription)
-                                return err
-                        }
-                        
-                        guard let transaction = tx,
-                                let txid = transaction.transactionIdentifier else{
-                                self.toastMessage(title: "Buy failed".locStr)
-                                return NJError.account("iap buy empty tx") as NSError
-                        }
-                        
-                        let payment = transaction.payment
-                        guard let userAddress = payment.applicationUsername else{
-                                return NJError.account("iap empty blockchain address in payment") as NSError
-                        }
-                        
-                        return self.writeToBlockChain(payment.productIdentifier, txid, userAddress)
-                }
-        }
-        
-        private func writeToBlockChain(_ productID:String,_ txid:String, _ address:String) ->NSError?{
-                var err:NSError? = nil
-                self.showIndicator(withTitle: "", and: "Writing BlockChain".locStr)
-                ServiceDelegate.workQueue.async {
-                        defer{
-                                self.hideIndicator()
-                        }
-                        let amount = licenseProducts.daysForProduct(pid:productID)
-                        let txStr = ChatLibTransferForIap(address, txid, amount, Wallet.shared.nonce!, &err)
-                        if err != nil{
                                 return
                         }
-                        print("------>blockchain transaction:=>", txStr)
+                        
+                        self.toastMessage(title: "recharge success".locStr)
                         DispatchQueue.main.async {
                                 self.dismiss(animated: true)
                         }
                 }
-                return err
         }
         
         func setupBuyBtn() {

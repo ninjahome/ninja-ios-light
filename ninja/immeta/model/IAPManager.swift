@@ -7,6 +7,7 @@
 
 import Foundation
 import StoreKit
+import ChatLib
 
 public typealias ProductID = String
 public struct licenseProducts {
@@ -31,7 +32,7 @@ public struct licenseProducts {
 }
 
 public typealias ProductsRequestCompletionHandler = (_ products: [SKProduct]?) -> Void
-public typealias ProductPurchaseCompletionHandler = (_ transaction: SKPaymentTransaction?, _ err:NSError?) -> NSError?
+public typealias ProductPurchaseCompletionHandler = (_ err:NSError?) -> Void
 
 // MARK: - IAPManager
 public class IAPManager: NSObject  {
@@ -147,11 +148,25 @@ extension IAPManager: SKPaymentTransactionObserver {
                 defer {
                         clearHandler()
                 }
-                if let err = productPurchaseCompletionHandler?(transaction, nil){
-                        print("------>>> process complete transaction err:=>", err.localizedDescription)
+                guard let txid = transaction.transactionIdentifier else{
+                        productPurchaseCompletionHandler?(NJError.iap("Buy failed".locStr) as NSError)
                         return
                 }
+                
+                let payment = transaction.payment
+                let userAddress = payment.applicationUsername ?? Wallet.shared.Addr!
+                let amount = licenseProducts.daysForProduct(pid:payment.productIdentifier)
+                var err:NSError?
+                print("------>>>\(userAddress)  \(txid)  \(amount)")
+                let txStr = ChatLibTransferForIap(userAddress, txid, amount, Wallet.shared.nonce!, &err)
+                if let e = err{
+                        print("------>>> process complete transaction err:=>", e.localizedDescription)
+                        productPurchaseCompletionHandler?(e)
+                        return
+                }
+                print("------>blockchain transaction:=>", txStr)
                 SKPaymentQueue.default().finishTransaction(transaction)
+                productPurchaseCompletionHandler?(nil)
         }
         
         private func restore(transaction: SKPaymentTransaction) {
@@ -166,7 +181,7 @@ extension IAPManager: SKPaymentTransactionObserver {
                         return
                 }
                 print("------>>>fail... \(transactionError.localizedDescription)")
-                _ = productPurchaseCompletionHandler?(nil, transactionError)
+                _ = productPurchaseCompletionHandler?(transactionError)
                 clearHandler()
                 SKPaymentQueue.default().finishTransaction(transaction)
         }

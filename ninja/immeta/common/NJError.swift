@@ -17,6 +17,7 @@ public enum NJError: Error,LocalizedError {
         case msg(String)
         case agent(String)
         case config(String)
+        case iap(String)
 
         public var localizedDescription: String? {
                 switch self {
@@ -30,6 +31,7 @@ public enum NJError: Error,LocalizedError {
                 case .agent(let err): return err
                 case .account(let err): return err
                 case .config(let err): return err
+                case .iap(let err): return err
                 }
         }
     
