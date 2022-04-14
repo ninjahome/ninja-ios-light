@@ -234,7 +234,7 @@
 "WJJ-OZ-leT.text" = "自毁模式";
 
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "WZw-U2-CuL"; */
-"WZw-U2-CuL.normalTitle" = "Button";
+"WZw-U2-CuL.normalTitle" = "激活";
 
 /* Class = "UIView"; accessibilityLabel = "ByIDView"; ObjectID = "WyQ-l0-EfU"; */
 "WyQ-l0-EfU.accessibilityLabel" = "ByIDView";
