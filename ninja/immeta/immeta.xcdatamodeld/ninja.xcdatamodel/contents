@@ -33,7 +33,7 @@
         <attribute name="gid" optional="YES" attributeType="String"/>
         <attribute name="isDelete" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="leader" optional="YES" attributeType="String"/>
-        <attribute name="members" optional="YES" attributeType="Transformable" valueTransformerName=""/>
+        <attribute name="members" optional="YES" attributeType="Binary" valueTransformerName=""/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="nonce" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="owner" optional="YES" attributeType="String"/>
@@ -44,7 +44,7 @@
         <attribute name="groupId" optional="YES" attributeType="String"/>
         <attribute name="image" optional="YES" attributeType="Binary"/>
         <attribute name="isOut" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="media" optional="YES" attributeType="Transformable" valueTransformerName=""/>
+        <attribute name="media" optional="YES" attributeType="Binary" valueTransformerName="NSSecureUnarchiveFromData"/>
         <attribute name="message" optional="YES" attributeType="String"/>
         <attribute name="owner" optional="YES" attributeType="String"/>
         <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>

@@ -300,7 +300,7 @@ extension GroupItem: ModelObj {
                 cObj.gid = self.gid
                 cObj.name = self.groupName
                 cObj.owner = self.owner
-                cObj.members = self.memberIds as NSObject
+                cObj.members = try NSKeyedArchiver.archivedData(withRootObject: self.memberIds, requiringSecureCoding: true)//self.memberIds as NSObject
                 cObj.unixTime = self.unixTime
                 cObj.leader = self.leader
                 cObj.isDelete = self.isDelete
@@ -316,7 +316,7 @@ extension GroupItem: ModelObj {
                 self.gid = cObj.gid ?? "<->"
                 self.groupName = cObj.name
                 self.owner = cObj.owner!
-                self.memberIds = cObj.members as? [String] ?? []
+                self.memberIds = try NSKeyedUnarchiver.unarchivedObject(ofClass: NSArray.self, from: cObj.members ?? Data()) as? [String] ?? []
                 self.unixTime = cObj.unixTime
                 self.leader = cObj.leader!
                 self.avatar = cObj.avatar

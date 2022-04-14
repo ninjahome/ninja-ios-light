@@ -352,7 +352,7 @@ extension MessageItem: ModelObj {
                 case .plainTxt:
                         uObj.message = (self.payload as? txtMsg)?.txt
                 case .image, .voice, .location, .file, .videoWithHash, .contact:
-                        uObj.media = self.payload as? NSObject
+                        uObj.media = self.payload?.wrappedToProto()
                 default:
                         print("full fill msg: no such type")
                 }
@@ -385,18 +385,24 @@ extension MessageItem: ModelObj {
                 switch self.typ {
                 case .plainTxt:
                         self.payload = txtMsg.init(txt:uObj.message ?? "")
-                case .image:
-                        self.payload = uObj.media as? imgMsg //imgMsg.init(data:uObj.image ?? Data(), has: uObj.ha)
-                case .voice:
-                        self.payload = uObj.media as? audioMsg
-                case .location:
-                        self.payload = uObj.media as? locationMsg
-                case .file:
-                        self.payload = uObj.media as? fileMsg
-                case .videoWithHash:
-                        self.payload = uObj.media as? videoMsgWithHash
-                case .contact:
-                        self.payload = uObj.media as? contactMsg
+                case .image, .voice, .location, .file, .videoWithHash, .contact:
+                        var err:NSError?
+                        ChatLibUnwrapProMsg(uObj.media, self, &err)
+                        if let e = err{
+                                print("------>>>parse payload error", e.localizedDescription)
+                        }
+//                case .image:
+//                        self.payload =  uObj.value(forKey: "media") as? imgMsg//uObj.media as? imgMsg //imgMsg.init(data:uObj.image ?? Data(), has: uObj.ha)
+//                case .voice:
+//                        self.payload = uObj.media as? audioMsg
+//                case .location:
+//                        self.payload = uObj.media as? locationMsg
+//                case .file:
+//                        self.payload = uObj.media as? fileMsg
+//                case .videoWithHash:
+//                        self.payload = uObj.media as? videoMsgWithHash
+//                case .contact:
+//                        self.payload = uObj.media as? contactMsg
                 default:
                         print("------>>>init by msg obj: no such type")
                 }
