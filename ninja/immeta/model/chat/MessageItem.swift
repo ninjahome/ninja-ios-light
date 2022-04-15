@@ -391,18 +391,6 @@ extension MessageItem: ModelObj {
                         if let e = err{
                                 print("------>>>parse payload error", e.localizedDescription)
                         }
-//                case .image:
-//                        self.payload =  uObj.value(forKey: "media") as? imgMsg//uObj.media as? imgMsg //imgMsg.init(data:uObj.image ?? Data(), has: uObj.ha)
-//                case .voice:
-//                        self.payload = uObj.media as? audioMsg
-//                case .location:
-//                        self.payload = uObj.media as? locationMsg
-//                case .file:
-//                        self.payload = uObj.media as? fileMsg
-//                case .videoWithHash:
-//                        self.payload = uObj.media as? videoMsgWithHash
-//                case .contact:
-//                        self.payload = uObj.media as? contactMsg
                 default:
                         print("------>>>init by msg obj: no such type")
                 }
@@ -440,14 +428,14 @@ extension MessageItem:ChatLibUnwrapCallbackProtocol{
         }
         
         func file(_ n: String?, t: Int32, d: Data?) {
-                self.typ = .file
-                let filTyp = FileTyp.init(rawValue: t)
-                switch filTyp{
-                case .video:
-                        self.payload = videoMsg(name: n, data: d)
-                default:
-                        self.payload = fileMsg(name:n, data:d ?? Data())
-                }
+//                self.typ = .file
+//                let filTyp = FileTyp.init(rawValue: t)
+//                switch filTyp{
+//                case .video:
+//                        self.payload = videoMsg(name: n, data: d)
+//                default:
+//                        self.payload = fileMsg(name:n, data:d ?? Data())
+//                }
         }
         
         func img(_ d: Data?,k: Data?, h:String?) {

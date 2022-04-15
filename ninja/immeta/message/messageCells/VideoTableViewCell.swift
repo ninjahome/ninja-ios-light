@@ -109,27 +109,11 @@ class VideoTableViewCell: UITableViewCell {
         }
         
         @IBAction func PlayVideo(_ sender: UIButton) {
-                guard let msg = cellMsg else{
-                        print("------>>> empty message")
-                        return
-                }
-                
+               
                 if nil != self.videoWithHash {
                         self.playByHash()
                         return
                 }
-                
-                guard let videoData = msg.payload as? videoMsg else{
-                        print("------>>> invalid video file")
-                        return
-                }
-                
-                guard let url = videoData.tmpUrl() else{
-                        print("------>>> tmp video file url invalid")
-                        return
-                }
-                
-                self.playByUrl(url: url)
         }
         
         func updateHashVideoCell (message: MessageItem, name:String, avatar:Data?, isGroup:Bool) {
@@ -169,45 +153,7 @@ class VideoTableViewCell: UITableViewCell {
                 time.text = formatMsgTimeStamp(by: message.timeStamp)
         }
         
-        
-        
-        @available(*, deprecated, message: "updateHashableVideoCell")
-        func updateMessageCell (by message: MessageItem, name:String, avatar:Data?, isGroup:Bool) {
-                cellMsg = message
-                msgBackgroundView.layer.cornerRadius = 8
-                msgBackgroundView.clipsToBounds = true
-                
-                let from = message.from
-                guard let video = message.payload as? videoMsg else{
-                        return
-                }
-                
-                let cgImg = video.thumbnailImg.cgImage!
-                playVideBtn.layer.contents = cgImg
-                playVideBtn.layer.contentsGravity = CALayerContentsGravity.resizeAspect;
-                isHorizon = cgImg.width > cgImg.height
-                
-                if message.isOut {
-                        switch message.status {
-                        case .faild:
-                                spinner?.stopAnimating()
-                                retry?.isHidden = false
-                        case .sending:
-                                spinner?.startAnimating()
-                        default:
-                                spinner?.stopAnimating()
-                        }
-                        self.avatar.setupSelf()
-                        self.nickname.text = ""
-                } else {
-                        PopulatePeerCell(nickname:self.nickname,
-                                         avatarBtn: self.avatar,
-                                         from: from, name: name, avatar: avatar, isGroup: isGroup)
-                }
-                
-                time.text = formatMsgTimeStamp(by: message.timeStamp)
-        }
-        
+      
         private func saveVideoByHash(has:String, key:Data?){
                 guard let vc = getKeyWindow()?.rootViewController else{
                         return
@@ -230,16 +176,6 @@ class VideoTableViewCell: UITableViewCell {
                         self.saveVideoByHash(has: has, key: self.videoWithHash?.key)
                         return
                 }
-                
-                guard let videoData = cellMsg?.payload as? videoMsg else{
-                        print("------>>> invalid video file")
-                        return
-                }
-                guard let url = videoData.tmpUrl() else{
-                        print("------>>> tmp video file url invalid")
-                        return
-                }
-                self.copyDataBy(url: url)
         }
         
         private func copyDataBy(url:URL){DispatchQueue.main.async {

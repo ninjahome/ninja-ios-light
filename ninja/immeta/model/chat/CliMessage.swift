@@ -142,106 +142,106 @@ class locationMsg: IMPayLoad {
 }
 
 
-class fileMsg: IMPayLoad {
-        
-        static var supportsSecureCoding: Bool = true
-        var content: Data = Data()
-        var name: String = ""
-        var typ: FileTyp = .video
-        
-        func encode(with coder: NSCoder) {
-                coder.encode(typ.rawValue, forKey: "typ")
-                coder.encode(name, forKey: "name")
-                coder.encode(content, forKey: "content")
-        }
-        
-        required init?(coder: NSCoder) {
-                self.typ = FileTyp(rawValue: coder.decodeInt32(forKey:  "typ")) ?? .video
-                self.name = coder.decodeObject(of: NSString.self, forKey: "name") as? String ?? ""
-                self.content = coder.decodeObject(of: NSData.self, forKey: "content") as? Data ?? Data()
-        }
-        
-        public func wrappedToProto() -> Data? {
-                guard content.count > 0 else{
-                        return nil
-                }
-                var err:NSError?
-                let data = ChatLibWrapFileV2(name, typ.rawValue, content, &err)
-                if let e = err{
-                        print("------>>>wrap file to proto err:[\(e.localizedDescription)]")
-                        return nil
-                }
-                
-                return data
-        }
-        
-        init(name:String?, data:Data?, typ:FileTyp = .video){
-                self.name = name ?? ""
-                self.typ = typ
-                self.content = data ?? Data()
-        }
-}
-
-class videoMsg:fileMsg{
-        var thumbnailImg: UIImage = defaultAvatar
-        private var tmpFileURL:URL?
-        
-        override func encode(with coder: NSCoder) {
-                super.encode(with: coder)
-                coder.encode(thumbnailImg, forKey: "thumbnailImg")
-                coder.encode(tmpFileURL, forKey: "tmpFileURL")
-        }
-        required init?(coder: NSCoder) {
-                super.init(coder: coder)
-                if let img = coder.decodeObject(of:UIImage.self, forKey: "thumbnailImg"){
-                        self.thumbnailImg = img
-                }
-                self.tmpFileURL = coder.decodeObject(of:NSURL.self, forKey: "tmpFileURL") as? URL
-        }
-        
-        init(name:String?, data:Data?, thumb:Data?){
-                super.init(name: name, data: data)
-                guard let d = thumb else{
-                        return
-                }
-                self.thumbnailImg = UIImage(data: d) ?? defaultAvatar
-        }
-        
-        init(name:String?, data:Data?){
-                super.init(name: name, data: data)
-                guard  let url = tmpUrl() else{
-                        return
-                }
-                let (img, _) = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
-                if let d = img{
-                        self.thumbnailImg = UIImage(data: d)!
-                }
-        }
-        
-        func tmpUrl()->URL?{
-                if let url = self.tmpFileURL{
-                        if FileManager.judgeFileOrFolderExists(filePath:  url.path) {
-                                return tmpFileURL
-                        }
-                }
-                
-                tmpFileURL = FileManager.TmpDirectory().appendingPathComponent(self.name)
-                guard let u = tmpFileURL else{
-                        return nil
-                }
-                if FileManager.judgeFileOrFolderExists(filePath:  u.path) {
-                        return tmpFileURL
-                }
-                do {
-                        try self.content.write(to: u, options: [.atomic])
-                        return tmpFileURL
-                }catch let err{
-                        print("------>>> write video file failed", err)
-                        return nil
-                }
-        }
-}
-
+//class fileMsg: IMPayLoad {
+//
+//        static var supportsSecureCoding: Bool = true
+//        var content: Data = Data()
+//        var name: String = ""
+//        var typ: FileTyp = .video
+//
+//        func encode(with coder: NSCoder) {
+//                coder.encode(typ.rawValue, forKey: "typ")
+//                coder.encode(name, forKey: "name")
+//                coder.encode(content, forKey: "content")
+//        }
+//
+//        required init?(coder: NSCoder) {
+//                self.typ = FileTyp(rawValue: coder.decodeInt32(forKey:  "typ")) ?? .video
+//                self.name = coder.decodeObject(of: NSString.self, forKey: "name") as? String ?? ""
+//                self.content = coder.decodeObject(of: NSData.self, forKey: "content") as? Data ?? Data()
+//        }
+//
+//        public func wrappedToProto() -> Data? {
+//                guard content.count > 0 else{
+//                        return nil
+//                }
+//                var err:NSError?
+//                let data = ChatLibWrapFileV2(name, typ.rawValue, content, &err)
+//                if let e = err{
+//                        print("------>>>wrap file to proto err:[\(e.localizedDescription)]")
+//                        return nil
+//                }
+//
+//                return data
+//        }
+//
+//        init(name:String?, data:Data?, typ:FileTyp = .video){
+//                self.name = name ?? ""
+//                self.typ = typ
+//                self.content = data ?? Data()
+//        }
+//}
+//
+//class videoMsg:fileMsg{
+//        var thumbnailImg: UIImage = defaultAvatar
+//        private var tmpFileURL:URL?
+//        
+//        override func encode(with coder: NSCoder) {
+//                super.encode(with: coder)
+//                coder.encode(thumbnailImg, forKey: "thumbnailImg")
+//                coder.encode(tmpFileURL, forKey: "tmpFileURL")
+//        }
+//        required init?(coder: NSCoder) {
+//                super.init(coder: coder)
+//                if let img = coder.decodeObject(of:UIImage.self, forKey: "thumbnailImg"){
+//                        self.thumbnailImg = img
+//                }
+//                self.tmpFileURL = coder.decodeObject(of:NSURL.self, forKey: "tmpFileURL") as? URL
+//        }
+//        
+//        init(name:String?, data:Data?, thumb:Data?){
+//                super.init(name: name, data: data)
+//                guard let d = thumb else{
+//                        return
+//                }
+//                self.thumbnailImg = UIImage(data: d) ?? defaultAvatar
+//        }
+//        
+//        init(name:String?, data:Data?){
+//                super.init(name: name, data: data)
+//                guard  let url = tmpUrl() else{
+//                        return
+//                }
+//                let (img, _) = VideoFileManager.thumbnailImageOfVideoInVideoURL(videoURL: url)
+//                if let d = img{
+//                        self.thumbnailImg = UIImage(data: d)!
+//                }
+//        }
+//        
+//        func tmpUrl()->URL?{
+//                if let url = self.tmpFileURL{
+//                        if FileManager.judgeFileOrFolderExists(filePath:  url.path) {
+//                                return tmpFileURL
+//                        }
+//                }
+//                
+//                tmpFileURL = FileManager.TmpDirectory().appendingPathComponent(self.name)
+//                guard let u = tmpFileURL else{
+//                        return nil
+//                }
+//                if FileManager.judgeFileOrFolderExists(filePath:  u.path) {
+//                        return tmpFileURL
+//                }
+//                do {
+//                        try self.content.write(to: u, options: [.atomic])
+//                        return tmpFileURL
+//                }catch let err{
+//                        print("------>>> write video file failed", err)
+//                        return nil
+//                }
+//        }
+//}
+//
 
 class videoMsgWithHash: IMPayLoad {
         
