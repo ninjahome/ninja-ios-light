@@ -251,8 +251,8 @@
 /* Class = "UIBarButtonItem"; title = "Item"; ObjectID = "YKF-jw-R6t"; */
 "YKF-jw-R6t.title" = "Item";
 
-/* Class = "UILabel"; text = "系统通知"; ObjectID = "YLQ-iO-kep"; */
-"YLQ-iO-kep.text" = "系统通知";
+/* Class = "UILabel"; text = "消息推送"; ObjectID = "YLQ-iO-kep"; */
+"YLQ-iO-kep.text" = "消息推送";
 
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "YQJ-y5-XtP"; */
 "YQJ-y5-XtP.normalTitle" = "Button";

@@ -4735,41 +4735,6 @@
             </objects>
             <point key="canvasLocation" x="-1439" y="3078"/>
         </scene>
-        <!--System Meesage View Controller-->
-        <scene sceneID="X1R-ay-WVV">
-            <objects>
-                <viewController id="7se-9S-Sd7" customClass="SystemMeesageViewController" customModule="immeta" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="U5T-T3-cae">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DFx-ej-azv">
-                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
-                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <wkWebViewConfiguration key="configuration">
-                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                    <wkPreferences key="preferences"/>
-                                </wkWebViewConfiguration>
-                            </wkWebView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="U3q-d9-h6r"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="DFx-ej-azv" firstAttribute="leading" secondItem="U3q-d9-h6r" secondAttribute="leading" id="I6n-vP-ycS"/>
-                            <constraint firstItem="U3q-d9-h6r" firstAttribute="bottom" secondItem="DFx-ej-azv" secondAttribute="bottom" id="flN-O3-hTz"/>
-                            <constraint firstItem="U3q-d9-h6r" firstAttribute="trailing" secondItem="DFx-ej-azv" secondAttribute="trailing" id="izk-2t-s8Q"/>
-                            <constraint firstItem="DFx-ej-azv" firstAttribute="top" secondItem="U3q-d9-h6r" secondAttribute="top" id="jVu-1r-ngg"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="Qd1-ZT-CCg"/>
-                    <connections>
-                        <outlet property="msgWebView" destination="DFx-ej-azv" id="Gfm-hm-kKt"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="FjD-rr-AYu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1439" y="4179"/>
-        </scene>
         <!--Account-->
         <scene sceneID="znx-qo-3Zi">
             <objects>
@@ -5134,7 +5099,7 @@
                                             <segue destination="qpz-HY-9It" kind="show" identifier="AuthorFriendSEG" id="vtV-bM-b8v"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="gray" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="50" id="pew-9y-sll" userLabel="AuthorFriend">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="gray" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="50" id="pew-9y-sll" userLabel="Burn Message">
                                         <rect key="frame" x="0.0" y="430" width="414" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pew-9y-sll" id="KUT-i8-CpT">
@@ -5188,31 +5153,31 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Reafri_icon" translatesAutoresizingMaskIntoConstraints="NO" id="6kM-FT-ZHB">
                                                     <rect key="frame" x="20" y="15" width="20" height="20"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="System Notification" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YLQ-iO-kep">
-                                                    <rect key="frame" x="48" y="15.5" width="146" height="19.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Push Notification" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YLQ-iO-kep">
+                                                    <rect key="frame" x="48" y="15.5" width="127.5" height="19.5"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                     <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RYE-8R-Js6">
-                                                    <rect key="frame" x="392" y="14" width="6" height="22"/>
-                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                    <state key="normal" image="red"/>
-                                                </button>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3jx-wG-nxi">
+                                                    <rect key="frame" x="343" y="9.5" width="51" height="31"/>
+                                                    <color key="tintColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="onTintColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <connections>
+                                                        <action selector="switchPushStatus:" destination="Fdr-PL-VAX" eventType="valueChanged" id="ZBP-4M-2PU"/>
+                                                    </connections>
+                                                </switch>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="RYE-8R-Js6" secondAttribute="trailing" constant="16" id="0wz-Tv-hzd"/>
+                                                <constraint firstItem="3jx-wG-nxi" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YLQ-iO-kep" secondAttribute="trailing" constant="8" symbolic="YES" id="3UU-L0-uTo"/>
                                                 <constraint firstItem="YLQ-iO-kep" firstAttribute="leading" secondItem="6kM-FT-ZHB" secondAttribute="trailing" constant="8" id="64f-hg-k4G"/>
+                                                <constraint firstAttribute="trailing" secondItem="3jx-wG-nxi" secondAttribute="trailing" constant="22" id="7gq-46-XrH"/>
                                                 <constraint firstItem="6kM-FT-ZHB" firstAttribute="centerY" secondItem="lkx-ah-qXn" secondAttribute="centerY" id="9h9-3B-jY3"/>
-                                                <constraint firstItem="RYE-8R-Js6" firstAttribute="centerY" secondItem="lkx-ah-qXn" secondAttribute="centerY" id="Hn0-k8-SYZ"/>
                                                 <constraint firstItem="YLQ-iO-kep" firstAttribute="centerY" secondItem="lkx-ah-qXn" secondAttribute="centerY" id="Mj5-Xv-rLK"/>
-                                                <constraint firstItem="RYE-8R-Js6" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YLQ-iO-kep" secondAttribute="trailing" constant="8" symbolic="YES" id="Yao-qO-XfF"/>
                                                 <constraint firstItem="6kM-FT-ZHB" firstAttribute="leading" secondItem="lkx-ah-qXn" secondAttribute="leading" constant="20" symbolic="YES" id="ncP-hx-NGC"/>
+                                                <constraint firstItem="3jx-wG-nxi" firstAttribute="centerY" secondItem="lkx-ah-qXn" secondAttribute="centerY" id="uEl-LY-sSv"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="7se-9S-Sd7" kind="show" identifier="showSystemMessageSEG" id="IcW-Xy-Q7P"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="55" id="4mA-XU-bo4" userLabel="ClearMessage">
                                         <rect key="frame" x="0.0" y="530" width="414" height="55"/>
@@ -5281,8 +5246,8 @@
                         <outlet property="backGroundView" destination="bM1-cW-pjJ" id="zPN-1o-aqg"/>
                         <outlet property="destroySwitch" destination="VYJ-p5-wji" id="cVt-KI-m7n"/>
                         <outlet property="gestureSwitch" destination="wSH-HU-rQX" id="dma-UE-Ltf"/>
-                        <outlet property="hasNewSysMsgBtn" destination="RYE-8R-Js6" id="t01-7b-Rsc"/>
                         <outlet property="nickName" destination="ddN-Am-vQU" id="viu-LJ-Fct"/>
+                        <outlet property="pushStatus" destination="3jx-wG-nxi" id="efN-2z-T5L"/>
                         <outlet property="readBurnDays" destination="AUV-4T-uFn" id="tva-BR-V9j"/>
                         <outlet property="vipBackground" destination="GsN-MM-JyL" id="umT-n0-DrQ"/>
                         <outlet property="vipFlag" destination="3O3-4v-5vF" id="ptt-d1-n6P"/>

@@ -19,7 +19,7 @@ class WalletViewController: UITableViewController {
 
         @IBOutlet weak var agentBtn: AgentButton!
         @IBOutlet weak var agentTime: UILabel!
-        @IBOutlet weak var hasNewSysMsgBtn: UIButton!
+        @IBOutlet weak var pushStatus: UISwitch!
 
         @IBOutlet weak var appVersion: UILabel!
 
@@ -34,11 +34,19 @@ class WalletViewController: UITableViewController {
                 super.viewWillAppear(animated)
 //                balanceStatusView()
                 updateWholeView()
+                setupNotiStatus()
                 if let days = ConfigItem.shared.keepDays {
                         readBurnDays.text = "\(days) \("Days".locStr)"
                 }
+                
         }
-    
+        private func setupNotiStatus(){
+                UNUserNotificationCenter.current().getNotificationSettings { settings in
+                        DispatchQueue.main.async {
+                                self.pushStatus.isOn = settings.authorizationStatus == .authorized
+                        }
+                }
+        }
         override func viewDidLoad() {
                 super.viewDidLoad()
                 appVersion.text = getAppVersion()
@@ -85,9 +93,7 @@ class WalletViewController: UITableViewController {
                         self.gestureSwitch.isOn = Wallet.shared.useGesture
                         self.nickName.text = Wallet.shared.nickName
                         self.avatar.setupSelf()
-                        
-                        self.hasNewSysMsgBtn.isHidden = SystemMeesageViewController.newTargetUrl.isEmpty
-
+                     
                         let status = ServiceDelegate.getAgentStatus()
                         self.agentBtn.currentStatus = status
                         let balance = Wallet.shared.getBalance()
@@ -157,6 +163,13 @@ class WalletViewController: UITableViewController {
                                 self.toastMessage(title: "Faild".locStr+"\(err.localizedDescription ?? "")")
                         }
                 }
+        }
+        
+        @IBAction func switchPushStatus(_ sender: UISwitch) {
+                if let appSettings = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(appSettings) {
+                    UIApplication.shared.open(appSettings)
+                }
+                setupNotiStatus()
         }
         
         @IBAction func setGesture(_ sender: UISwitch) {
