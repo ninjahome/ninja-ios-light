@@ -9,35 +9,40 @@ import UIKit
 
 class WalletViewController: UITableViewController {
         @IBOutlet weak var address: UILabel!
-    
+        
         @IBOutlet weak var vipBackground: UIView!
-//        @IBOutlet weak var faceIDSwitch: UISwitch!
+        //        @IBOutlet weak var faceIDSwitch: UISwitch!
         @IBOutlet weak var destroySwitch: UISwitch!
         @IBOutlet weak var gestureSwitch: UISwitch!
         @IBOutlet weak var avatar: AvatarButton!
         @IBOutlet weak var backGroundView: UIView!
-
+        
         @IBOutlet weak var agentBtn: AgentButton!
         @IBOutlet weak var agentTime: UILabel!
-        @IBOutlet weak var hasNewSysMsgBtn: UIButton!
-
+        @IBOutlet weak var pushStatus: UISwitch!
+        
         @IBOutlet weak var appVersion: UILabel!
-
+        
         @IBOutlet weak var nickName: UILabel!
         @IBOutlet weak var vipFlag: UIImageView!
         @IBOutlet weak var vipIcon: UIImageView!
-
+        
         @IBOutlet weak var readBurnDays: UILabel!
         
         override func viewWillAppear(_ animated: Bool) {
                 super.viewWillAppear(animated)
-//                balanceStatusView()
+                //                balanceStatusView()
                 updateWholeView()
                 if let days = ConfigItem.shared.keepDays {
                         readBurnDays.text = "\(days)天"
                 }
+                UNUserNotificationCenter.current().getNotificationSettings { settings in
+                        DispatchQueue.main.async {
+                                self.pushStatus.isOn = settings.authorizationStatus == .authorized
+                        }
+                }
         }
-    
+        
         override func viewDidLoad() {
                 super.viewDidLoad()
                 appVersion.text = getAppVersion()
@@ -58,7 +63,7 @@ class WalletViewController: UITableViewController {
         @objc func reloadWallet(_ sender: Any?) {
                 DispatchQueue.global().async {
                         Wallet.shared.getWalletFromETH()
-//                        Wallet.shared.getLatestWallt()
+                        //                        Wallet.shared.getLatestWallt()
                         self.updateWholeView()
                 }
                 self.refreshControl?.endRefreshing()
@@ -66,42 +71,26 @@ class WalletViewController: UITableViewController {
         
         private func balanceStatusView() {
                 let status = ServiceDelegate.getAgentStatus()
-                        self.agentBtn.currentStatus = status
-
-//                        switch status {
-//                        case .activated:
-//                                self.agentTime.text = "\(AgentService.shared.expireDate)到期"
-//                                self.vipFlag(show: true)
-//                        case .almostExpire:
-//                                self.agentTime.text = String(format: "%4d 天", AgentService.shared.expireDays)
-//                                self.vipFlag(show: true)
-//                        case .initial:
-//                                self.agentTime.text = "普通用户仅支持文本聊天"
-//                                self.vipFlag(show: false)
-//                        break
-//                        }
-//
+                self.agentBtn.currentStatus = status
         }
         
         private func updateWholeView() {
                 
                 DispatchQueue.main.async {
                         self.address.text = Wallet.shared.Addr
-//                        self.faceIDSwitch.isOn = Wallet.shared.useFaceID
+                        //                        self.faceIDSwitch.isOn = Wallet.shared.useFaceID
                         self.destroySwitch.isOn = Wallet.shared.useDestroy
                         self.gestureSwitch.isOn = Wallet.shared.useGesture
                         self.nickName.text = Wallet.shared.nickName
                         self.avatar.setupSelf()
                         
-                        self.hasNewSysMsgBtn.isHidden = SystemMeesageViewController.newTargetUrl.isEmpty
-
                         let status = ServiceDelegate.getAgentStatus()
                         self.agentBtn.currentStatus = status
                         let balance = Wallet.shared.getBalance()
                         switch status {
                         case .activated:
                                 self.agentTime.text = String(format: "%.2f", balance)
-                        
+                                
                                 self.agentTime.font = UIFont(name: "", size: 20)
                                 self.vipBackground.layer.contents = UIImage(named: "VIP_BGC")?.cgImage
                                 self.agentBtn.setImage(nil, for: .normal)
@@ -110,7 +99,7 @@ class WalletViewController: UITableViewController {
                                 self.agentTime.text = String(format: "%.2f", balance)
                                 self.agentTime.font = UIFont(name: "", size: 20)
                                 self.vipBackground.layer.contents = UIImage(named: "VIP_BGC")?.cgImage
-                        
+                                
                                 self.agentBtn.setImage(UIImage(named: "red"), for: .normal)
                                 self.vipFlag(show: true)
                         case .initial:
@@ -118,44 +107,49 @@ class WalletViewController: UITableViewController {
                                 self.vipBackground.layer.contents = UIImage(named: "nor_bgc")?.cgImage
                                 self.agentBtn.setImage(nil, for: .normal)
                                 self.vipFlag(show: false)
-                            break
+                                break
                         }
                 }
         }
         
         @IBAction func activeVIP(_ sender: UIButton) {
-//                DispatchQueue.global().async {
-//                        Wallet.shared.getWalletFromETH()
-//                }
+                //                DispatchQueue.global().async {
+                //                        Wallet.shared.getWalletFromETH()
+                //                }
         }
         
-//        @IBAction func setUseFaceID(_ sender: UISwitch) {
-//                if sender.isOn {
-//                        biometryUsage { (usageRes) in
-//                                if usageRes {
-//                                        self.showPwdInput(title: "请输入解锁密码", placeHolder: "请输入密码", securityShow: true) { (password, isOK) in
-//                                                guard let pwd = password, isOK else{
-//                                                        return
-//                                                }
-//
-//                                                if !Wallet.shared.openFaceID(auth: pwd) {
-//                                                        return
-//                                                }
-//
-//                                                self.dismiss(animated: true)
-//                                        }
-//                                } else {
-//                                        self.faceIDSwitch.isOn = !sender.isOn
-//                                }
-//                        }
-//                } else {
-//                        if let err = Wallet.shared.UpdateUseFaceID(by: sender.isOn) {
-//                                faceIDSwitch.isOn = !sender.isOn
-//                                self.toastMessage(title: err.localizedDescription)
-//                        }
-//                }
-//        }
+        //        @IBAction func setUseFaceID(_ sender: UISwitch) {
+        //                if sender.isOn {
+        //                        biometryUsage { (usageRes) in
+        //                                if usageRes {
+        //                                        self.showPwdInput(title: "请输入解锁密码", placeHolder: "请输入密码", securityShow: true) { (password, isOK) in
+        //                                                guard let pwd = password, isOK else{
+        //                                                        return
+        //                                                }
+        //
+        //                                                if !Wallet.shared.openFaceID(auth: pwd) {
+        //                                                        return
+        //                                                }
+        //
+        //                                                self.dismiss(animated: true)
+        //                                        }
+        //                                } else {
+        //                                        self.faceIDSwitch.isOn = !sender.isOn
+        //                                }
+        //                        }
+        //                } else {
+        //                        if let err = Wallet.shared.UpdateUseFaceID(by: sender.isOn) {
+        //                                faceIDSwitch.isOn = !sender.isOn
+        //                                self.toastMessage(title: err.localizedDescription)
+        //                        }
+        //                }
+        //        }
         
+        @IBAction func pushStatus(_ sender: UISwitch) {
+                if let appSettings = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(appSettings) {
+                    UIApplication.shared.open(appSettings)
+                }
+        }
         
         @IBAction func setGesture(_ sender: UISwitch) {
                 if sender.isOn {
@@ -171,7 +165,7 @@ class WalletViewController: UITableViewController {
                                 let vc = GestureViewController()
                                 vc.type = .set
                                 self.navigationController?.pushViewController(vc, animated: true)
-
+                                
                         }
                         
                 } else {
@@ -192,11 +186,11 @@ class WalletViewController: UITableViewController {
                         }
                 }
         }
-    
+        
         @IBAction func clearChatHistory(_ sender: UIButton) {
                 let alertActionController = UIAlertController.init(title: "", message: "将删除所有个人和群的聊天记录", preferredStyle: .actionSheet)
                 alertActionController.modalPresentationStyle = .popover
-
+                
                 let deleteAction = UIAlertAction(title: "delete messages".locStr, style: .destructive) { action in
                         self.showIndicator(withTitle: "", and: "deleting message caches".locStr)
                         ServiceDelegate.workQueue.async {
@@ -206,13 +200,13 @@ class WalletViewController: UITableViewController {
                         }
                 }
                 let cancleAction = UIAlertAction(title: "Cancel".locStr, style: .cancel, handler: nil)
-
+                
                 alertActionController.addAction(deleteAction)
                 alertActionController.addAction(cancleAction)
-
+                
                 self.present(alertActionController, animated: true, completion: nil)
         }
-    
+        
         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
                 if segue.identifier == "EditNicknameSEG", let vc = segue.destination as? NickEditViewController {
                         vc.nick = Wallet.shared.nickName
@@ -233,7 +227,7 @@ class WalletViewController: UITableViewController {
                         self.vipIcon.isHidden = true
                 }
         }
-
+        
 }
 
 extension WalletViewController:SetupDestroyDelegate{
