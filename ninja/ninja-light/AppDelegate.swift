@@ -68,7 +68,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 }
                 if let newSystemMessage = userInfo["newSystemMessage"] as? String{
                         print("------>>>newSystemMessage: \(newSystemMessage)")
-                        SystemMeesageViewController.newTargetUrl = newSystemMessage
                 }
         }
         

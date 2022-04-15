@@ -650,7 +650,8 @@ func getAppVersion() -> String? {
         if let infoDict: [String: Any] = Bundle.main.infoDictionary {
                 if let mainVersion = infoDict["CFBundleShortVersionString"] as? String,
                    let build = infoDict["CFBundleVersion"] as? String {
-                        return String(mainVersion+"."+build)
+                        let libVer = ChatLibVersion()
+                        return String(mainVersion+"."+build+"(library\(libVer))")
                 }
         }
         

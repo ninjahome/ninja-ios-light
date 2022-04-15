@@ -85,7 +85,6 @@
 		08F0FA9026884C2000C5C1DF /* ImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F0FA8F26884C2000C5C1DF /* ImageTableViewCell.swift */; };
 		08F0FA9626884C5C00C5C1DF /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F0FA9526884C5C00C5C1DF /* LocationTableViewCell.swift */; };
 		2B01182227A5508B00C88116 /* CombineConntact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01182127A5508B00C88116 /* CombineConntact.swift */; };
-		2B66DB4427AE1FF100FBE8B6 /* SystemMeesageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66DB4327AE1FF100FBE8B6 /* SystemMeesageViewController.swift */; };
 		2BAB8A7027AEC327001D92DC /* InvalidGrpMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAB8A6F27AEC327001D92DC /* InvalidGrpMemberTableViewCell.swift */; };
 		6953EAF82622C12F008EC2F0 /* AuthorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6953EAF72622C12F008EC2F0 /* AuthorViewController.swift */; };
 		6969ECBC26134294008CB0B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969ECBB26134294008CB0B2 /* AppDelegate.swift */; };
@@ -229,7 +228,6 @@
 		08F0FA8F26884C2000C5C1DF /* ImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTableViewCell.swift; sourceTree = "<group>"; };
 		08F0FA9526884C5C00C5C1DF /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
 		2B01182127A5508B00C88116 /* CombineConntact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineConntact.swift; sourceTree = "<group>"; };
-		2B66DB4327AE1FF100FBE8B6 /* SystemMeesageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMeesageViewController.swift; sourceTree = "<group>"; };
 		2BAB8A6F27AEC327001D92DC /* InvalidGrpMemberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvalidGrpMemberTableViewCell.swift; sourceTree = "<group>"; };
 		694D55C52766F5B60044E580 /* MBProgressHUD.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MBProgressHUD.xcframework; path = Carthage/Build/MBProgressHUD.xcframework; sourceTree = "<group>"; };
 		694D55C62766F5B60044E580 /* SwiftyJSON.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = SwiftyJSON.xcframework; path = Carthage/Build/SwiftyJSON.xcframework; sourceTree = "<group>"; };
@@ -338,7 +336,6 @@
 			isa = PBXGroup;
 			children = (
 				0809CE8F2787DBCC00AF2A95 /* GuideViewController.swift */,
-				2B66DB4327AE1FF100FBE8B6 /* SystemMeesageViewController.swift */,
 				0809CE872786963300AF2A95 /* BackupGuideViewController.swift */,
 			);
 			path = function;
@@ -826,7 +823,6 @@
 				086701BD2667329200A1E951 /* AudioDelegate.swift in Sources */,
 				69B8C0C3261C703800B4E4AC /* WebsocketSrv.swift in Sources */,
 				08781E91275F09F50084D80A /* MsgViewController+TextView.swift in Sources */,
-				2B66DB4427AE1FF100FBE8B6 /* SystemMeesageViewController.swift in Sources */,
 				08B64A0027A255E100D0677F /* MsgViewController+FileView.swift in Sources */,
 				084248F327FD6DBF0059545E /* Point.swift in Sources */,
 				087BD8132658AF430009459C /* ManageViewController.swift in Sources */,
