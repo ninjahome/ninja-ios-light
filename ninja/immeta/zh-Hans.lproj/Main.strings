@@ -424,6 +424,7 @@
 
 /* Class = "UIButton"; normalTitle = "完成"; ObjectID = "oeM-W4-rLS"; */
 "oeM-W4-rLS.normalTitle" = "完成";
+"BwZ-03-FNK.normalTitle" = "相册导入";
 
 /* Class = "UILabel"; text = "导入账号二维码"; ObjectID = "oiB-Ka-nlX"; */
 "oiB-Ka-nlX.text" = "导入账号二维码";

@@ -10,6 +10,11 @@ import UserNotifications
 import ChatLib
 import StoreKit
 
+enum Identifiers {
+        static let viewAction = "VIEW_IDENTIFIER"
+        static let newsCategory = "NEWS_CATEGORY"
+}
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
         public let DevTypeIOS = 1
@@ -52,8 +57,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 }
                 
                 let content = response.notification.request.content
-                print("------>>>title: \(content.title)")
-                print("------>>>body: \(content.body)")
                 
                 guard let userInfo = content.userInfo as? [String: Any] else{
                         return
@@ -71,37 +74,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 let center = UNUserNotificationCenter.current()
                 center.removeAllPendingNotificationRequests()
                 center.delegate = self
-                
-                center.getNotificationSettings { settings in
-                        print("------>>>Notification settings: \(settings)")
+                center.requestAuthorization(options: [.alert, .badge, .sound], completionHandler: {(granted, error) in
+                        if let err = error{
+                                print("------>>> request notification err:[\(err.localizedDescription)]")
+                        }
+                        print("------>>>granted resut:[\(granted)]")
+                        guard granted else{
+                                return
+                        }
                         
-                        switch settings.authorizationStatus {
-                        case .notDetermined:
-                                center.requestAuthorization(options: [.provisional, .alert, .badge, .sound], completionHandler: {(granted, error) in
-                                        if let err = error{
-                                                print("------>>> request notification err:[\(err.localizedDescription)]")
-                                        }
-                                        print("------>>>granted resut:[\(granted)]")
-                                        guard granted else{
-                                                return
-                                        }
-                                        DispatchQueue.main.sync {
-                                                UIApplication.shared.registerForRemoteNotifications()
-                                        }
-                                })
-                        case .authorized:
-                                DispatchQueue.main.async {
-                                        UIApplication.shared.registerForRemoteNotifications()
-                                }
-                        case .denied:
-                                print("------>>>Permission denied.")
-                                // The user has not given permission. Maybe you can display a message remembering why permission is required.
-                        default:
-                                ServiceDelegate.InitPushParam(deviceToken: "")
-                                break
+                        let viewAction = UNNotificationAction(
+                                identifier: Identifiers.viewAction,
+                                title: "View",
+                                options: [.foreground])
+                        let newsCategory = UNNotificationCategory(
+                                identifier: Identifiers.newsCategory,
+                                actions: [viewAction],
+                                intentIdentifiers: [],
+                                options: []
+                        )
+                        UNUserNotificationCenter.current().setNotificationCategories([newsCategory])
+                        
+                        DispatchQueue.main.sync {
+                                UIApplication.shared.registerForRemoteNotifications()
+                        }
+                })
+        }
+        
+        func getNotificationSettings() {
+                UNUserNotificationCenter.current().getNotificationSettings { settings in
+                        print("Notification settings: \(settings)")
+                        guard settings.authorizationStatus == .authorized else { return }
+                        DispatchQueue.main.async {
+                                UIApplication.shared.registerForRemoteNotifications()
                         }
                 }
         }
+        
         
         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
                 var error :NSError?
@@ -127,7 +136,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
                 // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
         }
-                
+        
         func applicationDidBecomeActive(_ application: UIApplication) {
                 if Wallet.shared.IsActive(){
                         WebsocketSrv.shared.Online()
