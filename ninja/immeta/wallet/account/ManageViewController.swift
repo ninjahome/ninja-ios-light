@@ -63,7 +63,7 @@ extension ManageViewController{
                                 self.toastMessage(title: "Generat qr image failed".locStr)
                                 return
                         }
-                        print("------>>>walletJson \(walletJson)")
+//                        print("------>>>walletJson \(walletJson)")
                         UIImageWriteToSavedPhotosAlbum(walletImg, nil, nil, nil)
                         self.hideIndicator()
                         self.toastMessage(title: "Save success".locStr, duration: 1)
