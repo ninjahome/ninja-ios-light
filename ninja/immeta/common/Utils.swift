@@ -589,7 +589,7 @@ extension UIViewController {
                 self.ShowQRAlertView(image: image)
         }
         
-        func generateQRCode(from message: String, foreColor:UIColor = UIColor.blue) -> UIImage? {
+        func generateQRCode(from message: String, foreColor:UIColor = UIColor.address) -> UIImage? {
                 
                 guard let data = message.data(using: .utf8) else{
                         return nil
@@ -717,18 +717,18 @@ extension UIColor {
                 )
         }
         
-        var address: UIColor {
+        public static var address: UIColor {//112,231,91
                 return  UIColor.init(
-                        red: CGFloat(126) / 0xff,
-                        green: CGFloat(30) / 0xff,
-                        blue: CGFloat(12) / 0xff, alpha: 1)
+                        red: CGFloat(57) / 0xff,
+                        green: CGFloat(188) / 0xff,
+                        blue: CGFloat(59) / 0xff, alpha: 1)
         }
         
-        var walletKey:UIColor{
+        public static var walletKey:UIColor{
                         return  UIColor.init(
-                                red: CGFloat(126) / 0xff,
-                                green: CGFloat(30) / 0xff,
-                                blue: CGFloat(12) / 0xff, alpha: 1)
+                                red: CGFloat(00) / 0xff,
+                                green: CGFloat(89) / 0xff,
+                                blue: CGFloat(248) / 0xff, alpha: 1)
         }
 }
 

@@ -72,7 +72,7 @@ extension NewWalletViewController: ScannerViewControllerDelegate {
         
         func codeDetected(code: String) {
                 
-                print("------>>>New wallet code\(code)")
+                print("------>>>New wallet code[\(code)]")
                 guard let addr = Wallet.shared.serializeWalletJson(cipher: code) else {
                         self.toastMessage(title: "Invaild immeta wallet address".locStr)
                         return

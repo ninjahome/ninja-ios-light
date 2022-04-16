@@ -12,6 +12,7 @@ class BackupGuideViewController: UIViewController {
         
         @IBOutlet weak var address: UILabel!
         @IBOutlet weak var qrImage: UIImageView!
+        @IBOutlet weak var infoView: UIView!
         
         var qr: UIImage?
         
@@ -24,7 +25,7 @@ class BackupGuideViewController: UIViewController {
         
         func getQRCode() -> UIImage? {
                 guard let wJson = Wallet.shared.wJson else { return nil }
-                let qrImg = generateQRCode(from: wJson)
+                let qrImg = generateQRCode(from: wJson, foreColor: UIColor.walletKey)
                 self.qr = qrImg
                 return qrImg
         }
@@ -34,8 +35,13 @@ class BackupGuideViewController: UIViewController {
                         self.toastMessage(title: "Invalid Account, please reboot".locStr)
                         return
                 }
-                UIImageWriteToSavedPhotosAlbum(data, nil, nil, nil)
-                self.toastMessage(title: "Save success".locStr)
+                
+                if let exportImg = generateViewImg(info: infoView) {
+                    UIImageWriteToSavedPhotosAlbum(exportImg, self, nil, nil)
+                } else {
+                    UIImageWriteToSavedPhotosAlbum(data, nil, nil, nil)
+                }
+                self.toastMessage(title: "Save success".locStr, duration: 1)
                 afterWallet()
         }
         
