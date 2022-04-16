@@ -36,7 +36,7 @@ class GuideViewController: UIViewController, UIScrollViewDelegate {
                         if index == images.count - 1 {
                                 let btn = UIButton.init(frame: CGRect(x: imgView.frame.width/2-80, y: imgView.bounds.height * 0.85, width: 160, height: 50))
                                 imgView.addSubview(btn)
-                                btn.setTitle("进入忍者", for: .normal)
+                                btn.setTitle("Enjoin".locStr, for: .normal)
                                 btn.backgroundColor = UIColor(hex: "26253C")
                                 btn.setTitleColor(UIColor(hex: "FFFFFF"), for: .normal)
                                 btn.layer.cornerRadius = 25
