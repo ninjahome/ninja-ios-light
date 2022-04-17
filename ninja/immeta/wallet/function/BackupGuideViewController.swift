@@ -15,7 +15,7 @@ class BackupGuideViewController: UIViewController {
         @IBOutlet weak var infoView: UIView!
         
         var qr: UIImage?
-        
+        var ifAccountInit = true
         override func viewDidLoad() {
                 super.viewDidLoad()
                 self.view.layer.contents = UIImage(named: "bg-img")?.cgImage
@@ -37,12 +37,11 @@ class BackupGuideViewController: UIViewController {
                 }
                 
                 if let exportImg = generateViewImg(info: infoView) {
-                    UIImageWriteToSavedPhotosAlbum(exportImg, self, nil, nil)
+                        UIImageWriteToSavedPhotosAlbum(exportImg, self, nil, nil)
                 } else {
-                    UIImageWriteToSavedPhotosAlbum(data, nil, nil, nil)
+                        UIImageWriteToSavedPhotosAlbum(data, nil, nil, nil)
                 }
-                self.toastMessage(title: "Save success".locStr, duration: 1)
-                afterWallet()
+                finish()
         }
         
         @IBAction func copyAddr(_ sender: UIButton) {
@@ -51,12 +50,21 @@ class BackupGuideViewController: UIViewController {
         }
         
         @IBAction func skipBackupAcc(_ sender: UIBarButtonItem) {
-                afterWallet()
+                finish()
         }
         
         
         @IBAction func backToPrevious(_ sender: UIBarButtonItem) {
                 self.navigationController?.popViewController(animated: true)
         }
-        
+        private func finish(){
+                
+                DispatchQueue.main.async {
+                        if self.ifAccountInit{
+                                afterWallet()
+                                return
+                        }
+                        self.dismiss(animated: true)
+                }
+        }
 }
