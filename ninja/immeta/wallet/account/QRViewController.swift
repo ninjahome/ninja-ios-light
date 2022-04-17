@@ -8,58 +8,61 @@
 import UIKit
 
 class QRViewController: UIViewController {
-
-    @IBOutlet weak var infoView: UIView!
-    @IBOutlet weak var qrImg: UIImageView!
-    @IBOutlet weak var immetaAddr: UILabel!
-    var qr:UIImage?
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
         
-        self.view.layer.contents = UIImage(named: "bg-img")?.cgImage
+        @IBOutlet weak var infoView: UIView!
+        @IBOutlet weak var qrImg: UIImageView!
+        @IBOutlet weak var immetaAddr: UILabel!
+        var qr:UIImage?
         
-        let addr = Wallet.shared.Addr!
-        immetaAddr.text = "Immeta Address: \(addr)"
-        
-        qrImg.image = getQRCode()
-        
-    }
-    
-    func getQRCode() -> UIImage? {
-        guard let addr = Wallet.shared.Addr else { return nil }
-        let qrImg = generateQRCode(from: addr)
-        self.qr = qrImg
-        return qrImg
-    }
-    
-    @IBAction func copyAddr(_ sender: UIButton) {
-        UIPasteboard.general.string = Wallet.shared.Addr
-            self.toastMessage(title: "Copy Success".locStr, duration: 1)
-    }
-    
-    @IBAction func downloadQR(_ sender: UIButton) {
-        
-        if let exportImg = generateViewImg(info: infoView) {
-            UIImageWriteToSavedPhotosAlbum(exportImg, self, nil, nil)
-                self.toastMessage(title: "Save success".locStr)
-        } else if qr != nil {
-            UIImageWriteToSavedPhotosAlbum(qr!, nil, nil, nil)
-                self.toastMessage(title: "Save success".locStr)
+        override func viewDidLoad() {
+                super.viewDidLoad()
+                
+                self.view.layer.contents = UIImage(named: "bg-img")?.cgImage
+                
+                let addr = Wallet.shared.Addr!
+                immetaAddr.text = "Immeta Address: \(addr)"
+                
+                qrImg.image = getQRCode()
+                
         }
         
-    }
-        
-    @IBAction func shareQR(_ sender: UIButton) {
-        guard let exportImg = generateViewImg(info: infoView) else {
-            return
+        func getQRCode() -> UIImage? {
+                guard let addr = Wallet.shared.Addr else { return nil }
+                let qrImg = generateQRCode(from: addr)
+                self.qr = qrImg
+                return qrImg
         }
-        let activityViewCtrl = UIActivityViewController(activityItems: [exportImg], applicationActivities: nil)
-        activityViewCtrl.excludedActivityTypes = [.copyToPasteboard, .postToVimeo, .postToFacebook,
-                                                  .postToTencentWeibo, .postToTwitter, .postToWeibo]
-        self.present(activityViewCtrl, animated: true, completion: nil)
         
-//        self.toastMessage(title: "Waiting...")
-    }
-    
+        @IBAction func copyAddr(_ sender: UIButton) {
+                UIPasteboard.general.string = Wallet.shared.Addr
+                self.toastMessage(title: "Copy Success".locStr, duration: 1)
+        }
+        
+        @IBAction func downloadQR(_ sender: UIButton) {
+                
+                if let exportImg = generateViewImg(info: infoView) {
+                        UIImageWriteToSavedPhotosAlbum(exportImg, self, nil, nil)
+                        self.toastMessage(title: "Save success".locStr)
+                } else if qr != nil {
+                        UIImageWriteToSavedPhotosAlbum(qr!, nil, nil, nil)
+                        self.toastMessage(title: "Save success".locStr)
+                }
+                
+        }
+        
+        @IBAction func shareQR(_ sender: UIBarButtonItem) {
+                guard let exportImg = generateViewImg(info: infoView) else {
+                        return
+                }
+                let activityViewCtrl = UIActivityViewController(activityItems: [exportImg], applicationActivities: nil)
+                activityViewCtrl.excludedActivityTypes = [.copyToPasteboard, .postToVimeo, .postToFacebook,
+                                                          .postToTencentWeibo, .postToTwitter, .postToWeibo]
+                self.present(activityViewCtrl, animated: true, completion: nil)
+        }
+        
+        @IBAction func backToPrevious(_ sender: UIBarButtonItem) {
+                self.navigationController?.popViewController(animated: true)
+        }
+        
+        
 }

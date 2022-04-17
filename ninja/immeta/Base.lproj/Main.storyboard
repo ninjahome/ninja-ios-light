@@ -4525,88 +4525,79 @@
                                     <constraint firstItem="efj-rF-dxw" firstAttribute="leading" secondItem="KAQ-7d-M7e" secondAttribute="leading" constant="34" id="zSB-Cx-qbM"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KcC-sd-9yE">
-                                <rect key="frame" x="44" y="710" width="52" height="52"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7nH-0F-rfZ">
+                                <rect key="frame" x="55" y="616.5" width="128" height="44"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="52" id="2KQ-Zh-Co3"/>
-                                    <constraint firstAttribute="width" secondItem="KcC-sd-9yE" secondAttribute="height" multiplier="1:1" id="qin-pA-tba"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="128" id="6kb-X0-ZQG"/>
+                                    <constraint firstAttribute="height" constant="44" id="UhU-ac-Bg2"/>
                                 </constraints>
-                                <state key="normal" title="Button" image="save_icon"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Copy">
+                                    <color key="titleColor" red="0.4126662612" green="0.75765132899999998" blue="0.35620304940000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                        <integer key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                                        <color key="value" red="0.90980392160000001" green="0.91372549020000005" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="downloadQR:" destination="SyC-KT-TSZ" eventType="touchUpInside" id="Lco-ma-n4l"/>
+                                    <action selector="copyAddr:" destination="SyC-KT-TSZ" eventType="touchUpInside" id="Y27-gg-Iof"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YQJ-y5-XtP">
-                                <rect key="frame" x="181" y="710" width="52" height="52"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hCZ-KC-0rq">
+                                <rect key="frame" x="231" y="616.5" width="128" height="44"/>
+                                <color key="backgroundColor" red="0.22352941179999999" green="0.73725490199999999" blue="0.23137254900000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="52" id="8Wl-P1-BE3"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="52" id="Gks-Q0-43u"/>
-                                    <constraint firstAttribute="width" secondItem="YQJ-y5-XtP" secondAttribute="height" multiplier="1:1" id="HMq-bT-x8B"/>
-                                    <constraint firstAttribute="height" constant="52" id="jSq-O2-fK6"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="abV-NO-L1b"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="128" id="tiJ-KN-41o"/>
                                 </constraints>
-                                <state key="normal" title="Button" image="copy_icon"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Save">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="copyAddr:" destination="SyC-KT-TSZ" eventType="touchUpInside" id="REH-uK-GOj"/>
+                                    <action selector="downloadQR:" destination="SyC-KT-TSZ" eventType="touchUpInside" id="enc-Vw-Cua"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2bi-gQ-feH">
-                                <rect key="frame" x="318" y="710" width="52" height="52"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="52" id="FbW-4v-AlJ"/>
-                                    <constraint firstAttribute="width" secondItem="2bi-gQ-feH" secondAttribute="height" multiplier="1:1" id="Q23-bT-GYb"/>
-                                    <constraint firstAttribute="height" constant="52" id="eab-F9-SSF"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="52" id="qDX-0Y-kKJ"/>
-                                </constraints>
-                                <state key="normal" title="Button" image="share_icon"/>
-                                <connections>
-                                    <action selector="shareQR:" destination="SyC-KT-TSZ" eventType="touchUpInside" id="oaw-zH-SNQ"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tQg-HT-7dL">
-                                <rect key="frame" x="51.5" y="770" width="37" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BYM-Tz-83Z">
-                                <rect key="frame" x="187" y="770" width="40" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Share" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mrj-tv-i9E">
-                                <rect key="frame" x="322" y="770" width="44" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="mMs-Mg-gBf"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <color key="tintColor" red="0.14901960780000001" green="0.1450980392" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="BYM-Tz-83Z" firstAttribute="centerX" secondItem="YQJ-y5-XtP" secondAttribute="centerX" id="1h2-cp-M1S"/>
                             <constraint firstItem="KAQ-7d-M7e" firstAttribute="top" secondItem="mMs-Mg-gBf" secondAttribute="top" constant="60" id="1wm-4z-7af"/>
-                            <constraint firstItem="YQJ-y5-XtP" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="KcC-sd-9yE" secondAttribute="trailing" constant="8" symbolic="YES" id="3qW-Ew-RFu"/>
+                            <constraint firstItem="7nH-0F-rfZ" firstAttribute="top" secondItem="KAQ-7d-M7e" secondAttribute="bottom" constant="12" id="3e2-ae-qcn"/>
+                            <constraint firstItem="hCZ-KC-0rq" firstAttribute="top" secondItem="KAQ-7d-M7e" secondAttribute="bottom" constant="12" id="48f-2e-rND"/>
                             <constraint firstItem="KAQ-7d-M7e" firstAttribute="leading" secondItem="mMs-Mg-gBf" secondAttribute="leading" constant="44" id="56H-lm-ovF"/>
-                            <constraint firstItem="YQJ-y5-XtP" firstAttribute="width" secondItem="YQJ-y5-XtP" secondAttribute="height" multiplier="1:1" id="Ei9-Jq-9Ft"/>
-                            <constraint firstItem="mMs-Mg-gBf" firstAttribute="bottom" secondItem="KcC-sd-9yE" secondAttribute="bottom" constant="100" id="FMy-Wd-XeV"/>
-                            <constraint firstItem="mMs-Mg-gBf" firstAttribute="bottom" secondItem="YQJ-y5-XtP" secondAttribute="bottom" constant="100" id="QmA-EH-9AQ"/>
-                            <constraint firstItem="2bi-gQ-feH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YQJ-y5-XtP" secondAttribute="trailing" constant="8" symbolic="YES" id="RSH-fl-4Kb"/>
-                            <constraint firstItem="YQJ-y5-XtP" firstAttribute="centerX" secondItem="FQo-ZC-B4M" secondAttribute="centerX" id="SPT-y5-IPG"/>
-                            <constraint firstItem="mrj-tv-i9E" firstAttribute="centerX" secondItem="2bi-gQ-feH" secondAttribute="centerX" id="Xmm-d0-h46"/>
-                            <constraint firstItem="mrj-tv-i9E" firstAttribute="top" secondItem="2bi-gQ-feH" secondAttribute="bottom" constant="8" id="Ysi-c0-gk1"/>
-                            <constraint firstItem="2bi-gQ-feH" firstAttribute="width" secondItem="2bi-gQ-feH" secondAttribute="height" multiplier="1:1" id="fFo-Qg-qPO"/>
-                            <constraint firstItem="mMs-Mg-gBf" firstAttribute="bottom" secondItem="2bi-gQ-feH" secondAttribute="bottom" constant="100" id="i0i-4K-52r"/>
-                            <constraint firstItem="tQg-HT-7dL" firstAttribute="top" secondItem="KcC-sd-9yE" secondAttribute="bottom" constant="8" id="klx-SG-9bn"/>
-                            <constraint firstItem="KcC-sd-9yE" firstAttribute="leading" secondItem="mMs-Mg-gBf" secondAttribute="leading" constant="44" id="l19-Kx-j6h"/>
+                            <constraint firstItem="mMs-Mg-gBf" firstAttribute="centerX" relation="greaterThanOrEqual" secondItem="7nH-0F-rfZ" secondAttribute="trailing" id="E7N-1U-zuZ"/>
+                            <constraint firstItem="7nH-0F-rfZ" firstAttribute="leading" secondItem="mMs-Mg-gBf" secondAttribute="leading" constant="55" id="emy-1g-x9d"/>
                             <constraint firstItem="mMs-Mg-gBf" firstAttribute="trailing" secondItem="KAQ-7d-M7e" secondAttribute="trailing" constant="44" id="lRk-QC-eFM"/>
-                            <constraint firstItem="mMs-Mg-gBf" firstAttribute="trailing" secondItem="2bi-gQ-feH" secondAttribute="trailing" constant="44" id="qG4-cB-YLz"/>
-                            <constraint firstItem="tQg-HT-7dL" firstAttribute="centerX" secondItem="KcC-sd-9yE" secondAttribute="centerX" id="vCi-bb-p9b"/>
-                            <constraint firstItem="BYM-Tz-83Z" firstAttribute="top" secondItem="YQJ-y5-XtP" secondAttribute="bottom" constant="8" id="ySW-Vq-f5k"/>
+                            <constraint firstItem="mMs-Mg-gBf" firstAttribute="trailing" secondItem="hCZ-KC-0rq" secondAttribute="trailing" constant="55" id="pSr-fV-Ro0"/>
+                            <constraint firstItem="hCZ-KC-0rq" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="mMs-Mg-gBf" secondAttribute="centerX" id="s1k-a6-qlt"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="My ID" id="aBU-4d-Kmm"/>
+                    <navigationItem key="navigationItem" title="My ID" id="aBU-4d-Kmm">
+                        <barButtonItem key="leftBarButtonItem" image="nav_back_icon" id="4Tu-A0-3MF">
+                            <connections>
+                                <action selector="backToPrevious:" destination="SyC-KT-TSZ" id="5y1-Xv-0m3"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="share_icon" id="7HK-MD-nNo">
+                            <connections>
+                                <action selector="shareQR:" destination="SyC-KT-TSZ" id="cYd-hl-iMt"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="immetaAddr" destination="efj-rF-dxw" id="4oJ-T3-ih7"/>
                         <outlet property="infoView" destination="KAQ-7d-M7e" id="XyG-Nv-w1i"/>
@@ -6596,7 +6587,6 @@
         <image name="recording_photo" width="42" height="42"/>
         <image name="red" width="6" height="6"/>
         <image name="refresh_icon" width="22" height="22"/>
-        <image name="save_icon" width="52" height="52"/>
         <image name="share_icon" width="52" height="52"/>
         <image name="trash" catalog="system" width="121" height="128"/>
         <image name="useN_icon" width="20" height="20"/>
