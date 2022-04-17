@@ -50,24 +50,12 @@ extension ManageViewController{
         
         @IBAction func exportAccount(_ gesture: UITapGestureRecognizer) {
                 
-                
-                guard let walletJson = Wallet.shared.wJson else{
+                guard let vc = instantiateViewController(vcID: "BackupGuideViewControllerSID") as? BackupGuideViewController else{
                         self.toastMessage(title: "Save Failed".locStr)
                         return
                 }
-                
-                self.showIndicator(withTitle: "", and: "exporting".locStr)
-                ServiceDelegate.workQueue.async {
-                        guard let walletImg = self.generateQRCode(from: walletJson)else{
-                                self.hideIndicator()
-                                self.toastMessage(title: "Generat qr image failed".locStr)
-                                return
-                        }
-                        print("------>>>walletJson \(walletJson)")
-                        UIImageWriteToSavedPhotosAlbum(walletImg, nil, nil, nil)
-                        self.hideIndicator()
-                        self.toastMessage(title: "Save success".locStr, duration: 1)
-                }
+                vc.ifAccountInit = false
+                self.navigationController?.present(vc, animated: true)
         }
         @IBAction func scanner(_ gesture: UITapGestureRecognizer) {
                 let vc = instantiateViewController(vcID: "ScannerVC") as! ScannerViewController

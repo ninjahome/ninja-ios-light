@@ -97,7 +97,7 @@ public func afterWallet() { DispatchQueue.main.async {
                         print("------->>delegate-----is nil->s")
                         return
                 }
-//                let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
+                //                let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
                 delegate.window?.rootViewController = instantiateViewController(vcID: "NinjaHomeTabVC")
         } else {
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -287,12 +287,12 @@ extension String {
         var locStr:String {
                 return NSLocalizedString(self, comment: "")
         }
-
+        
 }
 extension Data {
-    func hexEncodedString() -> String {
-        return map { String(format: "%02hhx", $0) }.joined()
-    }
+        func hexEncodedString() -> String {
+                return map { String(format: "%02hhx", $0) }.joined()
+        }
 }
 extension Array {
         func sortedByPinyin(ascending: Bool = true) -> Array<ContactItem>? {
@@ -429,7 +429,7 @@ extension UIViewController {
                         Indicator.label.text = title
                         Indicator.isUserInteractionEnabled = false
                         Indicator.mode = .annularDeterminate
-        //                Indicator.customView = UIImageView(image: UIImage(named: "loading"))
+                        //                Indicator.customView = UIImageView(image: UIImage(named: "loading"))
                         var pro = 0.1
                         
                         Indicator.tintColor = UIColor(hex: "4BB5EF")
@@ -441,10 +441,8 @@ extension UIViewController {
                                         pro += 0.1
                                 }
                         }
-                        
-
                 }
-                                
+                
         }
         
         func hidedSuccIndicator() {
@@ -538,8 +536,8 @@ extension UIViewController {
                 DispatchQueue.main.async {
                         guard let alertVC = instantiateViewController(vcID: "PasswordViewControllerID")
                                 as? PasswordViewController else {
-                                        return
-                                }
+                                return
+                        }
                         
                         alertVC.payload = payload;
                         
@@ -581,7 +579,7 @@ extension UIViewController {
                 self.ShowQRAlertView(image: image)
         }
         
-        func generateQRCode(from message: String) -> UIImage? {
+        func generateQRCode(from message: String, foreColor:UIColor = UIColor.address) -> UIImage? {
                 
                 guard let data = message.data(using: .utf8) else{
                         return nil
@@ -596,8 +594,14 @@ extension UIViewController {
                 guard let qrImage = qr.outputImage?.transformed(by: CGAffineTransform(scaleX: 5, y: 5)) else{
                         return nil
                 }
+                
+                let colorParameters = [
+                        "inputColor0": CIColor(color: foreColor), // Foreground
+                        "inputColor1": CIColor(color: UIColor.clear) // Background
+                ]
+                let colored = qrImage.applyingFilter("CIFalseColor", parameters: colorParameters)
                 let context = CIContext()
-                let cgImage = context.createCGImage(qrImage, from: qrImage.extent)
+                let cgImage = context.createCGImage(colored, from: colored.extent)
                 let uiImage = UIImage(cgImage: cgImage!)
                 return uiImage
         }
@@ -703,6 +707,19 @@ extension UIColor {
                 )
         }
         
+        public static var address: UIColor {
+                return  UIColor.init(
+                        red: CGFloat(149) / 0xff,
+                        green: CGFloat(153) / 0xff,
+                        blue: CGFloat(240) / 0xff, alpha: 1)
+        }
+        
+        public static var walletKey:UIColor{
+                return  UIColor.init(
+                        red: CGFloat(238) / 0xff,
+                        green: CGFloat(103) / 0xff,
+                        blue: CGFloat(76) / 0xff, alpha: 1)
+        }
 }
 
 enum ButtonImageEdgeInsetsStyle {
@@ -744,14 +761,14 @@ extension UIButton {
 }
 
 extension UIImage {
-    func rotateImage()-> UIImage?  {
-        if (self.imageOrientation == UIImage.Orientation.up ) {
-            return self
+        func rotateImage()-> UIImage?  {
+                if (self.imageOrientation == UIImage.Orientation.up ) {
+                        return self
+                }
+                UIGraphicsBeginImageContext(self.size)
+                self.draw(in: CGRect(origin: CGPoint.zero, size: self.size))
+                let copy = UIGraphicsGetImageFromCurrentImageContext()
+                UIGraphicsEndImageContext()
+                return copy
         }
-        UIGraphicsBeginImageContext(self.size)
-        self.draw(in: CGRect(origin: CGPoint.zero, size: self.size))
-       let copy = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return copy
-    }
 }
