@@ -115,11 +115,11 @@ class MessageListViewController: UIViewController{
         
         //MARK: - object c
         @objc func wsOffline(notification: NSNotification) {
-                print("Client shutdown....")
+                print("------>>>Client shutdown....")
                 self.showConnectingTips()
         }
         @objc func wsDidOnline(notification: NSNotification) {
-                print("Client online....")
+                print("------>>>Client online....")
                 self.hideConnectingTips()
         }
         
@@ -135,7 +135,7 @@ class MessageListViewController: UIViewController{
                 }
         }
         @objc func wsOnlineErr(notification: NSNotification) {
-                print("WSOnline error....")
+                print("------>>>WSOnline error....")
         }
         
         @objc func groupDeleteFromChatList(notification: NSNotification) {
@@ -189,8 +189,16 @@ class MessageListViewController: UIViewController{
                 }
         }
         
-        override func viewWillAppear(_ animated: Bool) {
-                super.viewWillAppear(animated)
+//        override func viewWillAppear(_ animated: Bool) {
+//                super.viewWillAppear(animated)
+//                guard Wallet.shared.IsActive() else {
+//                        self.performSegue(withIdentifier: "ShowAutherSEG", sender: self)
+//                        return
+//                }
+//                self.hideConnectingTips()
+//                updateMsgBadge()
+//        }
+        override func viewDidAppear(_ animated: Bool) {
                 guard Wallet.shared.IsActive() else {
                         self.performSegue(withIdentifier: "ShowAutherSEG", sender: self)
                         return
@@ -198,7 +206,6 @@ class MessageListViewController: UIViewController{
                 self.hideConnectingTips()
                 updateMsgBadge()
         }
-        
         private func hideConnectingTips() {
                 DispatchQueue.main.async {
                         self.tableTopConstraint.constant = 0
