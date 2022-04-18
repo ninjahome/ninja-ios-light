@@ -316,7 +316,7 @@ extension GroupItem: ModelObj {
                 self.gid = cObj.gid ?? "<->"
                 self.groupName = cObj.name
                 self.owner = cObj.owner!
-                self.memberIds = try NSKeyedUnarchiver.unarchivedObject(ofClass: NSArray.self, from: cObj.members ?? Data()) as? [String] ?? []
+                self.memberIds = try NSKeyedUnarchiver.unarchivedObject(ofClasses: [NSArray.self, NSString.self], from: cObj.members ?? Data()) as? [String] ?? []
                 self.unixTime = cObj.unixTime
                 self.leader = cObj.leader!
                 self.avatar = cObj.avatar
