@@ -4493,20 +4493,24 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KAQ-7d-M7e">
                                 <rect key="frame" x="44" y="148" width="326" height="456.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address QR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WRg-gC-THZ">
-                                        <rect key="frame" x="106" y="12" width="114.5" height="24"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
-                                        <color key="textColor" red="0.22745099660000001" green="0.22745099660000001" blue="0.31764706970000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address QR" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WRg-gC-THZ">
+                                        <rect key="frame" x="0.0" y="0.0" width="326" height="64"/>
+                                        <color key="backgroundColor" red="0.26101228589999997" green="0.7703160644" blue="0.2933353782" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="64" id="dSR-My-iZf"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="PingFangSC-Semibold" family="PingFang SC" pointSize="22"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OdQ-gX-2Er">
-                                        <rect key="frame" x="34" y="44" width="258" height="258"/>
+                                        <rect key="frame" x="34" y="76" width="258" height="258"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="OdQ-gX-2Er" secondAttribute="height" multiplier="1:1" id="zwe-Fa-8Vt"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Immeta:a656a1a460f39b9c147ac5ac92c4829182c142e5f59b12b9f918feb30e5d07129a908ed2c1f22ab6b06649d49b740560" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="efj-rF-dxw">
-                                        <rect key="frame" x="34" y="322" width="269.5" height="81.5"/>
+                                        <rect key="frame" x="34" y="354" width="269.5" height="81.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.52549019610000003" green="0.52549019610000003" blue="0.54117647059999996" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -4514,14 +4518,15 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstItem="WRg-gC-THZ" firstAttribute="top" secondItem="KAQ-7d-M7e" secondAttribute="top" constant="12" id="9qn-eE-BiG"/>
+                                    <constraint firstItem="WRg-gC-THZ" firstAttribute="top" secondItem="KAQ-7d-M7e" secondAttribute="top" id="9qn-eE-BiG"/>
                                     <constraint firstItem="efj-rF-dxw" firstAttribute="top" secondItem="OdQ-gX-2Er" secondAttribute="bottom" constant="20" id="Fld-48-3cf"/>
+                                    <constraint firstAttribute="trailing" secondItem="WRg-gC-THZ" secondAttribute="trailing" id="Fn1-zl-dth"/>
                                     <constraint firstItem="OdQ-gX-2Er" firstAttribute="leading" secondItem="KAQ-7d-M7e" secondAttribute="leading" constant="34" id="L6k-I8-MmO"/>
-                                    <constraint firstItem="OdQ-gX-2Er" firstAttribute="top" secondItem="KAQ-7d-M7e" secondAttribute="top" constant="44" id="LCk-6m-SHe"/>
+                                    <constraint firstItem="OdQ-gX-2Er" firstAttribute="top" secondItem="WRg-gC-THZ" secondAttribute="bottom" constant="12" id="LCk-6m-SHe"/>
                                     <constraint firstAttribute="width" secondItem="KAQ-7d-M7e" secondAttribute="height" multiplier="1:1.4" id="PVo-iV-4zR"/>
-                                    <constraint firstItem="WRg-gC-THZ" firstAttribute="centerX" secondItem="KAQ-7d-M7e" secondAttribute="centerX" id="bmd-9S-yHw"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="efj-rF-dxw" secondAttribute="trailing" constant="20" symbolic="YES" id="eGp-Ol-cjB"/>
                                     <constraint firstAttribute="trailing" secondItem="OdQ-gX-2Er" secondAttribute="trailing" constant="34" id="h2y-ZJ-y0x"/>
+                                    <constraint firstItem="WRg-gC-THZ" firstAttribute="leading" secondItem="KAQ-7d-M7e" secondAttribute="leading" id="qTb-Ji-wl6"/>
                                     <constraint firstItem="efj-rF-dxw" firstAttribute="leading" secondItem="KAQ-7d-M7e" secondAttribute="leading" constant="34" id="zSB-Cx-qbM"/>
                                 </constraints>
                             </view>
@@ -4535,7 +4540,7 @@
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Copy">
-                                    <color key="titleColor" red="0.4126662612" green="0.75765132899999998" blue="0.35620304940000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="titleColor" red="0.57647058823529407" green="0.57647058823529407" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
@@ -4592,7 +4597,7 @@
                                 <action selector="backToPrevious:" destination="SyC-KT-TSZ" id="5y1-Xv-0m3"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="share_icon" id="7HK-MD-nNo">
+                        <barButtonItem key="rightBarButtonItem" image="share_icon_1" id="7HK-MD-nNo">
                             <connections>
                                 <action selector="shareQR:" destination="SyC-KT-TSZ" id="cYd-hl-iMt"/>
                             </connections>
@@ -5558,49 +5563,54 @@
                                 <rect key="frame" x="32" y="142" width="350" height="400"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ID_img" translatesAutoresizingMaskIntoConstraints="NO" id="oWb-nm-lZO">
-                                        <rect key="frame" x="7" y="54" width="24" height="24"/>
+                                        <rect key="frame" x="8" y="358" width="24" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="24" id="75P-7S-D49"/>
                                             <constraint firstAttribute="width" constant="24" id="fvk-7T-DGp"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="oxfbbbbllljjjoxfbbbbllljjjoxfbbbbllljjjoxfbbbbllljjj" textAlignment="natural" lineBreakMode="middleTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vcm-ol-Wil">
-                                        <rect key="frame" x="43" y="54" width="277" height="41"/>
+                                        <rect key="frame" x="40" y="358" width="280" height="41"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet QR" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hEb-94-IFA">
+                                        <rect key="frame" x="0.0" y="0.0" width="350" height="64"/>
+                                        <color key="backgroundColor" red="0.2464543283" green="0.50479018689999999" blue="0.97273808719999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="64" id="vL0-Zs-iIr"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="PingFangSC-Semibold" family="PingFang SC" pointSize="22"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FyQ-8R-uWs">
-                                        <rect key="frame" x="40" y="111" width="270" height="270"/>
+                                        <rect key="frame" x="40" y="76" width="270" height="270"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="FyQ-8R-uWs" secondAttribute="height" multiplier="1:1" id="XUT-n4-Wrd"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet QR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hEb-94-IFA">
-                                        <rect key="frame" x="128" y="18" width="94.5" height="24"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
-                                        <color key="textColor" red="0.22745099660000001" green="0.22745099660000001" blue="0.31764706970000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
+                                    <constraint firstItem="oWb-nm-lZO" firstAttribute="leading" secondItem="gxo-g0-ME4" secondAttribute="leading" constant="8" id="2S3-q4-aWL"/>
+                                    <constraint firstItem="hEb-94-IFA" firstAttribute="leading" secondItem="gxo-g0-ME4" secondAttribute="leading" id="7nH-ND-pMD"/>
                                     <constraint firstAttribute="height" constant="400" id="8do-lT-eNA"/>
                                     <constraint firstAttribute="trailing" secondItem="FyQ-8R-uWs" secondAttribute="trailing" constant="40" id="9KL-cZ-ei2"/>
                                     <constraint firstItem="FyQ-8R-uWs" firstAttribute="leading" secondItem="gxo-g0-ME4" secondAttribute="leading" constant="40" id="BUR-Sg-5nr"/>
-                                    <constraint firstItem="vcm-ol-Wil" firstAttribute="top" secondItem="hEb-94-IFA" secondAttribute="bottom" constant="12" id="GI2-MA-nMt"/>
-                                    <constraint firstItem="oWb-nm-lZO" firstAttribute="leading" secondItem="gxo-g0-ME4" secondAttribute="leading" constant="7" id="KgZ-3a-BrO"/>
-                                    <constraint firstItem="FyQ-8R-uWs" firstAttribute="top" secondItem="vcm-ol-Wil" secondAttribute="bottom" constant="16" id="MJY-IV-1XV"/>
-                                    <constraint firstItem="vcm-ol-Wil" firstAttribute="leading" secondItem="oWb-nm-lZO" secondAttribute="trailing" constant="12" id="X90-NS-0RG"/>
+                                    <constraint firstItem="vcm-ol-Wil" firstAttribute="leading" secondItem="oWb-nm-lZO" secondAttribute="trailing" constant="8" symbolic="YES" id="JT7-YI-3gg"/>
                                     <constraint firstItem="oWb-nm-lZO" firstAttribute="top" secondItem="vcm-ol-Wil" secondAttribute="top" id="bq3-gZ-ZYx"/>
-                                    <constraint firstItem="hEb-94-IFA" firstAttribute="top" secondItem="gxo-g0-ME4" secondAttribute="top" constant="18" id="cuJ-WZ-8Lm"/>
-                                    <constraint firstItem="hEb-94-IFA" firstAttribute="centerX" secondItem="gxo-g0-ME4" secondAttribute="centerX" id="e0y-6N-nOw"/>
+                                    <constraint firstItem="FyQ-8R-uWs" firstAttribute="top" secondItem="hEb-94-IFA" secondAttribute="bottom" constant="12" id="cQI-2T-aPL"/>
+                                    <constraint firstItem="hEb-94-IFA" firstAttribute="top" secondItem="gxo-g0-ME4" secondAttribute="top" id="cuJ-WZ-8Lm"/>
+                                    <constraint firstAttribute="trailing" secondItem="hEb-94-IFA" secondAttribute="trailing" id="kaq-Uc-gji"/>
+                                    <constraint firstItem="vcm-ol-Wil" firstAttribute="top" secondItem="FyQ-8R-uWs" secondAttribute="bottom" constant="12" id="ydv-Hm-Bx1"/>
                                     <constraint firstAttribute="trailing" secondItem="vcm-ol-Wil" secondAttribute="trailing" constant="30" id="za1-2b-sJw"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i62-VC-fEq">
                                 <rect key="frame" x="227" y="564" width="128" height="44"/>
-                                <color key="backgroundColor" red="0.22352941179999999" green="0.73725490199999999" blue="0.23137254900000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.2464543283" green="0.50479018689999999" blue="0.97273808719999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="VcS-Tu-GQ3"/>
                                 </constraints>
@@ -5627,7 +5637,7 @@
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Copy">
-                                    <color key="titleColor" red="0.4126662612" green="0.75765132899999998" blue="0.35620304940000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="titleColor" red="0.57647058819999997" green="0.57647058819999997" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
@@ -6587,7 +6597,7 @@
         <image name="recording_photo" width="42" height="42"/>
         <image name="red" width="6" height="6"/>
         <image name="refresh_icon" width="22" height="22"/>
-        <image name="share_icon" width="52" height="52"/>
+        <image name="share_icon_1" width="128" height="128"/>
         <image name="trash" catalog="system" width="121" height="128"/>
         <image name="useN_icon" width="20" height="20"/>
         <image name="user_icon1" width="24" height="24"/>

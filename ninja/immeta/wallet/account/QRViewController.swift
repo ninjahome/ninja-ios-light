@@ -42,10 +42,10 @@ class QRViewController: UIViewController {
                 
                 if let exportImg = generateViewImg(info: infoView) {
                         UIImageWriteToSavedPhotosAlbum(exportImg, self, nil, nil)
-                        self.toastMessage(title: "Save success".locStr)
+                        self.toastMessage(title: "Save success".locStr, duration: 1)
                 } else if qr != nil {
                         UIImageWriteToSavedPhotosAlbum(qr!, nil, nil, nil)
-                        self.toastMessage(title: "Save success".locStr)
+                        self.toastMessage(title: "Save success".locStr, duration: 1)
                 }
                 
         }

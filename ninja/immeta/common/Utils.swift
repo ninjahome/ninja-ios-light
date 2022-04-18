@@ -719,9 +719,9 @@ extension UIColor {
         
         public static var address: UIColor {//112,231,91
                 return  UIColor.init(
-                        red: CGFloat(57) / 0xff,
-                        green: CGFloat(188) / 0xff,
-                        blue: CGFloat(59) / 0xff, alpha: 1)
+                        red: CGFloat(38) / 0xff,
+                        green: CGFloat(37) / 0xff,
+                        blue: CGFloat(60) / 0xff, alpha: 1)
         }
         
         public static var walletKey:UIColor{

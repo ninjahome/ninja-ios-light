@@ -25,7 +25,7 @@ class BackupGuideViewController: UIViewController {
         
         func getQRCode() -> UIImage? {
                 guard let wJson = Wallet.shared.wJson else { return nil }
-                let qrImg = generateQRCode(from: wJson, foreColor: UIColor.walletKey)
+                let qrImg = generateQRCode(from: wJson)
                 self.qr = qrImg
                 return qrImg
         }
