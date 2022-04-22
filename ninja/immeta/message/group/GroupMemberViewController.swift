@@ -29,7 +29,7 @@ class GroupMemberViewController: UIViewController {
                 super.viewDidLoad()
                 
                 if isInAddingMode {
-                        actTitle.title = "添加新成员"
+                        actTitle.title = "Adding Member".locStr
                 }
                 
                 self.tableView.delegate = self
@@ -227,7 +227,7 @@ extension GroupMemberViewController: UITableViewDelegate, UITableViewDataSource 
                 guard section == 1 else{
                         return ""
                 }
-                return "非会员无法加入"
+                return "Free Users Can't Be Invited".locStr
         }
 }
 
