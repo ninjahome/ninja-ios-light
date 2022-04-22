@@ -305,8 +305,7 @@ extension GroupMemberViewController : CellClickDelegate {
                         
                         CombineConntact.cache[pid] = data
                         
-                        NotificationCenter.default.post(name:NotifyContactChanged,
-                                                        object: pid, userInfo:nil)
+                        NotificationCenter.default.post(name:NotifyContactChanged, object: pid)
                         
                         if !data.isVIP(){
                                 return

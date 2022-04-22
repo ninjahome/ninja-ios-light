@@ -126,6 +126,7 @@ class MessageListViewController: UIViewController{
         @objc func updateLatestItem(notification: NSNotification) {
                 self.simpleReload()
         }
+        //TODO:: update only one cell
         private func simpleReload(){
                 DispatchQueue.main.async {
                         self.indexCache.removeAll()

@@ -33,6 +33,8 @@ extension ManageViewController: ScannerViewControllerDelegate {
                         
                         ServiceDelegate.ImportNewAccount(wJson: code, addr: addr, pwd: pwd, parent: self!) {
                                 DispatchQueue.main.async {
+                                        NotificationCenter.default.post(name:NotifyContactChanged, object: nil)
+                                        NotificationCenter.default.post(name:NotifyGroupChanged, object: nil)
                                         self?.navigationController?.popToRootViewController(animated: true)
                                 }
                         }

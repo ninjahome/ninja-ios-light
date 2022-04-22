@@ -207,8 +207,7 @@ class CombineConntact: NSObject{
                 }
                 
                 if modified{
-                        NotificationCenter.default.post(name:NotifyContactChanged,
-                                                        object: nil, userInfo:nil)
+                        NotificationCenter.default.post(name:NotifyContactChanged, object: nil)
                 }
                 return validPid
         }
@@ -251,8 +250,7 @@ class CombineConntact: NSObject{
                         return
                 }
                 
-                NotificationCenter.default.post(name:NotifyContactChanged,
-                                                object: nil, userInfo:nil)
+                NotificationCenter.default.post(name:NotifyContactChanged, object: nil)
         }
         
         public static func SyncAllContactDataAtOnce() {

@@ -58,8 +58,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                         
                         self.contactData = data
                         CombineConntact.cache[self.peerID] = data
-                        NotificationCenter.default.post(name:NotifyContactChanged,
-                                                        object: self.peerID, userInfo:nil)
+                        NotificationCenter.default.post(name:NotifyContactChanged, object: self.peerID)
                         DispatchQueue.main.async {
                                 self.hideIndicator()
                                 self.populateView()
@@ -154,8 +153,7 @@ class ContactDetailsViewController: UIViewController, UIGestureRecognizerDelegat
                 guard let e = err else{
                         
                         CDManager.shared.saveContext()
-                        NotificationCenter.default.post(name:NotifyContactChanged,
-                                                        object: self.peerID, userInfo:nil)
+                        NotificationCenter.default.post(name:NotifyContactChanged, object: self.peerID)
                         self.dismiss(animated: true)
                         if isDelete{
                                 self.navigationController?.popToRootViewController(animated: true)
