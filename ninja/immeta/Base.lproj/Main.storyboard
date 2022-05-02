@@ -3099,9 +3099,6 @@
                                     <action selector="StartChat:" destination="f4X-jQ-OkL" eventType="touchUpInside" id="DHf-KD-7sV"/>
                                 </connections>
                             </button>
-                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VIP" translatesAutoresizingMaskIntoConstraints="NO" id="hXX-3w-JCS">
-                                <rect key="frame" x="392" y="848" width="22" height="14"/>
-                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K0R-ek-idf">
                                 <rect key="frame" x="16" y="101" width="382" height="80"/>
                                 <subviews>
@@ -3305,6 +3302,9 @@
                                     <action selector="saveChanges:" destination="f4X-jQ-OkL" eventType="touchUpInside" id="F7b-vR-yFJ"/>
                                 </connections>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VIP" translatesAutoresizingMaskIntoConstraints="NO" id="hXX-3w-JCS">
+                                <rect key="frame" x="376" y="515" width="22" height="14"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="gpv-6t-OUL"/>
                         <color key="backgroundColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -3318,15 +3318,15 @@
                             <constraint firstItem="qQN-84-s49" firstAttribute="top" secondItem="K0R-ek-idf" secondAttribute="bottom" constant="16" id="AXX-Uh-2SD"/>
                             <constraint firstItem="K0R-ek-idf" firstAttribute="leading" secondItem="gpv-6t-OUL" secondAttribute="leading" constant="16" id="Dsf-Lb-Cku"/>
                             <constraint firstItem="yJ4-Qc-Ihw" firstAttribute="centerY" secondItem="Zoy-eH-exG" secondAttribute="centerY" id="GU6-dG-e5W"/>
+                            <constraint firstItem="gpv-6t-OUL" firstAttribute="trailing" secondItem="hXX-3w-JCS" secondAttribute="trailing" constant="16" id="U5J-1U-GOA"/>
                             <constraint firstItem="Zoy-eH-exG" firstAttribute="leading" secondItem="gpv-6t-OUL" secondAttribute="leading" constant="20" id="V4d-ld-EAs"/>
                             <constraint firstItem="7zI-0t-mpk" firstAttribute="leading" secondItem="gpv-6t-OUL" secondAttribute="leading" constant="16" id="bGn-1a-wyQ"/>
+                            <constraint firstItem="hXX-3w-JCS" firstAttribute="top" secondItem="f84-hn-ivR" secondAttribute="bottom" constant="12" id="dBz-Pc-iOI"/>
                             <constraint firstItem="gpv-6t-OUL" firstAttribute="trailing" secondItem="7zI-0t-mpk" secondAttribute="trailing" constant="16" id="eHp-xz-a4X"/>
-                            <constraint firstItem="gpv-6t-OUL" firstAttribute="trailing" secondItem="hXX-3w-JCS" secondAttribute="trailing" id="gRe-wU-av3"/>
                             <constraint firstItem="7zI-0t-mpk" firstAttribute="top" secondItem="f84-hn-ivR" secondAttribute="bottom" constant="12" id="gmg-ag-H99"/>
                             <constraint firstItem="gpv-6t-OUL" firstAttribute="trailing" secondItem="f84-hn-ivR" secondAttribute="trailing" constant="16" id="nzC-wx-Phx"/>
                             <constraint firstItem="gpv-6t-OUL" firstAttribute="trailing" secondItem="yJ4-Qc-Ihw" secondAttribute="trailing" constant="20" id="pTu-ts-WtA"/>
                             <constraint firstItem="Zoy-eH-exG" firstAttribute="top" secondItem="gpv-6t-OUL" secondAttribute="top" constant="7" id="sGm-kF-RUz"/>
-                            <constraint firstItem="gpv-6t-OUL" firstAttribute="bottom" secondItem="hXX-3w-JCS" secondAttribute="bottom" id="tnf-kS-Edt"/>
                             <constraint firstItem="qQN-84-s49" firstAttribute="leading" secondItem="gpv-6t-OUL" secondAttribute="leading" constant="16" id="xg5-wi-8bO"/>
                         </constraints>
                     </view>
