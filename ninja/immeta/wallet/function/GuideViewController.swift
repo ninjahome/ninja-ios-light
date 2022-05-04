@@ -9,7 +9,7 @@ import UIKit
 
 class GuideViewController: UIViewController, UIScrollViewDelegate {
         
-        let images = ["guide01", "guide02", "guide03", "guide04", "guide05"]
+        let images = ["guide01".locStr, "guide02".locStr, "guide03".locStr, "guide04".locStr, "guide05".locStr]
         
         @IBOutlet weak var pageCtrl: UIPageControl!
         @IBOutlet weak var scrollView: UIScrollView!

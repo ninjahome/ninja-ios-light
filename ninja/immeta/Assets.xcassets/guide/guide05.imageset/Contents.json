@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "开屏启动页面05.png",
+      "filename" : "guide05.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "开屏启动页面05@2x.png",
+      "filename" : "guide05@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "开屏启动页面05@3x.png",
+      "filename" : "guide05@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
