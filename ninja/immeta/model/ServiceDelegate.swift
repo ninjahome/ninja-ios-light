@@ -209,8 +209,8 @@ extension ServiceDelegate{
                         WebsocketSrv.shared.Offline()
                         
                         if let err = Wallet.shared.Import(cipher: wJson, addr: addr, auth: pwd){
-                                parent.toastMessage(title: "\(err.localizedDescription)")
                                 parent.hideIndicator()
+                                parent.toastMessage(title: "\(err.localizedDescription)", duration: 5)
                                 return
                         }
                         
