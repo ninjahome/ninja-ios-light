@@ -211,6 +211,7 @@ extension ServiceDelegate{
                         if let err = Wallet.shared.Import(cipher: wJson, addr: addr, auth: pwd){
                                 parent.hideIndicator()
                                 parent.toastMessage(title: "\(err.localizedDescription)", duration: 5)
+                                parent.toastMessage(title: "Import failed, please try again".locStr, duration: 5)
                                 return
                         }
                         
