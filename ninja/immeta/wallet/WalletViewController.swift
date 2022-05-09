@@ -92,6 +92,7 @@ class WalletViewController: UITableViewController {
 //                        self.faceIDSwitch.isOn = Wallet.shared.useFaceID
                         self.destroySwitch.isOn = Wallet.shared.useDestroy
                         self.gestureSwitch.isOn = Wallet.shared.useGesture
+                        self.msgBlockSwitch.isOn = ConfigItem.shared.blockMsg
                         self.nickName.text = Wallet.shared.nickName
                         self.avatar.setupSelf()
                      
