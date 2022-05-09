@@ -127,7 +127,7 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
                                 return
                         }
                         
-                        print("------>>>[peerIM] block msg enabled and msg pass", f)
+                        print("------>>>[peerIM] block msg enabled and msg pass", f, contact.alias ?? "<->", contact.remark ?? "<->")
                 }
                 
                 ServiceDelegate.workQueue.async {
