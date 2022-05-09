@@ -36,6 +36,7 @@
 "5i6-Hu-id5.text" = "授权账号：";
 "WRg-gC-THZ.text" = "地址二维码";
 "hEb-94-IFA.text" = "钱包二维码";
+"Ovd-wf-99H.text"="仅接收好友消息";
 /* Class = "UIButton"; normalTitle = "创建群聊"; ObjectID = "5ww-5a-SVK"; */
 "5ww-5a-SVK.normalTitle" = "创建群聊";
 
