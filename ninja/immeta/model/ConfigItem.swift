@@ -13,6 +13,7 @@ class ConfigItem: NSObject {
         var obj: CDConfig?
         var endPoint: String?
         var keepDays: Int16?
+        var blockMsg:Bool = false
         public static func initEndPoint(_ endPoint: String) -> ConfigItem {
                 let item = ConfigItem.init()
                 item.endPoint = endPoint
@@ -27,6 +28,8 @@ class ConfigItem: NSObject {
                                                                             NSNumber.init(value: ServiceDelegate.networkID)))
                         self.shared.endPoint = inst?.endPoint
                         self.shared.keepDays = inst?.keepDays
+                        self.shared.blockMsg = inst?.blockMsg ?? false
+                        
                         return self.shared.endPoint
                 } catch let err {
                         print(err.localizedDescription)
@@ -59,6 +62,18 @@ class ConfigItem: NSObject {
                 return nil
         }
 
+        public static func setupMsgBlock(_ on:Bool)->NJError?{
+                self.shared.blockMsg = on
+                do {
+                        try CDManager.shared.UpdateOrAddOne(entity: "CDConfig", m: self.shared, predicate:
+                                                                NSPredicate(format: "nid == %@ ",
+                                                                            NSNumber.init(value: ServiceDelegate.networkID)))
+                        CDManager.shared.saveContext()
+                } catch let err {
+                        return NJError.config(err.localizedDescription)
+                }
+                return nil
+        }
 }
 
 extension ConfigItem: ModelObj {
@@ -69,6 +84,7 @@ extension ConfigItem: ModelObj {
                 cObj.endPoint = self.endPoint
                 cObj.nid = Int16(ServiceDelegate.networkID)
                 cObj.keepDays = self.keepDays ?? 7
+                cObj.onlyFriend = self.blockMsg 
                 self.obj = cObj
         }
         
@@ -78,6 +94,7 @@ extension ConfigItem: ModelObj {
                 }
                 self.endPoint = cObj.endPoint
                 self.keepDays = cObj.keepDays
+                self.blockMsg = cObj.onlyFriend
                 print("-------->>network id:", cObj.nid)
                 self.obj = cObj
         }

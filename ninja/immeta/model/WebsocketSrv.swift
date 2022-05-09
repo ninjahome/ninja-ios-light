@@ -120,6 +120,16 @@ extension WebsocketSrv: ChatLibUICallBackProtocol {
                         print("------>>>[peerIM] invalid peer message data")
                         return
                 }
+                
+                if ConfigItem.shared.blockMsg{
+                        guard let contact = CombineConntact.cache[f]?.contact else{
+                                print("------>>>[peerIM] grop the message because of not in contact", f)
+                                return
+                        }
+                        
+                        print("------>>>[peerIM] block msg enabled and msg pass", f)
+                }
+                
                 ServiceDelegate.workQueue.async {
                         MessageItem.receiveMsg(from: f, gid: nil, msgData: d, time: time)
                 }

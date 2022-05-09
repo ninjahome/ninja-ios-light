@@ -14,6 +14,7 @@ class WalletViewController: UITableViewController {
 //        @IBOutlet weak var faceIDSwitch: UISwitch!
         @IBOutlet weak var destroySwitch: UISwitch!
         @IBOutlet weak var gestureSwitch: UISwitch!
+        @IBOutlet weak var msgBlockSwitch: UISwitch!
         @IBOutlet weak var avatar: AvatarButton!
         @IBOutlet weak var backGroundView: UIView!
 
@@ -170,6 +171,13 @@ class WalletViewController: UITableViewController {
                     UIApplication.shared.open(appSettings)
                 }
                 setupNotiStatus()
+        }
+        
+        @IBAction func switchMsgBlock(_ sender: UISwitch) {
+                if let err = ConfigItem.setupMsgBlock(sender.isOn) {
+                        self.toastMessage(title: "save block message failed".locStr)
+                        print("------->>>update keep days faild: \(err.localizedDescription ?? "")")
+                }
         }
         
         @IBAction func setGesture(_ sender: UISwitch) {

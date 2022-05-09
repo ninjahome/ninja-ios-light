@@ -21,6 +21,7 @@
         <attribute name="endPoint" optional="YES" attributeType="String"/>
         <attribute name="keepDays" optional="YES" attributeType="Integer 16" defaultValueString="7" usesScalarValueType="YES"/>
         <attribute name="nid" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="onlyFriend" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </entity>
     <entity name="CDContact" representedClassName="CDContact" syncable="YES" codeGenerationType="class">
         <attribute name="alias" optional="YES" attributeType="String"/>
@@ -66,7 +67,7 @@
     <elements>
         <element name="CDAccount" positionX="-45" positionY="90" width="128" height="134"/>
         <element name="CDChatItem" positionX="-45" positionY="27" width="128" height="119"/>
-        <element name="CDConfig" positionX="-36" positionY="99" width="128" height="74"/>
+        <element name="CDConfig" positionX="-36" positionY="99" width="128" height="89"/>
         <element name="CDContact" positionX="-36" positionY="18" width="128" height="89"/>
         <element name="CDGroup" positionX="-45" positionY="72" width="128" height="164"/>
         <element name="CDUnread" positionX="-54" positionY="9" width="128" height="194"/>
